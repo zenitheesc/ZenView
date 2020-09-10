@@ -1,12 +1,10 @@
-const Components = require('../../../components');
-module.exports = class NewDashBoardMenu {
+const Menu = require('../menu');
+const Components = require('../../../components.js');
+module.exports = class newDashBoardMenu extends Menu {
 	constructor() {
-		this.menuName = 'newDashboard_menu';
-		this.menuComponent = document.createElement('div');
-		this.menuComponent.id = 'newDashboard_menu';
-		this.menuComponent.className = 'menuContainer';
+		super('New Dashboard', 'newDashboard_menu');
 	}
-	LoadAddNewDashBoardButton(){
+	LoadAddNewDashBoardButton() {
 		let button = document.createElement('button');
 		button.style.width = '50%';
 		button.style.marginLeft = '25%';
@@ -16,12 +14,12 @@ module.exports = class NewDashBoardMenu {
 
 		return button;
 	}
-	newDashboardSpliter(){
+	newDashboardSpliter() {
 		let container = document.createElement('div');
 
-		let dashBoardNameInput = Components.textInput('Nome','newDashBoardNameInput');
-		let dashBoardNbmrOfInputs = Components.numberInput('Número de entradas','newDashBoardNbmrOfInputs',1,30);
-		let dashBoardDescription = Components.textArea('Descrição','newDashBoardDescription');
+		let dashBoardNameInput = Components.textInput('Nome', 'newDashBoardNameInput');
+		let dashBoardNbmrOfInputs = Components.numberInput('Número de entradas', 'newDashBoardNbmrOfInputs', 1, 30);
+		let dashBoardDescription = Components.textArea('Descrição', 'newDashBoardDescription');
 		dashBoardDescription.childNodes[1].style.height = '16em';
 
 		let button = this.LoadAddNewDashBoardButton();
@@ -31,40 +29,24 @@ module.exports = class NewDashBoardMenu {
 		container.appendChild(dashBoardDescription);
 		container.appendChild(button);
 
-		let spliter = Components.spliter(1,'Criar novo Dashboard',container,true);
+		let spliter = Components.spliter('newDashboard', 'Criar novo Dashboard', container, true);
 
-		this.menuComponent.appendChild(spliter);
+		return spliter;
 	}
-	importDashBoardSpliter(){
+	importDashBoardSpliter() {
 		let container = document.createElement('div');
 
-		
-		let spliter = Components.spliter(2,'Importar Dashboard',container,true);
-		
-		
-		this.menuComponent.appendChild(spliter);
+		let spliter = Components.spliter('importDashboard', 'Importar Dashboard', container, true);
+
+		return spliter;
 	}
 	load() {
-		let header = Components.menuHeader('New Dashboard');
-		this.menuComponent.appendChild(header);
-		this.newDashboardSpliter();
-		this.importDashBoardSpliter();
-	}
-	setEvents() {
-		window.addEventListener('openMenu', (evt) => {
-			console.log('abrindo menu ' + evt.detail.name);
-			if ((evt.detail.name) + '_menu' == this.menuName) {
-				this.menuComponent.style.display = 'block';
+		let spliterContainer = document.createElement('div');
+		spliterContainer.className = 'menuBody';
 
-			} else {
-				this.menuComponent.style.display = 'none';
-			}
-		});
-	}
-	build() {
-		console.log('Construindo menu dashboard');
-		this.load();
-		document.getElementById('Menus').appendChild(this.menuComponent);
-		this.setEvents();
+		spliterContainer.appendChild(this.newDashboardSpliter());
+		spliterContainer.appendChild(this.importDashBoardSpliter());
+
+		this.menuComponent.appendChild(spliterContainer);
 	}
 };
