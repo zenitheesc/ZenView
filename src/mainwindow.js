@@ -1,4 +1,5 @@
 const SideMenu = require('./components/sideMenu/sideMenu.js');
+const fs = require('fs');
 //const  = require('./sideMenu/sideMenu');
 
 class MainWindow {
@@ -8,6 +9,7 @@ class MainWindow {
 		this.MainWindow;
 	}
 	build() {
+		window['ZenViewConfig'] = JSON.parse(fs.readFileSync('./src/config.json'));
 		this.SideMenu.build();
 	}
 }
