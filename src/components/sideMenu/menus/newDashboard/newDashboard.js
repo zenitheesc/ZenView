@@ -1,5 +1,4 @@
 const Components = require('../../../components');
-const fs = require('fs');
 module.exports = class NewDashBoardMenu {
 	constructor() {
 		this.menuName = 'newDashboard_menu';
@@ -7,24 +6,49 @@ module.exports = class NewDashBoardMenu {
 		this.menuComponent.id = 'newDashboard_menu';
 		this.menuComponent.className = 'menuContainer';
 	}
-	load() {
+	LoadAddNewDashBoardButton(){
+		let button = document.createElement('button');
+		button.style.width = '50%';
+		button.style.marginLeft = '25%';
+		button.style.marginRight = '25%';
+		button.className = 'green-btn';
+		button.textContent = 'Criar';
+
+		return button;
+	}
+	newDashboardSpliter(){
 		let container = document.createElement('div');
+
 		let dashBoardNameInput = Components.textInput('Nome','newDashBoardNameInput');
 		let dashBoardNbmrOfInputs = Components.numberInput('Número de entradas','newDashBoardNbmrOfInputs',1,30);
 		let dashBoardDescription = Components.textArea('Descrição','newDashBoardDescription');
+		dashBoardDescription.childNodes[1].style.height = '16em';
+
+		let button = this.LoadAddNewDashBoardButton();
 
 		container.appendChild(dashBoardNameInput);
 		container.appendChild(dashBoardNbmrOfInputs);
 		container.appendChild(dashBoardDescription);
+		container.appendChild(button);
 
-		let spliter1 = Components.spliter(1,'Criar novo Dashboard',container,true);
-		let spliter2 = Components.spliter(2,'Importar Dashboard',container,true);
+		let spliter = Components.spliter(1,'Criar novo Dashboard',container,true);
+
+		this.menuComponent.appendChild(spliter);
+	}
+	importDashBoardSpliter(){
+		let container = document.createElement('div');
+
+		
+		let spliter = Components.spliter(2,'Importar Dashboard',container,true);
+		
+		
+		this.menuComponent.appendChild(spliter);
+	}
+	load() {
 		let header = Components.menuHeader('New Dashboard');
-		//this.menuComponent.innerHTML = html;
-		//this.menuComponent.className = 'menuContainer';
 		this.menuComponent.appendChild(header);
-		this.menuComponent.appendChild(spliter1);
-		this.menuComponent.appendChild(spliter2);
+		this.newDashboardSpliter();
+		this.importDashBoardSpliter();
 	}
 	setEvents() {
 		window.addEventListener('openMenu', (evt) => {
