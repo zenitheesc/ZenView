@@ -1,4 +1,3 @@
-const Utillites = require('../../utillities');
 const MenuList = require('./menuList');
 const Menus = require('./menus');
 
@@ -53,8 +52,8 @@ module.exports = class SideMenu {
 		this.menusComponent.style.display = 'none';
 		this.isOpen = false;
 	}
-	loadMenus(){
-		Menus.forEach(menu =>{
+	loadMenus() {
+		Menus.forEach(menu => {
 			let newMenu = new menu();
 			newMenu.build();
 			this.Menus.push(newMenu);

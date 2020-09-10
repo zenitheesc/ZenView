@@ -56,8 +56,6 @@ html,
 .menuBody {
   height: 100%;
   overflow-y: auto;
-  padding: 0px;
-  margin: 0px;
   overflow: overlay;
 }
 
@@ -233,17 +231,17 @@ button.orange-btn:hover {
   border-color: #ffc619;
 }
 
-.dashBoardCard{
-  border-radius:  0.2em !important;
+.dashBoardCard {
+  border-radius: 0.2em !important;
   border: 1px solid rgb(90 90 90 / 27%);
   background-color: var(--global-colorInputBg);
 }
 
-.dashBoardCard-header{
-    background-color: var(--global-colorList);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+.dashBoardCard-header {
+  background-color: var(--global-colorList);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 }
 
-.dashBoardCard cite{
-    font-size: 0.8rem;
+.dashBoardCard cite {
+  font-size: 0.8rem;
 }

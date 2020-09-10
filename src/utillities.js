@@ -1,7 +1,7 @@
 module.exports = class Utillities {
 	static texts = {
-		pt: {
-			buttons:{
+		ptbr: {
+			buttons: {
 				1: "Dashboards",
 				2: "Novo Dashboard",
 				3: "Começar Leitura",
@@ -14,7 +14,7 @@ module.exports = class Utillities {
 			}
 		},
 		en: {
-			buttons:{
+			buttons: {
 				1: "Dashboards",
 				2: "New Dashboard",
 				3: "Start Reading",
@@ -38,7 +38,7 @@ module.exports = class Utillities {
 
 	static theme = 'main'
 
-	static language = 'en'
+	static language = 'ptbr'
 
 	static getColor(colorNumber) {
 		return (this.colors[this.theme])[colorNumber];

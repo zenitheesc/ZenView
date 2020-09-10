@@ -117,15 +117,15 @@ module.exports = class Components {
 
 		return textInputGroup;
 	}
-	static icon(iconName){
-		return  (fs.readFileSync('./src/images/icons/'+iconName+'.svg')).toString();
+	static icon(iconName) {
+		return (fs.readFileSync('./src/images/icons/' + iconName + '.svg')).toString();
 	}
-	static dashBoardCard(name,desc,path){
+	static dashBoardCard(name, desc, path) {
 		let dashBoardCardComponent = document.createElement('div');
-		dashBoardCardComponent.setAttribute('class','card dashBoardCard mb-3');
+		dashBoardCardComponent.setAttribute('class', 'card dashBoardCard mb-3');
 
 		let dashBoardCardComponentHeader = document.createElement('div');
-		dashBoardCardComponentHeader.setAttribute('class','card-header row dashBoardCard-header m-0 justify-content-between');
+		dashBoardCardComponentHeader.setAttribute('class', 'card-header row dashBoardCard-header m-0 justify-content-between');
 
 		let dashBoardCardComponentHeaderTitle = document.createElement('div');
 		dashBoardCardComponentHeaderTitle.innerText = name;
@@ -133,7 +133,7 @@ module.exports = class Components {
 		let dashBoardCardComponentHeaderOptions = document.createElement('div');
 
 		dashBoardCardComponentHeader.appendChild(dashBoardCardComponentHeaderTitle);
-		
+
 
 		let playBtn = document.createElement('button');
 		let editBtn = document.createElement('button');
