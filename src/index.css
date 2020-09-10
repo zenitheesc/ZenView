@@ -13,6 +13,7 @@ html,
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   user-select: none;
+  overflow-y: overlay;
 }
 
 :root {
@@ -23,19 +24,19 @@ html,
 }
 
 ::-webkit-scrollbar {
-    width: 0.3em;
+  width: 0.3em;
 }
 
 ::-webkit-scrollbar-track {
-    background: rgba(241, 241, 241, 0.308);
+  background: rgba(241, 241, 241, 0.308);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #888;
+  background: #888;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #555;
+  background: #555;
 
 }
 
@@ -60,17 +61,17 @@ html,
   overflow: overlay;
 }
 
-svg {
+button svg {
   fill: #54555c;
   width: 1.8em;
   height: 1.8em;
 }
 
-button:hover svg {
+button.menuItem:hover svg {
   fill: whitesmoke;
 }
 
-button:active svg {
+button.menuItem:active svg {
   fill: whitesmoke;
 }
 
@@ -98,14 +99,36 @@ button.menuItem:focus {
   align-items: center;
 }
 
+button.dashBoardCardOption,
+button.dashBoardCardOption:focus {
+  border-radius: 0px;
+  box-shadow: none;
+  border: none;
+  background: none;
+  outline: none !important;
+  align-items: center;
+}
+
+button.dashBoardCardOption svg {
+  fill: #54555c;
+  width: 1.2em;
+  height: 1.2em;
+}
+
+button.dashBoardCardOption:hover svg {
+  fill: whitesmoke;
+}
+
 button.menuItem span {
   position: relative;
 }
 
-input,textarea {
+input,
+textarea {
   color: var(--global-colorFont) !important;
   background-color: var(--global-colorInputBg) !important;
   border-radius: 0px !important;
+  border: 1px solid #a9a9a963 !important;
 }
 
 small {
@@ -127,8 +150,6 @@ small {
   color: darkgray;
   background-color: var(--global-colorMenu);
   overflow-y: auto;
-  overflow-y: overlay;
-    
 }
 
 .menuSpliter-header {
@@ -143,20 +164,86 @@ small {
   border: none;
 }
 
-.menuSpliter-header:hover{
+.menuSpliter-header:hover {
   cursor: pointer;
 }
 
-.menuContainer{
+.menuContainer {
   height: 100%;
 }
 
 input[type="number"] {
   -webkit-appearance: textfield;
-     -moz-appearance: textfield;
-          appearance: textfield;
+  -moz-appearance: textfield;
+  appearance: textfield;
 }
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
+}
+
+
+button.green-btn {
+  border-radius: 3px;
+  box-shadow: none;
+  color: #929191;
+  outline: none;
+  background-color: rgba(92, 184, 92, 0.2);
+  border: solid 1px;
+  ;
+  border-color: rgb(92, 184, 92);
+}
+
+button.green-btn:hover {
+  color: white;
+  background-color: rgb(92, 184, 92);
+  border-color: rgb(91, 206, 91);
+}
+
+button.red-btn {
+  border-radius: 3px;
+  box-shadow: none;
+  color: #929191;
+  outline: none;
+  border: solid 1px;
+  background-color: rgba(217, 65, 61, 0.2);
+  border-color: rgb(217, 65, 61);
+}
+
+button.red-btn:hover {
+  color: white;
+  background-color: rgb(217, 65, 61);
+  border-color: rgb(250, 65, 59);
+}
+
+button.orange-btn {
+  border-radius: 3px;
+  box-shadow: none;
+  color: #929191;
+  outline: none;
+  background-color: #ffc6197a;
+  border: solid 1px;
+  border-color: #d39e00;
+}
+
+button.orange-btn:hover {
+  color: white;
+  background-color: #ffb124c7;
+  border-color: #ffc619;
+}
+
+.dashBoardCard{
+  border-radius:  0.2em !important;
+  border: 1px solid rgb(90 90 90 / 27%);
+  background-color: var(--global-colorInputBg);
+}
+
+.dashBoardCard-header{
+    background-color: var(--global-colorList);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.dashBoardCard cite{
+    font-size: 0.8rem;
 }
