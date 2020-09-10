@@ -1,3 +1,4 @@
+const fs = require('fs');
 module.exports = class Components {
 	static spliter(id, text, content, startOpen) {
 		let card = document.createElement('div');
@@ -51,10 +52,9 @@ module.exports = class Components {
 
 		return menuHeaderComponent;
 	}
-	static errorWarning(txt, id) {
+	static errorWarning(id) {
 		let errorMsg = document.createElement('div');
 		errorMsg.className = 'invalid-feedback';
-		errorMsg.textContent = txt;
 		errorMsg.id = id + '_errorMsg';
 		return errorMsg;
 	}
@@ -74,7 +74,7 @@ module.exports = class Components {
 		textInputComponent.setAttribute('aria-label', 'Small');
 		textInputComponent.setAttribute('aria-describedby', 'inputGroup-sizing-sm');
 		textInputGroup.appendChild(textInputComponent);
-
+		textInputGroup.appendChild(this.errorWarning(id));
 
 		return textInputGroup;
 	}
@@ -116,5 +116,58 @@ module.exports = class Components {
 		textInputGroup.appendChild(textInputComponent);
 
 		return textInputGroup;
+	}
+	static icon(iconName){
+		return  (fs.readFileSync('./src/images/icons/'+iconName+'.svg')).toString();
+	}
+	static dashBoardCard(name,desc,path){
+		let dashBoardCardComponent = document.createElement('div');
+		dashBoardCardComponent.setAttribute('class','card dashBoardCard mb-3');
+
+		let dashBoardCardComponentHeader = document.createElement('div');
+		dashBoardCardComponentHeader.setAttribute('class','card-header row dashBoardCard-header m-0 justify-content-between');
+
+		let dashBoardCardComponentHeaderTitle = document.createElement('div');
+		dashBoardCardComponentHeaderTitle.innerText = name;
+
+		let dashBoardCardComponentHeaderOptions = document.createElement('div');
+
+		dashBoardCardComponentHeader.appendChild(dashBoardCardComponentHeaderTitle);
+		
+
+		let playBtn = document.createElement('button');
+		let editBtn = document.createElement('button');
+		let delBtn = document.createElement('button');
+
+		playBtn.className = 'dashBoardCardOption';
+		editBtn.className = 'dashBoardCardOption';
+		delBtn.className = 'dashBoardCardOption';
+
+		playBtn.innerHTML = this.icon('play');
+		editBtn.innerHTML = this.icon('pencil-square');
+		delBtn.innerHTML = this.icon('trash');
+
+		dashBoardCardComponentHeaderOptions.appendChild(playBtn);
+		dashBoardCardComponentHeaderOptions.appendChild(editBtn);
+		dashBoardCardComponentHeaderOptions.appendChild(delBtn);
+
+		dashBoardCardComponentHeader.appendChild(dashBoardCardComponentHeaderOptions);
+
+		let dashBoardCardComponentBody = document.createElement('div');
+		dashBoardCardComponentBody.className = 'card-body';
+
+		let dashBoardCardComponentDesc = document.createElement('p');
+		dashBoardCardComponentDesc.textContent = desc;
+
+		let dashBoardCardComponentPath = document.createElement('cite');
+		dashBoardCardComponentPath.textContent = 'PATH:' + path;
+
+		dashBoardCardComponentBody.appendChild(dashBoardCardComponentDesc);
+		dashBoardCardComponentBody.appendChild(dashBoardCardComponentPath);
+
+		dashBoardCardComponent.appendChild(dashBoardCardComponentHeader);
+		dashBoardCardComponent.appendChild(dashBoardCardComponentBody);
+
+		return dashBoardCardComponent;
 	}
 };
