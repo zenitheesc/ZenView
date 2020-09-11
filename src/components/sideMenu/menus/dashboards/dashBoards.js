@@ -6,7 +6,6 @@ module.exports = class DashBoardsMenu extends Menu {
 	}
 	dashboardListSpliter() {
 		let container = document.createElement('div');
-		container.innerHTML = '';
 		let savedDashboards = window['ZenViewConfig'].dashboards;
 		savedDashboards.forEach(dashboard => {
 			container.appendChild(Components.dashBoardCard(dashboard.name, dashboard.desc, __dirname));
