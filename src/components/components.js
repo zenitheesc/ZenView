@@ -61,7 +61,7 @@ module.exports = class Components {
 	}
 	static textInput(text, id, className) {
 		let textInputGroup = document.createElement('div');
-
+		
 		textInputGroup.className = 'input-group-sm mb-3';
 		textInputGroup.classList.add(className);
 

@@ -58,6 +58,10 @@
   height: auto !important;
 }
 
+.pathInput input:hover{
+  cursor: pointer;
+}
+
 .pathInput button{
   padding: 0px;
   width: 2.5em;
