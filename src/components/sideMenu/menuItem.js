@@ -15,9 +15,8 @@ module.exports = class MenuItem {
 	setStyle() {
 		this.itemComponent.style.width = '100%';
 		this.itemComponent.style.height = String(Math.floor(screen.width / 32) + 'px');
-		this.itemComponent.className = 'btn menuItem row m-0';
+		this.itemComponent.className = 'btn menuItem row m-0 deactive';
 		this.itemComponent.title = this.menuName;
-		this.itemComponent.style.borderLeft = '2px solid ' + Utillities.getColor(1);
 		this.setIcon();
 	}
 	setClickVisualEffect() {
@@ -35,14 +34,16 @@ module.exports = class MenuItem {
 		});
 	}
 	setActiveEffect(menuItem) {
+		menuItem.classList.add('active');
+		menuItem.classList.remove('deactive');
 		menuItem.setAttribute('openedMenu', 'true');
-		menuItem.childNodes[0].style.fill = 'white';
 		menuItem.style.borderLeft = '2px solid white';
 	}
 	setDeactiveEffect(menuItem) {
+		menuItem.classList.add('deactive');
+		menuItem.classList.remove('active');
 		menuItem.setAttribute('openedMenu', 'false');
 		menuItem.style.borderLeft = '2px solid ' + Utillities.getColor(1);
-		menuItem.childNodes[0].style.fill = '#54555c';
 	}
 	setClickEffect() {
 		this.itemComponent.addEventListener('click', () => {
