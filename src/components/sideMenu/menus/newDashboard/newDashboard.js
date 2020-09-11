@@ -18,6 +18,7 @@ module.exports = class newDashBoardMenu extends Menu {
 		let container = document.createElement('div');
 
 		let dashBoardNameInput = Components.textInput('Nome', 'newDashBoardNameInput');
+		let dashBoardPath = Components.pathInput('Diretório', 'newDashsBoardPath');
 		let dashBoardNbmrOfInputs = Components.numberInput('Número de entradas', 'newDashBoardNbmrOfInputs', 1, 30);
 		let dashBoardDescription = Components.textArea('Descrição', 'newDashBoardDescription');
 		dashBoardDescription.childNodes[1].style.height = '16em';
@@ -25,6 +26,7 @@ module.exports = class newDashBoardMenu extends Menu {
 		let button = this.LoadAddNewDashBoardButton();
 
 		container.appendChild(dashBoardNameInput);
+		container.appendChild(dashBoardPath);
 		container.appendChild(dashBoardNbmrOfInputs);
 		container.appendChild(dashBoardDescription);
 		container.appendChild(button);

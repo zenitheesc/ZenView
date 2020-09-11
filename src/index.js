@@ -1,3 +1,5 @@
+const ipcMain = require('electron').ipcMain;
+const dialog = require('electron').dialog;
 const {
 	app,
 	BrowserWindow
@@ -50,3 +52,14 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+
+ipcMain.on('open-file-dialog-for-dir', async event => {
+	console.log('recebido');
+	const dir = await dialog.showOpenDialog({
+		properties: ['openDirectory']
+	});
+	if (dir) {
+		console.log(dir);
+		event.sender.send('selected-dir', dir.filePaths[0]);
+	}
+});
