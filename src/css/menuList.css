@@ -1,0 +1,40 @@
+button.menuItem.deactive:hover svg {
+	fill: whitesmoke;
+}
+
+button.menuItem.deactive {
+	border-left: 2px solid var(--global-colorList);
+}
+
+button.menuItem.active svg {
+	fill: whitesmoke;
+
+}
+
+button.menuItem.active {
+	border-left: 2px solid white;
+}
+
+#MenuList {
+	background-color: var(--global-colorList);
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+button.menuItem span {
+	position: relative;
+}
+
+
+button.menuItem,
+button.menuItem:focus {
+	border-radius: 0px;
+	box-shadow: none;
+	border: none;
+	background: none;
+	outline: none !important;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+}

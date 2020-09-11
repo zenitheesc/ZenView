@@ -1,0 +1,56 @@
+button.dashBoardCardOption, button.inputCard ,
+button.dashBoardCardOption:focus, button.inputCard:focus {
+  border-radius: 0px;
+  box-shadow: none;
+  border: none;
+  background: none;
+  outline: none !important;
+  align-items: center;
+  margin: 0px;
+}
+
+button.dashBoardCardOption svg {
+  fill: #54555c;
+  width: 1.2em;
+  height: 1.2em;
+}
+
+button.dashBoardCardOption:hover svg {
+  fill: whitesmoke;
+}
+
+.dashBoardCard {
+  border-radius: 0.2em !important;
+  border: 1px solid rgb(90 90 90 / 27%);
+  background-color: var(--global-colorInputBg);
+}
+
+.dashBoardCard-header {
+  background-color: var(--global-colorList);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.dashBoardCard cite {
+  font-size: 0.8rem;
+}
+
+.inputCard{
+	border: 1px solid var(--global-colorInputBg);
+    border-radius: 3px;
+	padding: 0.8em;
+    
+}
+
+.inputCard div{
+	justify-content: space-between;
+}
+
+button.inputCard svg {
+  fill: #54555c;
+  width: 1.8em;
+  height: 1.8em;
+}
+
+button.inputCard:hover svg {
+  fill: whitesmoke;
+}

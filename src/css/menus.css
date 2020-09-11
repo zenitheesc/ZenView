@@ -1,0 +1,78 @@
+#SideMenu {
+  background-color: var(--global-colorMenu);
+}
+
+#Menus {
+  background-color: var(--global-colorMenu);
+  overflow: hidden;
+}
+
+.menuContainer {
+  height: 100%;
+}
+
+.menuBody {
+  height: 100%;
+  overflow-y: auto;
+  overflow: overlay;
+}
+
+.menuHeader {
+  font-size: initial;
+  border-bottom: 6px solid var(--global-colorList);
+  color: lightgray;
+  padding: 0.5em;
+  padding-bottom: 0px;
+}
+
+.menuSpliter {
+  border-radius: 0px !important;
+  border: none;
+  color: darkgray;
+  background-color: var(--global-colorMenu);
+  overflow-y: auto;
+}
+
+.menuSpliter-header {
+  border-radius: 0px !important;
+  border-radius: 0px !important;
+  padding: 0px;
+  font-weight: bold;
+  padding-left: 0.4em;
+  background-color: var(--global-colorInputBg) !important;
+  font-size: 0.88em;
+  color: darkgray;
+  border: none;
+}
+
+.menuSpliter-header:hover {
+  cursor: pointer;
+}
+
+.menuContainer {
+  height: 100%;
+}
+
+.pathInput svg {
+  width: 70% !important;
+  height: auto !important;
+}
+
+.pathInput button{
+  padding: 0px;
+  width: 2.5em;
+  border-radius: 0px;
+	box-shadow: none;
+	background: none;
+	outline: none !important;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+  border: 1px solid #a9a9a963 !important;
+  border-right: none;
+}
+
+
+.pathInput button:hover svg {
+	fill: whitesmoke;
+}
