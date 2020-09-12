@@ -53,72 +53,125 @@ module.exports = class Components {
 
 		return menuHeaderComponent;
 	}
-	static errorWarning(id) {
+	static invalidWarning(id) {
 		let errorMsg = document.createElement('div');
 		errorMsg.className = 'invalid-feedback';
-		errorMsg.id = id + '_errorMsg';
+		errorMsg.id = id + '_invalid';
 		return errorMsg;
 	}
-	static textInput(text, id, className) {
-		let textInputGroup = document.createElement('div');
-		
-		textInputGroup.className = 'input-group-sm mb-3';
-		textInputGroup.classList.add(className);
+	static field(htmlComponent, inputComponent, warning, tests) {
+		class FieldComponent {
+			constructor(htmlComponent, inputComponent, warning, tests) {
+				this.id = inputComponent.id;
+				this.htmlComponent = htmlComponent;
+				this.input = inputComponent;
+				this.warning = warning;
+				this.tests = tests || [];
+				this.input.addEventListener('input',()=>{
+					this.hideWarning();
+				});
+			}
+			get value() {
+				return this.input.value;
+			}
+			showWarning(txt) {
+				warning.textContent = txt;
+				this.input.classList.add('is-invalid');
+			}
+			hideWarning() {
+				this.input.classList.remove('is-invalid');
+			}
+			validate() {
+				let isValid = true;
+				for (let i = 0, j = this.tests.length; i < j; i++) {
+					let response = this.tests[i](this.value);
+					if (response === true) {
+						this.hideWarning();
+					} else {
+						isValid = false;
+						this.showWarning(response);
+						break;
+					}
+				}
+				return isValid;
+			}
+		}
 
-		let label = document.createElement('small');
-		label.className = 'form-text text-muted';
-		label.textContent = text;
-		textInputGroup.appendChild(label);
-
-		let textInputComponent = document.createElement('input');
-		textInputComponent.id = id;
-		textInputComponent.type = 'text';
-		textInputComponent.className = 'form-control';
-		textInputComponent.setAttribute('aria-label', 'Small');
-		textInputComponent.setAttribute('aria-describedby', 'inputGroup-sizing-sm');
-		textInputGroup.appendChild(textInputComponent);
-		textInputGroup.appendChild(this.errorWarning(id));
-
-		return textInputGroup;
+		return new FieldComponent(htmlComponent, inputComponent, warning, tests);
 	}
-	static numberInput(text, id, min, max) {
-		let textInputGroup = document.createElement('div');
-		textInputGroup.className = 'input-group-sm mb-3';
+	static small(text) {
+		let smallComponent = document.createElement('small');
+		smallComponent.className = 'form-text text-muted';
+		smallComponent.textContent = text;
+		return smallComponent;
+	}
+	static inpuGroup(className) {
+		let inputGroupComponent = document.createElement('div');
+		inputGroupComponent.classList.add('input-group-sm');
+		inputGroupComponent.classList.add('mb-3');
+		if (className !== undefined) inputGroupComponent.classList.add(className);
 
-		let label = document.createElement('small');
-		label.className = 'form-text text-muted';
-		label.textContent = text;
-		textInputGroup.appendChild(label);
+		return inputGroupComponent;
+	}
+	static input(id, tipo) {
+		let inputComponent = document.createElement('input');
 
-		let textInputComponent = document.createElement('input');
-		textInputComponent.id = id;
-		textInputComponent.type = 'number';
-		textInputComponent.max = max;
-		textInputComponent.min = min;
-		textInputComponent.className = 'form-control';
-		textInputComponent.setAttribute('aria-label', 'Small');
-		textInputComponent.setAttribute('aria-describedby', 'inputGroup-sizing-sm');
+		inputComponent.id = id;
+		inputComponent.type = tipo;
+		inputComponent.className = 'form-control';
+		inputComponent.setAttribute('aria-label', 'Small');
+		inputComponent.setAttribute('aria-describedby', 'inputGroup-sizing-sm');
+
+		return inputComponent;
+	}
+	static textInput(textInputObj) {
+		let textInputComponent = {};
+		textInputComponent.htmlComponent = this.inpuGroup(textInputObj.className);
+
+		textInputComponent.htmlComponent.appendChild(this.small(textInputObj.text));
+
+		textInputComponent.input = this.input(textInputObj.id, 'text');
+
+		textInputComponent.htmlComponent.appendChild(textInputComponent.input);
+
+		textInputComponent.warning = this.invalidWarning(textInputObj.id);
+
+		textInputComponent.htmlComponent.appendChild(textInputComponent.warning);
+
+		return this.field(textInputComponent.htmlComponent, textInputComponent.input, textInputComponent.warning, textInputObj.tests);
+	}
+	static numberInput(numberInputObj) {
+		let textInputGroup = this.inpuGroup();
+
+		textInputGroup.appendChild(this.small(numberInputObj.text));
+
+		let textInputComponent = this.input(numberInputObj.id, 'number');
+
+		let warning = this.invalidWarning(numberInputObj.id);
+
 		textInputGroup.appendChild(textInputComponent);
 
-		return textInputGroup;
-	}
-	static textArea(text, id) {
-		let textInputGroup = document.createElement('div');
-		textInputGroup.className = 'input-group-sm mb-3';
+		textInputGroup.appendChild(warning);
 
-		let label = document.createElement('small');
-		label.className = 'form-text text-muted';
-		label.textContent = text;
-		textInputGroup.appendChild(label);
+		return this.field(textInputGroup, textInputComponent, warning, numberInputObj.tests);
+	}
+	static textArea(textAreaObj) {
+		let textInputGroup = this.inpuGroup();
+
+		textInputGroup.appendChild(this.small(textAreaObj.text));
 
 		let textInputComponent = document.createElement('textarea');
-		textInputComponent.id = id;
+		textInputComponent.id = textAreaObj.id;
 		textInputComponent.className = 'form-control';
 		textInputComponent.setAttribute('aria-label', 'Small');
 		textInputComponent.setAttribute('aria-describedby', 'inputGroup-sizing-sm');
 		textInputGroup.appendChild(textInputComponent);
 
-		return textInputGroup;
+		let warning = this.invalidWarning(textAreaObj.id);
+
+		textInputGroup.appendChild(warning);
+
+		return this.field(textInputGroup, textInputComponent, warning, textAreaObj.tests);
 	}
 	static icon(iconName) {
 		return (fs.readFileSync('./src/images/icons/' + iconName + '.svg')).toString();
@@ -193,8 +246,8 @@ module.exports = class Components {
 
 
 
-		inputCardComponentRow1.appendChild(this.textInput('Nome', id + '_name', 'col-10'));
-		inputCardComponentRow2.appendChild(this.textInput('Retorno', id + '_return', 'col-10'));
+		inputCardComponentRow1.appendChild(this.textInput('Nome', id + '_name', 'col-10').htmlComponent);
+		inputCardComponentRow2.appendChild(this.textInput('Retorno', id + '_return', 'col-10').htmlComponent);
 
 		inputCardComponentRow1.appendChild(saveBtn);
 		inputCardComponentRow2.appendChild(delBtn);
@@ -204,16 +257,13 @@ module.exports = class Components {
 
 		return inputCardComponent;
 	}
-	static pathInput(text,id,className) {
+	static pathInput(pathInputObj) {
 		let pathInputGroup = document.createElement('div');
-		
-		pathInputGroup.className = 'input-group mb-3 pathInput';
-		pathInputGroup.classList.add(className);
 
-		let label = document.createElement('small');
-		label.className = 'form-text text-muted';
-		label.textContent = text;
-		pathInputGroup.appendChild(label);
+		pathInputGroup.className = 'input-group mb-3 pathInput';
+		pathInputGroup.classList.add(pathInputObj.className);
+
+		pathInputGroup.appendChild(this.small(pathInputObj.text));
 
 		let inputConainer = document.createElement('div');
 		inputConainer.className = 'input-group';
@@ -221,7 +271,7 @@ module.exports = class Components {
 		inputGroupPrepend.className = 'input-group-prepend';
 
 		let inputGroupPrependButton = document.createElement('button');
-
+		inputGroupPrependButton.type = 'button';
 		inputGroupPrependButton.innerHTML = this.icon('folder2-open');
 
 		inputGroupPrepend.appendChild(inputGroupPrependButton);
@@ -230,25 +280,67 @@ module.exports = class Components {
 
 		let pathInputComponent = document.createElement('input');
 		pathInputComponent.disabled = true;
-		pathInputComponent.id = id;
+		pathInputComponent.id = pathInputObj.id;
 		pathInputComponent.type = 'text';
 		pathInputComponent.className = 'form-control';
 		pathInputComponent.setAttribute('aria-describedby', 'basic-addon1');
 		inputConainer.appendChild(pathInputComponent);
-		inputConainer.appendChild(this.errorWarning(id));
+		inputConainer.appendChild(this.invalidWarning(pathInputObj.id));
 
 		pathInputGroup.appendChild(inputConainer);
-		
-		inputConainer.onclick =  () => {
+
+		let warning = this.invalidWarning(pathInputObj.id);
+		inputConainer.appendChild(warning);
+
+		inputConainer.onclick = () => {
 			ipc.send('open-file-dialog-for-dir');
 		};
-		ipc.on('selected-dir',(evt,arg)=>{
-			if(arg !== '' && arg !== undefined){
+		ipc.on('selected-dir', (evt, arg) => {
+			if (arg !== '' && arg !== undefined) {
 				pathInputComponent.value = arg || '';
 				pathInputComponent.textContent = arg || '';
+				pathInputComponent.dispatchEvent(new Event('input'));
 			}
 		});
 
-		return pathInputGroup;
+		return this.field(pathInputGroup, pathInputComponent, warning, pathInputObj.tests);
+	}
+	static form(id) {
+		let formComponent = {};
+		formComponent.htmlComponent = document.createElement('form');
+		if (id !== undefined) formComponent.htmlComponent.id = id;
+		formComponent.fields = [];
+		formComponent.components = [];
+
+		formComponent.addField = (field) => {
+			formComponent.fields.push(field);
+			formComponent.htmlComponent.appendChild(field.htmlComponent);
+		};
+
+		formComponent.addComponent = (component) => {
+			formComponent.components.push(component);
+			formComponent.htmlComponent.appendChild(component);
+		};
+
+		formComponent.getData = () => {
+			let response = {};
+			
+			formComponent.fields.forEach((field) => {
+				response[field.id] = field.value;
+			});
+			return response;
+		};
+
+		formComponent.validate = () => {
+			let response = true;
+			formComponent.fields.forEach((field) => {
+				if(!field.validate()){
+					response = false;
+				}
+			});
+			return response;
+		};
+
+		return formComponent;
 	}
 };
