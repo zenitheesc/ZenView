@@ -1,64 +1,86 @@
-const ipcMain = require('electron').ipcMain;
-const dialog = require('electron').dialog;
-const {
-	app,
-	BrowserWindow
-} = require('electron');
+console.log('running....');
+
+const electron = require('electron');
+const app = electron.app;
+const BrowserWindow = electron.BrowserWindow;
 const path = require('path');
+const url = require('url');
+const ipc = electron.ipcMain;
 
-// Handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
-	app.quit();
-}
+const debugMode = false;
+let initialWindow;
+let mainWindow;
 
-const createWindow = () => {
-	// Create the browser window.
-	const mainWindow = new BrowserWindow({
-		width: 800,
-		height: 600,
-		webPreferences: {
-			nodeIntegration: true
-		}
-	});
-
-	// and load the index.html of the app.
-	mainWindow.loadFile(path.join(__dirname, 'index.html'));
-
-	// Open the DevTools.
-	mainWindow.webContents.openDevTools();
+//parametros iniciais da janela inicial
+let initialWindowparams = {
+	frame: false,
+	titleBarStyle: 'hidden',
+	width: 539,
+	height: 170,
+	resizable: false,
+	show: false,
+	path: '../src/initialWindow/initialWindow.html',
+	openDevTools: false
 };
+//parametros inicias da janela principal
+let mainWindowparams = {
+	title: 'ZenView',
+	path: '../src/index.html',
+	show: debugMode,
+	webPreferences: {
+		nodeIntegration: true,
+		webviewTag: true
+	},
+	openDevTools: debugMode
+};
+/**
+ * cria uma nova janela a partir dos parametros dados
+ * @param {object} params objeto que descreve a nova janela
+ */
+function createWindow(params) {
+	let window = new BrowserWindow(params);
+	window.loadURL(url.format({
+		pathname: path.join(__dirname, params.path),
+		protocol: 'file',
+		slashes: true,
+	}));
+	if (params.openDevTools) {
+		window.openDevTools();
+	}
+	window.on('closed', () => {
+		window = null;
+	});
+	return window;
+}
+//event listener que espera o app ser criado para criar as janelas
+app.on('ready', () => {
+	initialWindow = createWindow(initialWindowparams);
+	mainWindow = createWindow(mainWindowparams);
+	//apenas mostrara a janela quando estiver pronta
+	initialWindow.once('ready-to-show', () => {
+		initialWindow.show();
+	});
+});
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
-
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
+//encerra o programa se todas as janelas forem fechadas
 app.on('window-all-closed', () => {
 	if (process.platform !== 'darwin') {
 		app.quit();
 	}
 });
 
+//caso a janela nao tenha sido criada força sua criação
 app.on('activate', () => {
-	// On OS X it's common to re-create a window in the app when the
-	// dock icon is clicked and there are no other windows open.
-	if (BrowserWindow.getAllWindows().length === 0) {
-		createWindow();
+	if (initialWindow === null) {
+		createWindow(initialWindow);
+		createWindow(mainWindow);
 	}
 });
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
-
-ipcMain.on('open-file-dialog-for-dir', async event => {
-
-	const dir = await dialog.showOpenDialog({
-		properties: ['openDirectory']
-	});
-	if (dir) {
-		event.sender.send('selected-dir', dir.filePaths[0]);
-	}
+//listerner que avisa que o load da janela principal terminou
+ipc.on('mainLoadCompleto', () => {
+	initialWindow.close();
+	setTimeout(() => {
+		mainWindow.show();
+	}, 250);
 });

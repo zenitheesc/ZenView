@@ -1,0 +1,16 @@
+*,body, html{
+    height: 100%;
+    margin: 0%;
+    padding: 0%;
+    background-color: rgb(179, 178, 178);
+    -webkit-user-select: none;
+    -moz-user-select: -moz-none;
+    -ms-user-select: none;
+    user-select: none;
+    font-family: monospace;
+
+}
+img{
+    height: 100%;
+    width: 100%;
+}
