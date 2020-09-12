@@ -54,12 +54,11 @@ app.on('activate', () => {
 // code. You can also put them in separate files and import them here.
 
 ipcMain.on('open-file-dialog-for-dir', async event => {
-	console.log('recebido');
+
 	const dir = await dialog.showOpenDialog({
 		properties: ['openDirectory']
 	});
 	if (dir) {
-		console.log(dir);
 		event.sender.send('selected-dir', dir.filePaths[0]);
 	}
 });
