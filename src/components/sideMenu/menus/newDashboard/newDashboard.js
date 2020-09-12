@@ -93,14 +93,23 @@ class newDashBoardMenuLogic {
 			let i = 0;
 			let fileNames = fs.readdirSync(data['newPath']);
 			let newName = data['newName'] + '.json';
-			
+
 			while (fileNames.includes(newName)) {
 				i = i + 1;
 				newName = data['newName'] + `(${i})` + '.json';
 			}
 
+			window['ZenViewConfig'].dashboards.push({
+				'name': data['newName'],
+				'path': data['newPath'] + '/' + newName,
+				'desc': data['newDesc']
+			});
+
+			fs.writeFileSync('./src/config.json', JSON.stringify(window['ZenViewConfig'], null, '\t'));
+
 			let dashBoard = new DashBoard(data['newName'], data['newPath'], +'/' + newName, data['newNbmr'], data['newDesc']);
 			fs.writeFileSync(data['newPath'] + '/' + newName, JSON.stringify(dashBoard, null, '\t'));
+			this.form.clear();
 		}
 	}
 }
