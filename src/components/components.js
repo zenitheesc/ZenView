@@ -244,10 +244,19 @@ module.exports = class Components {
 		saveBtn.innerHTML = this.icon('save');
 		delBtn.innerHTML = this.icon('trash');
 
+		inputCardComponentRow1.appendChild(this.textInput({
+			text: 'Nome',
+			id: id + '_name',
+			className: 'col-10'
+			//tests: [Validator.isFilled, Validator.noSpecialChars]
+		}).htmlComponent);
 
-
-		inputCardComponentRow1.appendChild(this.textInput('Nome', id + '_name', 'col-10').htmlComponent);
-		inputCardComponentRow2.appendChild(this.textInput('Retorno', id + '_return', 'col-10').htmlComponent);
+		inputCardComponentRow2.appendChild(this.textInput({
+			text: 'Retorno',
+			id: id + '_return',
+			className: 'col-10'
+			//tests: [Validator.isFilled, Validator.noSpecialChars]
+		}).htmlComponent);
 
 		inputCardComponentRow1.appendChild(saveBtn);
 		inputCardComponentRow2.appendChild(delBtn);
@@ -339,6 +348,12 @@ module.exports = class Components {
 				}
 			});
 			return response;
+		};
+
+		formComponent.clear = () => {
+			formComponent.fields.forEach((field) => {
+				field.input.value = '';
+			});
 		};
 
 		return formComponent;
