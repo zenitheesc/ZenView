@@ -14,4 +14,12 @@ module.exports = class Validator{
 			return true;
 		}
 	}
+
+	static isInRange(value,min,max){
+		if(value>=min && value<=max){
+			return true;
+		}else{
+			return 'Deve ser um número entre ' + min + ' ' + max;
+		}
+	}
 };
