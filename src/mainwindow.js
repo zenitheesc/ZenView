@@ -10,10 +10,19 @@ class MainWindow {
 		this.DashBoardComponent = new DashBoardComponent();
 		this.MainWindow;
 	}
+	saveConfig(){
+		fs.writeFileSync('./src/config.json', JSON.stringify(window['ZenViewConfig'], null, '\t'));
+	}
+	init(){
+		window.addEventListener('saveConfigs', () => {
+			this.saveConfig();
+		});
+	}
 	build() {
 		let duracao = Date.now();
 
 		window['ZenViewConfig'] = JSON.parse(fs.readFileSync('./src/config.json'));
+		this.init();
 		this.SideMenu.build();
 		this.DashBoardComponent.build();
 		duracao = Date.now() - duracao; //pega a duracao do load
