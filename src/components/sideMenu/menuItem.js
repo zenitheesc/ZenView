@@ -1,12 +1,13 @@
 const Utillities = require('../../utillities');
 const fs = require('fs');
 module.exports = class MenuItem {
-	constructor(id, icon, menuName) {
+	constructor(id, icon, menuName, context) {
 		this.id = id;
 		this.iconName = icon;
 		this.menuName = menuName;
 		this.itemComponent = document.createElement('button');
 		this.icon;
+		this.globalContext = context;
 	}
 	setIcon() {
 		let iconSvg = (fs.readFileSync('./src/images/icons/' + this.iconName + '.svg')).toString();
@@ -57,10 +58,21 @@ module.exports = class MenuItem {
 			}));
 		});
 	}
+	setContextChangeEffect(){
+		if(this.globalContext === 'all') return;
+		window.addEventListener('GlobalContextChange',(evt)=>{
+			if(evt.detail.context === this.globalContext){
+				this.itemComponent.style.display = 'block';
+			}else{
+				this.itemComponent.style.display = 'none';
+			}
+		});
+	}	
 	htmlComponent() {
 		this.itemComponent = document.createElement('button');
 		this.itemComponent.setAttribute('openedMenu', 'false');
 		this.setStyle();
+		this.setContextChangeEffect();
 		this.setClickVisualEffect();
 		this.setClickEffect();
 		return this.itemComponent;
