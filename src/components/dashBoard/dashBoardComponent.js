@@ -61,11 +61,22 @@ module.exports = class DashBoardComponent {
 			}
 		}));
 	}
-	deleteDashboard(detail) {
+	deleteDashboard(path) {
 		let answer = confirm('Are you shure?');
 
 		if (answer === true) {
-			fs.unlink(detail.path);
+			console.log(path);
+			fs.unlinkSync(path);
+
+			for (var i = window['ZenViewConfig'].dashboards.length - 1; i >= 0; i--) {
+				if (window['ZenViewConfig'].dashboards[i].path === path) {
+					window['ZenViewConfig'].dashboards.splice(i, 1);
+					window.dispatchEvent(new CustomEvent('attDashBoardsList'));
+					window.dispatchEvent(new CustomEvent('saveConfigs'));
+					this.changeGlobalContext('all');
+					break;
+				}
+			}
 		}
 	}
 	build() {
@@ -78,7 +89,7 @@ module.exports = class DashBoardComponent {
 		});
 
 		window.addEventListener('deleteDashboard', (evt) => {
-			this.deleteDashboard(evt.detail);
+			this.deleteDashboard(evt.detail.dashBoardPath);
 		});
 
 		window.addEventListener('newDashBoard', (evt) => {
