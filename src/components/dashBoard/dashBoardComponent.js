@@ -8,17 +8,36 @@ module.exports = class DashBoardComponent {
 			}
 		}));
 	}
+	openDashBoard(path) {
+		try {
+			let DashBoard = fs.readFileSync(path);
+
+			window['ZenViewConfig'].lastDasboard = JSON.parse(DashBoard);
+			window.dispatchEvent(new CustomEvent('attInputList'));
+
+			return true;
+		} catch (error) {
+			alert('Este dashboard foi movido de seu diretório ou excluído');
+			for (var i = window['ZenViewConfig'].dashboards.length - 1; i >= 0; i--) {
+				if (window['ZenViewConfig'].dashboards[i].path === path) {
+
+					window['ZenViewConfig'].dashboards.splice(i, 1);
+					window.dispatchEvent(new CustomEvent('attDashBoardsList'));
+					window.dispatchEvent(new CustomEvent('saveConfigs'));
+
+					break;
+				}
+			}
+			return false;
+		}
+	}
 	editingDashBoard(details) {
 		console.log('iniciando dashboard para edição');
-		let DashBoard = fs.readFileSync(details.dashBoardPath);
-		window['ZenViewConfig'].lastDasboard = DashBoard;
-		this.changeGlobalContext('editing');
+		if (this.openDashBoard(details.dashBoardPath)) this.changeGlobalContext('editing');
 	}
 	startDashboard(details) {
 		console.log('iniciando dashboard para leitura');
-		let DashBoard = fs.readFileSync(details.dashBoardPath);
-		window['ZenViewConfig'].lastDasboard = DashBoard;
-		this.changeGlobalContext('start');
+		if (this.openDashBoard(details.dashBoardPath)) this.changeGlobalContext('start');
 	}
 	newDashBoard(detail) {
 		window['ZenViewConfig'].dashboards.unshift({
@@ -27,17 +46,27 @@ module.exports = class DashBoardComponent {
 			'desc': detail.desc
 		});
 
-		fs.writeFileSync('./src/config.json', JSON.stringify(window['ZenViewConfig'], null, '\t'));
-
 		let dashBoard = new DashBoard(detail.name, detail.numberOfInputs, detail.path, detail.desc);
 
 		fs.writeFileSync(detail.path, JSON.stringify(dashBoard, null, '\t'));
+
+		window.dispatchEvent(new CustomEvent('saveConfigs'));
+
+		window.dispatchEvent(new CustomEvent('attDashBoardsList'));
+
 		window.dispatchEvent(new CustomEvent('openDashBoard', {
 			detail: {
 				context: 'editing',
 				dashBoardPath: detail.path
 			}
 		}));
+	}
+	deleteDashboard(detail) {
+		let answer = confirm('Are you shure?');
+
+		if (answer === true) {
+			fs.unlink(detail.path);
+		}
 	}
 	build() {
 		window.addEventListener('openDashBoard', (evt) => {
@@ -46,6 +75,10 @@ module.exports = class DashBoardComponent {
 			} else {
 				this.startDashboard(evt.detail);
 			}
+		});
+
+		window.addEventListener('deleteDashboard', (evt) => {
+			this.deleteDashboard(evt.detail);
 		});
 
 		window.addEventListener('newDashBoard', (evt) => {
