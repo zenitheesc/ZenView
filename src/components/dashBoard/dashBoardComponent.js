@@ -18,7 +18,7 @@ module.exports = class DashBoardComponent {
 			return true;
 		} catch (error) {
 			alert('Este dashboard foi movido de seu diretório ou excluído');
-			for (var i = window['ZenViewConfig'].dashboards.length - 1; i >= 0; i--) {
+			for (let i = window['ZenViewConfig'].dashboards.length - 1; i >= 0; i--) {
 				if (window['ZenViewConfig'].dashboards[i].path === path) {
 
 					window['ZenViewConfig'].dashboards.splice(i, 1);
@@ -68,7 +68,7 @@ module.exports = class DashBoardComponent {
 			console.log(path);
 			fs.unlinkSync(path);
 
-			for (var i = window['ZenViewConfig'].dashboards.length - 1; i >= 0; i--) {
+			for (let i = window['ZenViewConfig'].dashboards.length - 1; i >= 0; i--) {
 				if (window['ZenViewConfig'].dashboards[i].path === path) {
 					window['ZenViewConfig'].dashboards.splice(i, 1);
 					window.dispatchEvent(new CustomEvent('attDashBoardsList'));
