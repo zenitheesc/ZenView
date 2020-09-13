@@ -99,7 +99,7 @@ class newDashBoardMenuLogic {
 				newName = data['newName'] + `(${i})` + '.json';
 			}
 
-			window['ZenViewConfig'].dashboards.push({
+			window['ZenViewConfig'].dashboards.unshift({
 				'name': data['newName'],
 				'path': data['newPath'] + '/' + newName,
 				'desc': data['newDesc']
@@ -107,8 +107,19 @@ class newDashBoardMenuLogic {
 
 			fs.writeFileSync('./src/config.json', JSON.stringify(window['ZenViewConfig'], null, '\t'));
 
-			let dashBoard = new DashBoard(data['newName'], data['newPath'], +'/' + newName, data['newNbmr'], data['newDesc']);
+			let dashBoard = new DashBoard(data['newName'],data['newNmbr'], data['newPath'] +'/' + newName, data['newDesc']);
+
+			
+
 			fs.writeFileSync(data['newPath'] + '/' + newName, JSON.stringify(dashBoard, null, '\t'));
+
+			window.dispatchEvent(new CustomEvent('openDashBoard', {
+				detail:{
+					context: 'editing',
+					dashBoardPath: data['newPath'] +'/' + newName
+				}
+			}));
+
 			this.form.clear();
 		}
 	}
