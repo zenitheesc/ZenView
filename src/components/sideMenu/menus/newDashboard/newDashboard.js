@@ -2,7 +2,6 @@ const Menu = require('../menu');
 const Components = require('../../../components.js');
 const Validator = require('../../../../validator');
 const fs = require('fs');
-const DashBoard = require('../../../../classes/dashBoard');
 module.exports = class newDashBoardMenu extends Menu {
 	constructor() {
 		super('New Dashboard', 'newDashboard_menu');
@@ -32,23 +31,16 @@ module.exports = class newDashBoardMenu extends Menu {
 			tests: [Validator.isFilled]
 		});
 
-		const isInRange = (value) => {
-			if (value <= 30 && value >= 1) {
-				return true;
-			} else {
-				return 'Deve ser um número entre 1 e 30';
-			}
-		};
-
 		let dashBoardNbmrOfInputs = Components.numberInput({
 			text: 'Número de entradas',
 			id: 'newNmbr',
-			tests: [Validator.isFilled, isInRange]
+			tests: [Validator.isFilled,(x)=>{ return Validator.isInRange(x,1,30);} ]
 		});
 		let dashBoardDescription = Components.textArea({
 			text: 'Descrição',
 			id: 'newDesc'
 		});
+		
 		dashBoardDescription.htmlComponent.childNodes[1].style.height = '16em';
 
 		this.LoadAddNewDashBoardButton();
@@ -99,24 +91,12 @@ class newDashBoardMenuLogic {
 				newName = data['newName'] + `(${i})` + '.json';
 			}
 
-			window['ZenViewConfig'].dashboards.unshift({
-				'name': data['newName'],
-				'path': data['newPath'] + '/' + newName,
-				'desc': data['newDesc']
-			});
-
-			fs.writeFileSync('./src/config.json', JSON.stringify(window['ZenViewConfig'], null, '\t'));
-
-			let dashBoard = new DashBoard(data['newName'],data['newNmbr'], data['newPath'] +'/' + newName, data['newDesc']);
-
-			
-
-			fs.writeFileSync(data['newPath'] + '/' + newName, JSON.stringify(dashBoard, null, '\t'));
-
-			window.dispatchEvent(new CustomEvent('openDashBoard', {
+			window.dispatchEvent(new CustomEvent('newDashBoard', {
 				detail:{
-					context: 'editing',
-					dashBoardPath: data['newPath'] +'/' + newName
+					name: data['newName'],
+					numberOfInputs: data['newNmbr'],
+					path: data['newPath'] +'/' + newName,
+					desc: data['newDesc']
 				}
 			}));
 
