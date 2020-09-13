@@ -132,6 +132,8 @@ module.exports = class Components {
 
 		textInputComponent.input = this.input(textInputObj.id, 'text');
 
+		if(textInputObj.value!== undefined) textInputComponent.input.value = textInputObj.value;
+
 		textInputComponent.htmlComponent.appendChild(textInputComponent.input);
 
 		textInputComponent.warning = this.invalidWarning(textInputObj.id);
@@ -246,7 +248,7 @@ module.exports = class Components {
 
 		return dashBoardCardComponent;
 	}
-	static inputCard(id) {
+	static inputCard(id,expression) {
 		let inputCardComponent = document.createElement('div');
 		let inputCardComponentRow1 = document.createElement('div');
 		let inputCardComponentRow2 = document.createElement('div');
@@ -267,14 +269,16 @@ module.exports = class Components {
 		inputCardComponentRow1.appendChild(this.textInput({
 			text: 'Nome',
 			id: id + '_name',
-			className: 'col-10'
+			className: 'col-10',
+			value: id
 			//tests: [Validator.isFilled, Validator.noSpecialChars]
 		}).htmlComponent);
 
 		inputCardComponentRow2.appendChild(this.textInput({
 			text: 'Retorno',
 			id: id + '_return',
-			className: 'col-10'
+			className: 'col-10',
+			value: expression
 			//tests: [Validator.isFilled, Validator.noSpecialChars]
 		}).htmlComponent);
 
