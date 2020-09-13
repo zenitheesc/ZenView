@@ -5,7 +5,7 @@ module.exports = class DashBoardsMenu extends Menu {
 		super('Dashboards', 'dashboards_menu');
 		this.container = document.createElement('div');
 	}
-	onLoad(){
+	attDashBoardsList(){
 		this.container.innerHTML = '';
 		let savedDashboards = window['ZenViewConfig'].dashboards;
 		savedDashboards.forEach(dashboard => {
@@ -19,5 +19,9 @@ module.exports = class DashBoardsMenu extends Menu {
 	}
 	load() {
 		this.dashboardListSpliter();
+		this.attDashBoardsList();
+		window.addEventListener('attDashBoardsList',()=>{
+			this.attDashBoardsList();
+		});
 	}
 };
