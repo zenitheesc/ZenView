@@ -6,14 +6,18 @@ module.exports = class Menu {
 		this.menuComponent = document.createElement('div');
 		this.menuComponent.id = menuId;
 		this.menuComponent.className = 'menuContainer';
+		this.onLoadFunctions = [];
 	}
 	load() {
 
 	}
+	onLoad(){
+
+	}
 	setEvents() {
 		window.addEventListener('openMenu', (evt) => {
-			console.log('abrindo menu ' + evt.detail.name);
 			if ((evt.detail.name) + '_menu' == this.menuComponent.id) {
+				this.onLoad();
 				this.menuComponent.style.display = 'block';
 
 			} else {
