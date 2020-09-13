@@ -195,6 +195,26 @@ module.exports = class Components {
 		let editBtn = document.createElement('button');
 		let delBtn = document.createElement('button');
 
+		playBtn.addEventListener('click',()=>{
+			console.log('contexto global alterado para edição');
+			window.dispatchEvent(new CustomEvent('openDashBoard', {
+				detail:{
+					context: 'start',
+					dashBoardPath: path
+				}
+			}));
+		});
+
+		editBtn.addEventListener('click',()=>{
+			console.log('contexto global alterado para edição');
+			window.dispatchEvent(new CustomEvent('openDashBoard', {
+				detail:{
+					context: 'editing',
+					dashBoardPath: path
+				}
+			}));
+		});
+
 		playBtn.className = 'dashBoardCardOption';
 		editBtn.className = 'dashBoardCardOption';
 		delBtn.className = 'dashBoardCardOption';
