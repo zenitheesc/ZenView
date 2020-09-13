@@ -3,15 +3,17 @@ const Components = require('../../../components.js');
 module.exports = class DashBoardsMenu extends Menu {
 	constructor() {
 		super('Dashboards', 'dashboards_menu');
+		this.container = document.createElement('div');
 	}
-	dashboardListSpliter() {
-		let container = document.createElement('div');
+	onLoad(){
+		this.container.innerHTML = '';
 		let savedDashboards = window['ZenViewConfig'].dashboards;
 		savedDashboards.forEach(dashboard => {
-			container.appendChild(Components.dashBoardCard(dashboard.name, dashboard.desc, __dirname));
+			this.container.appendChild(Components.dashBoardCard(dashboard.name, dashboard.desc, dashboard.path));
 		});
-
-		let spliter = Components.spliter('dashBoardsList', 'Dashboards salvos', container, true);
+	}
+	dashboardListSpliter() {
+		let spliter = Components.spliter('dashBoardsList', 'Dashboards salvos', this.container, true);
 		spliter.style.height = '100%';
 		this.menuComponent.appendChild(spliter);
 	}
