@@ -14,23 +14,22 @@ module.exports = class MenuList {
 	}
 	loadTopOptions() {
 		let menuItens = [];
-		menuItens.push(new MenuItem('dashboards', 'grid-1x2', Utillities.getButtonText(1)));
-		menuItens.push(new MenuItem('newDashboard', 'plus-square', Utillities.getButtonText(2)));
+		menuItens.push(new MenuItem('dashboards', 'grid-1x2', Utillities.getButtonText(1),'all'));
+		menuItens.push(new MenuItem('newDashboard', 'plus-square', Utillities.getButtonText(2),'all'));
 		this.loadOptions('topContainer', menuItens);
 	}
 	loadMidOptions() {
 		let menuItens = [];
-		menuItens.push(new MenuItem('start', 'play', Utillities.getButtonText(3)));
-		menuItens.push(new MenuItem('inputs', 'terminal', Utillities.getButtonText(4)));
-		menuItens.push(new MenuItem('blocks', 'clipboard-data', Utillities.getButtonText(5)));
-		menuItens.push(new MenuItem('delete', 'trash', Utillities.getButtonText(6)));
-		menuItens.push(new MenuItem('save', 'save', Utillities.getButtonText(7)));
+		menuItens.push(new MenuItem('start', 'play', Utillities.getButtonText(3),'start'));
+		menuItens.push(new MenuItem('inputs', 'terminal', Utillities.getButtonText(4),'editing'));
+		menuItens.push(new MenuItem('blocks', 'clipboard-data', Utillities.getButtonText(5),'editing'));
+		menuItens.push(new MenuItem('delete', 'pencil-square', Utillities.getButtonText(6),'editing'));
 		this.loadOptions('midContainer', menuItens);
 	}
 	loadBottomOptions() {
 		let menuItens = [];
-		menuItens.push(new MenuItem('about', 'info-circle', Utillities.getButtonText(8)));
-		menuItens.push(new MenuItem('configs', 'gear', Utillities.getButtonText(9)));
+		menuItens.push(new MenuItem('about', 'info-circle', Utillities.getButtonText(8),'all'));
+		menuItens.push(new MenuItem('configs', 'gear', Utillities.getButtonText(9),'all'));
 		this.loadOptions('bottonContainer', menuItens);
 	}
 	build() {
