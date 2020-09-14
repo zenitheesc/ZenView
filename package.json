@@ -45,11 +45,12 @@
     }
   },
   "dependencies": {
-    "electron-squirrel-startup": "^1.0.0",
     "bootstrap": "^4.5.2",
+    "electron-squirrel-startup": "^1.0.0",
     "gridstack": "^2.0.0-rc2",
     "javascript-detect-element-resize": "^0.5.3",
     "jquery": "^3.5.1",
+    "mathjs": "^7.2.0",
     "plotly.js": "^1.54.7",
     "popper.js": "^1.16.1"
   },
