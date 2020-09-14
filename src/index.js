@@ -6,8 +6,9 @@ const BrowserWindow = electron.BrowserWindow;
 const path = require('path');
 const url = require('url');
 const ipc = electron.ipcMain;
+const dialog = require('electron').dialog;
 
-const debugMode = false;
+const debugMode = true;
 let initialWindow;
 let mainWindow;
 
@@ -83,4 +84,20 @@ ipc.on('mainLoadCompleto', () => {
 	setTimeout(() => {
 		mainWindow.show();
 	}, 250);
+});
+
+ipc.on('open-file-dialog-for-dir', async event => {
+
+	const dir = await dialog.showOpenDialog({
+		properties: ['openDirectory']
+	});
+	if (dir) {
+		event.sender.send('selected-dir', dir.filePaths[0]);
+	}
+});
+
+ipc.on('openDialog', (event, config) => {
+	dialog.showMessageBox(mainWindow,config).then((response) => {
+		event.sender.send('openDialogResponse',response);
+	});
 });
