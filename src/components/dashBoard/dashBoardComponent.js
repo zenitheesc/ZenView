@@ -12,7 +12,7 @@ module.exports = class DashBoardComponent {
 		try {
 			let DashBoard = fs.readFileSync(path);
 
-			window['ZenViewConfig'].lastDasboard = JSON.parse(DashBoard);
+			window['ZenViewConfig'].currentDashBoard = JSON.parse(DashBoard);
 			window.dispatchEvent(new CustomEvent('attInputList'));
 
 			return true;
