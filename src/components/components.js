@@ -162,12 +162,15 @@ module.exports = class Components {
 		const textInputGroup = this.inpuGroup();
 
 		textInputGroup.appendChild(this.small(textAreaObj.text));
-
-		const textInputComponent = document.createElement('textarea');
-		textInputComponent.id = textAreaObj.id;
-		textInputComponent.className = 'form-control';
-		textInputComponent.setAttribute('aria-label', 'Small');
-		textInputComponent.setAttribute('aria-describedby', 'inputGroup-sizing-sm');
+		let textInputComponent = document.createElement('div');
+		textInputComponent.className = 'textAreaFalse form-control';
+		textInputComponent.contentEditable = false;
+		textInputComponent.sandbox = 'allow-same-origin';
+		textInputComponent.textContent - 'asdasd';
+		textInputComponent.style.height = 'auto';
+		textInputComponent.oninput = () =>{
+			console.log(textInputComponent.textContent);
+		}
 		textInputGroup.appendChild(textInputComponent);
 
 		const warning = this.invalidWarning(textAreaObj.id);
@@ -417,6 +420,7 @@ module.exports = class Components {
 			let newOption;
 			dropDownComponent.innerHTML = '';
 			newOption = document.createElement('option');
+			newOption.className = 'standardOption';
 			newOption.text = dropDownObj.defaultText;
 			newOption.value = dropDownObj.defaultValue;
 			dropDownComponent.add(newOption);
