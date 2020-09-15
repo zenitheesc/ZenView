@@ -97,7 +97,7 @@ ipc.on('open-file-dialog-for-dir', async event => {
 });
 
 ipc.on('openDialog', (event, config) => {
-	dialog.showMessageBox(mainWindow,config).then((response) => {
-		event.sender.send('openDialogResponse',response);
+	dialog.showMessageBox(mainWindow, config).then((response) => {
+		event.sender.send('openDialogResponse', response);
 	});
 });
