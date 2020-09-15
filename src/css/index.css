@@ -52,11 +52,14 @@ textarea {
 }
 
 input,
-textarea {
+textarea,
+select,.textAreaFalse {
   color: var(--global-colorFont) !important;
   background-color: var(--global-colorInputBg) !important;
   border-radius: 0px !important;
   border: 1px solid #a9a9a963 !important;
+  appearance: auto !important;
+  outline: none;
 }
 
 small {
@@ -122,5 +125,18 @@ button.orange-btn:hover {
   color: white;
   background-color: #ffb124c7;
   border-color: #ffc619;
+}
+
+a.inputTag{
+  color: #35afa4;
+  text-decoration: none;
+}
+
+a.inputTag:hover{
+  cursor: pointer;
+}
+
+option.standardOption{
+  padding: 1em;
 }
 
