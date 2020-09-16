@@ -88,7 +88,7 @@ ipc.on('mainLoadCompleto', () => {
 
 ipc.on('open-file-dialog-for-dir', async event => {
 
-	const dir = await dialog.showOpenDialog({
+	const dir = await dialog.showOpenDialog(mainWindow,{
 		properties: ['openDirectory']
 	});
 	if (dir) {
