@@ -1,101 +1,66 @@
 const Menu = require('../menu');
-const Components = require('../../../components.js');
+const Form = require('../../../../formBuilder').Form;
+const Components = require('../../../components');
+const Container = require('../../../../formBuilder').Container;
+const Field = require('../../../../formBuilder').Field;
 const Validator = require('../../../../validator');
-const Tribute = require('tributejs');
 module.exports = class InputsMenu extends Menu {
 	constructor() {
 		super('Entradas', 'inputs_menu');
-		this.customForm = Components.form();
-		this.customDropDown;
+		this.button = Field.button({
+			text: 'Salvar',
+			classList: ['formCenteredBtn', 'green-btn']
+		});
+		this.selectInput = Field.select({
+			label: 'Nome',
+			att: 'currentInput',
+			append: [{
+				type: 'button',
+				content: Components.icon('trash'),
+				classList: ['formButtonWithIconPrepend']
+			}, {
+				type: 'button',
+				content: Components.icon('plus-square'),
+				classList: ['formButtonWithIconPrepend']
+			}]
+		});
+		this.form = new Form({
+			newDashBoardSpliter: Container.spliter({
+				selectedInput: this.selectInput,
+				Directory: Field.text({
+					label: 'Tag',
+					att: 'inputName',
+					validators: [Validator.isFilled]
+				}),
+				Description: Field.editableDiv({
+					label: 'Expressão',
+					att: 'expression',
+				}),
+				Save: this.button
+			}, {
+				startOpen: true,
+				text: 'Edição de entradas',
+				id: 'inputEditingSpliter'
+			})
+		});
 	}
 	attInputList() {
-		window['ZenViewConfig'].currentDashBoard.inputs.forEach(input => {
-			this.customDropDown.addOption(input);
+		this.selectInput.setOptions(window.CurrentDashBoard.inputGroup.inputs);
+	}
+	setFormConfigs() {
+		this.selectInput.addOption({
+			text: 'teste',
+			value: '1'
 		});
 	}
-	customInputs() {
-		this.customDropDown = Components.dropDown({
-			text: 'Selecione uma entrada',
-			defaultText: 'Nova entrada',
-			defaultValue: 'newInput',
-			tests: [Validator.isFilled, Validator.noSpecialChars]
-		});
-		let inputName = Components.textInput({
-			text: 'Tag',
-			id: 'newName',
-			tests: [Validator.isFilled, Validator.noSpecialChars]
-		});
-
-		let inputExpression = Components.textArea({
-			text: 'Expressão',
-			id: 'newDesc'
-		});
-
-		let autoComplete = new Tribute({
-			noMatchTemplate: function () {
-				return '<span style:"visibility: hidden;"></span>';
-			},
-			collection: [{
-				trigger: '@',
-				values: [{
-					key: 'Phil Heartman',
-					value: 'pheartman'
-				},
-				{
-					key: 'Gordon Ramsey',
-					value: 'gramsey'
-				},
-
-				],
-				selectTemplate: function (item) {
-					return (
-						'<a contenteditable="false" class="inputTag">' +
-							'@' + item.original.value +
-							'</a>'
-					);
-
-				}
-			},
-			{
-				trigger: '#',
-				values: [{
-					key: 'Phil Heartman',
-					value: 'pheartman'
-				},
-				{
-					key: 'Gordon Ramsey',
-					value: 'gramsey'
-				}
-				],
-				selectTemplate: function (item) {
-					return (
-						'<a contenteditable="false" class="inputTag">' +
-							'#' + item.original.value +
-							'</a>'
-					);
-
-				}
-			}
-			]
-		});
-
-		autoComplete.attach(inputExpression.input);
-
-		this.customForm.addField(this.customDropDown);
-		this.customForm.addField(inputName);
-		this.customForm.addField(inputExpression);
-
-		let spliter = Components.spliter('customInputds', 'Entradas customizáveis', this.customForm.htmlComponent, true);
-
-		return spliter;
-	}
-	load() {
-		let spliterContainer = document.createElement('div');
-		spliterContainer.className = 'menuBody';
-		spliterContainer.appendChild(this.customInputs());
-		this.menuComponent.appendChild(spliterContainer);
+	setEvents() {
 		window.addEventListener('attInputList', () => {
 			this.attInputList();
 		});
+	}
+	load() {
+		this.menuComponent.appendChild(this.form.htmlComponent);
+		this.setFormConfigs();
+		this.setEvents();
 	}
 };
