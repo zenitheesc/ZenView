@@ -3,7 +3,7 @@ module.exports = class InputGroup {
 	constructor(numberOfEntries) {
 		this.numberOfEntries;
 		this.Inputs;
-		if (arguments.length === 1) {
+		if (arguments.length === 2) {
 			this.constructFromJson();
 		} else {
 			this.newConstructor(numberOfEntries);
@@ -13,7 +13,7 @@ module.exports = class InputGroup {
 		
 		this.numberOfEntries = numberOfEntries;
 		this.Inputs;
-		this.inputs = new InputGroup();
+		this.inputs = new Input();
 	}
 	constructFromJson(inputGroupJSON) {
 		this.numberOfEntries = inputGroupJSON.numberOfEntries;
