@@ -28,8 +28,8 @@ module.exports = class Menu {
 	build() {
 		let header = Components.menuHeader(this.menuName);
 		this.menuComponent.appendChild(header);
-		this.load();
 		document.getElementById('Menus').appendChild(this.menuComponent);
+		this.load();
 		this.setEvents();
 	}
 };
