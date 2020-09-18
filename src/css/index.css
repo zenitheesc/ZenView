@@ -53,7 +53,7 @@ textarea {
 
 input,
 textarea,
-select,.textAreaFalse {
+select,.editableDiv {
   color: var(--global-colorFont) !important;
   background-color: var(--global-colorInputBg) !important;
   border-radius: 0px !important;
