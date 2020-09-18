@@ -58,25 +58,50 @@
   height: auto !important;
 }
 
-.pathInput input:hover{
+.pathInput input:hover {
   cursor: pointer;
 }
 
-.pathInput button{
+.formButtonWithIconPrepend {
   padding: 0px;
   width: 2.5em;
   border-radius: 0px;
-	box-shadow: none;
-	background: none;
-	outline: none !important;
-	display: flex;
-	justify-content: space-around;
-	align-items: center;
+  box-shadow: none;
+  background: black !important;
+  outline: none !important;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
   border: 1px solid #a9a9a963 !important;
   border-right: none;
 }
 
+button.formButtonWithIconPrepend {
+  padding: 0px;
+  width: calc(1.5em + .5rem + 2px);
+  height: auto;
+  box-shadow: none;
+  background: black !important;
+  outline: none !important;
+  border: 1px solid #54555c !important;
+}
 
-.pathInput button:hover svg {
-	fill: whitesmoke;
+button.formButtonWithIconPrepend svg {
+  fill: #54555c;
+  width: 85%;
+  height: 70%;
+}
+
+.formButtonWithIconPrepend:hover svg {
+  fill: white;
+}
+
+button.formButtonWithIcon:hover svg {
+  fill: whitesmoke;
+}
+
+.formCenteredBtn {
+  width: 50%;
+  margin-left: 25%;
+  margin-right: 25%;
 }
