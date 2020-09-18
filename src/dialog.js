@@ -2,11 +2,15 @@ const ipc = require('electron').ipcRenderer;
 
 module.exports = class Dialog {
 	static showDialog(dialogConfig, callBack) {
-		callBack = callBack || (() => {});
+		callBack = callBack || (()=>{});
 		ipc.send('openDialog', dialogConfig);
 
-		ipc.on('openDialogResponse', (evt, result) => {
+		function insideCallback(evt, result){
 			callBack(result);
-		});
+			ipc.removeAllListeners('openDialogResponse');
+		}
+
+		ipc.on('openDialogResponse', insideCallback);
+
 	}
 };

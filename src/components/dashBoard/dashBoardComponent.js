@@ -1,4 +1,5 @@
 const fs = require('fs');
+const { number } = require('mathjs');
 const DashBoard = require('../../classes/dashBoard');
 const Dialog = require('../../dialog');
 
@@ -11,14 +12,15 @@ module.exports = class DashBoardComponent {
 		}));
 	}
 	openDashBoard(path) {
+		console.log('ABRINDO NOVO DASHBOARD');
 		try {
-			const DashBoard = fs.readFileSync(path);
-
-			window['ZenViewConfig'].currentDashBoard = JSON.parse(DashBoard);
+			let CurrentDashBoard = JSON.parse(fs.readFileSync(path));
+			window.CurrentDashBoard = new DashBoard(CurrentDashBoard);
 			window.dispatchEvent(new CustomEvent('attInputList'));
 
 			return true;
 		} catch (error) {
+			console.log(error);
 			Dialog.showDialog({
 				title: 'Error',
 				message: 'Este dashboard foi movido de seu diretório ou excluído',
@@ -37,22 +39,20 @@ module.exports = class DashBoardComponent {
 		}
 	}
 	editingDashBoard(details) {
-		console.log('iniciando dashboard para edição');
 		if (this.openDashBoard(details.dashBoardPath)) this.changeGlobalContext('editing');
 	}
 	startDashboard(details) {
-		console.log('iniciando dashboard para leitura');
 		if (this.openDashBoard(details.dashBoardPath)) this.changeGlobalContext('start');
 	}
 	newDashBoard(detail) {
+		console.log('CRIANDO NOVO DASHBOARD');
 		window['ZenViewConfig'].dashboards.unshift({
 			'name': detail.name,
 			'path': detail.path,
 			'desc': detail.desc,
 		});
 
-		const dashBoard = new DashBoard(detail.name, detail.numberOfInputs, detail.path, detail.desc);
-
+		const dashBoard = new DashBoard(detail.name,number(detail.numberOfInputs), detail.path, detail.desc);
 		fs.writeFileSync(detail.path, JSON.stringify(dashBoard, null, '\t'));
 
 		window.dispatchEvent(new CustomEvent('saveConfigs'));
@@ -66,26 +66,28 @@ module.exports = class DashBoardComponent {
 			},
 		}));
 	}
-	deleteDashboard(path) {
-		Dialog.showDialog({
-			title: 'Confirmar',
-			type: 'error',
-			buttons: ['Sim', 'Não'],
-			message: 'Você tem certeza que deseja deletar o dashboard?',
-		}, (resposta) => {
+	deleteDashboard(deletePath) {
+
+		let callback = ((resposta) => {
 			if (resposta.response === 0) {
-				fs.unlinkSync(path);
+				fs.unlinkSync(deletePath);
 				for (let i = window['ZenViewConfig'].dashboards.length - 1; i >= 0; i--) {
-					if (window['ZenViewConfig'].dashboards[i].path === path) {
+					if (window['ZenViewConfig'].dashboards[i].path === deletePath) {
 						window['ZenViewConfig'].dashboards.splice(i, 1);
 						window.dispatchEvent(new CustomEvent('attDashBoardsList'));
 						window.dispatchEvent(new CustomEvent('saveConfigs'));
-						this.changeGlobalContext('all');
 						break;
 					}
 				}
 			}
 		});
+
+		Dialog.showDialog({
+			title: 'Confirmar',
+			type: 'error',
+			buttons: ['Sim', 'Não'],
+			message: 'Você tem certeza que deseja deletar o dashboard?',
+		}, callback);
 	}
 	build() {
 		window.addEventListener('openDashBoard', (evt) => {
