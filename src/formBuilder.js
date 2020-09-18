@@ -167,8 +167,8 @@ class Field {
 			this.validators = undefined;
 		}
 	}
-	set onclick(callBackFunction){
-		this.input.addEventListener('click',callBackFunction);
+	set onclick(callBackFunction) {
+		this.input.addEventListener('click', callBackFunction);
 	}
 	get value() {
 		if (this.type === 'editableDiv') {
@@ -281,7 +281,7 @@ class Field {
 	static _buildAppendAndPrepend(options) {
 		let componentList = [];
 		let component = document.createElement('div');
-		
+
 		options.forEach(element => {
 			element.classList = element.classList || [];
 			if (element.type === 'text') {
@@ -338,6 +338,8 @@ class Field {
 		let input = document.createElement('div');
 		options.type = 'editableDiv';
 		input.contentEditable = true;
+		input.classList.add('editableDiv');
+		input.style.height = '4em';
 		input.style.height = 'auto';
 		if (options.id !== undefined) input.id = options.id;
 		input.classList.add('form-control');
@@ -385,7 +387,33 @@ class Field {
 		options.type = 'select';
 		input.classList.add('form-control');
 		if (options.id !== undefined) input.id = options.id;
-		return this.build(options, input);
+		let field = this.build(options, input);
+
+		field.addOption = (option, callBack) => {
+			callBack = callBack || function (option) {
+				return [option.value || option.text, option.text || option.value];
+			};
+
+			let newOption = document.createElement('option');
+			[newOption.value, newOption.text] = callBack(option);
+			field.input.appendChild(newOption);
+		};
+
+		field.setOptions = (options, callBack) => {
+			callBack = callBack || function (option) {
+				return [option.value || option.text, option.text || option.value];
+			};
+
+			let newOption;
+			options.forEach((option) => {
+				newOption = document.createElement('option');
+				[newOption.value, newOption.text] = callBack(option);
+				field.input.appendChild(newOption);
+			});
+
+		};
+
+		return field;
 	}
 	static directory(options) {
 		let input = document.createElement('input');
@@ -405,11 +433,11 @@ class Field {
 					  </svg>`;
 		options.prepend = [{
 			type: 'button',
-			content : icon,
-			classList:['formButtonWithIconPrepend']
+			content: icon,
+			classList: ['formButtonWithIconPrepend']
 		}];
 
-		let field = this.build(options,input);
+		let field = this.build(options, input);
 
 		field.prepend[0].onclick = () => {
 			ipc.send('open-file-dialog-for-dir');
@@ -422,7 +450,7 @@ class Field {
 				field.input.dispatchEvent(new Event('input'));
 			}
 		});
-		
+
 		return field;
 	}
 	static _label(text, id) {
@@ -534,4 +562,8 @@ class Container extends FormPattern {
 	}
 }
 
-module.exports = {Form,Field,Container};
+module.exports = {
+	Form,
+	Field,
+	Container
+};
