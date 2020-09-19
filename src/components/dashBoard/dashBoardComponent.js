@@ -14,8 +14,9 @@ module.exports = class DashBoardComponent {
 	openDashBoard(path) {
 		console.log('ABRINDO NOVO DASHBOARD');
 		try {
-			let CurrentDashBoard = JSON.parse(fs.readFileSync(path));
-			window.CurrentDashBoard = new DashBoard(CurrentDashBoard);
+			let CurrentDashBoard = new DashBoard(JSON.parse(fs.readFileSync(path)));
+			window.CurrentDashBoard = CurrentDashBoard;
+			window.CurrentInputGroup = CurrentDashBoard.inputGroup;
 			window.dispatchEvent(new CustomEvent('attInputList'));
 
 			return true;
