@@ -40,7 +40,6 @@ module.exports = class newDashBoardMenu extends Menu {
 				id: 'newDashBoardSpliter'
 			})
 		});
-		console.log(this.form);
 	}
 	importDashBoardSpliter() {
 		let container = document.createElement('div');
@@ -55,7 +54,6 @@ module.exports = class newDashBoardMenu extends Menu {
 
 				let data = this.form.getData().form;
 				let i = 0;
-				console.log(data);
 				let fileNames = fs.readdirSync(data['dir']);
 				let newName = data['name'] + '.json';
 
@@ -73,7 +71,7 @@ module.exports = class newDashBoardMenu extends Menu {
 					}
 				}));
 
-				this.form.clear();
+				this.form.reset();
 			}
 		};
 	}
