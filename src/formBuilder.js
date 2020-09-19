@@ -129,6 +129,12 @@ class FormPattern {
 
 		return pointer;
 	}
+
+	reset() {
+		this.fields.forEach(field => {
+			field.reset();
+		});
+	}
 }
 
 class Form extends FormPattern {
@@ -152,6 +158,7 @@ class Field {
 		this.type = options.type || {};
 		this.classList = options.classList || {};
 		this.value = options.value || '';
+		this.standardValue = options.standardValue || '';
 		this.validators = options.validators;
 		this.group = options.group || {};
 		this.conditions = options.conditions || [];
@@ -180,6 +187,9 @@ class Field {
 	}
 	set value(value) {
 		this.input.value = value;
+	}
+	reset(){
+		this.input.value = this.standardValue;
 	}
 	setConditions(form) {
 		this.conditions.forEach(condition => {
