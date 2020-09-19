@@ -4,6 +4,7 @@ const Components = require('../../../components');
 const Container = require('../../../../formBuilder').Container;
 const Field = require('../../../../formBuilder').Field;
 const Validator = require('../../../../validator');
+const Tribute = require('tributejs');
 module.exports = class InputsMenu extends Menu {
 	constructor() {
 		super('Entradas', 'inputs_menu');
@@ -27,12 +28,12 @@ module.exports = class InputsMenu extends Menu {
 		this.form = new Form({
 			newDashBoardSpliter: Container.spliter({
 				selectedInput: this.selectInput,
-				Directory: Field.text({
+				inputName: Field.text({
 					label: 'Tag',
 					att: 'inputName',
 					validators: [Validator.isFilled]
 				}),
-				Description: Field.editableDiv({
+				expression: Field.editableDiv({
 					label: 'Expressão',
 					att: 'expression',
 				}),
@@ -43,15 +44,67 @@ module.exports = class InputsMenu extends Menu {
 				id: 'inputEditingSpliter'
 			})
 		});
+		this.tribute;
 	}
 	attInputList() {
-		this.selectInput.setOptions(window.CurrentDashBoard.inputGroup.inputs);
+		console.log(window.CurrentInputGroup.rawInputs);
+		this.tribute.append(1,window.CurrentInputGroup.rawInputs,true);
+		this.tribute.append(0,window.CurrentInputGroup.inputs,true);
+		this.selectInput.setOptions(window.CurrentDashBoard.inputGroup.inputs, (value) => {
+			return value.name;
+		});
 	}
 	setFormConfigs() {
 		this.selectInput.addOption({
 			text: 'teste',
 			value: '1'
 		});
+	}
+	setAutoCompleteConfigs() {
+		this.tribute = new Tribute({
+			noMatchTemplate: function () {
+				return '<span style:"visibility: hidden;"></span>';
+			},
+			collection: [
+				{
+					trigger: '$',
+					values: [{
+							key: 'Phil Heartman',
+							value: 'pheartman'
+						},
+						{
+							key: 'Gordon Ramsey',
+							value: 'gramsey'
+						},
+
+					],
+					selectTemplate: function (item) {
+						return (
+							'<a contenteditable="false" class="inputTag">' +
+							item.original.value +
+							'</a>'
+						);
+
+					}
+				},
+				{
+					trigger: '#',
+					lookup: (input,mentionText)=>{
+						return input.name;
+					},
+					values: [],
+					selectTemplate: function (item) {
+						return (
+							'<a contenteditable="false" class="inputTag">' +
+							'#' + item.original.name +
+							'</a>'
+						);
+
+					}
+				}
+			]
+		});
+		this.tribute.attach(this.form.formThree.newDashBoardSpliter.expression.input);
 	}
 	setEvents() {
 		window.addEventListener('attInputList', () => {
@@ -61,6 +114,7 @@ module.exports = class InputsMenu extends Menu {
 	load() {
 		this.menuComponent.appendChild(this.form.htmlComponent);
 		this.setFormConfigs();
+		this.setAutoCompleteConfigs();
 		this.setEvents();
 	}
 };
