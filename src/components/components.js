@@ -103,6 +103,82 @@ module.exports = class Components {
 	static icon(iconName) {
 		return (fs.readFileSync('./src/images/icons/' + iconName + '.svg')).toString();
 	}
+	static dashBoardCard(name, desc, path) {
+		const dashBoardCardComponent = document.createElement('div');
+		dashBoardCardComponent.setAttribute('class', 'card dashBoardCard mb-3');
+
+		const dashBoardCardComponentHeader = document.createElement('div');
+		dashBoardCardComponentHeader.setAttribute('class', 'card-header row dashBoardCard-header m-0 justify-content-between');
+
+		const dashBoardCardComponentHeaderTitle = document.createElement('div');
+		dashBoardCardComponentHeaderTitle.innerText = name;
+
+		const dashBoardCardComponentHeaderOptions = document.createElement('div');
+
+		dashBoardCardComponentHeader.appendChild(dashBoardCardComponentHeaderTitle);
+
+
+		const playBtn = this.buttonWithIcon('play', 'dashBoardCardOption');
+		const editBtn = this.buttonWithIcon('pencil-square', 'dashBoardCardOption');
+		const delBtn = this.buttonWithIcon('trash', 'dashBoardCardOption');
+
+		playBtn.addEventListener('click', () => {
+			window.dispatchEvent(new CustomEvent('openDashBoard', {
+				detail: {
+					context: 'start',
+					dashBoardPath: path,
+				},
+			}));
+		});
+
+		editBtn.addEventListener('click', () => {
+			console.log('contexto global alterado para edição');
+			window.dispatchEvent(new CustomEvent('openDashBoard', {
+				detail: {
+					context: 'editing',
+					dashBoardPath: path,
+				},
+			}));
+		});
+
+		delBtn.addEventListener('click', () => {
+			window.dispatchEvent(new CustomEvent('deleteDashboard', {
+				detail: {
+					dashBoardPath: path,
+				},
+			}));
+		});
+
+		dashBoardCardComponentHeaderOptions.appendChild(playBtn);
+		dashBoardCardComponentHeaderOptions.appendChild(editBtn);
+		dashBoardCardComponentHeaderOptions.appendChild(delBtn);
+
+		dashBoardCardComponentHeader.appendChild(dashBoardCardComponentHeaderOptions);
+
+		const dashBoardCardComponentBody = document.createElement('div');
+		dashBoardCardComponentBody.className = 'card-body';
+
+		const dashBoardCardComponentDesc = document.createElement('p');
+		dashBoardCardComponentDesc.textContent = desc;
+
+		const dashBoardCardComponentPath = document.createElement('cite');
+		dashBoardCardComponentPath.textContent = 'PATH:' + path;
+
+		dashBoardCardComponentBody.appendChild(dashBoardCardComponentDesc);
+		dashBoardCardComponentBody.appendChild(dashBoardCardComponentPath);
+
+		dashBoardCardComponent.appendChild(dashBoardCardComponentHeader);
+		dashBoardCardComponent.appendChild(dashBoardCardComponentBody);
+
+		return dashBoardCardComponent;
+	}
+	static buttonWithIcon(iconName, className) {
+		const button = document.createElement('button');
+		button.type = 'button';
+		if (className !== undefined) button.classList.add(className);
+		button.innerHTML = this.icon(iconName);
+		return button;
+	}
 	static form(id) {
 		const formComponent = {};
 		formComponent.htmlComponent = document.createElement('form');
