@@ -1,29 +1,44 @@
 const Input = require('./input');
 module.exports = class InputGroup {
-	constructor(numberOfEntries) {
-		this.numberOfEntries;
-		this.Inputs;
+	constructor(numberOfInputs) {
+		this.numberOfInputs;
+		this.inputs = [];
+		this.rawInputs = [];
 		if (arguments.length === 2) {
 			this.constructFromJson();
 		} else {
-			this.newConstructor(numberOfEntries);
+			this.newConstructor(numberOfInputs);
 		}
 	}
-	newConstructor(numberOfEntries) {
-		
-		this.numberOfEntries = numberOfEntries;
-		this.Inputs;
-		this.inputs = new Input();
+	newConstructor(numberOfInputs) {
+		this._associationInput = {};
+		this.numberOfInputs = numberOfInputs;
+		this.generateInputs();
 	}
 	constructFromJson(inputGroupJSON) {
-		this.numberOfEntries = inputGroupJSON.numberOfEntries;
-		this.Inputs = inputGroupJSON.Inputs;
+		this.numberOfInputs = inputGroupJSON.numberOfInputs;
+		this.rawInputs = inputGroupJSON.rawInputs;
+		this.inputs = inputGroupJSON.inputs;
 	}
 	generateInputs() {
-		for (let i = 0; i < this.nbmrInputs; i++) {
-			let newInput = new Input('NewInput' + i, 'col' + i, 'receiver');
-			this.inputs.push(newInput);
+		for (let i = 0; i < this.numberOfInputs; i++) {
+			let newInput = new Input('collum-' + i, 'collum-' + i);
+			this.rawInputs.push(newInput);
 			this._associationInput[newInput.name] = newInput;
 		}
+	}
+	addNewinput(newInput) {
+		if (this._associationInput[newInput.name] !== undefined) {
+			return false;
+		}
+		this._associationInput[newInput.name] = newInput;
+		this.inputs.push(newInput);
+	}
+	editInput(inputName, newConfig) {
+		if (this._associationInput[inputName] === undefined) {
+			return false;
+		}
+		this._associationInput[inputName].name = newConfig.name;
+		this._associationInput[inputName].expression = newConfig.expression;
 	}
 }
