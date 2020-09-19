@@ -400,6 +400,7 @@ class Field {
 		};
 
 		field.setOptions = (options, callBack) => {
+			field.input.innerHTML = '';
 			callBack = callBack || function (option) {
 				return [option.value || option.text, option.text || option.value];
 			};
