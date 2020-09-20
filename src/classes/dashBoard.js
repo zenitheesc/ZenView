@@ -21,9 +21,9 @@ module.exports = class DashBoard{
 	}
 	constructFromJson(dashBoardJson){
 		this.name = dashBoardJson.name;
-		this.inputGroup = dashBoardJson.inputGroup;
 		this.blocks = dashBoardJson.blocks;
 		this.path = dashBoardJson.path;
 		this.description = dashBoardJson.description;
+		this.inputGroup = new InputGroup(dashBoardJson.inputGroup, true);
 	}
 };
