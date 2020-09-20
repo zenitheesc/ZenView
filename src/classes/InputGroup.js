@@ -1,11 +1,14 @@
+const Math = require('mathjs');
 const Input = require('./input');
 module.exports = class InputGroup {
-	constructor(numberOfInputs) {
+	constructor(numberOfInputs, isFromJson) {
 		this.numberOfInputs;
 		this.inputs = [];
 		this.rawInputs = [];
-		if (arguments.length === 2) {
-			this.constructFromJson();
+		this._associationInput = {};
+		this.inputGraph = {};
+		if (isFromJson) {
+			this.constructFromJson(numberOfInputs);
 		} else {
 			this.newConstructor(numberOfInputs);
 		}
@@ -19,6 +22,7 @@ module.exports = class InputGroup {
 		this.numberOfInputs = inputGroupJSON.numberOfInputs;
 		this.rawInputs = inputGroupJSON.rawInputs;
 		this.inputs = inputGroupJSON.inputs;
+		this._associationInput = inputGroupJSON._associationInput;
 	}
 	generateInputs() {
 		for (let i = 0; i < this.numberOfInputs; i++) {
@@ -27,12 +31,24 @@ module.exports = class InputGroup {
 			this._associationInput[newInput.name] = newInput;
 		}
 	}
-	addNewinput(newInput) {
-		if (this._associationInput[newInput.name] !== undefined) {
+	addNewInput(inputConfig) {
+		console.log(inputConfig);
+		if (this._associationInput[inputConfig.name] !== undefined) {
+			return {created: false, error: 1, msg: 'Este nome já existe'};
+		}/*
+		try {
+			this.expressionCompiled = Math.compile(newInput.expression);
+			this._associationInput[newInput.name] = newInput;
+			this.inputs.push(newInput);
+			return true;
+		} catch (error) {
+			console.log(error);
 			return false;
-		}
+		}*/
+		let newInput = new Input(String(inputConfig.name),String(inputConfig.expression));
 		this._associationInput[newInput.name] = newInput;
 		this.inputs.push(newInput);
+		return {created: true, name: newInput.name, expression: newInput.expression};
 	}
 	editInput(inputName, newConfig) {
 		if (this._associationInput[inputName] === undefined) {
