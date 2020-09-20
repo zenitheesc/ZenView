@@ -1,6 +1,4 @@
 const fs = require('fs');
-const ipc = require('electron').ipcRenderer;
-const Validator = require('../validator');
 module.exports = class Components {
 	static spliter(id, text, content, startOpen) {
 		const card = document.createElement('div');
@@ -122,33 +120,6 @@ module.exports = class Components {
 		const editBtn = this.buttonWithIcon('pencil-square', 'dashBoardCardOption');
 		const delBtn = this.buttonWithIcon('trash', 'dashBoardCardOption');
 
-		playBtn.addEventListener('click', () => {
-			window.dispatchEvent(new CustomEvent('openDashBoard', {
-				detail: {
-					context: 'start',
-					dashBoardPath: path,
-				},
-			}));
-		});
-
-		editBtn.addEventListener('click', () => {
-			console.log('contexto global alterado para edição');
-			window.dispatchEvent(new CustomEvent('openDashBoard', {
-				detail: {
-					context: 'editing',
-					dashBoardPath: path,
-				},
-			}));
-		});
-
-		delBtn.addEventListener('click', () => {
-			window.dispatchEvent(new CustomEvent('deleteDashboard', {
-				detail: {
-					dashBoardPath: path,
-				},
-			}));
-		});
-
 		dashBoardCardComponentHeaderOptions.appendChild(playBtn);
 		dashBoardCardComponentHeaderOptions.appendChild(editBtn);
 		dashBoardCardComponentHeaderOptions.appendChild(delBtn);
@@ -169,6 +140,47 @@ module.exports = class Components {
 
 		dashBoardCardComponent.appendChild(dashBoardCardComponentHeader);
 		dashBoardCardComponent.appendChild(dashBoardCardComponentBody);
+
+		playBtn.addEventListener('click', () => {
+			window.dispatchEvent(new CustomEvent('openDashBoard', {
+				detail: {
+					context: 'start',
+					dashBoardPath: path,
+				},
+			}));
+		});
+
+		editBtn.addEventListener('click', () => {
+			console.log('contexto global alterado para edição');
+			if (!dashBoardCardComponentHeaderTitle.isContentEditable) {
+				editBtn.innerHTML = this.icon('save');
+				dashBoardCardComponentHeaderTitle.classList.add('editableDiv');
+				dashBoardCardComponentDesc.classList.add('editableDiv');
+				dashBoardCardComponentHeaderTitle.contentEditable = true;
+				dashBoardCardComponentDesc.contentEditable = true;
+			}else{
+				editBtn.innerHTML = this.icon('pencil-square');
+				dashBoardCardComponentHeaderTitle.classList.remove('editableDiv');
+				dashBoardCardComponentDesc.classList.remove('editableDiv');
+				dashBoardCardComponentHeaderTitle.contentEditable = false;
+				dashBoardCardComponentDesc.contentEditable = false;
+			}
+			window.dispatchEvent(new CustomEvent('openDashBoard', {
+				detail: {
+					context: 'editing',
+					dashBoardPath: path,
+				},
+			}));
+		});
+
+		delBtn.addEventListener('click', () => {
+			window.dispatchEvent(new CustomEvent('deleteDashboard', {
+				detail: {
+					dashBoardPath: path,
+				},
+			}));
+		});
+
 
 		return dashBoardCardComponent;
 	}
