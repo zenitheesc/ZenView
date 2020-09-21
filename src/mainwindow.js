@@ -10,10 +10,10 @@ class MainWindow {
 		this.DashBoardComponent = new DashBoardComponent();
 		this.MainWindow;
 	}
-	saveConfig(){
+	saveConfig() {
 		fs.writeFileSync('./src/config.json', JSON.stringify(window['ZenViewConfig'], null, '\t'));
 	}
-	init(){
+	init() {
 		window.addEventListener('saveConfigs', () => {
 			this.saveConfig();
 		});
@@ -25,18 +25,23 @@ class MainWindow {
 		this.init();
 		this.SideMenu.build();
 		this.DashBoardComponent.build();
+		
+		window.dispatchEvent(new CustomEvent('GlobalContextChange', {
+			detail: {
+				context: 'all'
+			}
+		}));
+
 		duracao = Date.now() - duracao; //pega a duracao do load
+		console.log('TEMPO DE CARREGAMENTO: ' + duracao + 'ms');
 		duracao = (duracao > 3000) ? 0 : 3000 - duracao; //testa se foram mais de 3 segundos
+		
 		setTimeout(() => { //caso n tenha sido espera o gif terminar para chamar a janela principal
 			ipc.send('mainLoadCompleto', {
 				show: true
 			});
 			//define o contexto inicial
-			window.dispatchEvent(new CustomEvent('GlobalContextChange', {
-				detail: {
-					context: 'all'
-				}
-			}));
+
 		}, duracao);
 	}
 }
