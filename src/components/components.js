@@ -142,9 +142,15 @@ module.exports = class Components {
 		dashBoardCardComponent.appendChild(dashBoardCardComponentBody);
 
 		playBtn.addEventListener('click', () => {
-			window.dispatchEvent(new CustomEvent('openDashBoard', {
+			/*window.dispatchEvent(new CustomEvent('openDashBoard', {
 				detail: {
 					context: 'start',
+					dashBoardPath: path,
+				},
+			}));*/
+			window.dispatchEvent(new CustomEvent('openDashBoard', {
+				detail: {
+					context: 'editing',
 					dashBoardPath: path,
 				},
 			}));
@@ -165,12 +171,7 @@ module.exports = class Components {
 				dashBoardCardComponentHeaderTitle.contentEditable = false;
 				dashBoardCardComponentDesc.contentEditable = false;
 			}
-			window.dispatchEvent(new CustomEvent('openDashBoard', {
-				detail: {
-					context: 'editing',
-					dashBoardPath: path,
-				},
-			}));
+			
 		});
 
 		delBtn.addEventListener('click', () => {
