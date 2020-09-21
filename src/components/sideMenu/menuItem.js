@@ -62,9 +62,9 @@ module.exports = class MenuItem {
 		if(this.globalContext === 'all') return;
 		window.addEventListener('GlobalContextChange',(evt)=>{
 			if(evt.detail.context === this.globalContext){
-				this.itemComponent.style.display = 'block';
+				this.itemComponent.disabled = false;
 			}else{
-				this.itemComponent.style.display = 'none';
+				this.itemComponent.disabled = true;
 			}
 		});
 	}	
