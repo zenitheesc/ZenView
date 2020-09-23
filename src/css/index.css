@@ -64,6 +64,7 @@ select,.editableDiv {
 
 [contenteditable="true"]:focus {
     background-color: var(--global-colorInputBg) !important;
+    color: var(--global-colorFont) !important;
 }
 
 small {
