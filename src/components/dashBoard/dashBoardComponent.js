@@ -1,5 +1,4 @@
 const fs = require('fs');
-const { number } = require('mathjs');
 const DashBoard = require('../../classes/dashBoard');
 const Dialog = require('../../dialog');
 
@@ -53,7 +52,7 @@ module.exports = class DashBoardComponent {
 			'desc': detail.desc,
 		});
 
-		const dashBoard = new DashBoard(detail.name,number(detail.numberOfInputs), detail.path, detail.desc);
+		const dashBoard = new DashBoard(detail.name, number(detail.numberOfInputs), detail.path, detail.desc);
 		fs.writeFileSync(detail.path, JSON.stringify(dashBoard, null, '\t'));
 
 		window.dispatchEvent(new CustomEvent('saveConfigs'));
@@ -90,6 +89,21 @@ module.exports = class DashBoardComponent {
 			message: 'Você tem certeza que deseja deletar o dashboard?',
 		}, callback);
 	}
+	saveDashBoardDescAndName(path,newName,newDesc) {
+		for (let i = window['ZenViewConfig'].dashboards.length - 1; i >= 0; i--) {
+			if (window['ZenViewConfig'].dashboards[i].path === path) {
+				window['ZenViewConfig'].dashboards[i].description = newDesc;
+				window['ZenViewConfig'].dashboards[i].name = newName;
+				window.dispatchEvent(new CustomEvent('attDashBoardsList'));
+				window.dispatchEvent(new CustomEvent('saveConfigs'));
+				break;
+			}
+		}
+	}
+	saveCurrentDashBoard() {
+		let currentDashBoard = window.CurrentDashBoard;
+		fs.writeFileSync(currentDashBoard.path, JSON.stringify(currentDashBoard, null, '\t'));
+	}
 	build() {
 		window.addEventListener('openDashBoard', (evt) => {
 			if (evt.detail.context === 'editing') {
@@ -101,6 +115,10 @@ module.exports = class DashBoardComponent {
 
 		window.addEventListener('deleteDashboard', (evt) => {
 			this.deleteDashboard(evt.detail.dashBoardPath);
+		});
+
+		window.addEventListener('saveCurrentDashBoard', (evt) => {
+			this.saveCurrentDashBoard(evt.detail.dashBoardPath);
 		});
 
 		window.addEventListener('newDashBoard', (evt) => {
