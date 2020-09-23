@@ -1,4 +1,3 @@
-const Math = require('mathjs');
 const Input = require('./input');
 module.exports = class InputGroup {
 	constructor(numberOfInputs, isFromJson) {
@@ -7,6 +6,7 @@ module.exports = class InputGroup {
 		this.rawInputs = [];
 		this._associationInput = {};
 		this.inputGraph = {};
+		this.scope = {};
 		if (isFromJson) {
 			this.constructFromJson(numberOfInputs);
 		} else {
@@ -26,7 +26,7 @@ module.exports = class InputGroup {
 	}
 	generateInputs() {
 		for (let i = 0; i < this.numberOfInputs; i++) {
-			let newInput = new Input('collum-' + i, 'collum-' + i);
+			let newInput = new Input('collum_' + i,1,this.scope);
 			this.rawInputs.push(newInput);
 			this._associationInput[newInput.name] = newInput;
 		}
@@ -34,21 +34,25 @@ module.exports = class InputGroup {
 	addNewInput(inputConfig) {
 		console.log(inputConfig);
 		if (this._associationInput[inputConfig.name] !== undefined) {
-			return {created: false, error: 1, msg: 'Este nome já existe'};
-		}/*
-		try {
-			this.expressionCompiled = Math.compile(newInput.expression);
-			this._associationInput[newInput.name] = newInput;
-			this.inputs.push(newInput);
-			return true;
-		} catch (error) {
-			console.log(error);
-			return false;
-		}*/
-		let newInput = new Input(String(inputConfig.name),String(inputConfig.expression));
+			return {
+				created: false,
+				msg: 'Este nome já existe'
+			};
+		}
+
+		let newInput = new Input(inputConfig.name, inputConfig.expression,this.scope);
 		this._associationInput[newInput.name] = newInput;
 		this.inputs.push(newInput);
-		return {created: true, name: newInput.name, expression: newInput.expression};
+
+		return {
+			created: true,
+			name: newInput.name,
+			expression: newInput.expression
+		};
+
+	}
+	getInputByName(name){
+		return this._associationInput[name];
 	}
 	editInput(inputName, newConfig) {
 		if (this._associationInput[inputName] === undefined) {
@@ -57,4 +61,4 @@ module.exports = class InputGroup {
 		this._associationInput[inputName].name = newConfig.name;
 		this._associationInput[inputName].expression = newConfig.expression;
 	}
-}
+};
