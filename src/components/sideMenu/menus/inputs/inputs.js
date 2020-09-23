@@ -5,6 +5,7 @@ const Container = require('../../../../formBuilder').Container;
 const Field = require('../../../../formBuilder').Field;
 const Validator = require('../../../../validator');
 const Tribute = require('tributejs');
+const Math = require('mathjs');
 module.exports = class InputsMenu extends Menu {
 	constructor() {
 		super('Entradas', 'inputs_menu');
@@ -50,24 +51,82 @@ module.exports = class InputsMenu extends Menu {
 		this.tribute;
 	}
 	attInputList() {
-		console.warn(window.CurrentInputGroup.rawInputs);
-		console.warn(window.CurrentInputGroup.inputs);
 		this.tribute.append(1, window.CurrentInputGroup.rawInputs, true);
 		this.tribute.append(0, window.CurrentInputGroup.inputs, true);
 		this.selectInput.setOptions(window.CurrentInputGroup.inputs, (value) => {
-			return [value.name,value.name];
+			return [value.name, value.name];
 		});
+	}
+	validateExpression() {
+		let expression = '';
+		let validVariables = [];
+
+		this.form.fields[2].input.childNodes.forEach(element => {
+			if (element.tagName === 'A') {
+				validVariables.push(element.innerText);
+				expression += element.innerText.replace('${', '').replace('#{','').replace('}', '');
+			} else {
+				expression += element.data;
+			}
+		});
+		expression = expression.replace(/\u00a0/g,' ');
+
+		try {
+
+			let parsedExpression = Math.parse(expression);
+			let dependencies = parsedExpression.filter((node) => {
+				return node.isSymbolNode;
+			});
+
+			for (let i = 0, j = dependencies.length; i < j; i++) {
+				if (!(validVariables.includes('${' + dependencies[i] + '}') || validVariables.includes('#{' + dependencies[i] + '}'))) {
+					console.warn('ERRO, NÃO FOI POSSÍVEL ENCONTRAR: '+'${' + dependencies[i] + '}');
+					return {
+						valid: false,
+						msg: 'Expressão matemática inválida'
+					};
+				}
+			}
+		} catch (error) {
+			console.warn(error);
+			console.warn('ERRO, EXPRESSÃO INVÁLIDA: '+expression);
+			return {
+				valid: false,
+				msg: 'Expressão matemática inválida'
+			};
+		}
+
+
+		return {
+			valid: true,
+			expression: expression
+		};
 	}
 	newInput() {
 		if (this.form.validate()) {
-			let answer = window.CurrentInputGroup.addNewInput(this.form.getData().inputData);
-			console.log(answer);
-			if(answer.created){
+
+			let data = this.form.getData().inputData;
+
+			let expressionAnswer = this.validateExpression();
+
+			if (!expressionAnswer.valid) {
+				this.form.fields[2].showWarning(expressionAnswer.msg);
+				return;
+			} else {
+				data.expression = {};
+				data.expression.formated = expressionAnswer.expression;
+				data.expression.raw = this.form.fields[2].input.innerHTML;
+			}
+
+			console.log(data);
+			let createdAnswer = window.CurrentInputGroup.addNewInput(data);
+
+			if (createdAnswer.created) {
 				this.attInputList();
-			}else{
-				if(answer.error == 1){
-					this.form.formThree.newDashBoardSpliter.name.showWarning(answer.msg);
-				}
+				this.form.reset();
+				//this.selectInput.setSelectedOption(data.name);
+			} else {
+				this.form.formThree.newDashBoardSpliter.name.showWarning(createdAnswer.msg);
 			}
 		}
 	}
@@ -77,10 +136,10 @@ module.exports = class InputsMenu extends Menu {
 	setFormConfigs() {
 		this.selectInput.append[0].onclick = () => {
 			this.button.htmlComponent.textContent = 'Nova entrada';
-			this.button.htmlComponent.removeEventListener('click');
 			this.button.onclick = () => {
 				this.newInput();
 			};
+			this.form.reset();
 		};
 
 		this.selectInput.append[1].onclick = () => {
@@ -89,10 +148,13 @@ module.exports = class InputsMenu extends Menu {
 
 		this.selectInput.input.onchange = () => {
 			this.button.htmlComponent.textContent = 'Salvar';
-			this.button.htmlComponent.removeEventListener('click');
+			let input = window.CurrentInputGroup.getInputByName(this.selectInput.value);
+			this.form.fields[1].value = input.name;
+			this.form.fields[2].value = input.rawExpression;
 			this.button.onclick = () => {
 				this.attInput();
 			};
+			
 		};
 
 		this.button.onclick = () => {
@@ -104,31 +166,36 @@ module.exports = class InputsMenu extends Menu {
 	}
 	setAutoCompleteConfigs() {
 		this.tribute = new Tribute({
+			replaceTextSuffix: '',
 			noMatchTemplate: function () {
 				return '<span style:"visibility: hidden;"></span>';
 			},
-			collection: [{
-					trigger: '$',
+			collection: [
+				{
+					trigger: '${',
 					values: [],
+					lookup: (input) => {
+						return input.name;
+					},
 					selectTemplate: function (item) {
 						return (
 							'<a contenteditable="false" class="inputTag">' +
-							'{' + item.original.name + '}' +
+							'${' + item.original.name + '}' +
 							'</a>'
 						);
 
 					}
 				},
 				{
-					trigger: '#',
-					lookup: (input, mentionText) => {
+					trigger: '#{',
+					lookup: (input) => {
 						return input.name;
 					},
 					values: [],
 					selectTemplate: function (item) {
 						return (
 							'<a contenteditable="false" class="inputTag">' +
-							'{' + item.original.name + '}' +
+							'#{' + item.original.name + '}' +
 							'</a>'
 						);
 
@@ -139,9 +206,7 @@ module.exports = class InputsMenu extends Menu {
 		this.tribute.attach(this.form.formThree.newDashBoardSpliter.expression.input);
 	}
 	setEvents() {
-		console.log('adicionando evento');
 		window.addEventListener('attInputList', () => {
-			console.log('evento ouvido');
 			this.attInputList();
 		});
 	}
