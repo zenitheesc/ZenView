@@ -1,24 +1,19 @@
 const Math = require('mathjs');
+
 module.exports = class Input{
-	constructor(name,expression){
+	constructor(name,expression,scope){
 		this.name = name;
-		this.expression = expression;
-		this.dependencies;
-		this.expressionTree;
-	}
-	setDependencies(){
-		this.dependencies = this.expressionTree.filter((node)=>{
+		this.expression = expression.formated || expression;
+		this.scope = scope;
+		this.rawExpression = expression.raw || this.expression;
+		this.compiledExpression = Math.compile(this.expression);
+		this.dependencies = Math.parse(this.expression).filter((node)=>{
 			return node.isSymbolNode;
 		});
+
+		this.scope[name] = this.getValue;
 	}
-	validateExpression(){
-		try{
-			this.expressionTree = Math.parse(this.expression);
-			console.log('ok');
-			return true;
-		}catch(error){
-			console.log('erro');
-			return false;
-		}
+	getValue(){
+		return this.compiledExpression.evaluate(this.scope);
 	}
 };
