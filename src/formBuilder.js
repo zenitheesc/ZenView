@@ -175,7 +175,7 @@ class Field {
 		}
 	}
 	set onclick(callBackFunction) {
-		this.input.addEventListener('click', callBackFunction);
+		this.input.onclick = (callBackFunction);
 	}
 	get value() {
 		if (this.type === 'editableDiv') {
@@ -186,10 +186,19 @@ class Field {
 		return this.input.value;
 	}
 	set value(value) {
-		this.input.value = value;
+		if (this.type === 'editableDiv') {
+			this.input.innerHTML = value;
+		} else {
+			this.input.value = value;
+		}
 	}
-	reset(){
-		this.input.value = this.standardValue;
+	reset() {
+		if (this.type === 'editableDiv') {
+			console.log('resetando div')
+			this.input.innerHTML = '';
+		} else {
+			this.input.value = this.standardValue;
+		}
 	}
 	setConditions(form) {
 		this.conditions.forEach(condition => {
@@ -422,6 +431,11 @@ class Field {
 				field.input.appendChild(newOption);
 			});
 
+		};
+
+		field.setSelectedOption = (value) => {
+			console.log('estou aqui');
+			input.value = value;
 		};
 
 		return field;
