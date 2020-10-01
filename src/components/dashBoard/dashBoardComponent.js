@@ -1,8 +1,10 @@
 const fs = require('fs');
+const { number } = require('mathjs');
 const DashBoard = require('../../classes/dashBoard');
 const Dialog = require('../../dialog');
 
 module.exports = class DashBoardComponent {
+	
 	changeGlobalContext(newContext) {
 		window.dispatchEvent(new CustomEvent('GlobalContextChange', {
 			detail: {
@@ -10,6 +12,7 @@ module.exports = class DashBoardComponent {
 			},
 		}));
 	}
+
 	openDashBoard(path) {
 		console.log('ABRINDO NOVO DASHBOARD');
 		try {
@@ -38,12 +41,15 @@ module.exports = class DashBoardComponent {
 			return false;
 		}
 	}
+
 	editingDashBoard(details) {
 		if (this.openDashBoard(details.dashBoardPath)) this.changeGlobalContext('editing');
 	}
+
 	startDashboard(details) {
 		if (this.openDashBoard(details.dashBoardPath)) this.changeGlobalContext('start');
 	}
+
 	newDashBoard(detail) {
 		console.log('CRIANDO NOVO DASHBOARD');
 		window['ZenViewConfig'].dashboards.unshift({
@@ -66,6 +72,7 @@ module.exports = class DashBoardComponent {
 			},
 		}));
 	}
+
 	deleteDashboard(deletePath) {
 
 		let callback = ((resposta) => {
@@ -89,6 +96,7 @@ module.exports = class DashBoardComponent {
 			message: 'Você tem certeza que deseja deletar o dashboard?',
 		}, callback);
 	}
+
 	saveDashBoardDescAndName(path,newName,newDesc) {
 		for (let i = window['ZenViewConfig'].dashboards.length - 1; i >= 0; i--) {
 			if (window['ZenViewConfig'].dashboards[i].path === path) {
@@ -100,10 +108,12 @@ module.exports = class DashBoardComponent {
 			}
 		}
 	}
+
 	saveCurrentDashBoard() {
 		let currentDashBoard = window.CurrentDashBoard;
 		fs.writeFileSync(currentDashBoard.path, JSON.stringify(currentDashBoard, null, '\t'));
 	}
+
 	build() {
 		window.addEventListener('openDashBoard', (evt) => {
 			if (evt.detail.context === 'editing') {

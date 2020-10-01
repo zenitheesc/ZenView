@@ -1,7 +1,7 @@
 /**
  * ColorPicker
  */
-const fs = require('fs');
+
 const ipc = require('electron').ipcRenderer;
 
 class FormPattern {
@@ -194,7 +194,6 @@ class Field {
 	}
 	reset() {
 		if (this.type === 'editableDiv') {
-			console.log('resetando div')
 			this.input.innerHTML = '';
 		} else {
 			this.input.value = this.standardValue;
@@ -434,7 +433,6 @@ class Field {
 		};
 
 		field.setSelectedOption = (value) => {
-			console.log('estou aqui');
 			input.value = value;
 		};
 

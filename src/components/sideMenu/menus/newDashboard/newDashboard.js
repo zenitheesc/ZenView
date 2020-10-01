@@ -71,7 +71,7 @@ module.exports = class newDashBoardMenu extends Menu {
 					}
 				}));
 
-				this.form.reset();
+				//this.form.reset();
 			}
 		};
 	}

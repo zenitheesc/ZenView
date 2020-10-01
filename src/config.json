@@ -2,29 +2,35 @@
 	"language": "ptbr",
 	"dashboards": [
 		{
-			"name": "Teste 1",
-			"path": "~/Documentos/reactron/ZenView",
-			"desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec imperdiet eros sed velit faucibus scelerisque. Vivamus neque nunc, efficitur a ligula id, congue ultricies lorem. Etiam pharetra, sapien at sodales aliquam, enim arcu venenatis erat, eu convallis magna ipsum mollis leo. Donec at consectetur quam, at rhoncus nunc."
+			"name": "Teste5",
+			"path": "/home/nedlandy/Documentos/reactron/ZenView/dashboards/Teste5.json",
+			"desc": "A"
 		},
 		{
-			"name": "Teste 2",
-			"path": "~/Documentos/reactron/ZenView",
-			"desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec imperdiet eros sed velit faucibus scelerisque. Vivamus neque nunc, efficitur a ligula id, congue ultricies lorem. Etiam pharetra, sapien at sodales aliquam, enim arcu venenatis erat, eu convallis magna ipsum mollis leo. Donec at consectetur quam, at rhoncus nunc."
+			"name": "Teste4",
+			"path": "/home/nedlandy/Documentos/reactron/ZenView/dashboards/Teste4.json",
+			"desc": "A"
 		},
 		{
-			"name": "Teste 3",
-			"path": "~/Documentos/reactron/ZenView",
-			"desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec imperdiet eros sed velit faucibus scelerisque. Vivamus neque nunc, efficitur a ligula id, congue ultricies lorem. Etiam pharetra, sapien at sodales aliquam, enim arcu venenatis erat, eu convallis magna ipsum mollis leo. Donec at consectetur quam, at rhoncus nunc."
+			"name": "Teste2",
+			"path": "/home/nedlandy/Documentos/reactron/ZenView/dashboards/Teste2.json",
+			"desc": "A"
 		},
 		{
-			"name": "Teste 4",
-			"path": "~/Documentos/reactron/ZenView",
-			"desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec imperdiet eros sed velit faucibus scelerisque. Vivamus neque nunc, efficitur a ligula id, congue ultricies lorem. Etiam pharetra, sapien at sodales aliquam, enim arcu venenatis erat, eu convallis magna ipsum mollis leo. Donec at consectetur quam, at rhoncus nunc."
-		},
-		{
-			"name": "Teste 5",
-			"path": "~/Documentos/reactron/ZenView",
-			"desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec imperdiet eros sed velit faucibus scelerisque. Vivamus neque nunc, efficitur a ligula id, congue ultricies lorem. Etiam pharetra, sapien at sodales aliquam, enim arcu venenatis erat, eu convallis magna ipsum mollis leo. Donec at consectetur quam, at rhoncus nunc."
+			"name": "Teste1",
+			"path": "/home/nedlandy/Documentos/reactron/ZenView/dashboards/Teste1.json",
+			"desc": "A"
 		}
-	]
+	],
+	"currentDashBoard": {
+		"inputs": {
+			"numberOfInputs": "1",
+			"inputs": {}
+		},
+		"_associationInput": {},
+		"name": "Test7",
+		"blocks": {},
+		"path": "/home/nedlandy/Documentos/reactron/ZenView/dashboards/Test7.json",
+		"description": ""
+	}
 }
