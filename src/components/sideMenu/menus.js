@@ -3,4 +3,4 @@ const DashBoardsMenu = require('./menus/dashboards/dashBoards.js');
 const InputsMenu = require('./menus/inputs/inputsMenu.js');
 
 
-module.exports = [NewDashBoardMenu, DashBoardsMenu,InputsMenu];
+module.exports = [NewDashBoardMenu, DashBoardsMenu, InputsMenu];

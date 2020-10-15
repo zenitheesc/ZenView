@@ -5,7 +5,9 @@
 const ipc = require('electron').ipcRenderer;
 
 class FormPattern {
+
 	constructor(config, formConfig) {
+
 		config = config || {};
 		formConfig = formConfig || {};
 		this.htmlComponent = document.createElement('form');
@@ -19,135 +21,202 @@ class FormPattern {
 		formConfig = formConfig || {};
 		this.att = formConfig.att || false;
 		this.conditions = formConfig.conditions || [];
+
 	}
 
 	_buildHtmlComponent() {
-		Object.keys(this.config).forEach(e => {
+
+		Object.keys(this.config).forEach((e) => {
+
 			this.htmlComponent.appendChild(this.config[e].htmlComponent);
+
 		});
+
 	}
 
 	_BuildFormThree() {
+
 		this.formThree['self'] = this;
 		Object.keys(this.config).forEach((property) => {
+
 			if (this.config[property].constructor.name === 'Field') {
+
 				this.formThree[property] = this.config[property];
 				this.fields.push(this.config[property]);
+
 			} else {
+
 				this.fields = this.fields.concat(this.config[property].fields);
 				this.formThree[property] = this.config[property].formThree;
 
 			}
+
 		});
 		return this.formThree;
+
 	}
 
 	setAttribute(attributesUntilHere) {
+
 		let cont = 0;
 		if (this.att) {
+
 			while (String(this.att).startsWith('../')) {
+
 				this.att = String(this.att).replace('../', '');
 				cont++;
+
 			}
 			if (attributesUntilHere !== undefined) {
-				let splited = attributesUntilHere.split('.');
-				let sliced = splited.slice(0, splited.length - cont);
+
+				const splited = attributesUntilHere.split('.');
+				const sliced = splited.slice(0, splited.length - cont);
 				sliced.push(this.att);
 				this.att = sliced.join('.');
+
 			}
 			attributesUntilHere = this.att;
+
 		}
 		Object.keys(this.config).forEach((property) => {
+
 			this.config[property].setAttribute(attributesUntilHere);
+
 		});
+
 	}
 
 	setConditions(form) {
+
 		form = form || this.htmlComponent;
-		this.conditions.forEach(condition => {
-			let element = form.querySelector('#' + condition.id);
+		this.conditions.forEach((condition) => {
+
+			const element = form.querySelector('#' + condition.id);
 			if (element == null) {
-				throw `${condition.id} didn't exists, the element conditions must be on the DOM`;
+
+				throw new Error(`${condition.id} didn't exists, the element conditions must be on the DOM`);
+
 			}
 			element.addEventListener('input', () => {
+
 				this.testConditions(form);
+
 			});
+
 		});
 
 		this.testConditions(form);
 
 		Object.keys(this.config).forEach((property) => {
+
 			this.config[property].setConditions(form);
+
 		});
+
 	}
 
 	testConditions(form) {
+
 		let count = 0;
-		this.conditions.forEach(condition => {
+		this.conditions.forEach((condition) => {
+
 			if (form.querySelector('#' + condition.id)[condition.att] == condition.requiredValue) {
+
 				count++;
+
 			}
+
 		});
 		if (count === this.conditions.length) {
+
 			this.htmlComponent.classList.remove('d-none');
+
 		} else {
+
 			this.htmlComponent.classList.add('d-none');
+
 		}
+
 	}
 
 	validate() {
+
 		let response = true;
 		for (let i = 0, j = this.fields.length; i < j; i++) {
+
 			if (!this.fields[i].validate()) {
+
 				response = false;
+
 			}
+
 		}
 		return response;
+
 	}
 
 	getData() {
-		let response = {};
-		this.fields.forEach(field => {
+
+		const response = {};
+		this.fields.forEach((field) => {
+
 			this.createResponseObj(response, field.parsedAtt, field.value);
+
 		});
 		return response;
+
 	}
 
 	createResponseObj(pointer, path, value) {
 
-		let lastName = (arguments.length === 3) ? path.pop() : false;
+		const lastName = (arguments.length === 3) ? path.pop() : false;
 
 		for (let i = 0, j = path.length; i < j; i++) {
+
 			pointer = pointer[path[i]] = pointer[path[i]] || {};
+
 		}
 
 		if (lastName) {
+
 			pointer = pointer[lastName] = value;
 
 			path.push(lastName);
+
 		}
 
 		return pointer;
+
 	}
 
 	reset() {
-		this.fields.forEach(field => {
+
+		this.fields.forEach((field) => {
+
 			field.reset();
+
 		});
+
 	}
+
 }
 
 class Form extends FormPattern {
+
 	constructor(config, formConfig) {
+
 		formConfig = formConfig || {};
 		formConfig.att = formConfig.att || 'form';
 		super(config, formConfig);
 		this.setAttribute();
 		this.setConditions();
+
 	}
+
 }
 
 class Field {
+
 	constructor(options) {
 
 		this.htmlComponent = options.htmlComponent || {};
@@ -168,192 +237,280 @@ class Field {
 		this.onclick;
 		this.warning = options.warning;
 		this._init();
+
 	}
 	_init() {
+
 		if (this.type === 'button') {
+
 			this.validators = undefined;
+
 		}
+
 	}
 	set onclick(callBackFunction) {
+
 		this.input.onclick = (callBackFunction);
+
 	}
 	get value() {
+
 		if (this.type === 'editableDiv') {
+
 			return this.input.textContent;
+
 		} else if (this.type === 'checkbox') {
+
 			return this.input.checked;
+
 		}
 		return this.input.value;
+
 	}
 	set value(value) {
+
 		if (this.type === 'editableDiv') {
+
 			this.input.innerHTML = value;
+
 		} else {
+
 			this.input.value = value;
+
 		}
+
 	}
 	reset() {
+
 		if (this.type === 'editableDiv') {
+
 			this.input.innerHTML = '';
+
 		} else {
+
 			this.input.value = this.standardValue;
+
 		}
+
 	}
 	setConditions(form) {
-		this.conditions.forEach(condition => {
-			let element = form.querySelector('#' + condition.id);
+
+		this.conditions.forEach((condition) => {
+
+			const element = form.querySelector('#' + condition.id);
 			if (element == null) {
-				throw `${condition.id} didn't exists, the element conditions must be on the DOM`;
+
+				throw new Error(`${condition.id} didn't exists, the element conditions must be on the DOM`);
+
 			}
 			element.addEventListener('input', () => {
+
 				this.testConditions(form);
+
 			});
+
 		});
 
 		this.testConditions(form);
+
 	}
 
 	testConditions(form) {
+
 		let count = 0;
-		this.conditions.forEach(condition => {
+		this.conditions.forEach((condition) => {
+
 			if (form.querySelector('#' + condition.id)[condition.att] == condition.requiredValue) {
+
 				count++;
+
 			}
+
 		});
 		if (count === this.conditions.length) {
+
 			this.htmlComponent.classList.remove('d-none');
+
 		} else {
+
 			this.htmlComponent.classList.add('d-none');
+
 		}
+
 	}
 	setAttribute(attributesUntilHere) {
+
 		let cont = 0;
 		if (this.att) {
+
 			while (String(this.att).startsWith('../')) {
+
 				this.att = String(this.att).replace('../', '');
 				cont++;
+
 			}
-			let splited = attributesUntilHere.split('.');
-			let sliced = splited.slice(0, splited.length - cont);
+			const splited = attributesUntilHere.split('.');
+			const sliced = splited.slice(0, splited.length - cont);
 			sliced.push(this.att);
 			this.parsedAtt = sliced;
 			this.att = sliced.join('.');
+
 		}
+
 	}
 	validate() {
+
 		let isValid = true;
 		if (this.validators === undefined) return true;
 		for (let i = 0, j = this.validators.length; i < j; i++) {
+
 			const response = this.validators[i](this.value);
 			if (response === true) {
+
 				this.hideWarning();
+
 			} else {
+
 				isValid = false;
 				this.showWarning(response);
 				break;
+
 			}
+
 		}
 		return isValid;
+
 	}
 	showWarning(txt) {
+
 		this.warning.textContent = txt;
 		this.input.classList.add('is-invalid');
+
 	}
 	hideWarning() {
+
 		this.input.classList.remove('is-invalid');
+
 	}
 	static _attClassList(htmlComponent, classList) {
+
 		try {
-			classList.forEach(className => {
+
+			classList.forEach((className) => {
+
 				htmlComponent.classList.add(className);
+
 			});
+
 		} catch (error) {
+
 			htmlComponent.classList.add(classList);
+
 		}
+
 	}
 	static _addPrepend(options) {
+
 		const temp = this._buildAppendAndPrepend(options);
-		let appendHtmlComponentList = temp.list;
-		let component = temp.component;
+		const appendHtmlComponentList = temp.list;
+		const component = temp.component;
 
 		component.classList.add('input-group-prepend');
 
 		return {
 			list: appendHtmlComponentList,
-			component: component
+			component: component,
 		};
+
 	}
 	static _addAppend(options) {
 
 		const temp = this._buildAppendAndPrepend(options);
-		let appendHtmlComponentList = temp.list;
-		let component = temp.component;
+		const appendHtmlComponentList = temp.list;
+		const component = temp.component;
 		component.classList.add('input-group-append');
 
 		return {
 			list: appendHtmlComponentList,
-			component: component
+			component: component,
 		};
 
 	}
 	static _buildAppendAndPrepend(options) {
-		let componentList = [];
-		let component = document.createElement('div');
 
-		options.forEach(element => {
+		const componentList = [];
+		const component = document.createElement('div');
+
+		options.forEach((element) => {
+
 			element.classList = element.classList || [];
 			if (element.type === 'text') {
-				let spanComponent = document.createElement('span');
+
+				const spanComponent = document.createElement('span');
 				spanComponent.classList.add('input-group-text');
 				if (element.id) spanComponent.id = element.id;
 				this._attClassList(spanComponent, element.classList);
 				spanComponent.textContent = element.text;
 				component.appendChild(spanComponent);
 				componentList.push(spanComponent);
+
 			} else if (element.type === 'button') {
-				let button = document.createElement('button');
+
+				const button = document.createElement('button');
 				button.type = 'button';
 				if (element.id) button.id = element.id;
 				this._attClassList(button, element.classList);
 				button.innerHTML = element.content;
 				component.appendChild(button);
 				componentList.push(button);
+
 			}
+
 		});
 		return {
 			list: componentList,
-			component: component
+			component: component,
 		};
+
 	}
 	static _inputGroup() {
-		let inputGroupElement = document.createElement('div');
+
+		const inputGroupElement = document.createElement('div');
 		this._attClassList(inputGroupElement, ['formBuilderInputGroup', 'input-group-sm', 'mb-2']);
 		return inputGroupElement;
+
 	}
 	static text(options) {
-		let input = document.createElement('input');
+
+		const input = document.createElement('input');
 		input.type = options.type = 'text';
 		input.classList.add('form-control');
 		if (options.id !== undefined) input.id = options.id;
 		return this.build(options, input);
+
 	}
 	static number(options) {
-		let input = document.createElement('input');
+
+		const input = document.createElement('input');
 		input.type = options.type = 'number';
 		input.classList.add('form-control');
 		if (options.id !== undefined) input.id = options.id;
 		return this.build(options, input);
+
 	}
 	static textArea(options) {
-		let input = document.createElement('textarea');
+
+		const input = document.createElement('textarea');
 		options.type = 'textArea';
 		input.classList.add('form-control');
 		input.style.height = '16em';
 		if (options.id !== undefined) input.id = options.id;
 		return this.build(options, input);
+
 	}
 	static editableDiv(options) {
-		let input = document.createElement('div');
+
+		const input = document.createElement('div');
 		options.type = 'editableDiv';
 		input.contentEditable = true;
 		input.classList.add('editableDiv');
@@ -362,11 +519,13 @@ class Field {
 		if (options.id !== undefined) input.id = options.id;
 		input.classList.add('form-control');
 		return this.build(options, input);
+
 	}
 	static button(options) {
+
 		options.classList = options.classList || [];
 
-		let buttonComponent = document.createElement('button');
+		const buttonComponent = document.createElement('button');
 		buttonComponent.textContent = options.text;
 		options.type = 'button';
 		buttonComponent.type = options.type || 'button';
@@ -378,20 +537,22 @@ class Field {
 		options.input = buttonComponent;
 
 		return new Field(options);
+
 	}
 	static checkBox(options) {
-		let checkGroup = document.createElement('div');
+
+		const checkGroup = document.createElement('div');
 		this._attClassList(checkGroup, ['form-check']);
 
 		options.classList = options.classList || [];
 		this._attClassList(checkGroup, options.classList);
 
-		let input = document.createElement('input');
+		const input = document.createElement('input');
 		input.type = options.type = 'checkbox';
 		this._attClassList(input, ['form-check-input']);
 
 
-		let label = document.createElement('label');
+		const label = document.createElement('label');
 		this._attClassList(label, ['form-check-label']);
 		label.textContent = options.label;
 		checkGroup.appendChild(input);
@@ -399,47 +560,62 @@ class Field {
 		options.htmlComponent = checkGroup;
 		options.input = input;
 		return new Field(options);
+
 	}
 	static select(options) {
-		let input = document.createElement('select');
+
+		const input = document.createElement('select');
 		options.type = 'select';
 		input.classList.add('form-control');
 		if (options.id !== undefined) input.id = options.id;
-		let field = this.build(options, input);
+		const field = this.build(options, input);
 
 		field.addOption = (option, callBack) => {
-			callBack = callBack || function (option) {
+
+			callBack = callBack || function(option) {
+
 				return [option.value || option.text, option.text || option.value];
+
 			};
 
-			let newOption = document.createElement('option');
+			const newOption = document.createElement('option');
 			[newOption.value, newOption.text] = callBack(option);
 			field.input.appendChild(newOption);
+
 		};
 
 		field.setOptions = (options, callBack) => {
+
 			field.input.innerHTML = '';
-			callBack = callBack || function (option) {
+			callBack = callBack || function(option) {
+
 				return [option.value || option.text, option.text || option.value];
+
 			};
 
 			let newOption;
 			options.forEach((option) => {
+
 				newOption = document.createElement('option');
 				[newOption.value, newOption.text] = callBack(option);
 				field.input.appendChild(newOption);
+
 			});
 
 		};
 
 		field.setSelectedOption = (value) => {
+
 			input.value = value;
+
 		};
 
 		return field;
+
 	}
 	static directory(options) {
-		let input = document.createElement('input');
+
+		const input = document.createElement('input');
 		input.type = options.type = 'text';
 		input.classList.add('form-control');
 		if (options.id !== undefined) input.id = options.id;
@@ -457,66 +633,82 @@ class Field {
 		options.prepend = [{
 			type: 'button',
 			content: icon,
-			classList: ['formButtonWithIconPrepend']
+			classList: ['formButtonWithIconPrepend'],
 		}];
 
-		let field = this.build(options, input);
+		const field = this.build(options, input);
 
 		field.prepend[0].onclick = () => {
+
 			ipc.send('open-file-dialog-for-dir');
+
 		};
 
 		ipc.on('selected-dir', (evt, arg) => {
+
 			if (arg !== '' && arg !== undefined) {
+
 				field.input.value = arg || '';
 				field.input.textContent = arg || '';
 				field.input.dispatchEvent(new Event('input'));
+
 			}
+
 		});
 
 		return field;
+
 	}
 	static _label(text, id) {
-		let labelElement = document.createElement('small');
+
+		const labelElement = document.createElement('small');
 		labelElement.classList.add('text-muted');
 		labelElement.classList.add('form-text');
 		if (id !== undefined) labelElement.setAttribute('for', id);
 		labelElement.textContent = text;
 		return labelElement;
+
 	}
 	static _invalidWarning(id) {
+
 		const errorMsg = document.createElement('div');
 		errorMsg.className = 'invalid-feedback';
 		if (id) errorMsg.id = id + '_invalid';
 		return errorMsg;
+
 	}
 	static build(options, input) {
+
 		options.classList = options.classList || [];
 
-		let inputGroup = this._inputGroup(options);
+		const inputGroup = this._inputGroup(options);
 		this._attClassList(inputGroup, options.classList);
 
-		let insideInputGroup = this._inputGroup(options);
+		const insideInputGroup = this._inputGroup(options);
 		insideInputGroup.classList.add('input-group');
 
 		inputGroup.appendChild(this._label(options.label, options.id));
 
 		if (options.prepend) {
-			let prepend = this._addPrepend(options.prepend);
+
+			const prepend = this._addPrepend(options.prepend);
 			insideInputGroup.appendChild(prepend.component);
 			options.prepend = prepend.list;
+
 		}
 
 		insideInputGroup.appendChild(input);
 
 
 		if (options.append) {
-			let append = this._addAppend(options.append);
+
+			const append = this._addAppend(options.append);
 			insideInputGroup.appendChild(append.component);
 			options.append = append.list;
+
 		}
 
-		let warning = this._invalidWarning(options.id);
+		const warning = this._invalidWarning(options.id);
 
 		if (options.validators !== undefined) insideInputGroup.appendChild(warning);
 
@@ -528,24 +720,31 @@ class Field {
 		options.warning = warning;
 
 		return new Field(options);
+
 	}
 
 }
 
 class Container extends FormPattern {
+
 	static div(config, containerConfig) {
-		let container = new Container(config, containerConfig);
+
+		const container = new Container(config, containerConfig);
 		return container;
+
 	}
 	static formRow(config, containerConfig) {
+
 		containerConfig = containerConfig || {};
 		containerConfig.className = 'form-row';
-		let container = new Container(config, containerConfig);
+		const container = new Container(config, containerConfig);
 		return container;
+
 	}
 	static spliter(config, containerConfig) {
+
 		containerConfig = containerConfig || {};
-		let container = new Container(config, containerConfig);
+		const container = new Container(config, containerConfig);
 
 		const card = document.createElement('div');
 
@@ -564,11 +763,15 @@ class Container extends FormPattern {
 		cardBodyCollapse.id = `menu_${containerConfig.id}_option`;
 
 		if (containerConfig.startOpen) {
+
 			cardBodyCollapse.className = 'collapse show';
 			cardHeader.className = 'card-header menuSpliter-header';
+
 		} else {
+
 			cardHeader.className = 'card-header menuSpliter-header collapsed';
 			cardBodyCollapse.className = 'collapse';
+
 		}
 
 		cardBodyCollapse.setAttribute('aria-labelledby', `${containerConfig.id}_option`);
@@ -582,11 +785,13 @@ class Container extends FormPattern {
 		card.appendChild(cardBodyCollapse);
 		container.htmlComponent = card;
 		return container;
+
 	}
+
 }
 
 module.exports = {
 	Form,
 	Field,
-	Container
+	Container,
 };
