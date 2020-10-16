@@ -1,4 +1,5 @@
 const Input = require('./input');
+const InputGraph = require('./inputGraph');
 
 module.exports = class InputGroup {
 
@@ -15,6 +16,7 @@ module.exports = class InputGroup {
 		this.rawInputs = [];
 		this._associationInput = {};
 		this.scope = {};
+		this.inputGraph = new InputGraph();
 		if (isFromJson) {
 
 			this.constructFromJson(numberOfInputs);
@@ -24,9 +26,24 @@ module.exports = class InputGroup {
 			this.newConstructor(numberOfInputs);
 
 		}
-
+		this.initGraph()
 	}
 
+	initGraph() {
+		this.rawInputs.forEach((input) => {
+			input.nextInputs = [];
+			this.inputGraph.addInput(input);
+		})
+
+		this.inputs.forEach((input) => {
+			input.nextInputs = [];
+			this.inputGraph.addInput(input);
+		})
+
+		this.inputGraph.addEgdes();
+		this.inputGraph.hasCycle();
+		this.inputGraph.topologicalSort();
+	}
 	/**
 	 *
 	 *
@@ -65,7 +82,6 @@ module.exports = class InputGroup {
 			const newInput = new Input('collum_' + i, 1, this.scope);
 			this.rawInputs.push(newInput);
 			this._associationInput[newInput.name] = newInput;
-
 		}
 
 	}
@@ -94,7 +110,13 @@ module.exports = class InputGroup {
 
 
 		newInput.visited = -1;
-
+		console.log(this.inputGraph.nodes);
+		this.inputGraph.addInput(newInput);
+		this.inputGraph.addEgdes();
+		this.inputGraph.hasCycle();
+		this.inputGraph.topologicalSort();
+		console.log(this.inputGraph.nodes);
+		//fs.writeFileSync(window.CurrentDashBoard.path, JSON.stringify(window.CurrentDashBoard, null, '\t'));
 		return {
 			created: true,
 			name: newInput.name,
@@ -133,150 +155,27 @@ module.exports = class InputGroup {
 
 		}
 
-		/* for (let i = this.inputs.length - 1; i >= 0; i--) {
+		for (let i = this.inputs.length - 1; i >= 0; i--) {
 			if (this.inputs[i].name === inputConfig.inputName) {
 				this.inputs.splice(i, 1);
 				break;
 			}
-		}*/
-
-		const currentInput = this._associationInput[inputConfig.inputName];
-		const oldExpression = currentInput.expression;
-		currentInput.expression = inputConfig.expression;
-
-		if (currentInput.dependencies.includes(inputConfig.inputName)) {
-
-			return {
-				created: false,
-				msg: 'Uma entrada não pode depender de si mesma',
-			};
-
 		}
 
+		this._associationInput[inputConfig.inputName] = undefined;
+		const newInput = new Input(inputConfig.newName, inputConfig.expression, this.scope);
+		this._associationInput[newInput.newName] = newInput;
+		this.inputs.push(newInput);
 
-		/*this._associationInput[newInput.name] = newInput;
-		this.inputs.push(newInput);*/
-		try {
+		newInput.visited = -1;
 
-			this.defineLevels();
 
-		} catch (error) {
-
-			console.log(error);
-			return {
-				created: false,
-				msg: 'Esta expressão gera um ciclo de dependencias',
-			};
-
-		}
-
-		currentInput.visited = -1;
-
-		return {
-			created: true,
-			name: newInput.name,
-			expression: newInput.expression,
-		};
-
-	}
-
-	/**
-	 *
-	 *
-	 */
-	resetBusca() {
-
-		this.inputs.forEach((input) => {
-
-			input.visited = -1;
-
-		});
-
-	}
-
-	/**
-	 *
-	 *
-	 * @param {*} input
-	 * @param {*} currentPos
-	 * @return {*}
-	 */
-	topologicRecursion(input, currentPos) {
-
-		if (input.visited === 0) {
-
-			throw new Error('Ciclo E1ncontrado');
-
-		}
-
-		input.visited = 0;
-
-		if (input.level === undefined || input.level < currentPos) {
-
-			input.level = currentPos;
-			input.nextInputs.forEach((nextInput) => {
-
-				this.recursion(nextInput, currentPos + 1);
-
-			});
-
-		}
-
-		input.visited = 1;
-		return true;
-
-	}
-
-	/**
-	 *
-	 *
-	 * @return {*}
-	 */
-	defineLevels() {
-
-		this.rawInputs.forEach(
-			(input) => {
-
-				if (input.dependencies.length === 0) {
-
-					this.resetBusca();
-					this.topologicRecursion(input, 0);
-
-				}
-
-			});
-
-		this.inputs.forEach(
-			(input) => {
-
-				if (input.dependencies.length === 0) {
-
-					this.resetBusca();
-					this.topologicRecursion(input, 0);
-
-				}
-
-			});
-
-		return true;
-
-	}
-
-	/**
-	 *
-	 *
-	 * @return {*}
-	 */
-	topologicalSort() {
-
-		this.inputs.sort((input1, input2) => {
-
-			return input1.level - input2.level;
-
-		});
-
-		return this.inputs;
-
+		this.inputGraph.addInput(newInput);
+		this.inputGraph.addEgdes();
+		this.inputGraph.hasCycle();
+		this.inputGraph.topologicalSort();
+		console.log(this.inputGraph.nodes);
+		//fs.writeFileSync(window.CurrentDashBoard.path, JSON.stringify(window.CurrentDashBoard, null, '\t'));
 	}
 
 };

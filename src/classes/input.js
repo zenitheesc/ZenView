@@ -5,9 +5,12 @@ module.exports = class Input {
 	constructor(name, expression, scope) {
 
 		this.name = name;
+		this.dependencies = [];
 		this.expression = expression;
 		this.scope = scope;
-		this.scope[name] = this.getValue;
+
+		
+		this.nextInputs = [];
 
 	}
 
@@ -15,13 +18,17 @@ module.exports = class Input {
 	 * @param {String} newExpression
 	 */
 	set expression(newExpression) {
-		console.log(newExpression);
-		this.dependencies = [];
 
-		this._expression = newExpression.formated;
-		this.rawExpression = newExpression.raw;
+		this._expression = newExpression.formated || newExpression;
+		this.rawExpression = newExpression.raw || newExpression;
 
 		this.compiledExpression = Math.compile(this._expression);
+
+		this.setDependencies();
+
+	}
+
+	setDependencies() {
 
 		Math.parse(this._expression).filter((node) => {
 

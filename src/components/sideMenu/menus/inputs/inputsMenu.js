@@ -1,4 +1,3 @@
-
 const Menu = require('../menu');
 const Form = require('../../../../formBuilder').Form;
 const Components = require('../../../components');
@@ -13,10 +12,12 @@ module.exports = class InputsMenu extends Menu {
 	constructor() {
 
 		super('Entradas', 'inputs_menu');
+
 		this.button = Field.button({
 			text: 'Salvar',
 			classList: ['formCenteredBtn', 'green-btn'],
 		});
+
 		this.selectInput = Field.select({
 			label: 'Nome',
 			att: 'currentInput',
@@ -30,6 +31,7 @@ module.exports = class InputsMenu extends Menu {
 				classList: ['formButtonWithIconPrepend'],
 			}],
 		});
+
 		this.form = new Form({
 			newDashBoardSpliter: Container.spliter({
 				selectedInput: this.selectInput,
@@ -102,7 +104,7 @@ module.exports = class InputsMenu extends Menu {
 
 				if (!(validVariables.includes('${' + dependencies[i] + '}') || validVariables.includes('#{' + dependencies[i] + '}'))) {
 
-					console.warn('ERRO, NÃO FOI POSSÍVEL ENCONTRAR: '+'${' + dependencies[i] + '}');
+					console.warn('ERRO, NÃO FOI POSSÍVEL ENCONTRAR: ' + '${' + dependencies[i] + '}');
 					return {
 						valid: false,
 						msg: 'Expressão matemática inválida',
@@ -114,7 +116,7 @@ module.exports = class InputsMenu extends Menu {
 
 		} catch (error) {
 
-			console.warn('ERRO, EXPRESSÃO INVÁLIDA: '+expression);
+			console.warn('ERRO, EXPRESSÃO INVÁLIDA: ' + expression);
 			return {
 				valid: false,
 				msg: 'Expressão matemática inválida',
@@ -132,78 +134,33 @@ module.exports = class InputsMenu extends Menu {
 
 	newInput() {
 
-		if (this.form.validate()) {
+		if (!this.form.validate()) return;
 
-			const data = this.form.getData().inputData;
+		const data = this.form.getData().inputData;
 
-			const expressionAnswer = this.validateExpression();
+		const expressionAnswer = this.validateExpression();
 
-			if (!expressionAnswer.valid) {
+		if (!expressionAnswer.valid) {
 
-				this.form.fields[2].showWarning(expressionAnswer.msg);
-				return;
+			this.form.fields[2].showWarning(expressionAnswer.msg);
+			return;
 
-			} else {
+		} else {
 
-				data.expression = {};
-				data.expression.formated = expressionAnswer.expression;
-				data.expression.raw = this.form.fields[2].input.innerHTML;
-
-			}
-
-			const createdAnswer = window.CurrentInputGroup.addNewInput(data);
-
-			if (createdAnswer.created) {
-
-				this.attInputList();
-				this.form.reset();
-
-			} else {
-
-				this.form.formThree.newDashBoardSpliter.name.showWarning(createdAnswer.msg);
-
-			}
+			data.expression = {};
+			data.expression.formated = expressionAnswer.expression;
+			data.expression.raw = this.form.fields[2].input.innerHTML;
 
 		}
 
-	}
+		const createdAnswer = window.CurrentInputGroup.addNewInput(data);
 
-	attInput() {
+		if (createdAnswer.created) {
+			this.attInputList();
+			this.setEditMode();
+		} else {
 
-		if (this.form.validate()) {
-
-			const data = this.form.getData().inputData;
-
-			const expressionAnswer = this.validateExpression();
-
-			if (!expressionAnswer.valid) {
-
-				this.form.fields[2].showWarning(expressionAnswer.msg);
-				return;
-
-			} else {
-
-				data.expression = {};
-				data.expression.formated = expressionAnswer.expression;
-				data.expression.raw = this.form.fields[2].input.innerHTML;
-				data.newName = data.name;
-				data.inputName = this.selectInput.value;
-
-			}
-
-			console.log(data);
-			const createdAnswer = window.CurrentInputGroup.editInput(data);
-
-			if (createdAnswer.created) {
-
-				this.attInputList();
-				this.form.reset();
-
-			} else {
-
-				this.form.formThree.newDashBoardSpliter.name.showWarning(createdAnswer.msg);
-
-			}
+			this.form.formThree.newDashBoardSpliter.name.showWarning(createdAnswer.msg);
 
 		}
 
@@ -225,21 +182,13 @@ module.exports = class InputsMenu extends Menu {
 
 		this.selectInput.append[1].onclick = () => {
 
-			console.log('append2');
+			console.log('Deletar entrada');
 
 		};
 
 		this.selectInput.input.onchange = () => {
 
-			this.button.htmlComponent.textContent = 'Salvar';
-			const input = window.CurrentInputGroup.getInputByName(this.selectInput.value);
-			this.form.fields[1].value = input.name;
-			this.form.fields[2].value = input.rawExpression;
-			this.button.onclick = () => {
-
-				this.attInput();
-
-			};
+			this.setEditMode();
 
 		};
 
@@ -253,17 +202,28 @@ module.exports = class InputsMenu extends Menu {
 
 	}
 
+	setEditMode() {
+		this.button.htmlComponent.textContent = 'Salvar';
+		const input = window.CurrentInputGroup.getInputByName(this.selectInput.value);
+		this.form.fields[1].value = input.name;
+		this.form.fields[2].value = input.rawExpression;
+		this.button.onclick = () => {
+
+			this.attInput();
+
+		};
+	}
+
 	setAutoCompleteConfigs() {
 
 		this.tribute = new Tribute({
 			replaceTextSuffix: '',
-			noMatchTemplate: function() {
+			noMatchTemplate: function () {
 
 				return '<span style:"visibility: hidden;"></span>';
 
 			},
-			collection: [
-				{
+			collection: [{
 					trigger: '${',
 					values: [],
 					lookup: (input) => {
@@ -271,7 +231,7 @@ module.exports = class InputsMenu extends Menu {
 						return input.name;
 
 					},
-					selectTemplate: function(item) {
+					selectTemplate: function (item) {
 
 						return (
 							'<a contenteditable="false" class="inputTag">' +
@@ -289,7 +249,7 @@ module.exports = class InputsMenu extends Menu {
 
 					},
 					values: [],
-					selectTemplate: function(item) {
+					selectTemplate: function (item) {
 
 						return (
 							'<a contenteditable="false" class="inputTag">' +
@@ -305,22 +265,17 @@ module.exports = class InputsMenu extends Menu {
 
 	}
 
-	setEvents() {
-
-		window.addEventListener('attInputList', () => {
-
-			this.attInputList();
-
-		});
-
-	}
-
 	load() {
 
 		this.menuComponent.appendChild(this.form.htmlComponent);
 		this.setFormConfigs();
 		this.setAutoCompleteConfigs();
 
+		window.addEventListener('attInputList', () => {
+
+			this.attInputList();
+
+		});
 	}
 
 };
