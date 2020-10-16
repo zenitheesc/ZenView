@@ -11,12 +11,12 @@ module.exports = class Menu {
 	load() {
 
 	}
-	onLoad(){
+	onLoad() {
 
 	}
 	setEvents() {
 		window.addEventListener('openMenu', (evt) => {
-			if ((evt.detail.name) + '_menu' == this.menuComponent.id) {
+			if ((evt.detail.name) + '_menu' === this.menuComponent.id) {
 				this.onLoad();
 				this.menuComponent.style.display = 'block';
 
