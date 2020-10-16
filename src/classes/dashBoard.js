@@ -1,4 +1,4 @@
-const InputGroup = require('./InputGroup2');
+const InputGroup = require('./inputGroup');
 module.exports = class DashBoard {
 
 	constructor(name, nbmrInputs, path, description) {
