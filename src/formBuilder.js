@@ -11,6 +11,9 @@ class FormPattern {
 		config = config || {};
 		formConfig = formConfig || {};
 		this.htmlComponent = document.createElement('form');
+		this.htmlComponent.onsubmit = () => {
+			return false
+		};
 		if (formConfig.className !== undefined) this.htmlComponent.className = formConfig.className;
 		this.config = config;
 		this.fields = [];
@@ -98,7 +101,6 @@ class FormPattern {
 
 			}
 			element.addEventListener('input', () => {
-
 				this.testConditions(form);
 
 			});
@@ -246,7 +248,6 @@ class Field {
 			this.validators = undefined;
 
 		}
-
 	}
 	set onclick(callBackFunction) {
 
@@ -559,6 +560,7 @@ class Field {
 		checkGroup.appendChild(label);
 		options.htmlComponent = checkGroup;
 		options.input = input;
+		if (options.id !== undefined) input.id = options.id;
 		return new Field(options);
 
 	}
@@ -572,7 +574,7 @@ class Field {
 
 		field.addOption = (option, callBack) => {
 
-			callBack = callBack || function(option) {
+			callBack = callBack || function (option) {
 
 				return [option.value || option.text, option.text || option.value];
 
@@ -587,7 +589,7 @@ class Field {
 		field.setOptions = (options, callBack) => {
 
 			field.input.innerHTML = '';
-			callBack = callBack || function(option) {
+			callBack = callBack || function (option) {
 
 				return [option.value || option.text, option.text || option.value];
 
@@ -610,13 +612,16 @@ class Field {
 
 		};
 
+		if (options.options) field.setOptions(options.options);
+
 		return field;
 
 	}
 	static directory(options) {
 
 		const input = document.createElement('input');
-		input.type = options.type = 'text';
+		options.type = options.type || 'dir';
+		input.type = 'text';
 		input.classList.add('form-control');
 		if (options.id !== undefined) input.id = options.id;
 		input.disabled = true;
@@ -637,24 +642,48 @@ class Field {
 		}];
 
 		const field = this.build(options, input);
+		if (options.type === 'file') {
+			field.prepend[0].onclick = () => {
 
-		field.prepend[0].onclick = () => {
+				ipc.send('open-file-dialog-for-file');
 
-			ipc.send('open-file-dialog-for-dir');
+				ipc.on('selected-dir', (evt, arg) => {
 
-		};
+					if (arg !== '' && arg !== undefined) {
 
-		ipc.on('selected-dir', (evt, arg) => {
+						field.input.value = arg || '';
+						field.input.textContent = arg || '';
+						field.input.dispatchEvent(new Event('input'));
 
-			if (arg !== '' && arg !== undefined) {
+					}
+					ipc.removeAllListeners('selected-dir');
 
-				field.input.value = arg || '';
-				field.input.textContent = arg || '';
-				field.input.dispatchEvent(new Event('input'));
+				});
 
-			}
+			};
+		} else {
+			field.prepend[0].onclick = () => {
 
-		});
+				ipc.send('open-file-dialog-for-dir');
+
+				ipc.on('selected-dir', (evt, arg) => {
+
+					if (arg !== '' && arg !== undefined) {
+
+						field.input.value = arg || '';
+						field.input.textContent = arg || '';
+						field.input.dispatchEvent(new Event('input'));
+
+					}
+					ipc.removeAllListeners('selected-dir');
+
+				});
+
+			};
+		}
+
+
+
 
 		return field;
 
