@@ -51,6 +51,7 @@ function createWindow(params) {
 	window.on('closed', () => {
 		window = null;
 	});
+	if (!debugMode) window.removeMenu();
 	return window;
 }
 //event listener que espera o app ser criado para criar as janelas
@@ -88,8 +89,19 @@ ipc.on('mainLoadCompleto', () => {
 
 ipc.on('open-file-dialog-for-dir', async event => {
 
-	const dir = await dialog.showOpenDialog(mainWindow,{
-		properties: ['openDirectory']
+	const dir = await dialog.showOpenDialog(mainWindow, {
+
+		properties: ['openDirectory', 'createDirectory']
+	});
+	if (dir) {
+		event.sender.send('selected-dir', dir.filePaths[0]);
+	}
+});
+
+ipc.on('open-file-dialog-for-file', async event => {
+
+	const dir = await dialog.showOpenDialog(mainWindow, {
+		properties: ['openFile']
 	});
 	if (dir) {
 		event.sender.send('selected-dir', dir.filePaths[0]);
