@@ -142,8 +142,8 @@ class FormPattern {
 	}
 
 	validate() {
-
 		let response = true;
+		
 		for (let i = 0, j = this.fields.length; i < j; i++) {
 
 			if (!this.fields[i].validate()) {
@@ -360,9 +360,14 @@ class Field {
 
 	}
 	validate() {
-
+		if(this.htmlComponent.offsetWidth <=0 && this.htmlComponent.offsetHeight <=0 ){
+			this.hideWarning();
+			return true;
+		}
+		
 		let isValid = true;
 		if (this.validators === undefined) return true;
+		 
 		for (let i = 0, j = this.validators.length; i < j; i++) {
 
 			const response = this.validators[i](this.value);
