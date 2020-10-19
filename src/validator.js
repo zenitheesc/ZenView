@@ -1,6 +1,5 @@
 module.exports = class Validator {
 	static isFilled(value) {
-		console.log(value)
 		if (value === '' || value === undefined) {
 			return 'Esse campo é obrigatório';
 		} else {
