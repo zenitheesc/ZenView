@@ -148,7 +148,7 @@ module.exports = class InputsMenu extends Menu {
 		} else {
 
 			data.expression = {};
-			data.expression.formated = expressionAnswer.expression;
+			data.expression.formatted = expressionAnswer.expression;
 			data.expression.raw = this.form.fields[2].input.innerHTML;
 
 		}
@@ -206,7 +206,7 @@ module.exports = class InputsMenu extends Menu {
 		this.button.htmlComponent.textContent = 'Salvar';
 		const input = window.CurrentInputGroup.getInputByName(this.selectInput.value);
 		this.form.fields[1].value = input.name;
-		this.form.fields[2].value = input.rawExpression;
+		this.form.fields[2].value = input.expression.raw;
 		this.button.onclick = () => {
 
 			this.attInput();
