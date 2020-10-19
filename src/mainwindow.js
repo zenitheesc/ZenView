@@ -2,11 +2,11 @@ const SideMenu = require('./components/sideMenu/sideMenu.js');
 const DashBoardComponent = require('./components/dashBoard/dashBoardComponent.js');
 const fs = require('fs');
 const ipc = require('electron').ipcRenderer;
-
+const DataReader = require('./components/dataReader/dataReader')
 class MainWindow {
 
 	constructor() {
-
+		this.DataReader = new DataReader();
 		this.component;
 		this.SideMenu = new SideMenu();
 		this.DashBoardComponent = new DashBoardComponent();
@@ -35,7 +35,7 @@ class MainWindow {
 		this.init();
 		this.SideMenu.build();
 		this.DashBoardComponent.build();
-
+		this.DataReader.build();
 		window.dispatchEvent(new CustomEvent('GlobalContextChange', {
 			detail: {
 				context: 'all',
