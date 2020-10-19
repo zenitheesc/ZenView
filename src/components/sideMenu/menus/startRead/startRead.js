@@ -5,12 +5,14 @@ const Container = require('../../../../formBuilder').Container;
 const Field = require('../../../../formBuilder').Field;
 
 module.exports = class StartRead extends Menu {
+
 	constructor() {
+
 		super('Iniciar Leitura', 'start_menu');
 
 		this.button = Field.button({
 			text: 'Iniciar Leitura',
-			classList: ['formCenteredBtn', 'green-btn']
+			classList: ['formCenteredBtn', 'green-btn'],
 		});
 
 		this.form = new Form({
@@ -20,41 +22,41 @@ module.exports = class StartRead extends Menu {
 					att: 'readFrom',
 					id: 'currReadFrom',
 					options: [{
-							text: 'serial'
-						},
-						{
-							text: 'csv'
-						}
-					]
+						text: 'serial',
+					},
+					{
+						text: 'csv',
+					},
+					],
 				}),
 				serialContainer: Container.div({
 					port: Field.select({
 						label: 'Porta',
 						att: 'port',
-						validators: [Validator.isFilled]
+						validators: [Validator.isFilled],
 					}),
 					baudRate: Field.select({
 						label: 'Baud Rate',
 						att: 'baudRate',
 						options: [{
-								text: 4800
-							},
-							{
-								text: 9600
-							},
-							{
-								text: 14400
-							},
-							{
-								text: 38400
-							},
-							{
-								text: 57600
-							},
-							{
-								text: 115200
-							},
-						]
+							text: 4800,
+						},
+						{
+							text: 9600,
+						},
+						{
+							text: 14400,
+						},
+						{
+							text: 38400,
+						},
+						{
+							text: 57600,
+						},
+						{
+							text: 115200,
+						},
+						],
 					}),
 
 				}, {
@@ -63,20 +65,20 @@ module.exports = class StartRead extends Menu {
 					conditions: [{
 						id: 'currReadFrom',
 						att: 'value',
-						requiredValue: 'serial'
-					}]
+						requiredValue: 'serial',
+					}],
 				}),
 				csvContainer: Container.div({
 					file: Field.directory({
 						label: 'Arquivo:',
 						att: 'filePath',
 						type: 'file',
-						validators: [Validator.isFilled, Validator.extension('.csv')]
+						validators: [Validator.isFilled, Validator.extension('.csv')],
 					}),
 					simulate: Field.checkBox({
 						label: 'Simular',
 						att: 'simulate',
-						id: 'simulateCurrentRead'
+						id: 'simulateCurrentRead',
 					}),
 					simulationContainer: Container.div({
 						dataChannel: Field.select({
@@ -84,25 +86,25 @@ module.exports = class StartRead extends Menu {
 							att: 'intervalType',
 							id: 'intervalType',
 							options: [{
-									text: 'Fixo',
-									value: 'fixed'
-								},
-								{
-									text: 'Entrada',
-									value: 'input'
-								}
-							]
+								text: 'Fixo',
+								value: 'fixed',
+							},
+							{
+								text: 'Entrada',
+								value: 'input',
+							},
+							],
 						}),
 						fixInterval: Field.number({
 							label: 'Intervalo em ms',
 							att: 'fixIntervalSize',
 							id: 'fixIntervalSize',
-							validators: [Validator.isFilled,Validator.isNumber,Validator.isPositive],
+							validators: [Validator.isFilled, Validator.isNumber, Validator.isPositive],
 							conditions: [{
 								id: 'intervalType',
 								att: 'value',
-								requiredValue: 'fixed'
-							}]
+								requiredValue: 'fixed',
+							}],
 						}),
 						inputInterval: Field.select({
 							label: 'Entrada do intervalo de tempo ',
@@ -111,41 +113,42 @@ module.exports = class StartRead extends Menu {
 							conditions: [{
 								id: 'intervalType',
 								att: 'value',
-								requiredValue: 'input'
-							}]
-						})
+								requiredValue: 'input',
+							}],
+						}),
 					}, {
 						id: 'simulationOptions',
+						att: 'simulation',
 						conditions: [{
 							id: 'simulateCurrentRead',
 							att: 'checked',
-							requiredValue: true
-						}]
-					})
+							requiredValue: true,
+						}],
+					}),
 				}, {
 					id: 'csvReadOptions',
 					att: 'csvReadConfig',
 					conditions: [{
 						id: 'currReadFrom',
 						att: 'value',
-						requiredValue: 'csv'
-					}]
+						requiredValue: 'csv',
+					}],
 				}),
 				save: Field.checkBox({
 					label: 'Salvar leitura',
 					att: 'save',
-					id: 'saveCurrentRead'
+					id: 'saveCurrentRead',
 				}),
-				container: Container.div({
+				saveOutputContainer: Container.div({
 					fileName: Field.text({
 						label: 'Nome do arquivo',
 						att: 'fileName',
-						validators: [Validator.isFilled]
+						validators: [Validator.isFilled],
 					}),
 					filePath: Field.directory({
 						label: 'Diretório',
 						att: 'filePath',
-						validators: [Validator.isFilled]
+						validators: [Validator.isFilled],
 					}),
 
 				}, {
@@ -154,27 +157,39 @@ module.exports = class StartRead extends Menu {
 					conditions: [{
 						id: 'saveCurrentRead',
 						att: 'checked',
-						requiredValue: true
-					}]
+						requiredValue: true,
+					}],
 				}),
-				start: this.button
+				start: this.button,
 			}, {
 				startOpen: true,
 				text: 'Novo DashBoard',
-				id: 'newDashBoardSpliter'
-			})
+				id: 'newDashBoardSpliter',
+			}),
 		});
+
 	}
-	startReadConfig(){
-		if(!this.form.validate()) return;
-		window.dispatchEvent(new CustomEvent('StartRead',{detail:this.form.getData().form}));
+
+	startReadConfig() {
+
+		if (!this.form.validate()) return;
+		window.dispatchEvent(new CustomEvent('StartRead', {detail: this.form.getData().form}));
+
 	}
+
 	load() {
-		let spliterContainer = document.createElement('div');
+
+		const spliterContainer = document.createElement('div');
 		spliterContainer.className = 'menuBody';
 		spliterContainer.appendChild(this.form.htmlComponent);
 		this.menuComponent.appendChild(this.form.htmlComponent);
 
-		this.button.onclick = ()=>{this.startReadConfig()};
+		this.button.onclick = ()=>{
+
+			this.startReadConfig();
+
+		};
+
 	}
-}
+
+};

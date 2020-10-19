@@ -6,17 +6,18 @@ module.exports = class Input {
 
 		this.name = name;
 		this.dependencies = [];
-		
+
 		this.expression = {
 			raw: expression.raw || expression.formatted,
-			formatted: expression.formatted
-		}
+			formatted: expression.formatted,
+		};
 
 		this.compiledExpression = this.Math.compile(this.expression.formatted);
 
 		this.scope = scope;
 
 		this.setDependencies();
+
 	}
 
 	setDependencies() {

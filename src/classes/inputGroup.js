@@ -1,7 +1,5 @@
 const Input = require('./input');
 const InputGraph = require('./inputGraph');
-const create = require('mathjs').create;
-const all = require('mathjs').all;
 const Math = require('mathjs');
 module.exports = class InputGroup {
 
@@ -12,6 +10,7 @@ module.exports = class InputGroup {
 
 	 */
 	constructor(numberOfInputs, isFromJson) {
+
 		this.customMath;
 		this.numberOfInputs;
 		this.inputs = [];
@@ -35,17 +34,23 @@ module.exports = class InputGroup {
 	}
 
 	initGraph() {
+
 		this.inputGraph.addEgdes();
 		this.inputGraph.hasCycle();
 		this.inputGraph.topologicalSort();
+
 	}
 
 	initReadFunction() {
+
 		this.customMath = Math.create(Math.all);
 
 		window.addEventListener('dataIsReady', (evt) => {
+
 			this.solve(evt.detail);
+
 		});
+
 	}
 
 	/**
@@ -70,19 +75,23 @@ module.exports = class InputGroup {
 
 		this.numberOfInputs = inputGroupJSON.numberOfInputs;
 
-		inputGroupJSON.inputs.forEach(input => {
-			let newInput = new Input(input.name, input.expression, this.scope, this.customMath);
+		inputGroupJSON.inputs.forEach((input) => {
+
+			const newInput = new Input(input.name, input.expression, this.scope, this.customMath);
 			this.inputs.push(newInput);
 			this.inputGraph.addInput(newInput);
 			this._associationInput[newInput.name] = newInput;
-		})
 
-		inputGroupJSON.rawInputs.forEach(input => {
-			let newInput = new Input(input.name, input.expression, this.scope, this.customMath);
+		});
+
+		inputGroupJSON.rawInputs.forEach((input) => {
+
+			const newInput = new Input(input.name, input.expression, this.scope, this.customMath);
 			this.rawInputs.push(newInput);
 			this.inputGraph.addInput(newInput);
 			this._associationInput[newInput.name] = newInput;
-		})
+
+		});
 
 		this.inputGraph.addEgdes();
 		this.inputGraph.hasCycle();
@@ -97,12 +106,14 @@ module.exports = class InputGroup {
 	generateInputs() {
 
 		for (let i = 0; i < this.numberOfInputs; i++) {
-			let expression = {
-				formatted: `${'collum_' + i}`
+
+			const expression = {
+				formatted: `${'collum_' + i}`,
 			};
 			const newInput = new Input('collum_' + i, expression, this.scope, this.customMath);
 			this.rawInputs.push(newInput);
 			this._associationInput[newInput.name] = newInput;
+
 		}
 
 	}
@@ -175,10 +186,14 @@ module.exports = class InputGroup {
 		}
 
 		for (let i = this.inputs.length - 1; i >= 0; i--) {
+
 			if (this.inputs[i].name === inputConfig.inputName) {
+
 				this.inputs.splice(i, 1);
 				break;
+
 			}
+
 		}
 
 		this._associationInput[inputConfig.inputName] = undefined;
@@ -192,23 +207,27 @@ module.exports = class InputGroup {
 		this.inputGraph.topologicalSort();
 
 		window.dispatchEvent(new CustomEvent('saveCurrentDashBoard'));
+
 	}
 
 	solve(data) {
+
 		for (let i = 0; i < data.length; i++) {
+
 			this.scope['collum_' + i] = data[i];
+
 		}
 
-		this.inputGraph.inputs.forEach(input => {
+		this.inputGraph.inputs.forEach((input) => {
+
 			input.evaluate();
-		})
+
+		});
 
 		console.log(this.scope);
 
-		//console.log(this.scope);
-		//window.dispatchEvent(new CustomEvent('dataIsProcessed'));
-		//window.CurrentReader.read();
-		//window.dispatchEvent(new CustomEvent('readData'));
+		window.dispatchEvent(new CustomEvent('dataIsProcessed', {detail: this.scope}));
+
 	}
 
 };
