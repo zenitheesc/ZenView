@@ -30,7 +30,8 @@ let mainWindowparams = {
 	show: debugMode,
 	webPreferences: {
 		nodeIntegration: true,
-		webviewTag: true
+		webviewTag: true,
+		nodeIntegrationInWorker: true
 	},
 	openDevTools: debugMode
 };
