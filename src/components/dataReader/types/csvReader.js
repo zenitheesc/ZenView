@@ -1,55 +1,84 @@
-const lineByLine = require('n-readlines');
+const LineByLine = require('n-readlines');
 
-//module.exports = 
+// module.exports =
 class CsvReader {
+
 	constructor() {
+
 		this.lineReader;
 		this.delay = 0;
 		this.data = [];
-		this.lastData = [];
+
 	}
 
 	init(readConfig) {
+
 		this.data = [];
 		this.delay = 0;
 
-		this.lineReader = new lineByLine(readConfig.filePath);
+		this.lineReader = new LineByLine(readConfig.filePath);
 
-		if (readConfig.simulation) {
-			if (readConfig.simulation.type = 'fixed') {
-				this.delay = readConfig.simulation.fixedDelay;
+		if (readConfig.simulate) {
+
+			if (readConfig.simulation.intervalType = 'fixed') {
+
+				this.delay = readConfig.simulation.fixIntervalSize;
+
 			}
+
+			this.readWithDelay();
+
+		} else {
+
+			this.read();
+
 		}
 
-		this.readNextLine();
-		this.read();
+
 	}
 
 	setData() {
 
 	}
 
-	read() {
+	readWithDelay() {
+
 		this.data = this.readNextLine();
-		let duracao = Date.now();
-		let dataReaded = {}
+		this.setData();
+
+		postMessage(this.data);
+		setTimeout(()=>{
+
+			this.readWithDelay();
+
+		}, this.delay);
+
+	}
+
+	read() {
+
+		this.data = this.readNextLine();
+		const duracao = Date.now();
+		console.log('iniciando leitura');
 
 		while (this.data) {
-			//console.log(this.data);
+
 			this.data = this.readNextLine();
 			this.setData();
 
 			postMessage(this.data);
 
-			dataReaded = {};
 		}
-		
+
 		console.log('duração: ' + (Date.now() - duracao));
+
 	}
 
 	readNextLine() {
-		let line = this.lineReader.next();
+
+		const line = this.lineReader.next();
 		return (line) ? line.toString().split(',') : false;
+
 	}
 
 }
@@ -57,5 +86,7 @@ class CsvReader {
 const csvReader = new CsvReader();
 
 onmessage = (data) => {
+
 	csvReader.init(data.data);
-}
+
+};
