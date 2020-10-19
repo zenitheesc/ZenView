@@ -5,6 +5,7 @@ const fs = require('fs');
 const Form = require('../../../../formBuilder').Form;
 const Container = require('../../../../formBuilder').Container;
 const Field = require('../../../../formBuilder').Field;
+
 module.exports = class newDashBoardMenu extends Menu {
 	constructor() {
 		super('New Dashboard', 'newDashboard_menu');
@@ -71,7 +72,7 @@ module.exports = class newDashBoardMenu extends Menu {
 					}
 				}));
 
-				//this.form.reset();
+				this.form.reset();
 			}
 		};
 	}
