@@ -1,6 +1,8 @@
 const Input = require('./input');
 const InputGraph = require('./inputGraph');
-
+const create = require('mathjs').create;
+const all = require('mathjs').all;
+const Math = require('mathjs');
 module.exports = class InputGroup {
 
 	/**
@@ -10,13 +12,15 @@ module.exports = class InputGroup {
 
 	 */
 	constructor(numberOfInputs, isFromJson) {
-
+		this.customMath;
 		this.numberOfInputs;
 		this.inputs = [];
 		this.rawInputs = [];
 		this._associationInput = {};
 		this.scope = {};
 		this.inputGraph = new InputGraph();
+		this.initReadFunction();
+
 		if (isFromJson) {
 
 			this.constructFromJson(numberOfInputs);
@@ -26,24 +30,24 @@ module.exports = class InputGroup {
 			this.newConstructor(numberOfInputs);
 
 		}
-		this.initGraph()
+		this.initGraph();
+
 	}
 
 	initGraph() {
-		this.rawInputs.forEach((input) => {
-			input.nextInputs = [];
-			this.inputGraph.addInput(input);
-		})
-
-		this.inputs.forEach((input) => {
-			input.nextInputs = [];
-			this.inputGraph.addInput(input);
-		})
-
 		this.inputGraph.addEgdes();
 		this.inputGraph.hasCycle();
 		this.inputGraph.topologicalSort();
 	}
+
+	initReadFunction() {
+		this.customMath = Math.create(Math.all);
+
+		window.addEventListener('dataIsReady', (evt) => {
+			this.solve(evt.detail);
+		});
+	}
+
 	/**
 	 *
 	 *
@@ -65,9 +69,24 @@ module.exports = class InputGroup {
 	constructFromJson(inputGroupJSON) {
 
 		this.numberOfInputs = inputGroupJSON.numberOfInputs;
-		this.rawInputs = inputGroupJSON.rawInputs;
-		this.inputs = inputGroupJSON.inputs;
-		this._associationInput = inputGroupJSON._associationInput;
+
+		inputGroupJSON.inputs.forEach(input => {
+			let newInput = new Input(input.name, input.expression, this.scope, this.customMath);
+			this.inputs.push(newInput);
+			this.inputGraph.addInput(newInput);
+			this._associationInput[newInput.name] = newInput;
+		})
+
+		inputGroupJSON.rawInputs.forEach(input => {
+			let newInput = new Input(input.name, input.expression, this.scope, this.customMath);
+			this.rawInputs.push(newInput);
+			this.inputGraph.addInput(newInput);
+			this._associationInput[newInput.name] = newInput;
+		})
+
+		this.inputGraph.addEgdes();
+		this.inputGraph.hasCycle();
+		this.inputGraph.topologicalSort();
 
 	}
 
@@ -78,8 +97,10 @@ module.exports = class InputGroup {
 	generateInputs() {
 
 		for (let i = 0; i < this.numberOfInputs; i++) {
-
-			const newInput = new Input('collum_' + i, 1, this.scope);
+			let expression = {
+				formatted: `${'collum_' + i}`
+			};
+			const newInput = new Input('collum_' + i, expression, this.scope, this.customMath);
 			this.rawInputs.push(newInput);
 			this._associationInput[newInput.name] = newInput;
 		}
@@ -104,19 +125,17 @@ module.exports = class InputGroup {
 
 		}
 
-		const newInput = new Input(inputConfig.name, inputConfig.expression, this.scope);
+		const newInput = new Input(inputConfig.name, inputConfig.expression, this.scope, this.customMath);
 		this._associationInput[newInput.name] = newInput;
 		this.inputs.push(newInput);
 
-
-		newInput.visited = -1;
-		console.log(this.inputGraph.nodes);
 		this.inputGraph.addInput(newInput);
 		this.inputGraph.addEgdes();
 		this.inputGraph.hasCycle();
 		this.inputGraph.topologicalSort();
-		console.log(this.inputGraph.nodes);
-		//fs.writeFileSync(window.CurrentDashBoard.path, JSON.stringify(window.CurrentDashBoard, null, '\t'));
+
+		window.dispatchEvent(new CustomEvent('saveCurrentDashBoard'));
+
 		return {
 			created: true,
 			name: newInput.name,
@@ -163,19 +182,33 @@ module.exports = class InputGroup {
 		}
 
 		this._associationInput[inputConfig.inputName] = undefined;
-		const newInput = new Input(inputConfig.newName, inputConfig.expression, this.scope);
+		const newInput = new Input(inputConfig.newName, inputConfig.expression, this.scope, this.customMath);
 		this._associationInput[newInput.newName] = newInput;
 		this.inputs.push(newInput);
-
-		newInput.visited = -1;
-
 
 		this.inputGraph.addInput(newInput);
 		this.inputGraph.addEgdes();
 		this.inputGraph.hasCycle();
 		this.inputGraph.topologicalSort();
-		console.log(this.inputGraph.nodes);
-		//fs.writeFileSync(window.CurrentDashBoard.path, JSON.stringify(window.CurrentDashBoard, null, '\t'));
+
+		window.dispatchEvent(new CustomEvent('saveCurrentDashBoard'));
+	}
+
+	solve(data) {
+		for (let i = 0; i < data.length; i++) {
+			this.scope['collum_' + i] = data[i];
+		}
+
+		this.inputGraph.inputs.forEach(input => {
+			input.evaluate();
+		})
+
+		console.log(this.scope);
+
+		//console.log(this.scope);
+		//window.dispatchEvent(new CustomEvent('dataIsProcessed'));
+		//window.CurrentReader.read();
+		//window.dispatchEvent(new CustomEvent('readData'));
 	}
 
 };
