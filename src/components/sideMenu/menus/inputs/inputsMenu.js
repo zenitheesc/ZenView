@@ -156,8 +156,10 @@ module.exports = class InputsMenu extends Menu {
 		const createdAnswer = window.CurrentInputGroup.addNewInput(data);
 
 		if (createdAnswer.created) {
+
 			this.attInputList();
 			this.setEditMode();
+
 		} else {
 
 			this.form.formThree.newDashBoardSpliter.name.showWarning(createdAnswer.msg);
@@ -203,6 +205,7 @@ module.exports = class InputsMenu extends Menu {
 	}
 
 	setEditMode() {
+
 		this.button.htmlComponent.textContent = 'Salvar';
 		const input = window.CurrentInputGroup.getInputByName(this.selectInput.value);
 		this.form.fields[1].value = input.name;
@@ -212,53 +215,54 @@ module.exports = class InputsMenu extends Menu {
 			this.attInput();
 
 		};
+
 	}
 
 	setAutoCompleteConfigs() {
 
 		this.tribute = new Tribute({
 			replaceTextSuffix: '',
-			noMatchTemplate: function () {
+			noMatchTemplate: function() {
 
 				return '<span style:"visibility: hidden;"></span>';
 
 			},
 			collection: [{
-					trigger: '${',
-					values: [],
-					lookup: (input) => {
+				trigger: '${',
+				values: [],
+				lookup: (input) => {
 
-						return input.name;
+					return input.name;
 
-					},
-					selectTemplate: function (item) {
+				},
+				selectTemplate: function(item) {
 
-						return (
-							'<a contenteditable="false" class="inputTag">' +
+					return (
+						'<a contenteditable="false" class="inputTag">' +
 							'${' + item.original.name + '}' +
 							'</a>'
-						);
+					);
 
-					},
 				},
-				{
-					trigger: '#{',
-					lookup: (input) => {
+			},
+			{
+				trigger: '#{',
+				lookup: (input) => {
 
-						return input.name;
+					return input.name;
 
-					},
-					values: [],
-					selectTemplate: function (item) {
+				},
+				values: [],
+				selectTemplate: function(item) {
 
-						return (
-							'<a contenteditable="false" class="inputTag">' +
+					return (
+						'<a contenteditable="false" class="inputTag">' +
 							'#{' + item.original.name + '}' +
 							'</a>'
-						);
+					);
 
-					},
 				},
+			},
 			],
 		});
 		this.tribute.attach(this.form.formThree.newDashBoardSpliter.expression.input);
@@ -276,6 +280,7 @@ module.exports = class InputsMenu extends Menu {
 			this.attInputList();
 
 		});
+
 	}
 
 };

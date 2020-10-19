@@ -1,6 +1,8 @@
 const fs = require('fs');
 module.exports = class Components {
+
 	static spliter(id, text, content, startOpen) {
+
 		const card = document.createElement('div');
 		card.className = 'card menuSpliter';
 
@@ -17,11 +19,15 @@ module.exports = class Components {
 		cardBodyCollapse.id = `menu_${id}_option`;
 
 		if (startOpen) {
+
 			cardBodyCollapse.className = 'collapse show';
 			cardHeader.className = 'card-header menuSpliter-header';
+
 		} else {
+
 			cardHeader.className = 'card-header menuSpliter-header collapsed';
 			cardBodyCollapse.className = 'collapse';
+
 		}
 
 		cardBodyCollapse.setAttribute('aria-labelledby', `${id}_option`);
@@ -35,8 +41,10 @@ module.exports = class Components {
 		card.appendChild(cardBodyCollapse);
 
 		return card;
+
 	}
 	static menuHeader(text, optionsContent) {
+
 		const menuHeaderComponent = document.createElement('div');
 		const title = document.createElement('h6');
 		title.textContent = text;
@@ -45,63 +53,93 @@ module.exports = class Components {
 		menuHeaderComponent.appendChild(title);
 
 		if (optionsContent != undefined) {
+
 			const options = document.createElement('div');
 			options.appendChild(optionsContent);
 			menuHeaderComponent.appendChild(options);
+
 		}
 
 		return menuHeaderComponent;
+
 	}
 	static invalidWarning(id) {
+
 		const errorMsg = document.createElement('div');
 		errorMsg.className = 'invalid-feedback';
 		errorMsg.id = id + '_invalid';
 		return errorMsg;
+
 	}
 	static field(htmlComponent, inputComponent, warning, tests) {
+
 		class FieldComponent {
+
 			constructor(htmlComponent, inputComponent, warning, tests) {
+
 				this.id = inputComponent.id;
 				this.htmlComponent = htmlComponent;
 				this.input = inputComponent;
 				this.warning = warning;
 				this.tests = tests || [];
 				this.input.addEventListener('input', () => {
+
 					this.hideWarning();
+
 				});
+
 			}
 			get value() {
+
 				return this.input.value;
+
 			}
 			showWarning(txt) {
+
 				warning.textContent = txt;
 				this.input.classList.add('is-invalid');
+
 			}
 			hideWarning() {
+
 				this.input.classList.remove('is-invalid');
+
 			}
 			validate() {
+
 				let isValid = true;
 				for (let i = 0, j = this.tests.length; i < j; i++) {
+
 					const response = this.tests[i](this.value);
 					if (response === true) {
+
 						this.hideWarning();
+
 					} else {
+
 						isValid = false;
 						this.showWarning(response);
 						break;
+
 					}
+
 				}
 				return isValid;
+
 			}
+
 		}
 
 		return new FieldComponent(htmlComponent, inputComponent, warning, tests);
+
 	}
 	static icon(iconName) {
+
 		return (fs.readFileSync('./src/images/icons/' + iconName + '.svg')).toString();
+
 	}
 	static dashBoardCard(name, desc, path) {
+
 		const dashBoardCardComponent = document.createElement('div');
 		dashBoardCardComponent.setAttribute('class', 'card dashBoardCard mb-3');
 
@@ -142,7 +180,8 @@ module.exports = class Components {
 		dashBoardCardComponent.appendChild(dashBoardCardComponentBody);
 
 		playBtn.addEventListener('click', () => {
-			/*window.dispatchEvent(new CustomEvent('openDashBoard', {
+
+			/* window.dispatchEvent(new CustomEvent('openDashBoard', {
 				detail: {
 					context: 'start',
 					dashBoardPath: path,
@@ -154,45 +193,57 @@ module.exports = class Components {
 					dashBoardPath: path,
 				},
 			}));
+
 		});
 
 		editBtn.addEventListener('click', () => {
+
 			console.log('contexto global alterado para edição');
 			if (!dashBoardCardComponentHeaderTitle.isContentEditable) {
+
 				editBtn.innerHTML = this.icon('save');
 				dashBoardCardComponentHeaderTitle.classList.add('editableDiv');
 				dashBoardCardComponentDesc.classList.add('editableDiv');
 				dashBoardCardComponentHeaderTitle.contentEditable = true;
 				dashBoardCardComponentDesc.contentEditable = true;
-			}else{
+
+			} else {
+
 				editBtn.innerHTML = this.icon('pencil-square');
 				dashBoardCardComponentHeaderTitle.classList.remove('editableDiv');
 				dashBoardCardComponentDesc.classList.remove('editableDiv');
 				dashBoardCardComponentHeaderTitle.contentEditable = false;
 				dashBoardCardComponentDesc.contentEditable = false;
+
 			}
-			
+
 		});
 
 		delBtn.addEventListener('click', () => {
+
 			window.dispatchEvent(new CustomEvent('deleteDashboard', {
 				detail: {
 					dashBoardPath: path,
 				},
 			}));
+
 		});
 
 
 		return dashBoardCardComponent;
+
 	}
 	static buttonWithIcon(iconName, className) {
+
 		const button = document.createElement('button');
 		button.type = 'button';
 		if (className !== undefined) button.classList.add(className);
 		button.innerHTML = this.icon(iconName);
 		return button;
+
 	}
 	static form(id) {
+
 		const formComponent = {};
 		formComponent.htmlComponent = document.createElement('form');
 		if (id !== undefined) formComponent.htmlComponent.id = id;
@@ -200,40 +251,60 @@ module.exports = class Components {
 		formComponent.components = [];
 
 		formComponent.addField = (field) => {
+
 			formComponent.fields.push(field);
 			formComponent.htmlComponent.appendChild(field.htmlComponent);
+
 		};
 
 		formComponent.addComponent = (component) => {
+
 			formComponent.components.push(component);
 			formComponent.htmlComponent.appendChild(component);
+
 		};
 
 		formComponent.getData = () => {
+
 			const response = {};
 
 			formComponent.fields.forEach((field) => {
+
 				response[field.id] = field.value;
+
 			});
 			return response;
+
 		};
 
 		formComponent.validate = () => {
+
 			let response = true;
 			formComponent.fields.forEach((field) => {
+
 				if (!field.validate()) {
+
 					response = false;
+
 				}
+
 			});
 			return response;
+
 		};
 
 		formComponent.clear = () => {
+
 			formComponent.fields.forEach((field) => {
+
 				field.input.value = '';
+
 			});
+
 		};
 
 		return formComponent;
+
 	}
+
 };

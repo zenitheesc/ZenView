@@ -7,77 +7,91 @@ const Container = require('../../../../formBuilder').Container;
 const Field = require('../../../../formBuilder').Field;
 
 module.exports = class newDashBoardMenu extends Menu {
+
 	constructor() {
+
 		super('New Dashboard', 'newDashboard_menu');
 		this.button = Field.button({
 			text: 'Criar',
-			classList: ['formCenteredBtn', 'green-btn']
+			classList: ['formCenteredBtn', 'green-btn'],
 		});
+
 		this.form = new Form({
 			newDashBoardSpliter: Container.spliter({
 				Name: Field.text({
 					label: 'Nome',
 					att: 'name',
-					validators: [Validator.isFilled]
+					validators: [Validator.isFilled],
 				}),
 				Directory: Field.directory({
 					label: 'Diretório',
 					att: 'dir',
-					validators: [Validator.isFilled]
+					validators: [Validator.isFilled],
 				}),
 				NumberOfInputs: Field.number({
 					label: 'Número de entradas',
 					att: 'nOfInputs',
-					validators: [Validator.isFilled, Validator.isInRange(1, 30)]
+					validators: [Validator.isFilled, Validator.isInRange(1, 30)],
 				}),
 				Description: Field.textArea({
 					label: 'Descrição',
 					att: 'desc',
 				}),
-				Save: this.button
+				Save: this.button,
 			}, {
 				startOpen: true,
 				text: 'Novo DashBoard',
-				id: 'newDashBoardSpliter'
-			})
+				id: 'newDashBoardSpliter',
+			}),
 		});
+
 	}
 	importDashBoardSpliter() {
-		let container = document.createElement('div');
 
-		let spliter = Components.spliter('importDashboard', 'Importar Dashboard', container, true);
+		const container = document.createElement('div');
+
+		const spliter = Components.spliter('importDashboard', 'Importar Dashboard', container, true);
 
 		return spliter;
+
 	}
 	setFormConfigs() {
+
 		this.button.onclick = () => {
+
 			if (this.form.validate()) {
 
-				let data = this.form.getData().form;
+				const data = this.form.getData().form;
 				let i = 0;
-				let fileNames = fs.readdirSync(data['dir']);
+				const fileNames = fs.readdirSync(data['dir']);
 				let newName = data['name'] + '.json';
 
 				while (fileNames.includes(newName)) {
+
 					i = i + 1;
 					newName = data['name'] + `(${i})` + '.json';
+
 				}
-				
+
 				window.dispatchEvent(new CustomEvent('newDashBoard', {
 					detail: {
 						name: data['name'],
 						numberOfInputs: data['nOfInputs'],
 						path: data['dir'] + '/' + newName,
-						desc: data['desc']
-					}
+						desc: data['desc'],
+					},
 				}));
 
 				this.form.reset();
+
 			}
+
 		};
+
 	}
 	load() {
-		let spliterContainer = document.createElement('div');
+
+		const spliterContainer = document.createElement('div');
 		spliterContainer.className = 'menuBody';
 
 		spliterContainer.appendChild(this.form.htmlComponent);
@@ -85,5 +99,7 @@ module.exports = class newDashBoardMenu extends Menu {
 
 		this.menuComponent.appendChild(this.form.htmlComponent);
 		this.setFormConfigs();
+
 	}
+
 };

@@ -36,6 +36,7 @@ module.exports = class SideMenu {
 	}
 	/**
 	 * Abre ou fecha o menu lateral, dependendo do estádo atual e muda a margem da tela principal
+	 * @param {String}requestedMenu nome do menu que deve ser aberto
 	 */
 	changeSideMenu(requestedMenu) {
 

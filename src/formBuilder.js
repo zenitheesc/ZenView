@@ -12,7 +12,9 @@ class FormPattern {
 		formConfig = formConfig || {};
 		this.htmlComponent = document.createElement('form');
 		this.htmlComponent.onsubmit = () => {
-			return false
+
+			return false;
+
 		};
 		if (formConfig.className !== undefined) this.htmlComponent.className = formConfig.className;
 		this.config = config;
@@ -101,6 +103,7 @@ class FormPattern {
 
 			}
 			element.addEventListener('input', () => {
+
 				this.testConditions(form);
 
 			});
@@ -142,8 +145,9 @@ class FormPattern {
 	}
 
 	validate() {
+
 		let response = true;
-		
+
 		for (let i = 0, j = this.fields.length; i < j; i++) {
 
 			if (!this.fields[i].validate()) {
@@ -248,6 +252,7 @@ class Field {
 			this.validators = undefined;
 
 		}
+
 	}
 	set onclick(callBackFunction) {
 
@@ -360,14 +365,17 @@ class Field {
 
 	}
 	validate() {
-		if(this.htmlComponent.offsetWidth <=0 && this.htmlComponent.offsetHeight <=0 ){
+
+		if (this.htmlComponent.offsetWidth <=0 && this.htmlComponent.offsetHeight <=0 ) {
+
 			this.hideWarning();
 			return true;
+
 		}
-		
+
 		let isValid = true;
 		if (this.validators === undefined) return true;
-		 
+
 		for (let i = 0, j = this.validators.length; i < j; i++) {
 
 			const response = this.validators[i](this.value);
@@ -579,7 +587,7 @@ class Field {
 
 		field.addOption = (option, callBack) => {
 
-			callBack = callBack || function (option) {
+			callBack = callBack || function(option) {
 
 				return [option.value || option.text, option.text || option.value];
 
@@ -594,7 +602,7 @@ class Field {
 		field.setOptions = (options, callBack) => {
 
 			field.input.innerHTML = '';
-			callBack = callBack || function (option) {
+			callBack = callBack || function(option) {
 
 				return [option.value || option.text, option.text || option.value];
 
@@ -648,6 +656,7 @@ class Field {
 
 		const field = this.build(options, input);
 		if (options.type === 'file') {
+
 			field.prepend[0].onclick = () => {
 
 				ipc.send('open-file-dialog-for-file');
@@ -666,7 +675,9 @@ class Field {
 				});
 
 			};
+
 		} else {
+
 			field.prepend[0].onclick = () => {
 
 				ipc.send('open-file-dialog-for-dir');
@@ -685,9 +696,8 @@ class Field {
 				});
 
 			};
+
 		}
-
-
 
 
 		return field;

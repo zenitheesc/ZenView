@@ -2,10 +2,11 @@ const SideMenu = require('./components/sideMenu/sideMenu.js');
 const DashBoardComponent = require('./components/dashBoard/dashBoardComponent.js');
 const fs = require('fs');
 const ipc = require('electron').ipcRenderer;
-const DataReader = require('./components/dataReader/dataReader')
+const DataReader = require('./components/dataReader/dataReader');
 class MainWindow {
 
 	constructor() {
+
 		this.DataReader = new DataReader();
 		this.component;
 		this.SideMenu = new SideMenu();
