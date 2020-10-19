@@ -1,10 +1,12 @@
 const fs = require('fs');
-const { number } = require('mathjs');
+const {
+	number
+} = require('mathjs');
 const DashBoard = require('../../classes/dashBoard');
 const Dialog = require('../../dialog');
 
 module.exports = class DashBoardComponent {
-	
+
 	changeGlobalContext(newContext) {
 		window.dispatchEvent(new CustomEvent('GlobalContextChange', {
 			detail: {
@@ -15,13 +17,9 @@ module.exports = class DashBoardComponent {
 
 	openDashBoard(path) {
 		console.log('ABRINDO NOVO DASHBOARD');
+		let CurrentDashBoardConfig;
 		try {
-			let CurrentDashBoard = new DashBoard(JSON.parse(fs.readFileSync(path)));
-			window.CurrentDashBoard = CurrentDashBoard;
-			window.CurrentInputGroup = CurrentDashBoard.inputGroup;
-			window.dispatchEvent(new CustomEvent('attInputList'));
-
-			return true;
+			CurrentDashBoardConfig = JSON.parse(fs.readFileSync(path));
 		} catch (error) {
 			console.log(error);
 			Dialog.showDialog({
@@ -40,6 +38,12 @@ module.exports = class DashBoardComponent {
 			}
 			return false;
 		}
+		let CurrentDashBoard = new DashBoard(CurrentDashBoardConfig);
+		window.CurrentDashBoard = CurrentDashBoard;
+		window.CurrentInputGroup = CurrentDashBoard.inputGroup;
+		window.scope = CurrentDashBoard.inputGroup.scope;
+		window.dispatchEvent(new CustomEvent('attInputList'));
+		return true;
 	}
 
 	editingDashBoard(details) {
@@ -59,6 +63,7 @@ module.exports = class DashBoardComponent {
 		});
 
 		const dashBoard = new DashBoard(detail.name, number(detail.numberOfInputs), detail.path, detail.desc);
+		dashBoard.inputGroup.inputGraph = {};
 		fs.writeFileSync(detail.path, JSON.stringify(dashBoard, null, '\t'));
 
 		window.dispatchEvent(new CustomEvent('saveConfigs'));
@@ -97,7 +102,7 @@ module.exports = class DashBoardComponent {
 		}, callback);
 	}
 
-	saveDashBoardDescAndName(path,newName,newDesc) {
+	saveDashBoardDescAndName(path, newName, newDesc) {
 		for (let i = window['ZenViewConfig'].dashboards.length - 1; i >= 0; i--) {
 			if (window['ZenViewConfig'].dashboards[i].path === path) {
 				window['ZenViewConfig'].dashboards[i].description = newDesc;
@@ -110,8 +115,11 @@ module.exports = class DashBoardComponent {
 	}
 
 	saveCurrentDashBoard() {
-		let currentDashBoard = window.CurrentDashBoard;
+		const currentDashBoard = window.CurrentDashBoard;
+		const tempGraph = currentDashBoard.inputGroup.inputGraph;
+		currentDashBoard.inputGroup.inputGraph = {};
 		fs.writeFileSync(currentDashBoard.path, JSON.stringify(currentDashBoard, null, '\t'));
+		window.CurrentDashBoard.inputGroup.inputGraph = tempGraph;
 	}
 
 	build() {
@@ -128,7 +136,7 @@ module.exports = class DashBoardComponent {
 		});
 
 		window.addEventListener('saveCurrentDashBoard', (evt) => {
-			this.saveCurrentDashBoard(evt.detail.dashBoardPath);
+			this.saveCurrentDashBoard();
 		});
 
 		window.addEventListener('newDashBoard', (evt) => {
