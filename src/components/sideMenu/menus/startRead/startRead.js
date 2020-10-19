@@ -3,7 +3,6 @@ const Validator = require('../../../../validator');
 const Form = require('../../../../formBuilder').Form;
 const Container = require('../../../../formBuilder').Container;
 const Field = require('../../../../formBuilder').Field;
-const DataReader = require('../../../dashBoard/dataReader/dataReader')
 
 module.exports = class StartRead extends Menu {
 	constructor() {
@@ -59,7 +58,8 @@ module.exports = class StartRead extends Menu {
 					}),
 
 				}, {
-					id: 'saveReadOptions',
+					id: 'serialReadOptions',
+					att: 'serialReadConfig',
 					conditions: [{
 						id: 'currReadFrom',
 						att: 'value',
@@ -67,9 +67,9 @@ module.exports = class StartRead extends Menu {
 					}]
 				}),
 				csvContainer: Container.div({
-					port: Field.directory({
+					file: Field.directory({
 						label: 'Arquivo:',
-						att: 'port',
+						att: 'filePath',
 						type: 'file',
 						validators: [Validator.isFilled, Validator.extension('.csv')]
 					}),
@@ -123,7 +123,8 @@ module.exports = class StartRead extends Menu {
 						}]
 					})
 				}, {
-					id: 'saveReadOptions',
+					id: 'csvReadOptions',
+					att: 'csvReadConfig',
 					conditions: [{
 						id: 'currReadFrom',
 						att: 'value',
@@ -149,6 +150,7 @@ module.exports = class StartRead extends Menu {
 
 				}, {
 					id: 'saveReadOptions',
+					att: 'saveReadConfig',
 					conditions: [{
 						id: 'saveCurrentRead',
 						att: 'checked',
@@ -163,13 +165,16 @@ module.exports = class StartRead extends Menu {
 			})
 		});
 	}
-
+	startReadConfig(){
+		if(!this.form.validate()) return;
+		window.dispatchEvent(new CustomEvent('StartRead',{detail:this.form.getData().form}));
+	}
 	load() {
 		let spliterContainer = document.createElement('div');
 		spliterContainer.className = 'menuBody';
-		this.button.onclick = ()=>{this.form.validate()};
 		spliterContainer.appendChild(this.form.htmlComponent);
-
 		this.menuComponent.appendChild(this.form.htmlComponent);
+
+		this.button.onclick = ()=>{this.startReadConfig()};
 	}
 }
