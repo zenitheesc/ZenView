@@ -3,7 +3,7 @@ const {
 	number,
 } = require('mathjs');
 const DashBoard = require('../../classes/dashBoard');
-const Dialog = require('../../dialog');
+const Dialog = require('../dialog/dialog');
 
 module.exports = class DashBoardComponent {
 

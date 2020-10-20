@@ -8,7 +8,6 @@ class MainWindow {
 	constructor() {
 
 		this.DataReader = new DataReader();
-		this.component;
 		this.SideMenu = new SideMenu();
 		this.DashBoardComponent = new DashBoardComponent();
 		this.MainWindow;
@@ -33,10 +32,12 @@ class MainWindow {
 		let duracao = Date.now();
 
 		window['ZenViewConfig'] = JSON.parse(fs.readFileSync('./src/config.json'));
+
 		this.init();
 		this.SideMenu.build();
 		this.DashBoardComponent.build();
 		this.DataReader.build();
+
 		window.dispatchEvent(new CustomEvent('GlobalContextChange', {
 			detail: {
 				context: 'all',

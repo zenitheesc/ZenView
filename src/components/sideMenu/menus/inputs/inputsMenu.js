@@ -1,9 +1,9 @@
 const Menu = require('../menu');
-const Form = require('../../../../formBuilder').Form;
+const Form = require('../../../formBuilder/formBuilder').Form;
 const Components = require('../../../components');
-const Container = require('../../../../formBuilder').Container;
-const Field = require('../../../../formBuilder').Field;
-const Validator = require('../../../../validator');
+const Container = require('../../../formBuilder/formBuilder').Container;
+const Field = require('../../../formBuilder/formBuilder').Field;
+const Validator = require('../../../formBuilder/validator');
 const Tribute = require('tributejs');
 const Math = require('mathjs');
 

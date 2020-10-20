@@ -1,8 +1,8 @@
 const Menu = require('../menu');
-const Validator = require('../../../../validator');
-const Form = require('../../../../formBuilder').Form;
-const Container = require('../../../../formBuilder').Container;
-const Field = require('../../../../formBuilder').Field;
+const Validator = require('../../../formBuilder/validator');
+const Form = require('../../../formBuilder/formBuilder').Form;
+const Container = require('../../../formBuilder/formBuilder').Container;
+const Field = require('../../../formBuilder/formBuilder').Field;
 
 module.exports = class StartRead extends Menu {
 

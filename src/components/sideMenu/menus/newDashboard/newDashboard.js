@@ -1,10 +1,10 @@
 const Menu = require('../menu');
 const Components = require('../../../components.js');
-const Validator = require('../../../../validator');
+const Validator = require('../../../formBuilder/validator');
 const fs = require('fs');
-const Form = require('../../../../formBuilder').Form;
-const Container = require('../../../../formBuilder').Container;
-const Field = require('../../../../formBuilder').Field;
+const Form = require('../../../formBuilder/formBuilder').Form;
+const Container = require('../../../formBuilder/formBuilder').Container;
+const Field = require('../../../formBuilder/formBuilder').Field;
 
 module.exports = class newDashBoardMenu extends Menu {
 
