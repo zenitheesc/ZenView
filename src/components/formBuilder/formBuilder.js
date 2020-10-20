@@ -544,7 +544,7 @@ class Field {
 		options.type = 'button';
 		buttonComponent.type = options.type || 'button';
 
-		this._attClassList(buttonComponent, ['formBuilderBtn', 'btn-primary', 'btn']);
+		this._attClassList(buttonComponent, ['formBuilderBtn']);
 		this._attClassList(buttonComponent, options.classList);
 
 		options.htmlComponent = buttonComponent;
