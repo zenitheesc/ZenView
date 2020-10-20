@@ -177,6 +177,20 @@ module.exports = class StartRead extends Menu {
 
 	}
 
+	attInputList() {
+
+		console.log(this.form.formThree);
+		this.form.formThree.newDashBoardSpliter.
+			csvContainer.simulationContainer.inputInterval.setOptions(window.CurrentInputGroup.rawInputs, (value) => {
+
+				let sub = value.name.split('_')[1];
+				sub = Number(sub);
+				return [sub, value.name];
+
+			});
+
+	}
+
 	load() {
 
 		const spliterContainer = document.createElement('div');
@@ -189,6 +203,12 @@ module.exports = class StartRead extends Menu {
 			this.startReadConfig();
 
 		};
+
+		window.addEventListener('attInputList', () => {
+
+			this.attInputList();
+
+		});
 
 	}
 

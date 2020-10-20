@@ -8,6 +8,8 @@ class CsvReader {
 		this.lineReader;
 		this.delay = 0;
 		this.data = [];
+		this.inputDelay;
+		this.lastDelay = 0;
 
 	}
 
@@ -20,13 +22,19 @@ class CsvReader {
 
 		if (readConfig.simulate) {
 
-			if (readConfig.simulation.intervalType = 'fixed') {
+			if (readConfig.simulation.intervalType === 'fixed') {
 
+				console.log('Simulação de intervalo fixo');
 				this.delay = readConfig.simulation.fixIntervalSize;
+				this.readWithFixedDelay();
+
+			} else {
+
+				console.log('Simulação de intervalo váriavel');
+				this.inputDelay = readConfig.simulation.timeIntervalInput;
+				this.readWithInputDelay();
 
 			}
-
-			this.readWithDelay();
 
 		} else {
 
@@ -37,21 +45,44 @@ class CsvReader {
 
 	}
 
-	setData() {
+	readWithInputDelay() {
+
+		this.data = this.readNextLine();
+
+		if (this.data) {
+
+			this.delay = this.data[this.inputDelay] - this.lastDelay;
+			this.delay = (this.delay > 0)? this.delay : 1;
+
+			postMessage(this.data);
+
+			setTimeout(() => {
+
+				this.readWithInputDelay();
+
+			}, this.delay);
+
+			this.lastDelay = this.data[this.inputDelay];
+
+		}
 
 	}
 
-	readWithDelay() {
+	readWithFixedDelay() {
 
 		this.data = this.readNextLine();
-		this.setData();
 
-		postMessage(this.data);
-		setTimeout(()=>{
+		if (this.data) {
 
-			this.readWithDelay();
+			postMessage(this.data);
 
-		}, this.delay);
+			setTimeout(() => {
+
+				this.readWithFixedDelay();
+
+			}, this.delay);
+
+		}
 
 	}
 
@@ -64,7 +95,6 @@ class CsvReader {
 		while (this.data) {
 
 			this.data = this.readNextLine();
-			this.setData();
 
 			postMessage(this.data);
 
