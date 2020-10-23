@@ -1,4 +1,4 @@
-const Utillities = require('../../utillities');
+const Utillities = require('../../../utillities');
 const fs = require('fs');
 module.exports = class MenuItem {
 

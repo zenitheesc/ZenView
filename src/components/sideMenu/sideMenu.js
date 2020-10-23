@@ -1,4 +1,4 @@
-const MenuList = require('./menuList');
+const MenuList = require('./menuBar/menuList');
 const Menus = require('./menus');
 
 module.exports = class SideMenu {

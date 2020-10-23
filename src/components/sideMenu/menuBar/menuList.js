@@ -1,5 +1,5 @@
 const MenuItem = require('./menuItem');
-const Utillities = require('../../utillities');
+const Utillities = require('../../../utillities');
 module.exports = class MenuList {
 
 	constructor() {
