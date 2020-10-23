@@ -1,5 +1,3 @@
-// const CsvReader = require('./types/csvReader');
-
 const fs = require('fs');
 
 module.exports = class DataReader {
