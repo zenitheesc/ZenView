@@ -1,16 +1,17 @@
 const SideMenu = require('./components/sideMenu/sideMenu.js');
-const DashBoardComponent = require('./components/dashBoard/DashBoardsManager.js');
+const DashBoardsManager = require('./components/dashBoard/DashBoardsManager.js');
 const fs = require('fs');
 const ipc = require('electron').ipcRenderer;
 const DataReader = require('./components/dataReader/dataReader');
+const DashBoard = require('./components/dashBoard/DashBoard');
 class MainWindow {
 
 	constructor() {
 
 		this.DataReader = new DataReader();
 		this.SideMenu = new SideMenu();
-		this.DashBoardComponent = new DashBoardComponent();
-		this.MainWindow;
+		this.DashBoardsManager = new DashBoardsManager();
+		this.DashBoard = new DashBoard();
 
 	}
 	saveConfig() {
@@ -35,8 +36,10 @@ class MainWindow {
 
 		this.init();
 		this.SideMenu.build();
-		this.DashBoardComponent.build();
+		this.DashBoardsManager.build();
 		this.DataReader.build();
+		this.DashBoardsManager.build();
+		this.DashBoard.build();
 
 		window.dispatchEvent(new CustomEvent('GlobalContextChange', {
 			detail: {
