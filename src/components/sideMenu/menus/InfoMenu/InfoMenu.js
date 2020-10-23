@@ -1,12 +1,10 @@
 const Menu = require('../menu');
 
-module.exports = class StartRead extends Menu {
+module.exports = class InfoMenu extends Menu {
 
 	constructor() {
 
 		super('Informações', 'about_menu');
-
-		this.isReading = false;
 
 	}
 
