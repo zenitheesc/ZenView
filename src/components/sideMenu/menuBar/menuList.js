@@ -33,7 +33,7 @@ module.exports = class MenuList {
 		menuItens.push(new MenuItem('start', 'play', Utillities.getButtonText(3), 'editing'));
 		menuItens.push(new MenuItem('inputs', 'terminal', Utillities.getButtonText(4), 'editing'));
 		menuItens.push(new MenuItem('blocks', 'clipboard-data', Utillities.getButtonText(5), 'editing'));
-		menuItens.push(new MenuItem('delete', 'pencil-square', Utillities.getButtonText(6), 'editing'));
+		menuItens.push(new MenuItem('edit', 'pencil-square', Utillities.getButtonText(6), 'editing'));
 		this.loadOptions('midContainer', menuItens);
 
 	}
