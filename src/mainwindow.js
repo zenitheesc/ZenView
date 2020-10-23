@@ -1,5 +1,5 @@
 const SideMenu = require('./components/sideMenu/sideMenu.js');
-const DashBoardComponent = require('./components/dashBoard/dashBoardComponent.js');
+const DashBoardComponent = require('./components/dashBoard/DashBoardsManager.js');
 const fs = require('fs');
 const ipc = require('electron').ipcRenderer;
 const DataReader = require('./components/dataReader/dataReader');

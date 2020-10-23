@@ -1,11 +1,9 @@
 const fs = require('fs');
-const {
-	number,
-} = require('mathjs');
+const number = require('mathjs').number;
 const DashBoard = require('../../classes/dashBoard');
 const Dialog = require('../dialog/dialog');
 
-module.exports = class DashBoardComponent {
+module.exports = class DashBoardsManager {
 
 	changeGlobalContext(newContext) {
 
