@@ -10,6 +10,7 @@ class CsvReader {
 		this.data = [];
 		this.inputDelay;
 		this.lastDelay = 0;
+		this.isReading = false;
 
 	}
 
@@ -17,6 +18,7 @@ class CsvReader {
 
 		this.data = [];
 		this.delay = 0;
+		this.isReading = true;
 
 		this.lineReader = new LineByLine(readConfig.filePath);
 
@@ -24,13 +26,11 @@ class CsvReader {
 
 			if (readConfig.simulation.intervalType === 'fixed') {
 
-				console.log('Simulação de intervalo fixo');
 				this.delay = readConfig.simulation.fixIntervalSize;
 				this.readWithFixedDelay();
 
 			} else {
 
-				console.log('Simulação de intervalo váriavel');
 				this.inputDelay = readConfig.simulation.timeIntervalInput;
 				this.readWithInputDelay();
 
@@ -45,14 +45,20 @@ class CsvReader {
 
 	}
 
+	stop() {
+
+		this.isReading = false;
+
+	}
+
 	readWithInputDelay() {
 
 		this.data = this.readNextLine();
 
-		if (this.data) {
+		if (this.data && this.isReading) {
 
 			this.delay = this.data[this.inputDelay] - this.lastDelay;
-			this.delay = (this.delay > 0)? this.delay : 1;
+			this.delay = (this.delay > 0) ? this.delay : 1;
 
 			postMessage(this.data);
 
@@ -64,6 +70,10 @@ class CsvReader {
 
 			this.lastDelay = this.data[this.inputDelay];
 
+		} else {
+
+			postMessage(this.data);
+
 		}
 
 	}
@@ -72,7 +82,7 @@ class CsvReader {
 
 		this.data = this.readNextLine();
 
-		if (this.data) {
+		if (this.data && this.isReading) {
 
 			postMessage(this.data);
 
@@ -82,6 +92,10 @@ class CsvReader {
 
 			}, this.delay);
 
+		} else {
+
+			postMessage(this.data);
+
 		}
 
 	}
@@ -89,18 +103,15 @@ class CsvReader {
 	read() {
 
 		this.data = this.readNextLine();
-		const duracao = Date.now();
-		console.log('iniciando leitura');
 
-		while (this.data) {
+		while (this.data && this.read) {
 
 			this.data = this.readNextLine();
 
 			postMessage(this.data);
 
 		}
-
-		console.log('duração: ' + (Date.now() - duracao));
+		postMessage(this.data);
 
 	}
 
@@ -115,8 +126,17 @@ class CsvReader {
 
 const csvReader = new CsvReader();
 
-onmessage = (data) => {
+onmessage = (msg) => {
 
-	csvReader.init(data.data);
+	if (msg.data.read !== false) {
+
+		csvReader.init(msg.data);
+
+	} else {
+
+		csvReader.stop();
+
+	}
+
 
 };

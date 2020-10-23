@@ -10,6 +10,8 @@ module.exports = class StartRead extends Menu {
 
 		super('Iniciar Leitura', 'start_menu');
 
+		this.isReading = false;
+
 		this.button = Field.button({
 			text: 'Iniciar Leitura',
 			classList: ['formCenteredBtn', 'green-btn'],
@@ -173,14 +175,51 @@ module.exports = class StartRead extends Menu {
 	startReadConfig() {
 
 		if (!this.form.validate()) return;
-		window.dispatchEvent(new CustomEvent('StartRead', {detail: this.form.getData().form}));
+
+		window.dispatchEvent(new CustomEvent('StartRead', {
+			detail: this.form.getData().form,
+		}));
+
+		this.setStopReadState();
+
+	}
+
+	stopRead() {
+
+		window.dispatchEvent(new CustomEvent('StopRead', {
+			detail: this.form.getData().form,
+		}));
+
+		this.setInitReadState();
+
+	}
+
+	setInitReadState() {
+
+		this.button.htmlComponent.textContent = 'Iniciar Leitura';
+
+		this.button.htmlComponent.classList.add('green-btn');
+		this.button.htmlComponent.classList.remove('red-btn');
+
+		this.isReading = false;
+
+	}
+
+	setStopReadState() {
+
+		this.button.htmlComponent.textContent = 'Finalizar Leitura';
+
+		this.button.htmlComponent.classList.remove('green-btn');
+		this.button.htmlComponent.classList.add('red-btn');
+
+		this.isReading = true;
 
 	}
 
 	attInputList() {
 
-		console.log(this.form.formThree);
 		this.form.formThree.newDashBoardSpliter.
+
 			csvContainer.simulationContainer.inputInterval.setOptions(window.CurrentInputGroup.rawInputs, (value) => {
 
 				let sub = value.name.split('_')[1];
@@ -198,15 +237,30 @@ module.exports = class StartRead extends Menu {
 		spliterContainer.appendChild(this.form.htmlComponent);
 		this.menuComponent.appendChild(this.form.htmlComponent);
 
-		this.button.onclick = ()=>{
+		this.button.onclick = () => {
 
-			this.startReadConfig();
+			if (!this.isReading) {
+
+				this.startReadConfig();
+
+			} else {
+
+				this.stopRead();
+
+			}
+
 
 		};
 
 		window.addEventListener('attInputList', () => {
 
 			this.attInputList();
+
+		});
+
+		window.addEventListener('DataReadingFinished', () => {
+
+			this.setInitReadState();
 
 		});
 

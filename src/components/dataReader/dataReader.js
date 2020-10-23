@@ -9,14 +9,6 @@ module.exports = class DataReader {
 		this.csvReader = new Worker(__dirname + '/types/csvReader.js');
 		this.currentReader;
 
-		this.csvReader.onmessage = (evt) => {
-
-			window.dispatchEvent(new CustomEvent('dataIsReady', {
-				detail: evt.data,
-			}));
-
-		};
-
 		this.outputFileConfig;
 
 		window.ProcessedData = {};
@@ -62,6 +54,14 @@ module.exports = class DataReader {
 
 	}
 
+	stopRead() {
+
+		this.currentReader.postMessage({
+			read: false,
+		});
+
+	}
+
 	saveOutput(data) {
 
 		this.stream.write(JSON.stringify(data) + '\n');
@@ -76,6 +76,30 @@ module.exports = class DataReader {
 
 		});
 
+		window.addEventListener('StopRead', () => {
+
+			this.stopRead();
+
+		});
+
+		this.csvReader.onmessage = (evt) => {
+
+			if (evt.data) {
+
+				window.dispatchEvent(new CustomEvent('dataIsReady', {
+					detail: evt.data,
+				}));
+
+
+			} else {
+
+				window.dispatchEvent(new CustomEvent('DataReadingFinished'));
+
+
+			}
+
+
+		};
 
 	}
 
