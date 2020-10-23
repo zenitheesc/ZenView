@@ -5,6 +5,7 @@ module.exports = class Block {
 		this.htmlComponent = document.createElement('div');
 		this.content = document.createElement('div');
 		this.title = title;
+		this.preConfigs;
 		this.id = id;
 		this.init();
 
@@ -22,6 +23,16 @@ module.exports = class Block {
 		this.content.classList.add('blockPreview');
 
 		this.htmlComponent.appendChild(this.content);
+
+		this.content.onclick = () => {
+
+			console.log(this.id);
+
+			window.dispatchEvent(new CustomEvent('AddNewBlock', {
+				detail: this.preConfigs,
+			}));
+
+		};
 
 	}
 
