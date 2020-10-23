@@ -1,36 +1,6 @@
 {
 	"language": "ptbr",
 	"dashboards": [
-		{
-			"name": "Teste5",
-			"path": "/home/nedlandy/Documentos/reactron/ZenView/dashboards/Teste5.json",
-			"desc": "A"
-		},
-		{
-			"name": "Teste4",
-			"path": "/home/nedlandy/Documentos/reactron/ZenView/dashboards/Teste4.json",
-			"desc": "A"
-		},
-		{
-			"name": "Teste2",
-			"path": "/home/nedlandy/Documentos/reactron/ZenView/dashboards/Teste2.json",
-			"desc": "A"
-		},
-		{
-			"name": "Teste1",
-			"path": "/home/nedlandy/Documentos/reactron/ZenView/dashboards/Teste1.json",
-			"desc": "A"
-		}
-	],
-	"currentDashBoard": {
-		"inputs": {
-			"numberOfInputs": "1",
-			"inputs": {}
-		},
-		"_associationInput": {},
-		"name": "Test7",
-		"blocks": {},
-		"path": "/home/nedlandy/Documentos/reactron/ZenView/dashboards/Test7.json",
-		"description": ""
-	}
+	
+	]
 }
