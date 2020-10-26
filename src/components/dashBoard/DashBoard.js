@@ -3,6 +3,11 @@ module.exports = class DahsBoard {
 
 	constructor() {
 
+		this.DashBoardComponent = document.getElementById('DashBoard');
+		this.GridStackComponent = document.getElementById('main_grids_stack');
+
+		this.DashBoardComponent.style.width = String(Math.floor(31 * (screen.width / 32)) + 'px');
+		this.GridStackComponent.style.width = String(Math.floor(31 * (screen.width / 32)) + 'px');
 		this.gridStack;
 
 	}
@@ -18,12 +23,21 @@ module.exports = class DahsBoard {
 
 		this.gridStack.enable('.grid-stack-item-content', true);
 
-		this.addNewWidget();
-		this.addNewWidget();
+		window.addEventListener('AddNewBlock', () => {
+
+			this.addNewBlock();
+
+		});
+
+		window.addEventListener('ClearDashboard', () => {
+
+			this.gridStack.removeAll();
+
+		});
 
 	}
 
-	addNewWidget() {
+	addNewBlock() {
 
 		const newBlock = {};
 		newBlock.height = (newBlock.height === undefined) ? 3 : newBlock.height;
