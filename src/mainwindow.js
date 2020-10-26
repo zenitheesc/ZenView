@@ -19,11 +19,24 @@ class MainWindow {
 		fs.writeFileSync('./src/config.json', JSON.stringify(window['ZenViewConfig'], null, '\t'));
 
 	}
+
+	changeGlobalContext(context) {
+
+		window.GlobalContex = context;
+
+	}
+
 	init() {
 
 		window.addEventListener('saveConfigs', () => {
 
 			this.saveConfig();
+
+		});
+
+		window.addEventListener('GlobalContextChange', (evt) => {
+
+			this.changeGlobalContext(evt.detail.context);
 
 		});
 
