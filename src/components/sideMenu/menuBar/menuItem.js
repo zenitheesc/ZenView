@@ -9,7 +9,22 @@ module.exports = class MenuItem {
 		this.menuName = menuName;
 		this.itemComponent = document.createElement('button');
 		this.icon;
-		this.globalContext = context;
+		this.globalContext = [];
+
+		if (Array.isArray(context)) {
+
+			context.forEach((currContext) => {
+
+				this.globalContext.push(currContext);
+
+			});
+
+		} else {
+
+			this.globalContext.push(context);
+
+		}
+
 
 	}
 	setIcon() {
@@ -85,10 +100,10 @@ module.exports = class MenuItem {
 	}
 	setContextChangeEffect() {
 
-		if (this.globalContext === 'all') return;
+		if (this.globalContext.includes('all')) return;
 		window.addEventListener('GlobalContextChange', (evt)=>{
 
-			if (evt.detail.context === this.globalContext) {
+			if (this.globalContext.includes(evt.detail.context)) {
 
 				this.itemComponent.disabled = false;
 
