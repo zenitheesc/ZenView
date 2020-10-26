@@ -26,8 +26,6 @@ module.exports = class Block {
 
 		this.content.onclick = () => {
 
-			console.log(this.id);
-
 			window.dispatchEvent(new CustomEvent('AddNewBlock', {
 				detail: this.preConfigs,
 			}));

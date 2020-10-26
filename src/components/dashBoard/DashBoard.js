@@ -1,4 +1,5 @@
 const GridStack = require('gridstack/dist/gridstack.all');
+const Block = require('../block/block');
 module.exports = class DahsBoard {
 
 	constructor() {
@@ -37,15 +38,10 @@ module.exports = class DahsBoard {
 
 	}
 
-	addNewBlock() {
+	addNewBlock(blockConfig) {
 
-		const newBlock = {};
-		newBlock.height = (newBlock.height === undefined) ? 3 : newBlock.height;
-		newBlock.width = (newBlock.width === undefined) ? 4 : newBlock.width;
-
-		const div = document.createElement('div');
-		div.className = 'grid-stack-item';
-		this.gridStack.addWidget('<div><div class="grid-stack-item-content"><br></div></div>', newBlock);
+		const newBlock = new Block(blockConfig || {});
+		this.gridStack.addWidget(newBlock.htmlComponent, newBlock);
 
 	}
 
