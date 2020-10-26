@@ -172,7 +172,7 @@ module.exports = class StartRead extends Menu {
 
 	}
 
-	startReadConfig() {
+	startRead() {
 
 		if (!this.form.validate()) return;
 
@@ -181,6 +181,12 @@ module.exports = class StartRead extends Menu {
 		}));
 
 		this.setStopReadState();
+
+		window.dispatchEvent(new CustomEvent('GlobalContextChange', {
+			detail: {
+				context: 'running',
+			},
+		}));
 
 	}
 
@@ -202,6 +208,12 @@ module.exports = class StartRead extends Menu {
 		this.button.htmlComponent.classList.remove('red-btn');
 
 		this.isReading = false;
+
+		window.dispatchEvent(new CustomEvent('GlobalContextChange', {
+			detail: {
+				context: 'editing',
+			},
+		}));
 
 	}
 
@@ -241,7 +253,7 @@ module.exports = class StartRead extends Menu {
 
 			if (!this.isReading) {
 
-				this.startReadConfig();
+				this.startRead();
 
 			} else {
 
