@@ -1,0 +1,9 @@
+#DashBoard {
+	background-color: #eff4f7;
+	overflow-y: auto;
+}
+
+.grid-stack-item-content {
+	box-shadow: 0px 1px 22px -12px #607D8B;
+	background-color: #fff;
+}

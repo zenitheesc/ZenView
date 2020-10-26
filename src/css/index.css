@@ -15,7 +15,9 @@ html,
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   user-select: none;
-  overflow-y: overlay;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  
 }
 
 :root {
@@ -55,7 +57,8 @@ textarea {
 
 input,
 textarea,
-select,.editableDiv {
+select,
+.editableDiv {
   color: var(--global-colorFont) !important;
   background-color: var(--global-colorInputBg) !important;
   border-radius: 0px !important;
@@ -65,8 +68,8 @@ select,.editableDiv {
 }
 
 [contenteditable="true"]:focus {
-    background-color: var(--global-colorInputBg) !important;
-    color: var(--global-colorFont) !important;
+  background-color: var(--global-colorInputBg) !important;
+  color: var(--global-colorFont) !important;
 }
 
 small {
@@ -134,16 +137,15 @@ button.orange-btn:hover {
   border-color: #ffc619;
 }
 
-a.inputTag{
+a.inputTag {
   color: #35afa4;
   text-decoration: none;
 }
 
-a.inputTag:hover{
+a.inputTag:hover {
   cursor: pointer;
 }
 
-option.standardOption{
+option.standardOption {
   padding: 1em;
 }
-
