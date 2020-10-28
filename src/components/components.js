@@ -111,12 +111,6 @@ module.exports = class Components {
 
 		playBtn.addEventListener('click', () => {
 
-			/* window.dispatchEvent(new CustomEvent('openDashBoard', {
-				detail: {
-					context: 'start',
-					dashBoardPath: path,
-				},
-			}));*/
 			window.dispatchEvent(new CustomEvent('openDashBoard', {
 				detail: {
 					context: 'editing',
