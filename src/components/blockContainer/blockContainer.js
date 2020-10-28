@@ -1,12 +1,15 @@
-module.exports = class Block {
+const Blocks = require('../blocks/Blocks');
+const Block = require('../blocks/Blocks/block');
+module.exports = class BlockContainer {
 
 	constructor(id) {
 
 		this.id = id;
 
 		this.width = 3;
-		this.height = 4;
+		this.height = 2;
 		this.editing = false;
+		this.block = new Block();
 
 		this.htmlComponent = document.createElement('div');
 		this.htmlComponent.className = 'grid-stack-item';
@@ -17,6 +20,13 @@ module.exports = class Block {
 		this.htmlComponent.appendChild(this.content);
 
 		this.setEvents();
+
+	}
+
+	setBlock(BlockConfig) {
+
+		this.block = Blocks[BlockConfig.BlockID];
+		this.block.init();
 
 	}
 
