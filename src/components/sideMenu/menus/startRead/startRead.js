@@ -18,7 +18,7 @@ module.exports = class StartRead extends Menu {
 		});
 
 		this.form = new Form({
-			newDashBoardSpliter: Container.spliter({
+			startReadSplitter: Container.spliter({
 				dataChannel: Field.select({
 					label: 'Fonte dos dados: ',
 					att: 'readFrom',
@@ -165,8 +165,8 @@ module.exports = class StartRead extends Menu {
 				start: this.button,
 			}, {
 				startOpen: true,
-				text: 'Novo DashBoard',
-				id: 'newDashBoardSpliter',
+				text: 'Configurações',
+				id: 'startReadSplitter',
 			}),
 		});
 
@@ -230,7 +230,7 @@ module.exports = class StartRead extends Menu {
 
 	attInputList() {
 
-		this.form.formThree.newDashBoardSpliter.
+		this.form.formThree.startReadSplitter.
 
 			csvContainer.simulationContainer.inputInterval.setOptions(window.CurrentInputGroup.rawInputs, (value) => {
 
