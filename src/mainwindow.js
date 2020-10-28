@@ -51,7 +51,6 @@ class MainWindow {
 		this.SideMenu.build();
 		this.DashBoardsManager.build();
 		this.DataReader.build();
-		this.DashBoardsManager.build();
 		this.DashBoard.build();
 
 		window.dispatchEvent(new CustomEvent('GlobalContextChange', {
