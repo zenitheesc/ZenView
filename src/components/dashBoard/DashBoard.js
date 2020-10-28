@@ -1,5 +1,5 @@
 const GridStack = require('gridstack/dist/gridstack.all');
-const Block = require('../block/block');
+const Block = require('../blockContainer/blockContainer');
 module.exports = class DahsBoard {
 
 	constructor() {

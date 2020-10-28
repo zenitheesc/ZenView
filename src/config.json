@@ -1,6 +1,10 @@
 {
 	"language": "ptbr",
 	"dashboards": [
-	
+		{
+			"name": "dash1",
+			"path": "/home/nedlandy/Documentos/dashboard/dash1.json",
+			"desc": "asd"
+		}
 	]
 }
