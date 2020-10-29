@@ -1,10 +1,9 @@
 const Blocks = require('../blocks/Blocks');
 module.exports = class BlockContainer {
 
-	constructor(id) {
+	constructor(preConfig) {
 
-		this.id = id;
-
+		this.preConfig = preConfig;
 		this.width = 3;
 		this.height = 2;
 		this.editing = false;
@@ -13,16 +12,21 @@ module.exports = class BlockContainer {
 
 		this.setEvents();
 
-
 	}
 
-	init(blockConfig) {
+	init() {
 
 		this.block = new Blocks['PlotlyScatter']();
 		this.content = this.block.htmlComponent;
 		this.htmlComponent.appendChild(this.content);
 		this.block.init();
-		this.setEvents();
+
+	}
+
+	updateBlockConfig(newConfig) {
+
+
+		this.block.updateConfig(newConfig);
 
 	}
 

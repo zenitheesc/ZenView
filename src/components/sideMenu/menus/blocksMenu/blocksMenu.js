@@ -22,11 +22,11 @@ module.exports = class BlocksMenu extends Menu {
 
 	loadSections() {
 
-		this.appendSection(new Section('newBlockSection', 'Novo bloco'));
-		this.appendSection(new Section('2DPlotSection', 'Plots 2D'));
-		this.appendSection(new Section('3DPlotSection', 'Plots 3D'));
-		this.appendSection(new Section('GPSSection', 'GPS'));
-		this.appendSection(new Section('3DModelSection', 'Modelo 3D'));
+		this.appendSection(new Section('PlotlySection', 'Novo bloco'));
+		this.appendSection(new Section('PlotlySection', 'Plots 2D'));
+		this.appendSection(new Section('PlotlySection', 'Plots 3D'));
+		this.appendSection(new Section('PlotlySection', 'GPS'));
+		this.appendSection(new Section('PlotlySection', 'Modelo 3D'));
 
 	}
 

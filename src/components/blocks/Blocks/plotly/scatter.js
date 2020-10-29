@@ -10,6 +10,8 @@ module.exports = class scatter extends Block {
 
 		super();
 
+		this.id = 'PlotlyScatter';
+		this.formConfig = preConfig;
 		this.config = (preConfig) ? preConfig.config : {};
 		this.layout = (preConfig) ? preConfig.layout : {};
 		this.data = (preConfig) ? preConfig.data : [];
@@ -20,19 +22,75 @@ module.exports = class scatter extends Block {
 
 	}
 
+	updateConfig(newConfig) {
+
+		this.formConfig = newConfig;
+		newConfig = newConfig.form.Plotly;
+		if (newConfig !== undefined) this.attConfig(newConfig.config);
+		if (newConfig !== undefined) this.attLayout(newConfig.layout);
+		if (newConfig !== undefined) this.attData(newConfig.data);
+
+	}
+
 	rmvTrace() {
 
 	}
 
-	attData() {
+	attData(newData) {
+
+		let i = 0;
+		let found = false;
+
+		for (i = 0; i < this.data.length; i++) {
+
+			if (this.data[i].name === newData.currentSerieName) {
+
+				found = true;
+				break;
+
+			}
+
+		}
+
+		if (found) {
+
+			if (newData['showmarkers'] && newData['showlines']) {
+
+				newData.mode = 'lines+markers';
+				newData.visible = true;
+
+			} else if (newData['showmarkers'] && !newData['showlines']) {
+
+				newData.mode = 'markers';
+				newData.visible = true;
+
+			} else if (!newData['showmarkers'] && newData['showlines']) {
+
+				newData.mode = 'lines';
+				newData.visible = true;
+
+			} else if (!newData['showmarkers'] && !newData['showlines']) {
+
+				newData.visible = false;
+
+			}
+
+			Plotly.restyle(this.htmlComponent, newData, i);
+
+		}
 
 	}
 
-	attLayout() {
+	attLayout(newLayout) {
+
+		this.layout = loadash.merge(this.layout, newLayout);
+		Plotly.relayout(this.htmlComponent, this.layout);
 
 	}
 
-	attConfig() {
+	attConfig(newConfig) {
+
+		this.config = loadash.merge(this.config, newConfig);
 
 	}
 

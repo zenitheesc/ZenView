@@ -24,9 +24,9 @@ module.exports = class DahsBoard {
 
 		this.gridStack.enable('.grid-stack-item-content', true);
 
-		window.addEventListener('AddNewBlock', () => {
+		window.addEventListener('AddNewBlock', (evt) => {
 
-			this.addNewBlock();
+			this.addNewBlock(evt.detail);
 
 		});
 

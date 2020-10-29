@@ -1,0 +1,61 @@
+[{
+	"module": "Plotly",
+	"title": "Scatter",
+	"Plotly": {
+		"type": "scatter",
+		"config": {
+			"toImageButtonOptions": {
+				"format": "png"
+			}
+		},
+		"layout": {
+			"title": {
+				"text": "",
+				"font": {
+					"size": ""
+				}
+			},
+			"showlegend": true,
+			"xaxis": {
+				"title": {
+					"text": "",
+					"font": {
+						"size": ""
+					}
+				},
+				"type": ""
+			},
+			"yaxis": {
+				"title": {
+					"text": "",
+					"font": {
+						"size": ""
+					}
+				},
+				"type": ""
+			}
+		},
+		"scatter": {
+			"newTrace": {
+				"name": "",
+				"x": "",
+				"y": ""
+			},
+			"trace": {
+				"currTraceName": "",
+				"showMarkers": true,
+				"marker": {
+					"size": "",
+					"color": ""
+				},
+				"showLines": true,
+				"line": {
+					"width": "",
+					"color": "",
+					"dash": "",
+					"shape": ""
+				}
+			}
+		}
+	}
+}]

@@ -173,6 +173,58 @@ class FormPattern {
 
 	}
 
+	setData(DataObj) {
+
+		const atts = this.objToPathList(DataObj);
+		this.fields.forEach((field)=>{
+
+			if (atts[field.att] !== undefined) {
+
+				field.value = atts[field.att];
+
+			}
+
+		});
+
+	}
+
+	objToPathList(obj) {
+
+		const isObject = (val) =>
+			typeof val === 'object' && !Array.isArray(val);
+
+		const addDelimiter = (a, b) => a ? `${a}.${b}` : b;
+
+		const paths = (obj = {}, head = '') => {
+
+			return Object.entries(obj)
+				.reduce((product, [key, value]) => {
+
+					const fullPath = addDelimiter(head, key);
+					return isObject(value) ?
+						product.concat(paths(value, fullPath)) :
+						product.concat({
+							'path': fullPath,
+							'value': value,
+						});
+
+				}, []);
+
+		};
+
+		const objOfPaths = {};
+		const ArrayOfPaths = paths(obj);
+
+		ArrayOfPaths.forEach((path) => {
+
+			objOfPaths[path.path] = path.value;
+
+		});
+
+		return objOfPaths;
+
+	}
+
 	createResponseObj(pointer, path, value) {
 
 		const lastName = (arguments.length === 3) ? path.pop() : false;
@@ -278,6 +330,11 @@ class Field {
 		if (this.type === 'editableDiv') {
 
 			this.input.innerHTML = value;
+
+		} else if (this.type === 'checkbox') {
+
+			this.input.value = value;
+			this.input.checked = value;
 
 		} else {
 

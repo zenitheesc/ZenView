@@ -1,17 +1,12 @@
 module.exports = class Block {
 
-	constructor(id, title) {
+	constructor(title, config) {
 
 		this.htmlComponent = document.createElement('div');
 		this.content = document.createElement('div');
 		this.title = title;
-		this.preConfigs;
-		this.id = id;
+		this.preConfigs = config;
 		this.init();
-
-	}
-
-	getData() {
 
 	}
 
@@ -36,7 +31,6 @@ module.exports = class Block {
 
 	init() {
 
-		this.getData();
 		this.build();
 
 	}
