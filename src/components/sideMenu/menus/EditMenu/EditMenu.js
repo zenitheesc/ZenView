@@ -69,6 +69,8 @@ module.exports = class EditMenu extends Menu {
 
 			this.form.htmlComponent.classList.remove('d-none');
 			this.panel.classList.add('d-none');
+			this.form.setData(window.CurrentBlock.block.formConfig);
+			this.form.setConditions();
 
 		} else {
 
@@ -92,9 +94,17 @@ module.exports = class EditMenu extends Menu {
 
 		this.form.htmlComponent.oninput = () => {
 
-			console.log(this.form.getData());
+			window.CurrentBlock.updateBlockConfig(this.form.getData());
 
 		};
+
+		window.addEventListener('BlockWasSelected', (evt) => {
+
+			this.form.reset();
+			this.form.setData(evt.detail.block.formConfig);
+			this.form.setConditions();
+
+		});
 
 	}
 
