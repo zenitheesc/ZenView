@@ -357,7 +357,13 @@ class Field {
 			}
 			const splited = attributesUntilHere.split('.');
 			const sliced = splited.slice(0, splited.length - cont);
-			sliced.push(this.att);
+
+			this.att.split('.').forEach((att) => {
+
+				sliced.push(att);
+
+			});
+
 			this.parsedAtt = sliced;
 			this.att = sliced.join('.');
 
@@ -366,7 +372,7 @@ class Field {
 	}
 	validate() {
 
-		if (this.htmlComponent.offsetWidth <=0 && this.htmlComponent.offsetHeight <=0 ) {
+		if (this.htmlComponent.offsetWidth <= 0 && this.htmlComponent.offsetHeight <= 0) {
 
 			this.hideWarning();
 			return true;
