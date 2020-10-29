@@ -1,5 +1,5 @@
 const GridStack = require('gridstack/dist/gridstack.all');
-const Block = require('../blockContainer/blockContainer');
+const BlockContainer = require('../blockContainer/blockContainer');
 module.exports = class DahsBoard {
 
 	constructor() {
@@ -40,8 +40,10 @@ module.exports = class DahsBoard {
 
 	addNewBlock(blockConfig) {
 
-		const newBlock = new Block(blockConfig || {});
+		const newBlock = new BlockContainer(blockConfig || {});
 		this.gridStack.addWidget(newBlock.htmlComponent, newBlock);
+
+		newBlock.init();
 
 	}
 
