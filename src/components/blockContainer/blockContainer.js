@@ -26,16 +26,6 @@ module.exports = class BlockContainer {
 
 	}
 
-	plotHtmlComponent() {
-
-		const newWidget = document.createElement('div');
-		newWidget.id = 't1container';
-		newWidget.className = 'grid-stack-item';
-		newWidget.appendChild(this.block.htmlComponent);
-		return newWidget;
-
-	}
-
 	setEvents() {
 
 		this.htmlComponent.ondblclick = () => {
