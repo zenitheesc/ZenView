@@ -1,5 +1,4 @@
 const Blocks = require('../blocks/Blocks');
-const Block = require('../blocks/Blocks/block');
 module.exports = class BlockContainer {
 
 	constructor(id) {
@@ -9,30 +8,37 @@ module.exports = class BlockContainer {
 		this.width = 3;
 		this.height = 2;
 		this.editing = false;
-		this.block = new Block();
 
 		this.htmlComponent = document.createElement('div');
-		this.htmlComponent.className = 'grid-stack-item';
 
-		this.content = document.createElement('div');
-		this.content.className = 'grid-stack-item-content';
+		this.setEvents();
 
+
+	}
+
+	init(blockConfig) {
+
+		this.block = new Blocks['PlotlyScatter']();
+		this.content = this.block.htmlComponent;
 		this.htmlComponent.appendChild(this.content);
-
+		this.block.init();
 		this.setEvents();
 
 	}
 
-	setBlock(BlockConfig) {
+	plotHtmlComponent() {
 
-		this.block = Blocks[BlockConfig.BlockID];
-		this.block.init();
+		const newWidget = document.createElement('div');
+		newWidget.id = 't1container';
+		newWidget.className = 'grid-stack-item';
+		newWidget.appendChild(this.block.htmlComponent);
+		return newWidget;
 
 	}
 
 	setEvents() {
 
-		this.content.ondblclick = () =>{
+		this.htmlComponent.ondblclick = () => {
 
 
 			if (!this.editing) {
