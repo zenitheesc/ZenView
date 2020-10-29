@@ -85,6 +85,14 @@ module.exports = class SideMenu {
 			this.changeSideMenu(evt.detail);
 
 		});
+
+		window.addEventListener('openSideMenu', (evt) => {
+
+			this.currentMenu = evt.detail.requested;
+			this.openSideMenu();
+
+		});
+
 		this.MenuList.build();
 		this.loadMenus();
 		this.setStyle();

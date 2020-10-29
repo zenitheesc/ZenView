@@ -34,17 +34,38 @@ module.exports = class BlockContainer {
 
 		this.content.ondblclick = () =>{
 
-			window.dispatchEvent(new CustomEvent('BlockWasSelected', {
-				detail: this,
-			}));
 
 			if (!this.editing) {
 
+				window.dispatchEvent(new CustomEvent('BlockWasSelected', {
+					detail: this,
+				}));
+
+				window.dispatchEvent(new CustomEvent('openSideMenu', {
+					detail: {
+						requested: 'edit',
+					},
+				}));
+
+				window.dispatchEvent(new CustomEvent('openMenu', {
+					detail: {
+						name: 'edit',
+					},
+				}));
+
+				window.dispatchEvent(new CustomEvent('setSelectionEffect', {
+					detail: {
+						name: 'edit',
+					},
+				}));
+
 				this.content.classList.add('editingBlock');
 				this.editing = true;
+				window.CurrentBlock = this;
 
 			} else {
 
+				window.CurrentBlock = undefined;
 				this.content.classList.remove('editingBlock');
 				this.editing = false;
 

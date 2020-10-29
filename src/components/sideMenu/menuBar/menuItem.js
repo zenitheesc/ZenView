@@ -42,26 +42,31 @@ module.exports = class MenuItem {
 		this.setIcon();
 
 	}
+	clickVisualEffect() {
+
+		const itemList = document.getElementsByClassName('menuItem');
+		for (let i = 0, j = itemList.length; i < j; i++) {
+
+			if (itemList[i] === this.itemComponent) continue;
+			this.setDeactiveEffect(itemList[i]);
+
+		}
+		if (this.itemComponent.getAttribute('isOpen') === 'false') {
+
+			this.setActiveEffect(this.itemComponent);
+
+		} else {
+
+			this.setDeactiveEffect(this.itemComponent);
+
+		}
+
+	}
 	setClickVisualEffect() {
 
 		this.itemComponent.addEventListener('click', () => {
 
-			const itemList = document.getElementsByClassName('menuItem');
-			for (let i = 0, j = itemList.length; i < j; i++) {
-
-				if (itemList[i] === this.itemComponent) continue;
-				this.setDeactiveEffect(itemList[i]);
-
-			}
-			if (this.itemComponent.getAttribute('openedMenu') === 'false') {
-
-				this.setActiveEffect(this.itemComponent);
-
-			} else {
-
-				this.setDeactiveEffect(this.itemComponent);
-
-			}
+			this.clickVisualEffect();
 
 		});
 
@@ -70,7 +75,7 @@ module.exports = class MenuItem {
 
 		menuItem.classList.add('active');
 		menuItem.classList.remove('deactive');
-		menuItem.setAttribute('openedMenu', 'true');
+		menuItem.setAttribute('isOpen', 'true');
 		menuItem.style.borderLeft = '2px solid white';
 
 	}
@@ -78,7 +83,7 @@ module.exports = class MenuItem {
 
 		menuItem.classList.add('deactive');
 		menuItem.classList.remove('active');
-		menuItem.setAttribute('openedMenu', 'false');
+		menuItem.setAttribute('isOpen', 'false');
 		menuItem.style.borderLeft = '2px solid ' + Utillities.getColor(1);
 
 	}
@@ -115,11 +120,22 @@ module.exports = class MenuItem {
 
 		});
 
+		window.addEventListener('setSelectionEffect', (evt)=>{
+
+			if (evt.detail.name === this.id) {
+
+				this.clickVisualEffect();
+				this.setActiveEffect(this.itemComponent);
+
+			}
+
+		});
+
 	}
 	htmlComponent() {
 
 		this.itemComponent = document.createElement('button');
-		this.itemComponent.setAttribute('openedMenu', 'false');
+		this.itemComponent.setAttribute('isOpen', 'false');
 		this.setStyle();
 		this.setContextChangeEffect();
 		this.setClickVisualEffect();
