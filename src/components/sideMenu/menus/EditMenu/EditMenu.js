@@ -52,6 +52,12 @@ module.exports = class EditMenu extends Menu {
 		spliterContainer.appendChild(this.form.htmlComponent);
 		this.menuComponent.appendChild(spliterContainer);
 
+		this.form.htmlComponent.oninput = () =>{
+
+			console.log(this.form.getData());
+
+		};
+
 	}
 
 };

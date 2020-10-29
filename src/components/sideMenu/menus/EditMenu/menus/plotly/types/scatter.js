@@ -5,6 +5,7 @@ const Components = require('../../../../../../components');
 const PlotlyScatterConfig = Container.div({
 	PlotlySeries: Container.spliter({
 		newSerieName: Field.text({
+			att: 'name',
 			append: [
 				{
 					type: 'button',
@@ -14,6 +15,7 @@ const PlotlyScatterConfig = Container.div({
 			],
 		}),
 		xAxis: Field.select({
+			att: 'x',
 			prepend: [
 				{
 					type: 'text',
@@ -23,6 +25,7 @@ const PlotlyScatterConfig = Container.div({
 			],
 		}),
 		yxis: Field.select({
+			att: 'y',
 			prepend: [
 				{
 					type: 'text',
@@ -33,15 +36,18 @@ const PlotlyScatterConfig = Container.div({
 		}),
 	}, {
 		startOpen: false,
+		att: 'newTrace',
 		text: 'Series',
 		id: 'PlotlySeries',
 	}),
 	PlotlySeriesStyle: Container.spliter({
 		selectedSerie: Field.select({
+			att: 'currTraceName',
 			label: 'Série',
 		}),
 		showMarkers: Field.checkBox({
 			label: 'Pontos',
+			att: 'showMarkers',
 			id: 'PlotlyScatterShowMarkers',
 		}),
 		markersOptions: Container.div({
@@ -49,6 +55,7 @@ const PlotlyScatterConfig = Container.div({
 				markersSize: Field.select(
 					{
 						label: 'Tamanho',
+						att: 'size',
 						classList: ['col-6'],
 						options: [
 							{
@@ -74,6 +81,7 @@ const PlotlyScatterConfig = Container.div({
 				),
 				markersColor: Field.select({
 					label: 'Cor',
+					att: 'color',
 					classList: ['col-6'],
 					options: [
 						{
@@ -110,6 +118,7 @@ const PlotlyScatterConfig = Container.div({
 				}),
 			}),
 		}, {
+			att: 'marker',
 			conditions: [
 				{
 					id: 'PlotlyScatterShowMarkers',
@@ -120,6 +129,7 @@ const PlotlyScatterConfig = Container.div({
 		}),
 		showLines: Field.checkBox({
 			label: 'Linhas',
+			att: 'showLines',
 			id: 'PlotlyScatterShowLines',
 		}),
 		lineOptions: Container.div({
@@ -127,6 +137,7 @@ const PlotlyScatterConfig = Container.div({
 				lineWidth: Field.select(
 					{
 						label: 'Tamanho',
+						att: 'width',
 						classList: ['col-6'],
 						options: [
 							{
@@ -152,6 +163,7 @@ const PlotlyScatterConfig = Container.div({
 				),
 				lineColor: Field.select({
 					label: 'Cor',
+					att: 'color',
 					classList: ['col-6'],
 					options: [
 						{
@@ -188,9 +200,10 @@ const PlotlyScatterConfig = Container.div({
 				}),
 			}),
 			lineOption: Container.formRow({
-				lineDasg: Field.select(
+				lineDash: Field.select(
 					{
 						label: 'Tracejado',
+						att: 'dash',
 						classList: ['col-6'],
 						options: [
 							{
@@ -218,6 +231,7 @@ const PlotlyScatterConfig = Container.div({
 				),
 				lineShape: Field.select({
 					label: 'Interpolação',
+					att: 'shape',
 					classList: ['col-6'],
 					options: [
 						{
@@ -248,6 +262,7 @@ const PlotlyScatterConfig = Container.div({
 				}),
 			}),
 		}, {
+			att: 'line',
 			conditions: [
 				{
 					id: 'PlotlyScatterShowLines',
@@ -258,15 +273,18 @@ const PlotlyScatterConfig = Container.div({
 		}),
 	}, {
 		startOpen: false,
+		att: 'trace',
 		text: 'Estilo',
 		id: 'PlotlySeriesStyle',
 	}),
 	plotlyXAxesStyle: Container.spliter({
 		xAxesTitle: Field.text({
+			att: 'title.text',
 			label: 'Título',
 		}),
 		xAxesStyle: Field.select({
 			label: 'Tamanho',
+			att: 'title.font.size',
 			options: [
 				{
 					text: 10,
@@ -290,6 +308,7 @@ const PlotlyScatterConfig = Container.div({
 		}),
 		xAxesScale: Field.select({
 			label: 'Escala',
+			att: 'type',
 			options: [
 				{
 					text: 'Linear',
@@ -302,15 +321,18 @@ const PlotlyScatterConfig = Container.div({
 			],
 		}),
 	}, {
+		att: '../layout.xaxis',
 		startOpen: false,
 		text: 'Eixo X',
 		id: 'plotlyXAxeStyle',
 	}),
 	plotlyYAxesStyle: Container.spliter({
 		yAxesTitle: Field.text({
+			att: 'title.text',
 			label: 'Título',
 		}),
 		yAxesStyle: Field.select({
+			att: 'title.font.size',
 			label: 'Tamanho',
 			options: [
 				{
@@ -334,6 +356,7 @@ const PlotlyScatterConfig = Container.div({
 			],
 		}),
 		yAxesScale: Field.select({
+			att: 'type',
 			label: 'Escala',
 			options: [
 				{
@@ -347,12 +370,14 @@ const PlotlyScatterConfig = Container.div({
 			],
 		}),
 	}, {
+		att: '../layout.yaxis',
 		startOpen: false,
 		text: 'Eixo Y',
 		id: 'plotlyYAxeStyle',
 	}),
 }, {
 	id: 'PlotlyScatterConfig',
+	att: 'scatter',
 	conditions: [
 		{
 			id: 'plotlyTypeSelector',

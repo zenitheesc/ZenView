@@ -3,10 +3,12 @@ const Field = require('../../../../../formBuilder/formBuilder').Field;
 
 const PlotlyLayoutConfig = Container.spliter({
 	Title: Field.text({
+		att: 'title.text',
 		label: 'Título',
 	}),
 	TitleFontSize: Field.select({
 		label: 'Tamanho',
+		att: 'title.font.size',
 		options: [
 			{
 				text: 16,
@@ -30,11 +32,13 @@ const PlotlyLayoutConfig = Container.spliter({
 	}),
 	Legend: Field.checkBox({
 		label: 'Mostrar Legenda',
+		att: 'showlegend',
 	}),
 },
 {
 	startOpen: false,
 	text: 'Layout',
+	att: 'layout',
 	id: 'PlotlyLayout',
 },
 );

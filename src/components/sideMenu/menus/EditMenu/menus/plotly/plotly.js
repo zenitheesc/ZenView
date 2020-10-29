@@ -8,6 +8,7 @@ const PlotlyEditMenuConfig = Container.div({
 		{
 			plotType: Field.select({
 				label: 'Selecione um tipo: ',
+				att: 'type',
 				id: 'plotlyTypeSelector',
 				options: [
 					{
@@ -32,6 +33,7 @@ const PlotlyEditMenuConfig = Container.div({
 			}),
 			exportType: Field.select({
 				label: 'Selecione um tipo: ',
+				att: 'config.toImageButtonOptions.format',
 				options: [
 					{
 						text: 'Png',
@@ -64,6 +66,7 @@ const PlotlyEditMenuConfig = Container.div({
 },
 {
 	id: 'PlotlyEditMenuConfig',
+	att: 'Plotly',
 	conditions: [
 		{
 			id: 'BlockModule',
