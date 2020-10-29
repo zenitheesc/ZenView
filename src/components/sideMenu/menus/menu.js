@@ -14,7 +14,7 @@ module.exports = class Menu {
 	load() {
 
 	}
-	onLoad() {
+	onOpen() {
 
 	}
 	setEvents() {
@@ -23,7 +23,7 @@ module.exports = class Menu {
 
 			if ((evt.detail.name) + '_menu' === this.menuComponent.id) {
 
-				this.onLoad();
+				this.onOpen();
 				this.menuComponent.style.display = 'block';
 
 			} else {

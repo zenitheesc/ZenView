@@ -37,6 +37,10 @@ module.exports = class BlockContainer {
 
 			if (!this.editing) {
 
+				this.content.classList.add('editingBlock');
+				this.editing = true;
+				window.CurrentBlock = this;
+
 				window.dispatchEvent(new CustomEvent('BlockWasSelected', {
 					detail: this,
 				}));
@@ -59,15 +63,17 @@ module.exports = class BlockContainer {
 					},
 				}));
 
-				this.content.classList.add('editingBlock');
-				this.editing = true;
-				window.CurrentBlock = this;
-
 			} else {
 
 				window.CurrentBlock = undefined;
 				this.content.classList.remove('editingBlock');
 				this.editing = false;
+
+				window.dispatchEvent(new CustomEvent('openMenu', {
+					detail: {
+						name: 'edit',
+					},
+				}));
 
 			}
 

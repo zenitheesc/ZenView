@@ -10,6 +10,8 @@ module.exports = class EditMenu extends Menu {
 
 		super('Edição', 'edit_menu');
 
+		this.panel = document.createElement('div');
+
 		this.form = new Form({
 			BlockModuleContainer: Container.spliter({
 				module: Field.select({
@@ -44,15 +46,51 @@ module.exports = class EditMenu extends Menu {
 
 	}
 
+	panelConfig() {
+
+		this.panel.style.width = '100%';
+
+		const panelContent = document.createElement('div');
+		panelContent.style.padding = '1.4em';
+		panelContent.style.color = 'whitesmoke';
+		panelContent.style.textAlign = 'center';
+		panelContent.style.border = '1px solid #a9a9a963';
+		panelContent.style.margin = '1.2em';
+
+		panelContent.textContent = 'Selecione ou adicione um novo bloco para começar a editar';
+
+		this.panel.appendChild(panelContent);
+
+	}
+
+	onOpen() {
+
+		if (window.CurrentBlock) {
+
+			this.form.htmlComponent.classList.remove('d-none');
+			this.panel.classList.add('d-none');
+
+		} else {
+
+			this.form.htmlComponent.classList.add('d-none');
+			this.panel.classList.remove('d-none');
+
+		}
+
+	}
+
 	load() {
 
-		const spliterContainer = document.createElement('div');
-		spliterContainer.className = 'menuBody';
-		spliterContainer.style.height = '100%';
-		spliterContainer.appendChild(this.form.htmlComponent);
-		this.menuComponent.appendChild(spliterContainer);
+		const menuContainer = document.createElement('div');
+		menuContainer.className = 'menuBody';
+		menuContainer.style.height = '100%';
+		menuContainer.appendChild(this.form.htmlComponent);
+		menuContainer.appendChild(this.panel);
 
-		this.form.htmlComponent.oninput = () =>{
+		this.menuComponent.appendChild(menuContainer);
+		this.panelConfig();
+
+		this.form.htmlComponent.oninput = () => {
 
 			console.log(this.form.getData());
 
