@@ -55,7 +55,7 @@ class MainWindow {
 
 		window.dispatchEvent(new CustomEvent('GlobalContextChange', {
 			detail: {
-				context: 'all',
+				context: 'any',
 			},
 		}));
 

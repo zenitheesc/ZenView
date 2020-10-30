@@ -105,7 +105,7 @@ module.exports = class MenuItem {
 	}
 	setContextChangeEffect() {
 
-		if (this.globalContext.includes('all')) return;
+		if (this.globalContext.includes('any')) return;
 		window.addEventListener('GlobalContextChange', (evt)=>{
 
 			if (this.globalContext.includes(evt.detail.context)) {

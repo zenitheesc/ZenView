@@ -22,8 +22,8 @@ module.exports = class MenuList {
 	loadTopOptions() {
 
 		const menuItens = [];
-		menuItens.push(new MenuItem('dashboards', 'grid-1x2', Utillities.getButtonText(1), 'all'));
-		menuItens.push(new MenuItem('newDashboard', 'plus-square', Utillities.getButtonText(2), 'all'));
+		menuItens.push(new MenuItem('dashboards', 'grid-1x2', Utillities.getButtonText(1), 'any'));
+		menuItens.push(new MenuItem('newDashboard', 'plus-square', Utillities.getButtonText(2), 'any'));
 		this.loadOptions('topContainer', menuItens);
 
 	}
@@ -40,8 +40,8 @@ module.exports = class MenuList {
 	loadBottomOptions() {
 
 		const menuItens = [];
-		menuItens.push(new MenuItem('about', 'info-circle', Utillities.getButtonText(8), 'all'));
-		menuItens.push(new MenuItem('configs', 'gear', Utillities.getButtonText(9), 'all'));
+		menuItens.push(new MenuItem('about', 'info-circle', Utillities.getButtonText(8), 'any'));
+		menuItens.push(new MenuItem('configs', 'gear', Utillities.getButtonText(9), 'any'));
 		this.loadOptions('bottonContainer', menuItens);
 
 	}
