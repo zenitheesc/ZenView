@@ -16,7 +16,7 @@ module.exports = class BlockContainer {
 
 	init() {
 
-		this.block = new Blocks['PlotlyScatter']();
+		this.block = new Blocks['Plotly'](this.preConfig);
 		this.content = this.block.htmlComponent;
 		this.htmlComponent.appendChild(this.content);
 		this.block.init();

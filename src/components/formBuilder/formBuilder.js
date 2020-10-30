@@ -176,11 +176,12 @@ class FormPattern {
 	setData(DataObj) {
 
 		const atts = this.objToPathList(DataObj);
+
 		this.fields.forEach((field)=>{
 
-			if (atts[field.att] !== undefined) {
+			if (atts[field.att] !== undefined || atts[(field.att).replace('form.', '')] !== undefined) {
 
-				field.value = atts[field.att];
+				field.value = atts[field.att] || atts[(field.att).replace('form.', '')];
 
 			}
 

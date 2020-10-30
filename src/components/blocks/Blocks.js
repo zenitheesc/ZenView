@@ -1,4 +1,4 @@
 const Blocks = {};
-Blocks['PlotlyScatter'] = require('./Blocks/plotly/scatter');
+Blocks['Plotly'] = require('./Blocks/plotly/Plotly');
 
 module.exports = Blocks;

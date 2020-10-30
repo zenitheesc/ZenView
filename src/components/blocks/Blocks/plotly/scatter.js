@@ -9,9 +9,12 @@ module.exports = class scatter extends Block {
 	constructor(preConfig) {
 
 		super();
-
 		this.id = 'PlotlyScatter';
 		this.formConfig = preConfig;
+
+		console.log(this.formConfig);
+		preConfig = preConfig.Plotly;
+
 		this.config = (preConfig) ? preConfig.config : {};
 		this.layout = (preConfig) ? preConfig.layout : {};
 		this.data = (preConfig) ? preConfig.data : [];
@@ -28,7 +31,7 @@ module.exports = class scatter extends Block {
 		newConfig = newConfig.form.Plotly;
 		if (newConfig !== undefined) this.attConfig(newConfig.config);
 		if (newConfig !== undefined) this.attLayout(newConfig.layout);
-		if (newConfig !== undefined) this.attData(newConfig.data);
+		//if (newConfig !== undefined) this.attData(newConfig.data);
 
 	}
 
