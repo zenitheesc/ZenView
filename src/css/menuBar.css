@@ -1,0 +1,58 @@
+  
+  #title-bar {
+    padding: 0%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 30px;
+    width: 100%;
+    background: var(--global-colorList);
+    -webkit-app-region: drag;
+  }
+  
+  #title-bar > div {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  #titlebar-name {
+    color: lightgray !important;
+    text-align: center;
+    padding-top: 8px;
+    padding-bottom: 5px;
+  }
+  
+  .titlebar-btn {
+    -webkit-app-region: no-drag;
+    height: 100%;
+    width: 2.6em;
+    border: none;
+    background: transparent;
+    outline: none;
+  }
+
+  .left {
+    width: 2.6em;
+  }
+
+  .titlebar-btn:focus{
+    outline: none;
+  }
+  
+  .titlebar-btn:hover {
+    background: rgba(221, 221, 221, 0.2);
+    color: whitesmoke;
+    outline: none;
+  }
+  
+  #close-btn:hover {
+    background: rgb(255, 0, 0);
+    color: whitesmoke;
+    outline: none;
+  }
+  
+  .titlebar-btn i {
+    color: var(--global-colorInputBg);
+  }

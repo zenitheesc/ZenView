@@ -1,5 +1,6 @@
 console.log('running....');
 
+const { ipcMain } = require('electron');
 const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
@@ -7,6 +8,7 @@ const path = require('path');
 const url = require('url');
 const ipc = electron.ipcMain;
 const dialog = require('electron').dialog;
+const TitleBarMenu = require('./components/titleBar/titleBarMenu')
 
 const debugMode = true;
 let initialWindow;
@@ -27,11 +29,13 @@ const initialWindowparams = {
 const mainWindowparams = {
 	title: 'ZenView',
 	path: '../src/index.html',
+	frame: false,
 	show: debugMode,
 	webPreferences: {
 		nodeIntegration: true,
 		webviewTag: true,
 		nodeIntegrationInWorker: true,
+		enableRemoteModule: true,
 	},
 	openDevTools: debugMode,
 };
@@ -146,4 +150,19 @@ ipc.on('openDialog', (event, config) => {
 
 	});
 
+});
+
+ipcMain.on('display-app-titleBar', function(err, args) {
+
+	let titleBarMenu = new TitleBarMenu();
+
+	if (mainWindow) {
+		
+		titleBarMenu.menu.popup({
+		  window: mainWindow,
+		  x: args.x,
+		  y: args.y
+		});
+
+	  }
 });

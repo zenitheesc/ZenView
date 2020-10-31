@@ -4,6 +4,8 @@ const fs = require('fs');
 const ipc = require('electron').ipcRenderer;
 const DataReader = require('./components/dataReader/dataReader');
 const DashBoard = require('./components/dashBoard/DashBoard');
+const TitleBar = require('./components/titleBar/titleBar');
+
 class MainWindow {
 
 	constructor() {
@@ -12,6 +14,7 @@ class MainWindow {
 		this.SideMenu = new SideMenu();
 		this.DashBoardsManager = new DashBoardsManager();
 		this.DashBoard = new DashBoard();
+		this.TitleBar = new TitleBar();
 
 	}
 	saveConfig() {
@@ -48,6 +51,7 @@ class MainWindow {
 		window['ZenViewConfig'] = JSON.parse(fs.readFileSync('./src/config.json'));
 
 		this.init();
+		this.TitleBar.build();
 		this.SideMenu.build();
 		this.DashBoardsManager.build();
 		this.DataReader.build();
