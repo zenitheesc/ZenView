@@ -14,6 +14,12 @@ module.exports = class TitleBar {
         this.titleBarActions = new TitleBarActions();
 
     }
+    setStyle() {
+        
+        let closedWidth = String(Math.floor(screen.width / 32) + 'px');
+
+        document.getElementById('menu-btn').style.width = closedWidth;
+    }
     createButton (className, id, iclass) {
 
         let button = document.createElement('button');
@@ -31,6 +37,7 @@ module.exports = class TitleBar {
     createTitleBar() {
 
         let windowName = document.createElement('h5');
+        
         windowName.id = 'titlebar-name'
         windowName.textContent = "ZenView";
         
@@ -46,6 +53,7 @@ module.exports = class TitleBar {
         this.TitleBarDiv.appendChild(this.TitleBarLeftDiv);
         this.TitleBarDiv.appendChild(windowName);
         this.TitleBarDiv.appendChild(this.TitleBarRightDiv);
+        this.setStyle();
 
         window.addEventListener('GlobalContextChange', (evt) => {
 
@@ -56,7 +64,7 @@ module.exports = class TitleBar {
     }
     build(){
 
-        this.createTitleBar('ZenView');
+        this.createTitleBar();
 
         const menuButton = document.getElementById("menu-btn");
         const minimizeButton = document.getElementById("minimize-btn");
