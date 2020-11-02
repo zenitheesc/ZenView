@@ -1,0 +1,63 @@
+  
+  #title-bar {
+    padding: 0%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 30px;
+    width: 100%;
+    background: var(--global-colorList);
+    -webkit-app-region: drag;
+  }
+  
+  #title-bar > div {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  #titlebar-name {
+    position: absolute;
+    left: 50%;
+    -webkit-transform: translate(-50%, 0);
+    transform: translate(-50%, 0);
+    overflow: hidden;
+    padding-top: 8px;
+    padding-bottom: 5px;
+    color: lightgray !important;
+  }
+  
+  .titlebar-btn {
+    -webkit-app-region: no-drag;
+    height: 100%;
+    width: 2.6em;
+    border: none;
+    background: transparent;
+    outline: none;
+  }
+
+  .titlebar-btn:focus{
+    outline: none;
+  }
+  
+  .titlebar-btn:hover {
+    background: rgba(221, 221, 221, 0.2);
+    color: whitesmoke;
+    outline: none;
+  }
+
+  .titlebar-btn:hover i{
+    color: whitesmoke;
+  }
+
+  #close-btn:hover {
+    background: rgb(255, 0, 0);
+    outline: none;
+  }
+  
+  .titlebar-btn i {
+    color: var(--global-colorInputBg);
+  }
+
+  
