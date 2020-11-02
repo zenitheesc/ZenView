@@ -15,13 +15,12 @@ module.exports = class DashBoardsManager {
 
 	}
 
-	openDashBoard(path) {
+	testIfDashBoardExist(path) {
 
-		console.log('ABRINDO NOVO DASHBOARD');
-		let CurrentDashBoardConfig;
 		try {
 
 			CurrentDashBoardConfig = JSON.parse(fs.readFileSync(path));
+			return true;
 
 		} catch (error) {
 
@@ -47,11 +46,23 @@ module.exports = class DashBoardsManager {
 			return false;
 
 		}
+
+	}
+
+	openDashBoard(path) {
+
+		console.log('ABRINDO NOVO DASHBOARD');
+		if (!this.testIfDashBoardExist(path)) return;
+
+		const CurrentDashBoardConfig = JSON.parse(fs.readFileSync(path));
 		const CurrentDashBoard = new DashBoard(CurrentDashBoardConfig);
+
 		window.CurrentDashBoard = CurrentDashBoard;
 		window.CurrentInputGroup = CurrentDashBoard.inputGroup;
 		window.scope = CurrentDashBoard.inputGroup.scope;
+
 		window.dispatchEvent(new CustomEvent('attInputList'));
+
 		return true;
 
 	}
@@ -98,6 +109,7 @@ module.exports = class DashBoardsManager {
 
 	deleteDashboard(deletePath) {
 
+		if (!this.testIfDashBoardExist(deletePath)) return;
 		const callback = ((resposta) => {
 
 			if (resposta.response === 0) {
