@@ -72,7 +72,7 @@ module.exports = class BlockContainer {
 
 		};
 
-		this.EventHandler.BlockWasSelected((evt) => {
+		this.EventHandler.addEventListener('BlockWasSelected', (evt) => {
 
 			if (evt !== this) {
 
