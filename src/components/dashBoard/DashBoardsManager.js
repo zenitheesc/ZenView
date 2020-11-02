@@ -152,11 +152,22 @@ module.exports = class DashBoardsManager {
 
 			if (window['ZenViewConfig'].dashboards[i].path === path) {
 
-				window['ZenViewConfig'].dashboards[i].description = newDesc;
-				window['ZenViewConfig'].dashboards[i].name = newName;
+				if (!this.testIfDashBoardExist(path)) return;
 
-				this.EventHandler.AttDashBoardsList();
+				const CurrentDashBoardConfig = JSON.parse(fs.readFileSync(path));
+				const CurrentDashBoard = new DashBoard(CurrentDashBoardConfig);
+
+				CurrentDashBoard.name = newName;
+				CurrentDashBoard.description = newDesc;
+				CurrentDashBoard.inputGroup.inputGraph = {};
+
+				fs.writeFileSync(path, JSON.stringify(CurrentDashBoard, null, '\t'));
+
+				window['ZenViewConfig'].dashboards[i].desc = newDesc;
+				window['ZenViewConfig'].dashboards[i].name = newName;
+				console.log(path, newName, CurrentDashBoard.description);
 				this.EventHandler.SaveConfigs();
+				this.EventHandler.AttDashBoardsList();
 
 				break;
 
@@ -207,6 +218,12 @@ module.exports = class DashBoardsManager {
 		this.EventHandler.addEventListener('NewDashBoard', (evt) => {
 
 			this.newDashBoard(evt);
+
+		});
+
+		this.EventHandler.addEventListener('SaveDashBoardDescAndName', (evt) => {
+
+			this.saveDashBoardDescAndName(evt.path, evt.name, evt.desc);
 
 		});
 

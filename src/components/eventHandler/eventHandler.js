@@ -128,6 +128,12 @@ module.exports = class EventHandler {
 
 		};
 
+		this['SaveDashBoardDescAndName'] = (detail) => {
+
+			this.dispatchEvent('SaveDashBoardDescAndName', detail);
+
+		};
+
 	}
 
 	addEventListener(eventName, callBackFunction) {

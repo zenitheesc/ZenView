@@ -86,7 +86,6 @@ module.exports = class DashBoardCard {
 
 		this.editBtn.addEventListener('click', () => {
 
-			console.log('contexto global alterado para edição');
 			if (!this.title.isContentEditable) {
 
 				this.editBtn.innerHTML = Components.icon('save');
@@ -102,6 +101,12 @@ module.exports = class DashBoardCard {
 				this.desc.classList.remove('editableDiv');
 				this.title.contentEditable = false;
 				this.desc.contentEditable = false;
+
+				this.EventHandler.SaveDashBoardDescAndName({
+					name: this.title.textContent,
+					desc: this.desc.textContent,
+					path: this.dashBoardInfo.path,
+				});
 
 			}
 
