@@ -134,7 +134,6 @@ module.exports = class EventHandler {
 
 		window.addEventListener(eventName, (evt) => {
 
-			console.log(eventName + ': ' + evt);
 			callBackFunction(evt.detail);
 
 		});
