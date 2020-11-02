@@ -26,6 +26,27 @@ class MainWindow {
 
 	}
 
+	readInitialConfig() {
+
+		try {
+
+			window['ZenViewConfig'] = JSON.parse(fs.readFileSync('./assets/config.json'));
+
+		} catch (error) {
+
+			const initialConfig = {
+				language: 'ptbr',
+				dashboards: [],
+			};
+
+			fs.writeFileSync('./assets/config.json', initialConfig);
+
+			window['ZenViewConfig'] = initialConfig;
+
+		}
+
+	}
+
 	init() {
 
 		window.addEventListener('saveConfigs', () => {
@@ -40,12 +61,13 @@ class MainWindow {
 
 		});
 
+		this.readInitialConfig();
+
 	}
 	build() {
 
 		let duracao = Date.now();
 
-		window['ZenViewConfig'] = JSON.parse(fs.readFileSync('./src/config.json'));
 
 		this.init();
 		this.SideMenu.build();
