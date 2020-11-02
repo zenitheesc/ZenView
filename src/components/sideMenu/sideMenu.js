@@ -22,16 +22,13 @@ module.exports = class SideMenu {
 
 		this.sideMenuComponent.style.width = this.closedWidth;
 		this.sideMenuComponent.style.height = '100%';
-		// this.sideMenuComponent.style.backgroundColor = Utillites.getColor(2);
 
 		this.menuListComponent.style.width = this.closedWidth;
 		this.menuListComponent.style.height = '100%';
-		// this.menuListComponent.style.backgroundColor = Utillites.getColor(1);
 
 		this.menusComponent.style.width = this.closedWidth;
 		this.menusComponent.style.height = '100%';
 		this.menusComponent.style.display = 'none';
-		// this.menusComponent.style.backgroundColor = Utillites.getColor(2);
 
 	}
 	/**
