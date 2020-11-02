@@ -21,7 +21,7 @@ module.exports = class newDashBoardMenu extends Menu {
 				Name: Field.text({
 					label: 'Nome',
 					att: 'name',
-					validators: [Validator.isFilled],
+					validators: [Validator.isFilled, Validator.noSpecialChars],
 				}),
 				Directory: Field.directory({
 					label: 'Diretório',
