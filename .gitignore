@@ -5,6 +5,7 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 node_modules/*
+.VSCodeCounter/*
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
@@ -114,3 +115,6 @@ dist
 .yarn/install-state.gz
 .pnp.*
 node_modules/.bin/acorn
+src/config.json
+.gitignore
+assets/config.json
