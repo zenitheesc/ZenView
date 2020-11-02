@@ -1,5 +1,6 @@
 const Menu = require('../menu');
 const Components = require('../../../components.js');
+const DashBoardCard = require('./dashBoardCard');
 module.exports = class DashBoardsMenu extends Menu {
 
 	constructor() {
@@ -15,7 +16,7 @@ module.exports = class DashBoardsMenu extends Menu {
 
 		savedDashboards.forEach((dashboard) => {
 
-			this.container.appendChild(Components.dashBoardCard(dashboard.name, dashboard.desc, dashboard.path));
+			this.container.appendChild((new DashBoardCard(dashboard.name, dashboard.desc, dashboard.path)).htmlComponent);
 
 		});
 
