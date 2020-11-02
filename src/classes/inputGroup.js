@@ -45,7 +45,7 @@ module.exports = class InputGroup {
 
 		this.customMath = Math.create(Math.all);
 
-		window.addEventListener('dataIsReady', (evt) => {
+		window.addEventListener('DataIsReady', (evt) => {
 
 			this.solve(evt.detail);
 
@@ -145,7 +145,7 @@ module.exports = class InputGroup {
 		this.inputGraph.hasCycle();
 		this.inputGraph.topologicalSort();
 
-		window.dispatchEvent(new CustomEvent('saveCurrentDashBoard'));
+		window.dispatchEvent(new CustomEvent('SaveCurrentDashBoard'));
 
 		return {
 			created: true,
@@ -206,7 +206,7 @@ module.exports = class InputGroup {
 		this.inputGraph.hasCycle();
 		this.inputGraph.topologicalSort();
 
-		window.dispatchEvent(new CustomEvent('saveCurrentDashBoard'));
+		window.dispatchEvent(new CustomEvent('SaveCurrentDashBoard'));
 
 	}
 
@@ -226,7 +226,7 @@ module.exports = class InputGroup {
 
 		console.log(this.scope);
 
-		window.dispatchEvent(new CustomEvent('dataIsProcessed', {detail: this.scope}));
+		window.dispatchEvent(new CustomEvent('DataIsProcessed', {detail: this.scope}));
 
 	}
 

@@ -1,8 +1,10 @@
 const Blocks = require('../blocks/Blocks');
+const EventHandler = require('../eventHandler/eventHandler');
 module.exports = class BlockContainer {
 
 	constructor(preConfig) {
 
+		this.EventHandler = new EventHandler();
 		this.preConfig = preConfig;
 		this.width = 3;
 		this.height = 2;
@@ -41,27 +43,19 @@ module.exports = class BlockContainer {
 				this.editing = true;
 				window.CurrentBlock = this;
 
-				window.dispatchEvent(new CustomEvent('BlockWasSelected', {
-					detail: this,
-				}));
+				this.EventHandler.BlockWasSelected(this);
 
-				window.dispatchEvent(new CustomEvent('openSideMenu', {
-					detail: {
-						requested: 'edit',
-					},
-				}));
+				this.EventHandler.OpenSideMenu({
+					requested: 'edit',
+				});
 
-				window.dispatchEvent(new CustomEvent('openMenu', {
-					detail: {
-						name: 'edit',
-					},
-				}));
+				this.EventHandler.OpenMenu({
+					name: 'edit',
+				});
 
-				window.dispatchEvent(new CustomEvent('setSelectionEffect', {
-					detail: {
-						name: 'edit',
-					},
-				}));
+				this.EventHandler.SetSelectionEffect({
+					name: 'edit',
+				});
 
 			} else {
 
@@ -69,20 +63,18 @@ module.exports = class BlockContainer {
 				this.content.classList.remove('editingBlock');
 				this.editing = false;
 
-				window.dispatchEvent(new CustomEvent('openMenu', {
-					detail: {
-						name: 'edit',
-					},
-				}));
+				this.EventHandler.OpenMenu({
+					name: 'edit',
+				});
 
 			}
 
 
 		};
 
-		window.addEventListener('BlockWasSelected', (evt) => {
+		this.EventHandler.BlockWasSelected((evt) => {
 
-			if (evt.detail !== this) {
+			if (evt !== this) {
 
 				this.content.classList.remove('editingBlock');
 				this.editing = false;

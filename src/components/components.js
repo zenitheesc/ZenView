@@ -1,4 +1,6 @@
 const fs = require('fs');
+const EventHandler = require('./eventHandler/eventHandler');
+
 module.exports = class Components {
 
 	static spliter(id, text, content, startOpen) {
@@ -72,7 +74,7 @@ module.exports = class Components {
 
 		const dashBoardCardComponent = document.createElement('div');
 		dashBoardCardComponent.setAttribute('class', 'card dashBoardCard mb-3');
-
+		dashBoardCardComponent.EventHandler = new EventHandler();
 		const dashBoardCardComponentHeader = document.createElement('div');
 		dashBoardCardComponentHeader.setAttribute('class', 'card-header row dashBoardCard-header m-0 justify-content-between');
 
@@ -111,12 +113,10 @@ module.exports = class Components {
 
 		playBtn.addEventListener('click', () => {
 
-			window.dispatchEvent(new CustomEvent('openDashBoard', {
-				detail: {
-					context: 'editing',
-					dashBoardPath: path,
-				},
-			}));
+			dashBoardCardComponent.EventHandler.dispatchEvent('OpenDashBoard', {
+				context: 'editing',
+				dashBoardPath: path,
+			});
 
 		});
 
@@ -145,11 +145,11 @@ module.exports = class Components {
 
 		delBtn.addEventListener('click', () => {
 
-			window.dispatchEvent(new CustomEvent('deleteDashboard', {
+			dashBoardCardComponent.EventHandler.dispatchEvent('DeleteDashboard', {
 				detail: {
 					dashBoardPath: path,
 				},
-			}));
+			});
 
 		});
 

@@ -1,3 +1,4 @@
+const EventHandler = require('../eventHandler/eventHandler');
 const MenuList = require('./menuBar/menuList');
 const Menus = require('./menus');
 
@@ -9,6 +10,7 @@ module.exports = class SideMenu {
 		this.currentMenu;
 		this.MenuList = new MenuList();
 		this.Menus = [];
+		this.EventHandler = new EventHandler();
 
 		this.sideMenuComponent = document.getElementById('SideMenu');
 		this.menuListComponent = document.getElementById('MenuList');
@@ -77,15 +79,15 @@ module.exports = class SideMenu {
 	}
 	build() {
 
-		window.addEventListener('changeSideMenu', (evt) => {
+		this.EventHandler.addEventListener('ChangeSideMenu', (evt) => {
 
-			this.changeSideMenu(evt.detail);
+			this.changeSideMenu(evt);
 
 		});
 
-		window.addEventListener('openSideMenu', (evt) => {
+		this.EventHandler.addEventListener('OpenSideMenu', (evt) => {
 
-			this.currentMenu = evt.detail.requested;
+			this.currentMenu = evt.requested;
 			this.openSideMenu();
 
 		});

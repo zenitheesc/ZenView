@@ -31,7 +31,8 @@ module.exports = class DashBoardsMenu extends Menu {
 
 		this.dashboardListSpliter();
 		this.attDashBoardsList();
-		window.addEventListener('attDashBoardsList', ()=>{
+
+		this.EventHandler.addEventListener('AttDashBoardsList', ()=>{
 
 			this.attDashBoardsList();
 

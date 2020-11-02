@@ -5,6 +5,7 @@ const ipc = require('electron').ipcRenderer;
 const DataReader = require('./components/dataReader/dataReader');
 const DashBoard = require('./components/dashBoard/DashBoard');
 const TitleBar = require('./components/titleBar/titleBar');
+const EventHandler = require('./components/eventHandler/eventHandler');
 
 class MainWindow {
 
@@ -15,11 +16,12 @@ class MainWindow {
 		this.DashBoardsManager = new DashBoardsManager();
 		this.DashBoard = new DashBoard();
 		this.TitleBar = new TitleBar();
+		this.EventHandler = new EventHandler();
 
 	}
 	saveConfig() {
 
-		fs.writeFileSync('./src/config.json', JSON.stringify(window['ZenViewConfig'], null, '\t'));
+		fs.writeFileSync('./assets/config.json', JSON.stringify(window['ZenViewConfig'], null, '\t'));
 
 	}
 
@@ -42,7 +44,7 @@ class MainWindow {
 				dashboards: [],
 			};
 
-			fs.writeFileSync('./assets/config.json', initialConfig);
+			fs.writeFileSync('./assets/config.json', JSON.stringify(initialConfig, null, '\t'));
 
 			window['ZenViewConfig'] = initialConfig;
 
@@ -52,15 +54,15 @@ class MainWindow {
 
 	init() {
 
-		window.addEventListener('saveConfigs', () => {
+		this.EventHandler.addEventListener('SaveConfigs', () => {
 
 			this.saveConfig();
 
 		});
 
-		window.addEventListener('GlobalContextChange', (evt) => {
+		this.EventHandler.addEventListener('GlobalContextChange', (evt) => {
 
-			this.changeGlobalContext(evt.detail.context);
+			this.changeGlobalContext(evt.context);
 
 		});
 
@@ -79,11 +81,9 @@ class MainWindow {
 		this.DataReader.build();
 		this.DashBoard.build();
 
-		window.dispatchEvent(new CustomEvent('GlobalContextChange', {
-			detail: {
-				context: 'any',
-			},
-		}));
+		this.EventHandler.GlobalContextChange({
+			context: 'any',
+		});
 
 		duracao = Date.now() - duracao; // pega a duracao do load
 		console.log('TEMPO DE LOAD: ' + duracao + 'ms');

@@ -3,13 +3,14 @@ const Validator = require('../../../formBuilder/validator');
 const Form = require('../../../formBuilder/formBuilder').Form;
 const Container = require('../../../formBuilder/formBuilder').Container;
 const Field = require('../../../formBuilder/formBuilder').Field;
+const EventHandler = require('../../../eventHandler/eventHandler');
 
 module.exports = class StartRead extends Menu {
 
 	constructor() {
 
 		super('Iniciar Leitura', 'start_menu');
-
+		this.EventHandler = new EventHandler();
 		this.isReading = false;
 
 		this.button = Field.button({
@@ -176,25 +177,19 @@ module.exports = class StartRead extends Menu {
 
 		if (!this.form.validate()) return;
 
-		window.dispatchEvent(new CustomEvent('StartRead', {
-			detail: this.form.getData().form,
-		}));
+		this.EventHandler.StartRead(this.form.getData().form);
 
 		this.setStopReadState();
 
-		window.dispatchEvent(new CustomEvent('GlobalContextChange', {
-			detail: {
-				context: 'running',
-			},
-		}));
+		this.EventHandler.GlobalContextChange({
+			context: 'running',
+		});
 
 	}
 
 	stopRead() {
 
-		window.dispatchEvent(new CustomEvent('StopRead', {
-			detail: this.form.getData().form,
-		}));
+		this.EventHandler.StopRead(this.form.getData().form);
 
 		this.setInitReadState();
 
@@ -209,11 +204,9 @@ module.exports = class StartRead extends Menu {
 
 		this.isReading = false;
 
-		window.dispatchEvent(new CustomEvent('GlobalContextChange', {
-			detail: {
-				context: 'editing',
-			},
-		}));
+		this.EventHandler.GlobalContextChange({
+			context: 'editing',
+		});
 
 	}
 
@@ -264,13 +257,13 @@ module.exports = class StartRead extends Menu {
 
 		};
 
-		window.addEventListener('attInputList', () => {
+		this.EventHandler.addEventListener('AttInputList', () => {
 
 			this.attInputList();
 
 		});
 
-		window.addEventListener('DataReadingFinished', () => {
+		this.EventHandler.addEventListener('DataReadingFinished', () => {
 
 			this.setInitReadState();
 

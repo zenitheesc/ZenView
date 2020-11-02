@@ -98,10 +98,10 @@ module.exports = class EditMenu extends Menu {
 
 		};
 
-		window.addEventListener('BlockWasSelected', (evt) => {
+		this.EventHandler.addEventListener('BlockWasSelected', (evt) => {
 
 			this.form.reset();
-			this.form.setData(evt.detail.block.formConfig);
+			this.form.setData(evt.block.formConfig);
 			this.form.setConditions();
 
 		});

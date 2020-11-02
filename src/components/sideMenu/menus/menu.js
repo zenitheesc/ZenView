@@ -1,10 +1,11 @@
 const Components = require('../../components');
-
+const EventHandler = require('../../eventHandler/eventHandler');
 module.exports = class Menu {
 
 	constructor(menuName, menuId) {
 
 		this.menuName = menuName;
+		this.EventHandler = new EventHandler();
 		this.menuComponent = document.createElement('div');
 		this.menuComponent.id = menuId;
 		this.menuComponent.className = 'menuContainer';
@@ -19,9 +20,9 @@ module.exports = class Menu {
 	}
 	setEvents() {
 
-		window.addEventListener('openMenu', (evt) => {
+		this.EventHandler.addEventListener('OpenMenu', (evt) => {
 
-			if ((evt.detail.name) + '_menu' === this.menuComponent.id) {
+			if ((evt.name) + '_menu' === this.menuComponent.id) {
 
 				this.onOpen();
 				this.menuComponent.style.display = 'block';

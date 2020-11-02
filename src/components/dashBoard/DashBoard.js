@@ -1,5 +1,6 @@
 const GridStack = require('gridstack/dist/gridstack.all');
 const BlockContainer = require('../blockContainer/blockContainer');
+const EventHandler = require('../eventHandler/eventHandler');
 module.exports = class DahsBoard {
 
 	constructor() {
@@ -10,6 +11,8 @@ module.exports = class DahsBoard {
 		this.DashBoardComponent.style.width = String(Math.floor(31 * (screen.width / 32)) + 'px');
 		this.GridStackComponent.style.width = String(Math.floor(31 * (screen.width / 32)) + 'px');
 		this.gridStack;
+
+		this.EventHandler = new EventHandler();
 
 	}
 
@@ -24,13 +27,13 @@ module.exports = class DahsBoard {
 
 		this.gridStack.enable('.grid-stack-item-content', true);
 
-		window.addEventListener('AddNewBlock', (evt) => {
+		this.EventHandler.addEventListener('AddNewBlock', (evt) => {
 
-			this.addNewBlock(evt.detail);
+			this.addNewBlock(evt);
 
 		});
 
-		window.addEventListener('ClearDashboard', () => {
+		this.EventHandler.addEventListener('ClearDashboard', () => {
 
 			this.gridStack.removeAll();
 

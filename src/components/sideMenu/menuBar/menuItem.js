@@ -1,5 +1,6 @@
 const Utillities = require('../../../utillities');
 const fs = require('fs');
+const EventHandler = require('../../eventHandler/eventHandler');
 module.exports = class MenuItem {
 
 	constructor(id, icon, menuName, context) {
@@ -10,6 +11,7 @@ module.exports = class MenuItem {
 		this.itemComponent = document.createElement('button');
 		this.icon;
 		this.globalContext = [];
+		this.EventHandler = new EventHandler();
 
 		if (Array.isArray(context)) {
 
@@ -91,14 +93,11 @@ module.exports = class MenuItem {
 
 		this.itemComponent.addEventListener('click', () => {
 
-			window.dispatchEvent(new CustomEvent('changeSideMenu', {
-				detail: this.id,
-			}));
-			window.dispatchEvent(new CustomEvent('openMenu', {
-				detail: {
-					name: this.id,
-				},
-			}));
+			this.EventHandler.dispatchEvent('ChangeSideMenu', this.id);
+
+			this.EventHandler.dispatchEvent('OpenMenu', {
+				name: this.id,
+			});
 
 		});
 
@@ -106,9 +105,10 @@ module.exports = class MenuItem {
 	setContextChangeEffect() {
 
 		if (this.globalContext.includes('any')) return;
-		window.addEventListener('GlobalContextChange', (evt)=>{
 
-			if (this.globalContext.includes(evt.detail.context)) {
+		this.EventHandler.addEventListener('GlobalContextChange', (evt) => {
+
+			if (this.globalContext.includes(evt.context)) {
 
 				this.itemComponent.disabled = false;
 
@@ -120,9 +120,9 @@ module.exports = class MenuItem {
 
 		});
 
-		window.addEventListener('setSelectionEffect', (evt)=>{
+		this.EventHandler.addEventListener('SetSelectionEffect', (evt) => {
 
-			if (evt.detail.name === this.id) {
+			if (evt.name === this.id) {
 
 				this.clickVisualEffect();
 				this.setActiveEffect(this.itemComponent);

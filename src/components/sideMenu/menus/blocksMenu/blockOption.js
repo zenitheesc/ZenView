@@ -1,7 +1,10 @@
+const EventHandler = require('../../../eventHandler/eventHandler');
+
 module.exports = class Block {
 
 	constructor(title, config) {
 
+		this.EventHandler = new EventHandler();
 		this.htmlComponent = document.createElement('div');
 		this.content = document.createElement('div');
 		this.title = title;
@@ -21,9 +24,7 @@ module.exports = class Block {
 
 		this.content.onclick = () => {
 
-			window.dispatchEvent(new CustomEvent('AddNewBlock', {
-				detail: this.preConfigs,
-			}));
+			this.EventHandler.AddNewBlock(this.preConfigs);
 
 		};
 

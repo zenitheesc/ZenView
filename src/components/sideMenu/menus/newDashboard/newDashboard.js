@@ -73,14 +73,12 @@ module.exports = class newDashBoardMenu extends Menu {
 
 				}
 
-				window.dispatchEvent(new CustomEvent('newDashBoard', {
-					detail: {
-						name: data['name'],
-						numberOfInputs: data['nOfInputs'],
-						path: data['dir'] + '/' + newName,
-						desc: data['desc'],
-					},
-				}));
+				this.EventHandler.NewDashBoard({
+					name: data['name'],
+					numberOfInputs: data['nOfInputs'],
+					path: data['dir'] + '/' + newName,
+					desc: data['desc'],
+				});
 
 				this.form.reset();
 

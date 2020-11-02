@@ -275,7 +275,7 @@ module.exports = class InputsMenu extends Menu {
 		this.setFormConfigs();
 		this.setAutoCompleteConfigs();
 
-		window.addEventListener('attInputList', () => {
+		this.EventHandler.addEventListener('AttInputList', () => {
 
 			this.attInputList();
 

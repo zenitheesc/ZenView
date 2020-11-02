@@ -2,16 +2,21 @@ const fs = require('fs');
 const number = require('mathjs').number;
 const DashBoard = require('../../classes/dashBoard');
 const Dialog = require('../dialog/dialog');
+const EventHandler = require('../eventHandler/eventHandler');
 
 module.exports = class DashBoardsManager {
 
+	constructor() {
+
+		this.EventHandler = new EventHandler();
+
+	}
+
 	changeGlobalContext(newContext) {
 
-		window.dispatchEvent(new CustomEvent('GlobalContextChange', {
-			detail: {
-				context: newContext,
-			},
-		}));
+		this.EventHandler.GlobalContextChange({
+			context: newContext,
+		});
 
 	}
 
@@ -19,7 +24,7 @@ module.exports = class DashBoardsManager {
 
 		try {
 
-			CurrentDashBoardConfig = JSON.parse(fs.readFileSync(path));
+			const CurrentDashBoardConfig = JSON.parse(fs.readFileSync(path));
 			return true;
 
 		} catch (error) {
@@ -35,8 +40,9 @@ module.exports = class DashBoardsManager {
 				if (window['ZenViewConfig'].dashboards[i].path === path) {
 
 					window['ZenViewConfig'].dashboards.splice(i, 1);
-					window.dispatchEvent(new CustomEvent('attDashBoardsList'));
-					window.dispatchEvent(new CustomEvent('saveConfigs'));
+
+					this.EventHandler.AttDashBoardsList();
+					this.EventHandler.SaveConfigs();
 
 					break;
 
@@ -61,8 +67,8 @@ module.exports = class DashBoardsManager {
 		window.CurrentInputGroup = CurrentDashBoard.inputGroup;
 		window.scope = CurrentDashBoard.inputGroup.scope;
 
-		window.dispatchEvent(new CustomEvent('attInputList'));
-
+		this.EventHandler.AttInputList();
+		this.EventHandler.DashboardWasOpened();
 		return true;
 
 	}
@@ -92,18 +98,15 @@ module.exports = class DashBoardsManager {
 		dashBoard.inputGroup.inputGraph = {};
 		fs.writeFileSync(detail.path, JSON.stringify(dashBoard, null, '\t'));
 
-		window.dispatchEvent(new CustomEvent('saveConfigs'));
+		this.EventHandler.SaveConfigs();
+		this.EventHandler.AttDashBoardsList();
 
-		window.dispatchEvent(new CustomEvent('attDashBoardsList'));
+		this.EventHandler.OpenDashBoard({
 
-		window.dispatchEvent(new CustomEvent('openDashBoard', {
+			context: 'editing',
+			dashBoardPath: detail.path,
 
-			detail: {
-				context: 'editing',
-				dashBoardPath: detail.path,
-			},
-
-		}));
+		});
 
 	}
 
@@ -121,8 +124,8 @@ module.exports = class DashBoardsManager {
 
 						window['ZenViewConfig'].dashboards.splice(i, 1);
 
-						window.dispatchEvent(new CustomEvent('attDashBoardsList'));
-						window.dispatchEvent(new CustomEvent('saveConfigs'));
+						this.EventHandler.AttDashBoardsList();
+						this.EventHandler.SaveConfigs();
 
 						break;
 
@@ -152,8 +155,8 @@ module.exports = class DashBoardsManager {
 				window['ZenViewConfig'].dashboards[i].description = newDesc;
 				window['ZenViewConfig'].dashboards[i].name = newName;
 
-				window.dispatchEvent(new CustomEvent('attDashBoardsList'));
-				window.dispatchEvent(new CustomEvent('saveConfigs'));
+				this.EventHandler.AttDashBoardsList();
+				this.EventHandler.SaveConfigs();
 
 				break;
 
@@ -175,35 +178,35 @@ module.exports = class DashBoardsManager {
 
 	build() {
 
-		window.addEventListener('openDashBoard', (evt) => {
+		this.EventHandler.addEventListener('OpenDashBoard', (evt) => {
 
-			if (evt.detail.context === 'editing') {
+			if (evt.context === 'editing') {
 
-				this.editingDashBoard(evt.detail);
+				this.editingDashBoard(evt);
 
 			} else {
 
-				this.startDashboard(evt.detail);
+				this.startDashboard(evt);
 
 			}
 
 		});
 
-		window.addEventListener('deleteDashboard', (evt) => {
+		this.EventHandler.addEventListener('DeleteDashboard', (evt) => {
 
-			this.deleteDashboard(evt.detail.dashBoardPath);
+			this.deleteDashboard(evt.dashBoardPath);
 
 		});
 
-		window.addEventListener('saveCurrentDashBoard', (evt) => {
+		this.EventHandler.addEventListener('SaveCurrentDashBoard', (evt) => {
 
 			this.saveCurrentDashBoard();
 
 		});
 
-		window.addEventListener('newDashBoard', (evt) => {
+		this.EventHandler.addEventListener('NewDashBoard', (evt) => {
 
-			this.newDashBoard(evt.detail);
+			this.newDashBoard(evt);
 
 		});
 

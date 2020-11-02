@@ -1,10 +1,11 @@
 const fs = require('fs');
-
+const EventHandler = require('../eventHandler/eventHandler');
 module.exports = class DataReader {
 
 	constructor() {
 
 		this.csvReader = new Worker(__dirname + '/types/csvReader.js');
+		this.EventHandler = new EventHandler();
 		this.currentReader;
 
 		this.outputFileConfig;
@@ -42,9 +43,9 @@ module.exports = class DataReader {
 				flags: 'a',
 			});
 
-			window.addEventListener('dataIsProcessed', (evt) => {
+			this.EventHandler.DataIsProcessed((evt) => {
 
-				this.saveOutput(evt.detail);
+				this.saveOutput(evt);
 
 			});
 
@@ -68,13 +69,13 @@ module.exports = class DataReader {
 
 	build() {
 
-		window.addEventListener('StartRead', (evt) => {
+		this.EventHandler.addEventListener('StartRead', (evt) => {
 
-			this.startRead(evt.detail);
+			this.startRead(evt);
 
 		});
 
-		window.addEventListener('StopRead', () => {
+		this.EventHandler.addEventListener('StopRead', () => {
 
 			this.stopRead();
 
@@ -84,15 +85,14 @@ module.exports = class DataReader {
 
 			if (evt.data) {
 
-				window.dispatchEvent(new CustomEvent('dataIsReady', {
-					detail: evt.data,
-				}));
+				this.EventHandler.DataIsReady(
+					evt.data,
+				);
 
 
 			} else {
 
-				window.dispatchEvent(new CustomEvent('DataReadingFinished'));
-
+				this.EventHandler.DataReadingFinished();
 
 			}
 
