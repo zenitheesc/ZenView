@@ -16,6 +16,7 @@
             "allowIndentationTabs": true
         }],
         "padded-blocks": ["error", "always"],
+        "new-cap": ["error", { "capIsNew": false }],
         "eol-last": ["error", "never"],
         "max-len": ["error", {
             "code": 150
