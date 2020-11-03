@@ -2,11 +2,14 @@
   background-color: var(--global-colorMenu);
   display: flex;
   flex-direction: row;
+  box-sizing: border-box;
 }
 
 #Menus {
   background-color: var(--global-colorMenu);
   overflow: hidden;
+  box-sizing: border-box;
+  touch-action: none;
 }
 
 .menuContainer {

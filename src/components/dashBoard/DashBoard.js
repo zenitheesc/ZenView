@@ -1,6 +1,7 @@
 const GridStack = require('gridstack/dist/gridstack.all');
 const BlockContainer = require('../blockContainer/blockContainer');
 const EventHandler = require('../eventHandler/eventHandler');
+
 module.exports = class DahsBoard {
 
 	constructor() {

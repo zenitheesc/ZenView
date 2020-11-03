@@ -48,6 +48,7 @@
     "bootstrap": "^4.5.3",
     "electron-squirrel-startup": "^1.0.0",
     "gridstack": "^2.0.2",
+    "interactjs": "^1.10.0",
     "javascript-detect-element-resize": "^0.5.3",
     "jquery": "^3.5.1",
     "mathjs": "^7.5.1",
