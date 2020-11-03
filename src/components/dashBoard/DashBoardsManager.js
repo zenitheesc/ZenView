@@ -24,7 +24,7 @@ module.exports = class DashBoardsManager {
 
 		try {
 
-			const CurrentDashBoardConfig = JSON.parse(fs.readFileSync(path));
+			JSON.parse(fs.readFileSync(path));
 			return true;
 
 		} catch (error) {
