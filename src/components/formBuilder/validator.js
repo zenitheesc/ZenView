@@ -15,7 +15,7 @@ module.exports = class Validator {
 	}
 	static noSpecialChars(value) {
 
-		const format = /^[A-Z0-9 _]*[A-Z0-9][A-Z0-9 _]*$/;
+		const format = /^[a-zA-Z0-9 _]*[a-zA-Z0-9][a-zA-Z0-9 _]*$/;
 		if (!format.test(value)) {
 
 			return 'Não são permitidos caracteres especiais';
