@@ -30,7 +30,7 @@ module.exports = class SideMenu {
 		this.menuListComponent.style.width = this.closedWidth;
 		this.menuListComponent.style.height = '100%';
 
-		this.menusComponent.style.width = (Math.floor(screen.width / 4) - Math.floor(screen.width / 32)) + 'px';
+		this.menusComponent.style.width = this.closedWidth;
 		this.menusComponent.style.height = '100%';
 		this.menusComponent.style.display = 'none';
 
