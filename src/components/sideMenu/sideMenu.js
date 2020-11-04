@@ -45,9 +45,9 @@ module.exports = class SideMenu {
 
 			this.currentMenu = requestedMenu;
 			this.openSideMenu();
-			
+
 		} else if (requestedMenu != this.currentMenu) {
-			
+
 			this.currentMenu = requestedMenu;
 
 		} else {
@@ -97,12 +97,12 @@ module.exports = class SideMenu {
 			this.openSideMenu();
 
 		});
-		
+
 		this.MenuList.build();
 		this.loadMenus();
 		this.setStyle();
 		this.resizer.build();
-		
+
 	}
 
 };
