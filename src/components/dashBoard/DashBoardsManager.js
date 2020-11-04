@@ -165,7 +165,7 @@ module.exports = class DashBoardsManager {
 
 				window['ZenViewConfig'].dashboards[i].desc = newDesc;
 				window['ZenViewConfig'].dashboards[i].name = newName;
-				console.log(path, newName, CurrentDashBoard.description);
+
 				this.EventHandler.SaveConfigs();
 				this.EventHandler.AttDashBoardsList();
 
