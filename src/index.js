@@ -1,6 +1,6 @@
 console.log('running....');
 
-const { ipcMain } = require('electron');
+const {ipcMain} = require('electron');
 const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
@@ -8,11 +8,17 @@ const path = require('path');
 const url = require('url');
 const ipc = electron.ipcMain;
 const dialog = require('electron').dialog;
-const TitleBarMenu = require('./components/titleBar/titleBarMenu')
+const TitleBarMenu = require('./components/titleBar/titleBarMenu');
 
 const debugMode = true;
 let initialWindow;
 let mainWindow;
+
+try {
+
+	require('electron-reloader')(module);
+
+} catch (_) { }
 
 // parametros iniciais da janela inicial
 const initialWindowparams = {
@@ -69,14 +75,14 @@ function createWindow(params) {
 // event listener que espera o app ser criado para criar as janelas
 app.on('ready', () => {
 
-	initialWindow = createWindow(initialWindowparams);
+	// initialWindow = createWindow(initialWindowparams);
 	mainWindow = createWindow(mainWindowparams);
 	// apenas mostrara a janela quando estiver pronta
-	initialWindow.once('ready-to-show', () => {
+	/* initialWindow.once('ready-to-show', () => {
 
 		initialWindow.show();
 
-	});
+	});*/
 
 });
 
@@ -94,9 +100,9 @@ app.on('window-all-closed', () => {
 // caso a janela nao tenha sido criada força sua criação
 app.on('activate', () => {
 
-	if (initialWindow === null) {
+	if (mainWindow === null) {
 
-		createWindow(initialWindow);
+		// createWindow(initialWindow);
 		createWindow(mainWindow);
 
 	}
@@ -106,7 +112,7 @@ app.on('activate', () => {
 // listerner que avisa que o load da janela principal terminou
 ipc.on('mainLoadCompleto', () => {
 
-	initialWindow.close();
+	// initialWindow.close();
 	setTimeout(() => {
 
 		mainWindow.show();
@@ -154,15 +160,16 @@ ipc.on('openDialog', (event, config) => {
 
 ipcMain.on('display-app-titleBar', function(err, args) {
 
-	let titleBarMenu = new TitleBarMenu();
+	const titleBarMenu = new TitleBarMenu();
 
 	if (mainWindow) {
-		
+
 		titleBarMenu.menu.popup({
-		  window: mainWindow,
-		  x: args.x,
-		  y: args.y
+			window: mainWindow,
+			x: args.x,
+			y: args.y,
 		});
 
-	  }
+	}
+
 });

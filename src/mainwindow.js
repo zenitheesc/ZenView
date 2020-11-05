@@ -89,13 +89,17 @@ class MainWindow {
 		console.log('TEMPO DE LOAD: ' + duracao + 'ms');
 		duracao = (duracao > 3000) ? 0 : 3000 - duracao; // testa se foram mais de 3 segundos
 
-		setTimeout(() => { // caso n tenha sido espera o gif terminar para chamar a janela principal
+		ipc.send('mainLoadCompleto', {
+			show: true,
+		});
+
+		/* setTimeout(() => { // caso n tenha sido espera o gif terminar para chamar a janela principal
 
 			ipc.send('mainLoadCompleto', {
 				show: true,
 			});
 
-		}, duracao);
+		}, duracao);*/
 
 	}
 
