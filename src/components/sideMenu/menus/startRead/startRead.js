@@ -177,7 +177,7 @@ module.exports = class StartRead extends Menu {
 
 		if (!this.form.validate()) return;
 
-		this.EventHandler.StartRead(this.form.getData().form);
+		this.EventHandler.StartRead(this.form.getData());
 
 		this.setStopReadState();
 
@@ -189,7 +189,7 @@ module.exports = class StartRead extends Menu {
 
 	stopRead() {
 
-		this.EventHandler.StopRead(this.form.getData().form);
+		this.EventHandler.StopRead(this.form.getData());
 
 		this.setInitReadState();
 

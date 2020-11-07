@@ -51,8 +51,6 @@ module.exports = class InputsMenu extends Menu {
 				text: 'Edição de entradas',
 				id: 'inputEditingSpliter',
 			}),
-		}, {
-			att: 'inputData',
 		});
 		this.tribute;
 
@@ -136,7 +134,7 @@ module.exports = class InputsMenu extends Menu {
 
 		if (!this.form.validate()) return;
 
-		const data = this.form.getData().inputData;
+		const data = this.form.getData();
 
 		const expressionAnswer = this.validateExpression();
 
