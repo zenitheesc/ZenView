@@ -16,10 +16,13 @@ module.exports = class EditMenu extends Menu {
 			BlockModuleContainer: Container.spliter({
 				module: Field.select({
 					label: 'Selecione um módulo',
-					att: 'module',
+					att: 'type',
 					id: 'BlockModule',
 					options: [{
 						text: 'Plotly',
+					},
+					{
+						text: 'Blank',
 					},
 					{
 						text: 'TODO Three.js',
