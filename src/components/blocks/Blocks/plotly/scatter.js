@@ -4,15 +4,14 @@ const loadash = require('lodash');
 // eslint-disable-next-line no-unused-vars
 const ElementResize = require('javascript-detect-element-resize');
 
-module.exports = class scatter extends Block {
+module.exports = class Scatter extends Block {
 
 	constructor(preConfig) {
 
 		super();
 		this.id = 'PlotlyScatter';
 		this.formConfig = preConfig;
-
-		console.log(this.formConfig);
+		this.type = preConfig.type;
 		preConfig = preConfig.Plotly;
 
 		this.config = (preConfig) ? preConfig.config : {};
@@ -28,7 +27,7 @@ module.exports = class scatter extends Block {
 	updateConfig(newConfig) {
 
 		this.formConfig = newConfig;
-		newConfig = newConfig.form.Plotly;
+		newConfig = newConfig.Plotly;
 		if (newConfig !== undefined) this.attConfig(newConfig.config);
 		if (newConfig !== undefined) this.attLayout(newConfig.layout);
 		//if (newConfig !== undefined) this.attData(newConfig.data);

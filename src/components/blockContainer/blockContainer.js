@@ -18,7 +18,7 @@ module.exports = class BlockContainer {
 
 	init() {
 
-		this.block = new Blocks['Plotly'](this.preConfig);
+		this.block = new Blocks[this.preConfig.type](this.preConfig);
 		this.content = this.block.htmlComponent;
 		this.htmlComponent.appendChild(this.content);
 		this.block.init();
@@ -27,8 +27,34 @@ module.exports = class BlockContainer {
 
 	updateBlockConfig(newConfig) {
 
+		console.log(newConfig, this.block);
 
-		this.block.updateConfig(newConfig);
+		if (newConfig.type === this.block.type) {
+
+			this.block.updateConfig(newConfig);
+
+		} else {
+
+			try {
+
+				this.preConfig = newConfig;
+				this.block = new Blocks[this.preConfig.type](this.preConfig);
+				console.log(this.block);
+				this.htmlComponent.innerHTML = '';
+
+				this.content = this.block.htmlComponent;
+				this.htmlComponent.appendChild(this.content);
+				this.block.init();
+
+			} catch (error) {
+
+				console.warn('TIPO DE BLOCO AINDA NÃO IMPLEMENTADO: ' + newConfig.type, error);
+
+			}
+
+
+		}
+
 
 	}
 
