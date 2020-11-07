@@ -57,6 +57,7 @@
 
 .menuContainer {
   height: 100%;
+  overflow-y: auto;
 }
 
 .pathInput svg {

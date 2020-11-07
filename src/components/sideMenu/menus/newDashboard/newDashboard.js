@@ -2,15 +2,13 @@ const Menu = require('../menu');
 const Components = require('../../../components.js');
 const Validator = require('../../../formBuilder/validator');
 const fs = require('fs');
-const Form = require('../../../formBuilder/formBuilder').Form;
-const Container = require('../../../formBuilder/formBuilder').Container;
-const Field = require('../../../formBuilder/formBuilder').Field;
+const { Form, Container, Field } = require('../../../formBuilder/formBuilder');
 
 module.exports = class newDashBoardMenu extends Menu {
 
 	constructor() {
 
-		super('New Dashboard', 'newDashboard_menu');
+		super('Novo Dashboard', 'newDashboard_menu');
 		this.button = Field.button({
 			text: 'Criar',
 			classList: ['formCenteredBtn', 'green-btn'],
@@ -40,7 +38,7 @@ module.exports = class newDashBoardMenu extends Menu {
 				Save: this.button,
 			}, {
 				startOpen: true,
-				text: 'Novo DashBoard',
+				text: 'Novo Dashboard',
 				id: 'newDashBoardSpliter',
 			}),
 		});

@@ -124,7 +124,7 @@ module.exports = class InputGroup {
 	 * @param {*} inputConfig
 	 * @return {*}
 	 */
-	addNewInput(inputConfig) {
+	addNewInput(inputConfig, type) {
 
 		console.log('TENTANDO CRIAR NOVO INPUT');
 		if (this._associationInput[inputConfig.name] !== undefined) {
@@ -138,7 +138,16 @@ module.exports = class InputGroup {
 
 		const newInput = new Input(inputConfig.name, inputConfig.expression, this.scope, this.customMath);
 		this._associationInput[newInput.name] = newInput;
-		this.inputs.push(newInput);
+
+		if (type === "raw"){
+
+			this.rawInputs.push(newInput);
+
+		} else {
+
+			this.inputs.push(newInput);
+			
+		}
 
 		this.inputGraph.addInput(newInput);
 		this.inputGraph.addEgdes();

@@ -4,7 +4,7 @@ const EventHandler = require('../../eventHandler/eventHandler');
 module.exports = class Menu {
 
 	constructor(menuName, menuId) {
-
+		
 		this.menuName = menuName;
 		this.EventHandler = new EventHandler();
 		this.menuComponent = document.createElement('div');

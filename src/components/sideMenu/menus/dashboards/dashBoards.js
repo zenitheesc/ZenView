@@ -1,6 +1,7 @@
 const Menu = require('../menu');
 const Components = require('../../../components.js');
 const DashBoardCard = require('./dashBoardCard');
+
 module.exports = class DashBoardsMenu extends Menu {
 
 	constructor() {

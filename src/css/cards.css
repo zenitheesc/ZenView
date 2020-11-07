@@ -1,5 +1,5 @@
-button.dashBoardCardOption, button.inputCard ,
-button.dashBoardCardOption:focus, button.inputCard:focus {
+button.dashBoardCardOption, button.inputCardOption, button.rawInputCardOption,
+button.dashBoardCardOption:focus, button.inputCardOption:focus, button.rawInputCardOption:focus {
   border-radius: 0px;
   box-shadow: none;
   border: none;
@@ -9,48 +9,63 @@ button.dashBoardCardOption:focus, button.inputCard:focus {
   margin: 0px;
 }
 
-button.dashBoardCardOption svg {
+button.dashBoardCardOption svg, button.inputCardOption svg, button.rawInputCardOption svg {
   fill: #54555c;
   width: 1.2em;
   height: 1.2em;
 }
 
-button.dashBoardCardOption:hover svg {
+button.dashBoardCardOption:hover svg, button.inputCardOption:hover svg, button.rawInputCardOption:hover svg {
   fill: whitesmoke;
 }
 
-.dashBoardCard {
+.dashBoardCard, .inputCard {
   border-radius: 0.2em !important;
   border: 1px solid rgb(90 90 90 / 27%);
   background-color: var(--global-colorInputBg);
 }
 
-.dashBoardCard-header {
+.rawInputCard {
+  background-color: var(--global-colorInputBg);
+}
+
+#rawInputList {
+  border-radius: 0.5em !important;
+  margin: 0%;
+  padding-inline-start: 0px;
+}
+
+.card-header.rawInputCard-header {
+  border-radius: 0px;
+}
+
+#rawInputsButtons {
+  padding-top: 1.25rem;
+  margin-left: 1.25rem;
+}
+
+.rawInputsButton {
+  margin-right: 1.25rem;
+}
+
+.dashBoardCard-header, .inputCard-header, .rawInputCard-header {
   background-color: var(--global-colorList);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.rawInputCard-header:hover {
+  background-color: var(--global-colorInputBg);
 }
 
 .dashBoardCard cite {
   font-size: 0.8rem;
 }
 
-.inputCard{
-	border: 1px solid var(--global-colorInputBg);
-    border-radius: 3px;
-	padding: 0.8em;
-    
+.inputCard p {
+  font-size: 0.8rem;
 }
 
-.inputCard div{
-	justify-content: space-between;
-}
-
-button.inputCard svg {
-  fill: #54555c;
-  width: 1.8em;
-  height: 1.8em;
-}
-
-button.inputCard:hover svg {
-  fill: whitesmoke;
-}
+.inputCard .card-body p {
+  margin-bottom: 0px;
+  margin-block-end: 0em;
+  margin-block-start: 0em;
+} 

@@ -1,41 +1,29 @@
-const Menu = require('../menu');
-const Form = require('../../../formBuilder/formBuilder').Form;
+const {Form, Container, Field} = require('../../../formBuilder/formBuilder');
 const Components = require('../../../components');
-const Container = require('../../../formBuilder/formBuilder').Container;
-const Field = require('../../../formBuilder/formBuilder').Field;
+const EventHandler = require('../../../eventHandler/eventHandler');
 const Validator = require('../../../formBuilder/validator');
+const Menu = require('../menu');
+const RawInputCard = require('./rawInputsCards');
+const InputCard = require('./inputsCard');
+const Input = require('../../../../classes/input');
+
 const Tribute = require('tributejs');
 const Math = require('mathjs');
 
 module.exports = class InputsMenu extends Menu {
 
-	constructor() {
+    constructor() {
 
-		super('Entradas', 'inputs_menu');
+        super("Entradas", "inputs_menu");
 
-		this.button = Field.button({
+        this.button = Field.button({
 			text: 'Salvar',
 			classList: ['formCenteredBtn', 'green-btn'],
-		});
-
-		this.selectInput = Field.select({
-			label: 'Nome',
-			att: 'currentInput',
-			append: [{
-				type: 'button',
-				content: Components.icon('plus-square'),
-				classList: ['formButtonWithIconPrepend'],
-			}, {
-				type: 'button',
-				content: Components.icon('trash'),
-				classList: ['formButtonWithIconPrepend'],
-			}],
-		});
-
-		this.form = new Form({
-			newDashBoardSpliter: Container.spliter({
-				selectedInput: this.selectInput,
-				name: Field.text({
+        });
+        
+        this.entryInput = new Form({
+            newDashboardSpliter: Container.spliter({
+                name: Field.text({
 					label: 'Tag',
 					att: 'name',
 					validators: [Validator.isFilled],
@@ -47,35 +35,116 @@ module.exports = class InputsMenu extends Menu {
 				}),
 				Save: this.button,
 			}, {
-				startOpen: true,
+                startOpen: true,
 				text: 'Edição de entradas',
 				id: 'inputEditingSpliter',
-			}),
-		}, {
+            }),
+        },{
 			att: 'inputData',
 		});
-		this.tribute;
 
-	}
+        this.eventHandler = new EventHandler();
+        this.tribute;
 
-	attInputList() {
+        this.inputList = document.createElement("div");
+        this.rawInputList = document.createElement("ul");
+        this.rawInputList.id = "rawInputList";
 
-		this.tribute.append(1, window.CurrentInputGroup.rawInputs, true);
-		this.tribute.append(0, window.CurrentInputGroup.inputs, true);
-		this.selectInput.setOptions(window.CurrentInputGroup.inputs, (value) => {
+    }  
 
-			return [value.name, value.name];
+    inputListSpliter(id, name, container) {
+
+        const spliter = Components.spliter(id, name, container, true);
+		this.menuComponent.appendChild(spliter);
+    
+    }
+
+    rawInputsButtons() {
+
+		let rawInputsButtonDiv = document.createElement("div");
+		const currentInputGroup = window.CurrentInputGroup;
+
+        let addButton = Field.button({
+			text: 'Adicionar',
+			classList: ['col-5', 'green-btn', 'rawInputsButton'],
+        }).htmlComponent;
+
+        let delButton = Field.button({
+			text: 'Deletar',
+			classList: ['col-5', 'red-btn', 'rawInputsButton'],
+        }).htmlComponent;
+
+		addButton.addEventListener('click', () => {
+
+			window.CurrentDashBoard.inputGroup.numberOfInputs += 1;
+			
+			let i = window.CurrentDashBoard.inputGroup.numberOfInputs - 1;
+			let customMath = window.CurrentDashBoard.inputGroup.customMath;
+
+			const expression = {
+				formatted: `${'collum_' + i}`,
+			};
+
+			let newInput = new Input('collum_' + i, expression, window.scope, customMath);
+
+			currentInputGroup.addNewInput(newInput, "raw");
+
+			this.attRawInputList();
 
 		});
 
-	}
+		
+		delButton.addEventListener('click', () => {
 
-	validateExpression() {
+			
+			
+		});
+
+        rawInputsButtonDiv.id = "rawInputsButtons";
+        rawInputsButtonDiv.className = "row";
+
+        rawInputsButtonDiv.appendChild(addButton);
+        rawInputsButtonDiv.appendChild(delButton);
+
+        this.rawInputList.appendChild(rawInputsButtonDiv);
+
+    }
+
+    attInputList() {
+
+        this.tribute.append(1, window.CurrentInputGroup.rawInputs, true);
+		this.tribute.append(0, window.CurrentInputGroup.inputs, true);
+
+		this.inputList.innerHTML = '';
+		const currentInputGroup = window.CurrentInputGroup.inputs;
+
+		currentInputGroup.forEach((input) => {
+
+			this.inputList.appendChild((new InputCard(input.name, input.expression.formatted, this.entryInput)).htmlComponent);
+
+		});
+
+    }
+    
+    attRawInputList() {
+        this.rawInputList.innerHTML = '';
+		const currentInputGroup = window.CurrentInputGroup.rawInputs;
+
+		currentInputGroup.forEach((input) => {
+
+			this.rawInputList.appendChild((new RawInputCard(input.name, this.entryInput)).htmlComponent);
+
+        });
+        
+        this.rawInputsButtons();
+    }
+
+    validateExpression() {
 
 		let expression = '';
 		const validVariables = [];
 
-		this.form.fields[2].input.childNodes.forEach((element) => {
+		this.entryInput.fields[1].input.childNodes.forEach((element) => {
 
 			if (element.tagName === 'A') {
 
@@ -130,95 +199,53 @@ module.exports = class InputsMenu extends Menu {
 			expression: expression,
 		};
 
-	}
+    }
 
-	newInput() {
+    newInput() {   
 
-		if (!this.form.validate()) return;
+		if (!this.entryInput.validate()) return;
 
-		const data = this.form.getData().inputData;
+		const data = this.entryInput.getData().inputData;
 
 		const expressionAnswer = this.validateExpression();
 
 		if (!expressionAnswer.valid) {
 
-			this.form.fields[2].showWarning(expressionAnswer.msg);
+			this.entryInput.fields[1].showWarning(expressionAnswer.msg);
 			return;
 
 		} else {
 
 			data.expression = {};
 			data.expression.formatted = expressionAnswer.expression;
-			data.expression.raw = this.form.fields[2].input.innerHTML;
+			data.expression.raw = this.entryInput.fields[1].input.innerHTML;
 
 		}
 
-		const createdAnswer = window.CurrentInputGroup.addNewInput(data);
+		const createdAnswer = window.CurrentInputGroup.addNewInput(data, "entry");
 
 		if (createdAnswer.created) {
 
 			this.attInputList();
-			this.setEditMode();
+			this.cleanInputEntry();
 
 		} else {
 
-			this.form.formThree.newDashBoardSpliter.name.showWarning(createdAnswer.msg);
+			this.entryInput.formThree.newDashboardSpliter.name.showWarning(createdAnswer.msg);
 
 		}
 
-	}
-
-	setFormConfigs() {
-
-		this.selectInput.append[0].onclick = () => {
-
-			this.button.htmlComponent.textContent = 'Nova entrada';
-			this.button.onclick = () => {
-
-				this.newInput();
-
-			};
-			this.form.reset();
-
-		};
-
-		this.selectInput.append[1].onclick = () => {
-
-			console.log('Deletar entrada');
-
-		};
-
-		this.selectInput.input.onchange = () => {
-
-			this.setEditMode();
-
-		};
-
-		this.button.onclick = () => {
+    }
+    
+    setFormConfigs() {
+        this.button.onclick = () => {
 
 			this.newInput();
 
 		};
+    }
 
-		this.button.htmlComponent.textContent = 'Nova entrada';
-
-	}
-
-	setEditMode() {
-
-		this.button.htmlComponent.textContent = 'Salvar';
-		const input = window.CurrentInputGroup.getInputByName(this.selectInput.value);
-		this.form.fields[1].value = input.name;
-		this.form.fields[2].value = input.expression.raw;
-		this.button.onclick = () => {
-
-			this.attInput();
-
-		};
-
-	}
-
-	setAutoCompleteConfigs() {
+    setAutoCompleteConfigs() {
 
 		this.tribute = new Tribute({
 			replaceTextSuffix: '',
@@ -265,22 +292,33 @@ module.exports = class InputsMenu extends Menu {
 			},
 			],
 		});
-		this.tribute.attach(this.form.formThree.newDashBoardSpliter.expression.input);
+		this.tribute.attach(this.entryInput.formThree.newDashboardSpliter.expression.input);
 
 	}
 
-	load() {
+    cleanInputEntry() {
 
-		this.menuComponent.appendChild(this.form.htmlComponent);
-		this.setFormConfigs();
-		this.setAutoCompleteConfigs();
+        this.entryInput.fields[0].value = '';
+        this.entryInput.fields[1].value = '';
+	
+	}
 
-		this.EventHandler.addEventListener('AttInputList', () => {
+    load() {
 
+        this.menuComponent.appendChild(this.entryInput.htmlComponent);
+
+        this.setFormConfigs();
+        this.setAutoCompleteConfigs();
+
+        this.inputListSpliter('rawInputSpliter', 'Dados Recebidos', this.rawInputList);
+        this.inputListSpliter('inputSpliter', 'Entradas Salvas', this.inputList);
+
+        this.eventHandler.addEventListener('AttInputList', () => {
+
+            this.attRawInputList();
 			this.attInputList();
 
 		});
-
-	}
-
-};
+    }
+    
+}
