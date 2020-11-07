@@ -1,5 +1,5 @@
 [{
-	"module": "Plotly",
+	"type": "Plotly",
 	"title": "Scatter",
 	"Plotly": {
 		"type": "scatter",
