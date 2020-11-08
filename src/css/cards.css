@@ -1,5 +1,5 @@
-button.dashBoardCardOption, button.inputCardOption, button.rawInputCardOption,
-button.dashBoardCardOption:focus, button.inputCardOption:focus, button.rawInputCardOption:focus {
+button.dashBoardCardOption, button.inputCardOption, 
+button.dashBoardCardOption:focus, button.inputCardOption:focus {
   border-radius: 0px;
   box-shadow: none;
   border: none;
@@ -9,23 +9,19 @@ button.dashBoardCardOption:focus, button.inputCardOption:focus, button.rawInputC
   margin: 0px;
 }
 
-button.dashBoardCardOption svg, button.inputCardOption svg, button.rawInputCardOption svg {
+button.dashBoardCardOption svg, button.inputCardOption svg {
   fill: #54555c;
   width: 1.2em;
   height: 1.2em;
 }
 
-button.dashBoardCardOption:hover svg, button.inputCardOption:hover svg, button.rawInputCardOption:hover svg {
+button.dashBoardCardOption:hover svg, button.inputCardOption:hover svg {
   fill: whitesmoke;
 }
 
 .dashBoardCard, .inputCard {
   border-radius: 0.2em !important;
   border: 1px solid rgb(90 90 90 / 27%);
-  background-color: var(--global-colorInputBg);
-}
-
-.rawInputCard {
   background-color: var(--global-colorInputBg);
 }
 
@@ -39,21 +35,12 @@ button.dashBoardCardOption:hover svg, button.inputCardOption:hover svg, button.r
   border-radius: 0px;
 }
 
-#rawInputsButtons {
-  padding-top: 1.25rem;
-  margin-left: 1.25rem;
-}
-
 .rawInputsButton {
-  margin-right: 1.25rem;
+  padding-top: 1.25px;
 }
 
-.dashBoardCard-header, .inputCard-header, .rawInputCard-header {
+.dashBoardCard-header, .inputCard-header {
   background-color: var(--global-colorList);
-}
-
-.rawInputCard-header:hover {
-  background-color: var(--global-colorInputBg);
 }
 
 .dashBoardCard cite {

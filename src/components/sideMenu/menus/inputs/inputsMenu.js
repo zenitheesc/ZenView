@@ -3,10 +3,8 @@ const Components = require('../../../components');
 const EventHandler = require('../../../eventHandler/eventHandler');
 const Validator = require('../../../formBuilder/validator');
 const Menu = require('../menu');
-const RawInputCard = require('./rawInputsCards');
 const InputCard = require('./inputsCard');
 const Input = require('../../../../classes/input');
-
 const Tribute = require('tributejs');
 const Math = require('mathjs');
 
@@ -19,8 +17,43 @@ module.exports = class InputsMenu extends Menu {
         this.button = Field.button({
 			text: 'Salvar',
 			classList: ['formCenteredBtn', 'green-btn'],
+		});
+		
+		this.addButton = Field.button({
+			text: 'Adicionar nova coluna',
+			classList: ['green-btn', 'formCenteredBtn', 'rawInputsButton'],
         });
-        
+
+        this.delButton = Field.button({
+			text: 'Deletar última coluna',
+			classList: ['red-btn', 'formCenteredBtn', 'rawInputsButton'],
+        });
+
+		this.rawInputSelector = Field.select({
+			label:"Dados Recebidos",
+			att: "currentRawInput",
+			append: [{
+				type: 'button',
+				content: Components.icon('plus-square'),
+				classList: ['formButtonWithIconPrepend'],
+			}, {
+				type: 'button',
+				content: Components.icon('pencil-square'),
+				classList: ['formButtonWithIconPrepend'],
+			}],
+		});
+
+		this.editField = Field.text({
+			label: 'Novo nome',
+			att: 'editField',
+			validators: [Validator.isFilled],
+			append: [{
+				type: 'button',
+				content: Components.icon('save'),
+				classList: ['formButtonWithIconPrepend'],
+			}],
+		}),
+
         this.entryInput = new Form({
             newDashboardSpliter: Container.spliter({
                 name: Field.text({
@@ -43,12 +76,24 @@ module.exports = class InputsMenu extends Menu {
 			att: 'inputData',
 		});
 
+		this.rawInputList = new Form({
+			newDashboardSpliter: Container.spliter({
+				rawInput: this.rawInputSelector,
+				rawInputsAddButton: this.addButton,
+				rawInputsDelButton: this.delButton,
+			},{
+				startOpen: true,
+				text: 'Dados Recebidos',
+				id: 'rawInputSpliter',	
+			}
+		),
+		});
+
         this.eventHandler = new EventHandler();
-        this.tribute;
+		this.tribute;
+		this.editMode = false;
 
         this.inputList = document.createElement("div");
-        this.rawInputList = document.createElement("ul");
-        this.rawInputList.id = "rawInputList";
 
     }  
 
@@ -57,57 +102,6 @@ module.exports = class InputsMenu extends Menu {
         const spliter = Components.spliter(id, name, container, true);
 		this.menuComponent.appendChild(spliter);
     
-    }
-
-    rawInputsButtons() {
-
-		let rawInputsButtonDiv = document.createElement("div");
-		const currentInputGroup = window.CurrentInputGroup;
-
-        let addButton = Field.button({
-			text: 'Adicionar',
-			classList: ['col-5', 'green-btn', 'rawInputsButton'],
-        }).htmlComponent;
-
-        let delButton = Field.button({
-			text: 'Deletar',
-			classList: ['col-5', 'red-btn', 'rawInputsButton'],
-        }).htmlComponent;
-
-		addButton.addEventListener('click', () => {
-
-			window.CurrentDashBoard.inputGroup.numberOfInputs += 1;
-			
-			let i = window.CurrentDashBoard.inputGroup.numberOfInputs - 1;
-			let customMath = window.CurrentDashBoard.inputGroup.customMath;
-
-			const expression = {
-				formatted: `${'collum_' + i}`,
-			};
-
-			let newInput = new Input('collum_' + i, expression, window.scope, customMath);
-
-			currentInputGroup.addNewInput(newInput, "raw");
-
-			this.attRawInputList();
-
-		});
-
-		
-		delButton.addEventListener('click', () => {
-
-			
-			
-		});
-
-        rawInputsButtonDiv.id = "rawInputsButtons";
-        rawInputsButtonDiv.className = "row";
-
-        rawInputsButtonDiv.appendChild(addButton);
-        rawInputsButtonDiv.appendChild(delButton);
-
-        this.rawInputList.appendChild(rawInputsButtonDiv);
-
     }
 
     attInputList() {
@@ -127,16 +121,15 @@ module.exports = class InputsMenu extends Menu {
     }
     
     attRawInputList() {
-        this.rawInputList.innerHTML = '';
+
 		const currentInputGroup = window.CurrentInputGroup.rawInputs;
 
-		currentInputGroup.forEach((input) => {
+		this.rawInputSelector.setOptions(currentInputGroup, (value) => {
 
-			this.rawInputList.appendChild((new RawInputCard(input.name, this.entryInput)).htmlComponent);
+			return [value.name, value.name];
 
-        });
-        
-        this.rawInputsButtons();
+		});
+		
     }
 
     validateExpression() {
@@ -238,10 +231,54 @@ module.exports = class InputsMenu extends Menu {
     }
     
     setFormConfigs() {
+
         this.button.onclick = () => {
 
 			this.newInput();
 
+		};
+
+		this.rawInputSelector.append[0].onclick = () => {
+
+			let tag = document.createElement("a");
+			tag.contentEditable = "false";
+			tag.className = "inputTag";
+			tag.textContent = '#{' + this.rawInputSelector.value + '}';
+
+			this.entryInput.formThree.newDashboardSpliter.expression.input.appendChild(tag);
+
+		};
+
+		this.rawInputSelector.append[1].onclick = () => {
+
+		};
+
+		this.addButton.onclick = () => {
+
+			window.CurrentDashBoard.inputGroup.numberOfInputs += 1;
+			
+			let i = window.CurrentDashBoard.inputGroup.numberOfInputs - 1;
+			let customMath = window.CurrentDashBoard.inputGroup.customMath;
+
+			const expression = {
+				formatted: `${'collum_' + i}`,
+			};
+
+			let newInput = new Input('collum_' + i, expression, window.scope, customMath);
+
+			window.CurrentInputGroup.addNewInput(newInput, "raw");
+
+			this.attRawInputList();
+
+		};
+		
+		this.delButton.onclick = () => {
+
+			window.CurrentDashBoard.inputGroup.numberOfInputs -= 1;
+			window.CurrentInputGroup.delInput("raw");
+
+			this.attRawInputList();
+			
 		};
     }
 
@@ -305,17 +342,17 @@ module.exports = class InputsMenu extends Menu {
 
     load() {
 
-        this.menuComponent.appendChild(this.entryInput.htmlComponent);
+		this.menuComponent.appendChild(this.entryInput.htmlComponent);
+		this.menuComponent.appendChild(this.rawInputList.htmlComponent);
 
         this.setFormConfigs();
-        this.setAutoCompleteConfigs();
-
-        this.inputListSpliter('rawInputSpliter', 'Dados Recebidos', this.rawInputList);
+		this.setAutoCompleteConfigs();
+		
         this.inputListSpliter('inputSpliter', 'Entradas Salvas', this.inputList);
 
         this.eventHandler.addEventListener('AttInputList', () => {
 
-            this.attRawInputList();
+			this.attRawInputList();
 			this.attInputList();
 
 		});

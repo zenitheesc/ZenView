@@ -127,7 +127,7 @@ module.exports = class InputGroup {
 	addNewInput(inputConfig, type) {
 
 		console.log('TENTANDO CRIAR NOVO INPUT');
-		if (this._associationInput[inputConfig.name] !== undefined) {
+		if (this._associationInput[inputConfig.name] !== undefined && type !== "raw") {
 
 			return {
 				created: false,
@@ -161,6 +161,32 @@ module.exports = class InputGroup {
 			name: newInput.name,
 			expression: newInput.expression,
 		};
+
+	}
+
+	delInput(type){
+		console.log('TENTANDO DELETAR INPUT');
+
+		if (type === "raw"){
+
+			this.rawInputs.pop();
+
+		} else {
+
+			// TODO: Fazer a exclusão de entradas
+			
+		}
+
+		/* TODO: Fazer busca topológica após remover a entrada
+
+		this.inputGraph.addInput(newInput);
+		this.inputGraph.addEgdes();
+		this.inputGraph.hasCycle();
+		this.inputGraph.topologicalSort();
+		
+		*/
+
+		window.dispatchEvent(new CustomEvent('SaveCurrentDashBoard'));
 
 	}
 
