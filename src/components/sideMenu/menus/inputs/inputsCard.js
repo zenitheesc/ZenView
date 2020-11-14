@@ -13,11 +13,10 @@ module.exports = class InputCard {
 		this.name = name;
 		this.form = form;
 
-		this.EventHandler = new EventHandler();
+		this.eventHandler = new EventHandler();
 		this.htmlComponent = document.createElement('div');
-		this.htmlComponent.className = 'card inputCard mb-3';
-		this.title = this.inputHeader();
-		this.expression = this.inputBody();
+		this.htmlComponent.className = 'mb-3';
+		[this.title, this.icon] = this.inputHeader();
 		this.setEvents();
 
 	}
@@ -25,17 +24,27 @@ module.exports = class InputCard {
 	inputHeader() {
 
 		const cardHeader = document.createElement('div');
-		cardHeader.setAttribute('class', 'card-header row inputCard-header m-0 justify-content-between');
+		cardHeader.setAttribute('class', 'row inputCard m-0 justify-content-between');
+
+		const cardHeaderIcon = document.createElement('i');
+		cardHeaderIcon.className = 'fas fa-list-ol inputCardIcon';
 
 		const cardHeaderTitle = document.createElement('div');
+		cardHeaderTitle.className = 'inputCardTitle';
 		cardHeaderTitle.innerText = this.inputInfo.name;
+		
+		const cardHeaderWrapper = document.createElement('div');
+		cardHeaderWrapper.className = 'row m-0 inputCardWrapper';
 
-		cardHeader.appendChild(cardHeaderTitle);
+		cardHeaderWrapper.appendChild(cardHeaderIcon);
+		cardHeaderWrapper.appendChild(cardHeaderTitle);
+
+		cardHeader.appendChild(cardHeaderWrapper);
 		cardHeader.appendChild(this.inputButtons());
 
 		this.htmlComponent.appendChild(cardHeader);
 
-		return cardHeaderTitle;
+		return [cardHeaderTitle, cardHeaderIcon];
 
 	}
 
@@ -55,27 +64,23 @@ module.exports = class InputCard {
 
 	}
 
-	inputBody() {
-
-		const cardBody = document.createElement('div');
-		cardBody.className = 'card-body';
-
-		const inputExp = document.createElement('p');
-		inputExp.textContent = this.inputInfo.expression;
-
-		cardBody.appendChild(inputExp);
-
-		this.htmlComponent.appendChild(cardBody);
-
-		return inputExp;
-
-	}
-
 	setEvents() {
+
+		this.htmlComponent.addEventListener('mouseover', () => {
+			
+			this.title.innerText = this.inputInfo.expression;
+			
+		});
+		
+		this.htmlComponent.addEventListener('mouseout', () => {
+			
+			this.title.innerText = this.inputInfo.name;
+			
+		});
 
 		this.addBtn.addEventListener('click', () => {
 
-			let tag = document.createElement("a");
+			const tag = document.createElement("a");
 			tag.contentEditable = "false";
 			tag.className = "inputTag";
 			tag.textContent = '${' + this.name + '}';
@@ -86,33 +91,14 @@ module.exports = class InputCard {
 
 		this.editBtn.addEventListener('click', () => {
 
-			if (!this.title.isContentEditable) {
 
-				this.editBtn.innerHTML = Components.icon('save');
-				this.title.classList.add('editableDiv');
-				this.expression.classList.add('editableDiv');
-				this.title.contentEditable = true;
-				this.expression.contentEditable = true;
-
-			} else {
-
-				this.editBtn.innerHTML = Components.icon('pencil-square');
-				this.title.classList.remove('editableDiv');
-				this.expression.classList.remove('editableDiv');
-				this.title.contentEditable = false;
-				this.expression.contentEditable = false;
-
-				/*this.EventHandler.SaveInputNameAndExpression({
-					name: this.title.textContent,
-					expression: this.expression.textContent,
-				});*/
-
-			}
 
 		});
 
 		this.delBtn.addEventListener('click', () => {
 
+			window.CurrentInputGroup.removeInput(this.name, 'input');
+			this.eventHandler.dispatchEvent('AttInputList');
 
 		});
 

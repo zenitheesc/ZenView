@@ -1,5 +1,5 @@
 button.dashBoardCardOption, button.inputCardOption, 
-button.dashBoardCardOption:focus, button.inputCardOption:focus {
+button.dashBoardCardOption:focus, button.inputCardOption:focus, .inputCardWrapper {
   border-radius: 0px;
   box-shadow: none;
   border: none;
@@ -9,20 +9,44 @@ button.dashBoardCardOption:focus, button.inputCardOption:focus {
   margin: 0px;
 }
 
-button.dashBoardCardOption svg, button.inputCardOption svg {
+button.dashBoardCardOption svg, .inputCardIcon {
   fill: #54555c;
   width: 1.2em;
   height: 1.2em;
 }
 
-button.dashBoardCardOption:hover svg, button.inputCardOption:hover svg {
-  fill: whitesmoke;
+button.inputCardOption svg {
+  fill: darkgray;
+  width: 1.2em;
+  height: 1.2em;
 }
 
-.dashBoardCard, .inputCard {
+button.dashBoardCardOption:hover svg, button.inputCardOption:hover svg {
+  fill: var(--global-colorFont);
+}
+
+.dashBoardCard {
   border-radius: 0.2em !important;
   border: 1px solid rgb(90 90 90 / 27%);
   background-color: var(--global-colorInputBg);
+}
+
+.inputCard {
+  border-radius: 32px;
+  background-color: var(--global-colorInputBg);
+  padding: 0.4rem;
+}
+
+.inputCard:hover {
+  background-color: #5e5e5e;
+}
+
+.inputCardIcon {
+  margin: 3px 6px 0px 6px;
+}
+
+.inputCardTitle {
+  font-weight: bold;
 }
 
 #rawInputList {
@@ -36,7 +60,7 @@ button.dashBoardCardOption:hover svg, button.inputCardOption:hover svg {
 }
 
 .rawInputsButton {
-  padding-top: 1.25px;
+  margin-top: 0.8rem;
 }
 
 .dashBoardCard-header, .inputCard-header {

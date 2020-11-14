@@ -45,6 +45,16 @@ module.exports = class InputGraph {
 
 	removeInput(input) {
 
+		// TODO: Grandes chances de isso está muito errado
+
+		const nodesIndex = this.nodes.indexOf(input);
+		const inputIndex = this.inputs.indexOf(input)/
+		
+		this.nodes.splice(nodesIndex, 1);
+		this.inputs.splice(inputIndex, 1);
+		
+		this.nodesDictionary.delete(input.name);
+	
 	}
 	/**
 	 *

@@ -127,7 +127,7 @@ module.exports = class InputGroup {
 	addNewInput(inputConfig, type) {
 
 		console.log('TENTANDO CRIAR NOVO INPUT');
-		if (this._associationInput[inputConfig.name] !== undefined && type !== "raw") {
+		if (this._associationInput[inputConfig.name] !== undefined && type !== 'raw') {
 
 			return {
 				created: false,
@@ -139,14 +139,14 @@ module.exports = class InputGroup {
 		const newInput = new Input(inputConfig.name, inputConfig.expression, this.scope, this.customMath);
 		this._associationInput[newInput.name] = newInput;
 
-		if (type === "raw"){
+		if (type === 'raw') {
 
 			this.rawInputs.push(newInput);
 
 		} else {
 
 			this.inputs.push(newInput);
-			
+
 		}
 
 		this.inputGraph.addInput(newInput);
@@ -164,17 +164,32 @@ module.exports = class InputGroup {
 
 	}
 
-	delInput(type){
+	removeInput(name, type) {
+
 		console.log('TENTANDO DELETAR INPUT');
 
-		if (type === "raw"){
+		if (type === 'raw') {
 
 			this.rawInputs.pop();
 
 		} else {
 
-			// TODO: Fazer a exclusão de entradas
-			
+			const currentInputGroup = window.CurrentInputGroup.inputs;
+
+			currentInputGroup.forEach((input) => {
+
+				if (input.name === name){
+
+					const index = currentInputGroup.indexOf(input);
+
+					if (index > -1) {
+						currentInputGroup.splice(index, 1);
+					}
+					
+				}
+	
+			});
+
 		}
 
 		/* TODO: Fazer busca topológica após remover a entrada
@@ -183,7 +198,7 @@ module.exports = class InputGroup {
 		this.inputGraph.addEgdes();
 		this.inputGraph.hasCycle();
 		this.inputGraph.topologicalSort();
-		
+
 		*/
 
 		window.dispatchEvent(new CustomEvent('SaveCurrentDashBoard'));

@@ -1,5 +1,5 @@
 button.menuItem.deactive:hover svg {
-	fill: whitesmoke;
+	fill: var(--global-colorFont);
 }
 
 button.menuItem.deactive {
@@ -7,7 +7,7 @@ button.menuItem.deactive {
 }
 
 button.menuItem.active svg {
-	fill: whitesmoke;
+	fill: var(--global-colorFont);
 
 }
 

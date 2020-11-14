@@ -4,59 +4,24 @@ const EventHandler = require('../../../eventHandler/eventHandler');
 const Validator = require('../../../formBuilder/validator');
 const Menu = require('../menu');
 const InputCard = require('./inputsCard');
-const Input = require('../../../../classes/input');
+const RawInputsList = require('./rawInputsList');
 const Tribute = require('tributejs');
 const Math = require('mathjs');
 
 module.exports = class InputsMenu extends Menu {
 
-    constructor() {
+	constructor() {
 
-        super("Entradas", "inputs_menu");
+		super('Entradas', 'inputs_menu');
 
-        this.button = Field.button({
+		this.button = Field.button({
 			text: 'Salvar',
 			classList: ['formCenteredBtn', 'green-btn'],
 		});
-		
-		this.addButton = Field.button({
-			text: 'Adicionar nova coluna',
-			classList: ['green-btn', 'formCenteredBtn', 'rawInputsButton'],
-        });
 
-        this.delButton = Field.button({
-			text: 'Deletar última coluna',
-			classList: ['red-btn', 'formCenteredBtn', 'rawInputsButton'],
-        });
-
-		this.rawInputSelector = Field.select({
-			label:"Dados Recebidos",
-			att: "currentRawInput",
-			append: [{
-				type: 'button',
-				content: Components.icon('plus-square'),
-				classList: ['formButtonWithIconPrepend'],
-			}, {
-				type: 'button',
-				content: Components.icon('pencil-square'),
-				classList: ['formButtonWithIconPrepend'],
-			}],
-		});
-
-		this.editField = Field.text({
-			label: 'Novo nome',
-			att: 'editField',
-			validators: [Validator.isFilled],
-			append: [{
-				type: 'button',
-				content: Components.icon('save'),
-				classList: ['formButtonWithIconPrepend'],
-			}],
-		}),
-
-        this.entryInput = new Form({
-            newDashboardSpliter: Container.spliter({
-                name: Field.text({
+		this.entryInput = new Form({
+			newDashboardSpliter: Container.spliter({
+				name: Field.text({
 					label: 'Tag',
 					att: 'name',
 					validators: [Validator.isFilled],
@@ -68,45 +33,32 @@ module.exports = class InputsMenu extends Menu {
 				}),
 				Save: this.button,
 			}, {
-                startOpen: true,
+				startOpen: true,
 				text: 'Edição de entradas',
 				id: 'inputEditingSpliter',
-            }),
-        },{
+			}),
+		}, {
 			att: 'inputData',
 		});
 
-		this.rawInputList = new Form({
-			newDashboardSpliter: Container.spliter({
-				rawInput: this.rawInputSelector,
-				rawInputsAddButton: this.addButton,
-				rawInputsDelButton: this.delButton,
-			},{
-				startOpen: true,
-				text: 'Dados Recebidos',
-				id: 'rawInputSpliter',	
-			}
-		),
-		});
-
-        this.eventHandler = new EventHandler();
+		this.rawInputList = new RawInputsList(this.entryInput);
+		this.eventHandler = new EventHandler();
 		this.tribute;
-		this.editMode = false;
 
-        this.inputList = document.createElement("div");
+		this.inputList = document.createElement('div');
 
-    }  
+	}
 
-    inputListSpliter(id, name, container) {
+	inputListSpliter(id, name, container) {
 
-        const spliter = Components.spliter(id, name, container, true);
+		const spliter = Components.spliter(id, name, container, true);
 		this.menuComponent.appendChild(spliter);
-    
-    }
 
-    attInputList() {
+	}
 
-        this.tribute.append(1, window.CurrentInputGroup.rawInputs, true);
+	attInputList() {
+
+		this.tribute.append(1, window.CurrentInputGroup.rawInputs, true);
 		this.tribute.append(0, window.CurrentInputGroup.inputs, true);
 
 		this.inputList.innerHTML = '';
@@ -118,21 +70,9 @@ module.exports = class InputsMenu extends Menu {
 
 		});
 
-    }
-    
-    attRawInputList() {
+	}
 
-		const currentInputGroup = window.CurrentInputGroup.rawInputs;
-
-		this.rawInputSelector.setOptions(currentInputGroup, (value) => {
-
-			return [value.name, value.name];
-
-		});
-		
-    }
-
-    validateExpression() {
+	validateExpression() {
 
 		let expression = '';
 		const validVariables = [];
@@ -192,9 +132,9 @@ module.exports = class InputsMenu extends Menu {
 			expression: expression,
 		};
 
-    }
+	}
 
-    newInput() {   
+	newInput() {
 
 		if (!this.entryInput.validate()) return;
 
@@ -215,7 +155,7 @@ module.exports = class InputsMenu extends Menu {
 
 		}
 
-		const createdAnswer = window.CurrentInputGroup.addNewInput(data, "entry");
+		const createdAnswer = window.CurrentInputGroup.addNewInput(data, 'entry');
 
 		if (createdAnswer.created) {
 
@@ -228,61 +168,19 @@ module.exports = class InputsMenu extends Menu {
 
 		}
 
-    }
-    
-    setFormConfigs() {
+	}
 
-        this.button.onclick = () => {
+	setFormConfigs() {
+
+		this.button.onclick = () => {
 
 			this.newInput();
 
 		};
 
-		this.rawInputSelector.append[0].onclick = () => {
+	}
 
-			let tag = document.createElement("a");
-			tag.contentEditable = "false";
-			tag.className = "inputTag";
-			tag.textContent = '#{' + this.rawInputSelector.value + '}';
-
-			this.entryInput.formThree.newDashboardSpliter.expression.input.appendChild(tag);
-
-		};
-
-		this.rawInputSelector.append[1].onclick = () => {
-
-		};
-
-		this.addButton.onclick = () => {
-
-			window.CurrentDashBoard.inputGroup.numberOfInputs += 1;
-			
-			let i = window.CurrentDashBoard.inputGroup.numberOfInputs - 1;
-			let customMath = window.CurrentDashBoard.inputGroup.customMath;
-
-			const expression = {
-				formatted: `${'collum_' + i}`,
-			};
-
-			let newInput = new Input('collum_' + i, expression, window.scope, customMath);
-
-			window.CurrentInputGroup.addNewInput(newInput, "raw");
-
-			this.attRawInputList();
-
-		};
-		
-		this.delButton.onclick = () => {
-
-			window.CurrentDashBoard.inputGroup.numberOfInputs -= 1;
-			window.CurrentInputGroup.delInput("raw");
-
-			this.attRawInputList();
-			
-		};
-    }
-
-    setAutoCompleteConfigs() {
+	setAutoCompleteConfigs() {
 
 		this.tribute = new Tribute({
 			replaceTextSuffix: '',
@@ -333,29 +231,43 @@ module.exports = class InputsMenu extends Menu {
 
 	}
 
-    cleanInputEntry() {
+	cleanInputEntry() {
 
-        this.entryInput.fields[0].value = '';
-        this.entryInput.fields[1].value = '';
-	
+		this.entryInput.fields[0].value = '';
+		this.entryInput.fields[1].value = '';
+
 	}
 
-    load() {
+	appendTag(tag) {
+
+		this.entryInput.formThree.newDashboardSpliter.expression.input.appendChild(tag);
+
+	}
+
+	load() {
+
+		this.rawInputList.build();
 
 		this.menuComponent.appendChild(this.entryInput.htmlComponent);
-		this.menuComponent.appendChild(this.rawInputList.htmlComponent);
+		this.menuComponent.appendChild(this.rawInputList.rawInputList.htmlComponent);
 
-        this.setFormConfigs();
+		this.setFormConfigs();
 		this.setAutoCompleteConfigs();
-		
-        this.inputListSpliter('inputSpliter', 'Entradas Salvas', this.inputList);
 
-        this.eventHandler.addEventListener('AttInputList', () => {
+		this.inputListSpliter('inputSpliter', 'Entradas Salvas', this.inputList);
 
-			this.attRawInputList();
+		this.eventHandler.addEventListener('AttInputList', () => {
+
 			this.attInputList();
 
 		});
-    }
-    
-}
+
+		this.eventHandler.addEventListener('AppendTag', (e) => {
+
+			this.appendTag(e.detail);
+
+		});
+
+	}
+
+};
