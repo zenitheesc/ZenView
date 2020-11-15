@@ -3,20 +3,18 @@ const Components = require('../../../components');
 
 module.exports = class InputCard {
 
-	constructor(name, expression, form) {
+	constructor(name, expFormatted, expRaw) {
 
 		this.inputInfo = {
 			'name': name,
-			'expression': expression,
+			'expression': expFormatted,
+			'rawExpression': expRaw,
 		};
-
-		this.name = name;
-		this.form = form;
 
 		this.eventHandler = new EventHandler();
 		this.htmlComponent = document.createElement('div');
 		this.htmlComponent.className = 'mb-3';
-		[this.title, this.icon] = this.inputHeader();
+		this.title = this.inputHeader();
 		this.setEvents();
 
 	}
@@ -44,7 +42,7 @@ module.exports = class InputCard {
 
 		this.htmlComponent.appendChild(cardHeader);
 
-		return [cardHeaderTitle, cardHeaderIcon];
+		return cardHeaderTitle;
 
 	}
 
@@ -83,21 +81,21 @@ module.exports = class InputCard {
 			const tag = document.createElement("a");
 			tag.contentEditable = "false";
 			tag.className = "inputTag";
-			tag.textContent = '${' + this.name + '}';
+			tag.textContent = '${' + this.inputInfo.name + '}';
 
-			this.form.formThree.newDashboardSpliter.expression.input.appendChild(tag);
+			this.eventHandler.dispatchEvent('AppendTag', {tag: tag});
 
 		});
 
 		this.editBtn.addEventListener('click', () => {
 
-
+			this.eventHandler.dispatchEvent('SetEditInputMode', {name: this.inputInfo.name, exp: this.inputInfo.rawExpression});
 
 		});
 
 		this.delBtn.addEventListener('click', () => {
 
-			window.CurrentInputGroup.removeInput(this.name, 'input');
+			window.CurrentInputGroup.removeInput(this.inputInfo.name, 'input');
 			this.eventHandler.dispatchEvent('AttInputList');
 
 		});

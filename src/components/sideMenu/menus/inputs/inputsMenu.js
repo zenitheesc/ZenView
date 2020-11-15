@@ -41,8 +41,9 @@ module.exports = class InputsMenu extends Menu {
 			att: 'inputData',
 		});
 
-		this.rawInputList = new RawInputsList(this.entryInput);
+		this.rawInputList = new RawInputsList();
 		this.eventHandler = new EventHandler();
+		this.editMode = false;
 		this.tribute;
 
 		this.inputList = document.createElement('div');
@@ -66,7 +67,7 @@ module.exports = class InputsMenu extends Menu {
 
 		currentInputGroup.forEach((input) => {
 
-			this.inputList.appendChild((new InputCard(input.name, input.expression.formatted, this.entryInput)).htmlComponent);
+			this.inputList.appendChild((new InputCard(input.name, input.expression.formatted, input.expression.raw)).htmlComponent);
 
 		});
 
@@ -168,13 +169,26 @@ module.exports = class InputsMenu extends Menu {
 
 		}
 
-	}
+	} 	
 
 	setFormConfigs() {
 
 		this.button.onclick = () => {
 
-			this.newInput();
+			if (!this.editMode){
+				
+				this.newInput();
+
+			} else {
+
+				this.button.htmlComponent.textContent = 'Salvar';
+
+				// TODO: Fazer a edição de fato
+				
+				this.cleanInputEntry();
+				this.editMode = false;
+
+			}
 
 		};
 
@@ -231,6 +245,16 @@ module.exports = class InputsMenu extends Menu {
 
 	}
 
+	setEditMode(currentName, currentExp) {
+		
+		this.button.htmlComponent.textContent = 'Editar entrada';
+		this.entryInput.fields[0].value = currentName;
+		this.entryInput.fields[1].value = currentExp;
+		
+		this.editMode = true;
+
+	}
+
 	cleanInputEntry() {
 
 		this.entryInput.fields[0].value = '';
@@ -264,7 +288,13 @@ module.exports = class InputsMenu extends Menu {
 
 		this.eventHandler.addEventListener('AppendTag', (e) => {
 
-			this.appendTag(e.detail);
+			this.appendTag(e.tag);
+
+		});
+
+		this.eventHandler.addEventListener('SetEditInputMode', (e) => {
+
+			this.setEditMode(e.name, e.exp);
 
 		});
 

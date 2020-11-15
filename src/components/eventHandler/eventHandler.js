@@ -133,6 +133,18 @@ module.exports = class EventHandler {
 			this.dispatchEvent('SaveDashBoardDescAndName', detail);
 
 		};
+		
+		this['AppendTag'] = (detail) => {
+
+			this.dispatchEvent('AppendTag', detail);
+
+		};
+
+		this['SetEditInputMode'] = (detail) => {
+
+			this.dispatchEvent('SetEditInputMode', detail);
+
+		};
 
 	}
 

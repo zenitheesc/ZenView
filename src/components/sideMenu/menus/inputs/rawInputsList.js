@@ -6,7 +6,7 @@ const Input = require('../../../../classes/input');
 
 module.exports = class RawInputsList {
 
-    constructor(entryInput) {
+    constructor() {
         
 		this.addButton = Field.button({
 			text: 'Adicionar nova coluna',
@@ -58,8 +58,7 @@ module.exports = class RawInputsList {
         });
 		
 		this.eventHandler = new EventHandler();
-        this.entryInput = entryInput;
-        this.alteredRawInputName;
+
     }
 
     attRawInputList() {
@@ -83,18 +82,14 @@ module.exports = class RawInputsList {
 			tag.className = 'inputTag';
 			tag.textContent = '#{' + this.rawInputSelector.value + '}';
 
-			this.entryInput.formThree.newDashboardSpliter.expression.input.appendChild(tag);
+			this.eventHandler.dispatchEvent('AppendTag', {tag: tag});
 
 		};
 
 		this.rawInputSelector.append[1].onclick = () => {
 
-			this.alteredRawInputName = this.rawInputSelector.value;
-
 			this.editField.htmlComponent.classList.remove('d-none');
-			this.editField.value = this.alteredRawInputName;
-
-			console.log(this.alteredRawInputName);
+			this.editField.value = this.rawInputSelector.value;
 
 		};
 

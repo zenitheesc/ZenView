@@ -175,20 +175,12 @@ module.exports = class InputGroup {
 		} else {
 
 			const currentInputGroup = window.CurrentInputGroup.inputs;
+			const input = window.CurrentInputGroup.getInputByName(name);
+			const index = currentInputGroup.indexOf(input);
 
-			currentInputGroup.forEach((input) => {
-
-				if (input.name === name){
-
-					const index = currentInputGroup.indexOf(input);
-
-					if (index > -1) {
-						currentInputGroup.splice(index, 1);
-					}
-					
-				}
-	
-			});
+			if (index > -1) {
+				currentInputGroup.splice(index, 1);
+			}
 
 		}
 
