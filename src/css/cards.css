@@ -49,21 +49,11 @@ button.dashBoardCardOption:hover svg, button.inputCardOption:hover svg {
   font-weight: bold;
 }
 
-#rawInputList {
-  border-radius: 0.5em !important;
-  margin: 0%;
-  padding-inline-start: 0px;
-}
-
-.card-header.rawInputCard-header {
-  border-radius: 0px;
-}
-
 .rawInputsButton {
   margin-top: 0.8rem;
 }
 
-.dashBoardCard-header, .inputCard-header {
+.dashBoardCard-header {
   background-color: var(--global-colorList);
 }
 
@@ -71,11 +61,7 @@ button.dashBoardCardOption:hover svg, button.inputCardOption:hover svg {
   font-size: 0.8rem;
 }
 
-.inputCard p {
-  font-size: 0.8rem;
-}
-
-.inputCard .card-body p {
+.card-body p {
   margin-bottom: 0px;
   margin-block-end: 0em;
   margin-block-start: 0em;

@@ -95,6 +95,8 @@ module.exports = class RawInputsList {
 
 		this.editField.append[0].onclick = () => {
 
+			// TODO: Realizar a edição de fato
+
 			this.editField.htmlComponent.classList.add('d-none');
 			this.editField.value = '';
 
