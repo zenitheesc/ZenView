@@ -169,19 +169,21 @@ class FormPattern {
 			this.createResponseObj(response, field.parsedAtt, field.value);
 
 		});
-		return response;
+		return response.form || response;
 
 	}
 
 	setData(DataObj) {
 
-		const atts = this.objToPathList(DataObj);
+		const wrapper = {};
+		wrapper.form = DataObj;
+		const atts = this.objToPathList(wrapper);
 
 		this.fields.forEach((field)=>{
 
-			if (atts[field.att] !== undefined || atts[(field.att).replace('form.', '')] !== undefined) {
+			if (atts[field.att] !== undefined ) {
 
-				field.value = atts[field.att] || atts[(field.att).replace('form.', '')];
+				field.value = atts[field.att];
 
 			}
 

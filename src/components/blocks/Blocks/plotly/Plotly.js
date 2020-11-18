@@ -10,6 +10,10 @@ module.exports = class scatter {
 
 			return new Scatter(preConfig);
 
+		} else {
+
+			return new Scatter(preConfig);
+
 		}
 
 

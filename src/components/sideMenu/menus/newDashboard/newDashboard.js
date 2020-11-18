@@ -59,7 +59,7 @@ module.exports = class newDashBoardMenu extends Menu {
 
 			if (this.form.validate()) {
 
-				const data = this.form.getData().form;
+				const data = this.form.getData();
 				let i = 0;
 				const fileNames = fs.readdirSync(data['dir']);
 				let newName = data['name'] + '.json';
