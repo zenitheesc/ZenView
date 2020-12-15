@@ -769,6 +769,51 @@ class Field {
 		return field;
 
 	}
+	static colorPicker(options){
+
+		// Extração do valor da cor: this.colorPicker.input.jscolor.toHEXString()
+
+		const input = document.createElement('input');
+		const opts = {
+			preset: 'large dark', 
+			value:'#FFFFFF', 
+			backgroundColor:'#1a1a1a', 
+			borderColor:'#a9a9a963',
+			borderRadius: '4',
+			pointerColor:'#2b2b2b',
+			controlBorderColor: 'darkgray',
+			pointerBorderColor:'darkgray',
+		};
+
+		input.type = options.type = 'colorPicker';
+		input.classList.add('form-control');
+		input.style.width = '100%';
+
+		if (options.id !== undefined) {
+			input.id = options.id;
+		} else {
+			input.id = 'colorPicker';
+		} 
+
+		const colorPicker = new JSColor(input, opts);
+
+		const inputGroup = this._inputGroup(options);
+		this._attClassList(inputGroup, options.classList);
+
+		const insideInputGroup = this._inputGroup(options);
+		insideInputGroup.classList.add('input-group');
+
+		inputGroup.appendChild(this._label(options.label, options.id));
+
+		insideInputGroup.appendChild(input);
+		inputGroup.appendChild(insideInputGroup);
+
+		options.htmlComponent = inputGroup;
+		options.input = input;
+
+		return new Field(options);
+
+	}
 	static _label(text, id) {
 
 		const labelElement = document.createElement('small');

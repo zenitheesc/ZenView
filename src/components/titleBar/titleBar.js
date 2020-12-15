@@ -37,7 +37,7 @@ module.exports = class TitleBar {
 	}
 	createTitleBar() {
 
-		const windowName = document.createElement('h5');
+		const windowName = document.createElement('h6');
 
 		windowName.id = 'titlebar-name';
 		windowName.textContent = 'ZenView';
