@@ -96,7 +96,7 @@ module.exports = class BlockContainer {
 	}
 
 	setEvents() {
-
+		
 		this.htmlComponent.ondblclick = () => {
 
 			this.editBlock();
@@ -105,7 +105,7 @@ module.exports = class BlockContainer {
 
 		this.htmlComponent.addEventListener('contextmenu', (evt) => {
 
-			const blockMenu = new BlockMenu(this.htmlComponent);
+			const blockMenu = new BlockMenu(this);
 
 			evt.preventDefault();
 			blockMenu.menuPopUp();
