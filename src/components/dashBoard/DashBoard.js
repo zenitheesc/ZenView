@@ -1,6 +1,6 @@
-const GridStack = require('gridstack/dist/gridstack.all');
+const GridStack      = require('gridstack/dist/gridstack.all');
 const BlockContainer = require('../blockContainer/blockContainer');
-const EventHandler = require('../eventHandler/eventHandler');
+const EventHandler   = require('../eventHandler/eventHandler');
 
 module.exports = class DahsBoard {
 
@@ -40,6 +40,12 @@ module.exports = class DahsBoard {
 
 		});
 
+		this.EventHandler.addEventListener('RemoveBlock', (evt) => {
+
+			this.removeBlock(evt);
+
+		});
+
 	}
 
 	addNewBlock(blockConfig) {
@@ -48,6 +54,12 @@ module.exports = class DahsBoard {
 		this.gridStack.addWidget(newBlock.htmlComponent, newBlock);
 
 		newBlock.init();
+
+	}
+
+	removeBlock(removedBlock) {
+
+		this.gridStack.removeWidget(removedBlock);
 
 	}
 

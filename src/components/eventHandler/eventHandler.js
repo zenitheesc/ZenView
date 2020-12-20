@@ -44,6 +44,12 @@ module.exports = class EventHandler {
 
 		};
 
+		this['RemoveBlock'] = (detail) => {
+
+			this.dispatchEvent('RemoveBlock', detail);
+
+		};
+
 		this['ClearDashboard'] = (detail) => {
 
 			this.dispatchEvent('ClearDashboard', detail);

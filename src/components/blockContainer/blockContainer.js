@@ -1,5 +1,5 @@
 const Blocks       = require('../blocks/Blocks');
-const BlockMenu    = require('../blocks/Blocks/blockMenu');
+const BlockMenu    = require('./blockMenu');
 const EventHandler = require('../eventHandler/eventHandler');
 module.exports = class BlockContainer {
 
@@ -59,49 +59,53 @@ module.exports = class BlockContainer {
 
 	}
 
+	editBlock() {
+
+		if (!this.editing) {
+
+			this.content.classList.add('editingBlock');
+			this.editing = true;
+			window.CurrentBlock = this;
+
+			this.EventHandler.BlockWasSelected(this);
+
+			this.EventHandler.OpenSideMenu({
+				requested: 'edit',
+			});
+
+			this.EventHandler.OpenMenu({
+				name: 'edit',
+			});
+
+			this.EventHandler.SetSelectionEffect({
+				name: 'edit',
+			});
+
+		} else {
+
+			window.CurrentBlock = undefined;
+			this.content.classList.remove('editingBlock');
+			this.editing = false;
+
+			this.EventHandler.OpenMenu({
+				name: 'edit',
+			});
+
+		}
+
+	}
+
 	setEvents() {
 
 		this.htmlComponent.ondblclick = () => {
 
-
-			if (!this.editing) {
-
-				this.content.classList.add('editingBlock');
-				this.editing = true;
-				window.CurrentBlock = this;
-
-				this.EventHandler.BlockWasSelected(this);
-
-				this.EventHandler.OpenSideMenu({
-					requested: 'edit',
-				});
-
-				this.EventHandler.OpenMenu({
-					name: 'edit',
-				});
-
-				this.EventHandler.SetSelectionEffect({
-					name: 'edit',
-				});
-
-			} else {
-
-				window.CurrentBlock = undefined;
-				this.content.classList.remove('editingBlock');
-				this.editing = false;
-
-				this.EventHandler.OpenMenu({
-					name: 'edit',
-				});
-
-			}
-
+			this.editBlock();
 
 		};
 
 		this.htmlComponent.addEventListener('contextmenu', (evt) => {
 
-			const blockMenu = new BlockMenu();
+			const blockMenu = new BlockMenu(this.htmlComponent);
 
 			evt.preventDefault();
 			blockMenu.menuPopUp();

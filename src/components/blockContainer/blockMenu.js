@@ -3,7 +3,7 @@ const {Menu, MenuItem} = remote;
 
 module.exports = class BlockMenu {
     
-    constructor() {
+    constructor(htmlComponent) {
 
         this.menu = new Menu();
 
@@ -11,7 +11,7 @@ module.exports = class BlockMenu {
             label: 'Editar',
             click() { 
 
-               console.log('Editar')
+                console.log('Editar');
             
             }
          }));
@@ -19,8 +19,10 @@ module.exports = class BlockMenu {
         this.menu.append (new MenuItem ({
             label: 'Deletar',
             click() { 
-            
-                console.log('Deletar')
+
+                window.dispatchEvent(new CustomEvent('RemoveBlock', {
+                    detail: htmlComponent,
+                }));
             
             }
         }));
