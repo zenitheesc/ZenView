@@ -1,4 +1,5 @@
-const Blocks = require('../blocks/Blocks');
+const Blocks       = require('../blocks/Blocks');
+const BlockMenu    = require('../blocks/Blocks/blockMenu');
 const EventHandler = require('../eventHandler/eventHandler');
 module.exports = class BlockContainer {
 
@@ -97,6 +98,15 @@ module.exports = class BlockContainer {
 
 
 		};
+
+		this.htmlComponent.addEventListener('contextmenu', (evt) => {
+
+			const blockMenu = new BlockMenu();
+
+			evt.preventDefault();
+			blockMenu.menuPopUp();
+
+		});
 
 		this.EventHandler.addEventListener('BlockWasSelected', (evt) => {
 
