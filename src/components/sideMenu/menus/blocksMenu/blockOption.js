@@ -24,7 +24,7 @@ module.exports = class Block {
 
 		this.content.onclick = () => {
 
-			this.EventHandler.AddNewBlock(this.preConfigs);
+			this.EventHandler.AddNewBlock(JSON.parse(JSON.stringify(this.preConfigs)));
 
 		};
 
