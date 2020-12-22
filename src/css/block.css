@@ -1,0 +1,25 @@
+.trashBlockButton {
+    position: absolute;
+	width: 14.14px;
+	height: 14.14px;
+	bottom :13px;
+    right: 31px;
+    padding: 0px;
+    z-index: 90;
+    border: none;
+    background-color: transparent;
+}
+
+.trashBlockButton:focus {
+    outline: none;
+}
+
+.trashBlockButton svg {
+    width: 14.14px;
+    height: 14.14px;
+    vertical-align: top;
+}
+
+.trashBlockButton svg path{
+    fill: #505355;
+}

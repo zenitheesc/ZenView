@@ -1,6 +1,8 @@
 const Blocks       = require('../blocks/Blocks');
 const BlockMenu    = require('./blockMenu');
 const EventHandler = require('../eventHandler/eventHandler');
+const Components   = require('../components');
+
 module.exports = class BlockContainer {
 
 	constructor(preConfig) {
@@ -12,6 +14,8 @@ module.exports = class BlockContainer {
 		this.editing = false;
 
 		this.htmlComponent = document.createElement('div');
+		this.trash = Components.buttonWithIcon('trash-alt-regular', 'trashBlockButton');
+		this.trash.style.display = 'none';
 
 		this.setEvents();
 
@@ -21,6 +25,7 @@ module.exports = class BlockContainer {
 
 		this.block = new Blocks[this.preConfig.type](this.preConfig);
 		this.content = this.block.htmlComponent;
+		this.htmlComponent.appendChild(this.trash);
 		this.htmlComponent.appendChild(this.content);
 		this.block.init();
 
@@ -103,6 +108,18 @@ module.exports = class BlockContainer {
 
 		};
 
+		this.htmlComponent.onmouseover = () => {
+			
+			this.trash.style.display = 'block';
+
+		}
+
+		this.htmlComponent.onmouseleave = () => {
+			
+			this.trash.style.display = 'none';
+
+		}
+
 		this.htmlComponent.addEventListener('contextmenu', (evt) => {
 
 			const blockMenu = new BlockMenu(this);
@@ -111,6 +128,12 @@ module.exports = class BlockContainer {
 			blockMenu.menuPopUp();
 
 		});
+
+		this.trash.addEventListener('click', (evt) => {
+
+			this.EventHandler.dispatchEvent('RemoveBlock', this.htmlComponent);
+
+		})
 
 		this.EventHandler.addEventListener('BlockWasSelected', (evt) => {
 
