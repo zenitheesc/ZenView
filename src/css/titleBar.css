@@ -59,4 +59,8 @@
     color: var(--global-colorInputBg);
   }
 
+  .titlebar-btn i svg{
+    width: 1.05em;
+    height: 1.05em;
+  }
   

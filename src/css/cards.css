@@ -42,7 +42,11 @@ button.dashBoardCardOption:hover svg, button.inputCardOption:hover svg {
 }
 
 .inputCardIcon {
-  margin: 3px 6px 0px 6px;
+  margin: 0px 6px 0px 6px;
+}
+
+.inputCardIcon svg {
+  vertical-align: top;
 }
 
 .inputCardTitle {

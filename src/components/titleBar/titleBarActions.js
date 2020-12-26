@@ -1,4 +1,4 @@
-const ipcRenderer = require("electron").ipcRenderer;
+const ipcRenderer = require('electron').ipcRenderer;
 const remote = require('electron').remote;
 
 module.exports = class TitleBarActions {
@@ -59,7 +59,6 @@ module.exports = class TitleBarActions {
 
     closeWindow() {
 
-        console.log('Fechar');
         this.browserWindow.close();
 
     }

@@ -25,7 +25,8 @@ module.exports = class InputCard {
 		cardHeader.setAttribute('class', 'row inputCard m-0 justify-content-between');
 
 		const cardHeaderIcon = document.createElement('i');
-		cardHeaderIcon.className = 'fas fa-list-ol inputCardIcon';
+		cardHeaderIcon.innerHTML = Components.icon('list-ol-solid');
+		cardHeaderIcon.className = 'inputCardIcon';
 
 		const cardHeaderTitle = document.createElement('div');
 		cardHeaderTitle.className = 'inputCardTitle';

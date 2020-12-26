@@ -1,4 +1,5 @@
 const TitleBarActions = require('./titleBarActions.js');
+const fs = require('fs');
 
 module.exports = class TitleBar {
 
@@ -14,6 +15,7 @@ module.exports = class TitleBar {
 		this.titleBarActions = new TitleBarActions();
 
 	}
+
 	setStyle() {
 
 		const closedWidth = String(Math.floor(screen.width / 32) + 'px');
@@ -21,20 +23,22 @@ module.exports = class TitleBar {
 		document.getElementById('menu-btn').style.width = closedWidth;
 
 	}
-	createButton(className, id, iclass) {
+
+	createButton(className, id, iconName) {
 
 		const button = document.createElement('button');
 		button.className = className;
 		button.id = id;
 
 		const i = document.createElement('i');
-		i.className = iclass;
+		i.innerHTML = (fs.readFileSync('./src/images/icons/' + iconName + '.svg')).toString();
 
 		button.appendChild(i);
 
 		return button;
 
 	}
+
 	createTitleBar() {
 
 		const windowName = document.createElement('h6');
@@ -43,13 +47,13 @@ module.exports = class TitleBar {
 		windowName.textContent = 'ZenView';
 
 		this.TitleBarLeftDiv = document.createElement('div');
-		this.TitleBarLeftDiv.appendChild(this.createButton('titlebar-btn left', 'menu-btn', 'fas fa-bars'));
+		this.TitleBarLeftDiv.appendChild(this.createButton('titlebar-btn left', 'menu-btn', 'bars-solid'));
 
 		this.TitleBarRightDiv = document.createElement('div');
 		this.TitleBarRightDiv.className = 'right';
-		this.TitleBarRightDiv.appendChild(this.createButton('titlebar-btn', 'minimize-btn', 'fas fa-window-minimize'));
-		this.TitleBarRightDiv.appendChild(this.createButton('titlebar-btn', 'max-unmax-btn', 'far fa-square'));
-		this.TitleBarRightDiv.appendChild(this.createButton('titlebar-btn', 'close-btn', 'fas fa-times'));
+		this.TitleBarRightDiv.appendChild(this.createButton('titlebar-btn', 'minimize-btn' , 'window-minimize-regular'));
+		this.TitleBarRightDiv.appendChild(this.createButton('titlebar-btn', 'max-unmax-btn', 'clone-regular'));
+		this.TitleBarRightDiv.appendChild(this.createButton('titlebar-btn', 'close-btn'    , 'times-solid'));
 
 		this.TitleBarDiv.appendChild(this.TitleBarLeftDiv);
 		this.TitleBarDiv.appendChild(windowName);
@@ -63,6 +67,7 @@ module.exports = class TitleBar {
 		});
 
 	}
+
 	build() {
 
 		this.createTitleBar();
@@ -86,19 +91,20 @@ module.exports = class TitleBar {
 
 		maxUnmaxButton.addEventListener('click', (e) => {
 
-			const icon = maxUnmaxButton.querySelector('i.far');
+			const wrapper = maxUnmaxButton.querySelector('i');
+			const icon = maxUnmaxButton.querySelector('i svg');
 
 			this.titleBarActions.maxUnmaxWindow();
-
+			
 			if (this.titleBarActions.isWindowMaximized()) {
 
-				icon.classList.remove('fa-square');
-				icon.classList.add('fa-clone');
-
+				icon.remove();
+				wrapper.innerHTML = (fs.readFileSync('./src/images/icons/square-regular.svg')).toString();
+			
 			} else {
 
-				icon.classList.add('fa-square');
-				icon.classList.remove('fa-clone');
+				icon.remove();
+				wrapper.innerHTML = (fs.readFileSync('./src/images/icons/clone-regular.svg')).toString();
 
 			}
 
@@ -109,7 +115,7 @@ module.exports = class TitleBar {
 			this.titleBarActions.closeWindow();
 
 		});
-
+		
 	}
 
 };
