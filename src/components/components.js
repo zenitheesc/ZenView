@@ -73,7 +73,7 @@ module.exports = class Components {
 
 		const button = document.createElement('button');
 		button.type = 'button';
-		if (className !== undefined) button.classList.add(className);
+		if (className !== undefined) button.classList = className;
 		button.innerHTML = this.icon(iconName);
 		return button;
 

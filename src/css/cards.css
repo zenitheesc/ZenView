@@ -9,19 +9,20 @@ button.dashBoardCardOption:focus, button.inputCardOption:focus, .inputCardWrappe
   margin: 0px;
 }
 
-button.dashBoardCardOption svg, .inputCardIcon {
+button.dashBoardCardOption svg, button.trashDashboardCardOption svg path, .inputCardIcon {
   fill: #54555c;
   width: 1.2em;
   height: 1.2em;
 }
 
-button.inputCardOption svg {
+button.inputCardOption svg, button.trashInputCardOption svg path {
   fill: darkgray;
   width: 1.2em;
   height: 1.2em;
 }
 
-button.dashBoardCardOption:hover svg, button.inputCardOption:hover svg {
+button.dashBoardCardOption:hover svg, button.inputCardOption:hover svg, button.trashDashboardCardOption:hover svg path,
+button.trashInputCardOption:hover svg path {
   fill: var(--global-colorFont);
 }
 

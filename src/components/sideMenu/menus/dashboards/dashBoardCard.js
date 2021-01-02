@@ -43,7 +43,7 @@ module.exports = class DashBoardCard {
 
 		this.playBtn = Components.buttonWithIcon('play', 'dashBoardCardOption');
 		this.editBtn = Components.buttonWithIcon('pencil-square', 'dashBoardCardOption');
-		this.delBtn = Components.buttonWithIcon('trash', 'dashBoardCardOption');
+		this.delBtn = Components.buttonWithIcon('trash-alt-regular', 'dashBoardCardOption trashDashboardCardOption');
 
 		cardButtons.appendChild(this.playBtn);
 		cardButtons.appendChild(this.editBtn);

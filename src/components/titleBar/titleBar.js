@@ -8,7 +8,7 @@ module.exports = class TitleBar {
 		let TitleBarLeftDiv;
 		let TitleBarRightDiv;
 
-		this.TitleBarDiv = document.getElementById('title-bar'); ;
+		this.TitleBarDiv = document.getElementById('title-bar');
 		this.TitleBarLeftDiv = TitleBarLeftDiv;
 		this.TitleBarRightDiv = TitleBarRightDiv;
 

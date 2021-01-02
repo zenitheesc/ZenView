@@ -53,7 +53,7 @@ module.exports = class InputCard {
 
 		this.addBtn = Components.buttonWithIcon('plus-square', 'inputCardOption');
 		this.editBtn = Components.buttonWithIcon('pencil-square', 'inputCardOption');
-		this.delBtn = Components.buttonWithIcon('trash', 'inputCardOption');
+		this.delBtn = Components.buttonWithIcon('trash-alt-regular', 'inputCardOption trashInputCardOption');
 
 		cardButtons.appendChild(this.addBtn);
 		cardButtons.appendChild(this.editBtn);
