@@ -1,18 +1,17 @@
 const TitleBarActions = require('./titleBarActions.js');
-const fs = require('fs');
+const EventHandler = require('../eventHandler/eventHandler.js');
+const Components = require('../components'); 
 
 module.exports = class TitleBar {
 
 	constructor() {
 
-		let TitleBarLeftDiv;
-		let TitleBarRightDiv;
+		this.eventHandler = new EventHandler();
 
 		this.TitleBarDiv = document.getElementById('title-bar');
-		this.TitleBarLeftDiv = TitleBarLeftDiv;
-		this.TitleBarRightDiv = TitleBarRightDiv;
 
 		this.titleBarActions = new TitleBarActions();
+		this.titleBarActions.setEvents();
 
 	}
 
@@ -31,7 +30,7 @@ module.exports = class TitleBar {
 		button.id = id;
 
 		const i = document.createElement('i');
-		i.innerHTML = (fs.readFileSync('./src/images/icons/' + iconName + '.svg')).toString();
+		i.innerHTML = Components.icon(iconName);
 
 		button.appendChild(i);
 
@@ -47,12 +46,11 @@ module.exports = class TitleBar {
 		windowName.textContent = 'ZenView';
 
 		this.TitleBarLeftDiv = document.createElement('div');
-		this.TitleBarLeftDiv.appendChild(this.createButton('titlebar-btn left', 'menu-btn', 'bars-solid'));
+		this.TitleBarLeftDiv.appendChild(this.createButton('titlebar-btn', 'menu-btn', 'bars-solid'));
 
 		this.TitleBarRightDiv = document.createElement('div');
-		this.TitleBarRightDiv.className = 'right';
 		this.TitleBarRightDiv.appendChild(this.createButton('titlebar-btn', 'minimize-btn' , 'window-minimize-regular'));
-		this.TitleBarRightDiv.appendChild(this.createButton('titlebar-btn', 'max-unmax-btn', 'clone-regular'));
+		this.TitleBarRightDiv.appendChild(this.createButton('titlebar-btn', 'max-unmax-btn', 'square-regular'));
 		this.TitleBarRightDiv.appendChild(this.createButton('titlebar-btn', 'close-btn'    , 'times-solid'));
 
 		this.TitleBarDiv.appendChild(this.TitleBarLeftDiv);
@@ -60,7 +58,7 @@ module.exports = class TitleBar {
 		this.TitleBarDiv.appendChild(this.TitleBarRightDiv);
 		this.setStyle();
 
-		window.addEventListener('DashboardWasOpened', () => {
+		this.eventHandler.addEventListener('DashboardWasOpened', () => {
 
 			windowName.textContent = window.CurrentDashBoard.name + ' - ZenView';
 
@@ -77,6 +75,9 @@ module.exports = class TitleBar {
 		const maxUnmaxButton = document.getElementById('max-unmax-btn');
 		const closeButton = document.getElementById('close-btn');
 
+		const wrapper = maxUnmaxButton.querySelector('i');
+        const icon = maxUnmaxButton.querySelector('i svg');
+
 		menuButton.addEventListener('click', (e) => {
 
 			this.titleBarActions.openMenu(e.x, e.y);
@@ -91,23 +92,8 @@ module.exports = class TitleBar {
 
 		maxUnmaxButton.addEventListener('click', (e) => {
 
-			const wrapper = maxUnmaxButton.querySelector('i');
-			const icon = maxUnmaxButton.querySelector('i svg');
-
 			this.titleBarActions.maxUnmaxWindow();
 			
-			if (this.titleBarActions.isWindowMaximized()) {
-
-				icon.remove();
-				wrapper.innerHTML = (fs.readFileSync('./src/images/icons/square-regular.svg')).toString();
-			
-			} else {
-
-				icon.remove();
-				wrapper.innerHTML = (fs.readFileSync('./src/images/icons/clone-regular.svg')).toString();
-
-			}
-
 		});
 
 		closeButton.addEventListener('click', (e) => {
@@ -115,7 +101,21 @@ module.exports = class TitleBar {
 			this.titleBarActions.closeWindow();
 
 		});
+
+		window.addEventListener('maximizeWindow', (e) => {
+
+			icon.remove();
+			wrapper.innerHTML = Components.icon('clone-regular');
+			
+		});
 		
+		window.addEventListener('unmaximizeWindow', (e) => {
+			
+			icon.remove();
+			wrapper.innerHTML = Components.icon('square-regular');
+
+		});
+
 	}
 
 };

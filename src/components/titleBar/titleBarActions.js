@@ -62,11 +62,20 @@ module.exports = class TitleBarActions {
         this.browserWindow.close();
 
     }
+    
+    setEvents() {
 
-    isWindowMaximized() {
+        this.browserWindow.on('maximize', (e) => {
+            
+            window.dispatchEvent(new CustomEvent('maximizeWindow'));
 
-        return this.browserWindow.isMaximized();
+        });
+
+        this.browserWindow.on('unmaximize', (e) => {
+
+            window.dispatchEvent(new CustomEvent('unmaximizeWindow'));
+
+        });
 
     }
-    
 }
