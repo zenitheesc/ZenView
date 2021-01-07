@@ -58,6 +58,7 @@ module.exports = class DashBoardsManager {
 	openDashBoard(path) {
 
 		console.log('ABRINDO NOVO DASHBOARD');
+		this.EventHandler.dispatchEvent('ClearDashboard');
 		if (!this.testIfDashBoardExist(path)) return;
 
 		const CurrentDashBoardConfig = JSON.parse(fs.readFileSync(path));

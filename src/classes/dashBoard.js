@@ -22,7 +22,7 @@ module.exports = class DashBoard {
 	newConstructor(name, nbmrInputs, path, description) {
 
 		this.name = name;
-		this.blocks = {};
+		this.blocks = [];
 		this.path = path;
 		this.description = description;
 		this.inputGroup = new InputGroup(nbmrInputs);

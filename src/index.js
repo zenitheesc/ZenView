@@ -1,6 +1,5 @@
 console.log('running....');
 
-const {ipcMain} = require('electron');
 const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
@@ -9,10 +8,12 @@ const url = require('url');
 const ipc = electron.ipcMain;
 const dialog = require('electron').dialog;
 const TitleBarMenu = require('./components/titleBar/titleBarMenu');
+const Shortcuts = require('./shortcuts');
 
 const debugMode = true;
 let initialWindow;
 let mainWindow;
+let shortcuts;
 
 try {
 
@@ -77,6 +78,7 @@ app.on('ready', () => {
 
 	// initialWindow = createWindow(initialWindowparams);
 	mainWindow = createWindow(mainWindowparams);
+	shortcuts = new Shortcuts(mainWindow);
 	// apenas mostrara a janela quando estiver pronta
 	/* initialWindow.once('ready-to-show', () => {
 
@@ -158,7 +160,7 @@ ipc.on('openDialog', (event, config) => {
 
 });
 
-ipcMain.on('display-app-titleBar', function(err, args) {
+ipc.on('display-app-titleBar', function(err, args) {
 
 	const titleBarMenu = new TitleBarMenu();
 
