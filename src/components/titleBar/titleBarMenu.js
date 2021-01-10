@@ -7,6 +7,7 @@ module.exports = class TitleBarMenu {
 		const template = [
             {
                 label: 'Importar dashboard       Ctrl+O',
+                accelerator: 'Control+O',
                 click(event, focusedWindow, focusedWebContents) { 
 
                     focusedWindow.webContents.send('ImportDashboard');
@@ -15,6 +16,7 @@ module.exports = class TitleBarMenu {
             },
             {
                 label: 'Salvar dashboard             Ctrl+S',
+                accelerator: 'Control+S',
                 click(event, focusedWindow, focusedWebContents) {
 
                     focusedWindow.webContents.send('SaveDashboard');                    
