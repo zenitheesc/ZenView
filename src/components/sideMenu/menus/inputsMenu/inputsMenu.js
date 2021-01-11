@@ -6,7 +6,6 @@ const Menu = require('../menu');
 const InputCard = require('./inputsCard');
 const RawInputsList = require('./rawInputsList');
 const Tribute = require('tributejs');
-const Math = require('mathjs');
 
 module.exports = class InputsMenu extends Menu {
 
@@ -14,6 +13,7 @@ module.exports = class InputsMenu extends Menu {
 
 		super('Entradas', 'inputs_menu');
 
+		this.currentInputName;
 		this.button = Field.button({
 			text: 'Salvar',
 			classList: ['formCenteredBtn', 'green-btn'],
@@ -65,71 +65,9 @@ module.exports = class InputsMenu extends Menu {
 
 		currentInputGroup.forEach((input) => {
 
-			this.inputList.appendChild((new InputCard(input.name, input.expression.formatted, input.expression.raw)).htmlComponent);
+			this.inputList.appendChild((new InputCard(input)).htmlComponent);
 
 		});
-
-	}
-
-	validateExpression() {
-
-		let expression = '';
-		const validVariables = [];
-
-		this.entryInput.fields[1].input.childNodes.forEach((element) => {
-
-			if (element.tagName === 'A') {
-
-				validVariables.push(element.innerText);
-				expression += element.innerText.replace('${', '').replace('#{', '').replace('}', '');
-
-			} else {
-
-				expression += element.data;
-
-			}
-
-		});
-		expression = expression.replace(/\u00a0/g, ' ');
-
-		try {
-
-			const parsedExpression = Math.parse(expression);
-			const dependencies = parsedExpression.filter((node) => {
-
-				return node.isSymbolNode;
-
-			});
-
-			for (let i = 0, j = dependencies.length; i < j; i++) {
-
-				if (!(validVariables.includes('${' + dependencies[i] + '}') || validVariables.includes('#{' + dependencies[i] + '}'))) {
-
-					console.warn('ERRO, NÃO FOI POSSÍVEL ENCONTRAR: ' + '${' + dependencies[i] + '}');
-					return {
-						valid: false,
-						msg: 'Expressão matemática inválida',
-					};
-
-				}
-
-			}
-
-		} catch (error) {
-
-			console.warn('ERRO, EXPRESSÃO INVÁLIDA: ' + expression);
-			return {
-				valid: false,
-				msg: 'Expressão matemática inválida',
-			};
-
-		}
-
-
-		return {
-			valid: true,
-			expression: expression,
-		};
 
 	}
 
@@ -137,52 +75,45 @@ module.exports = class InputsMenu extends Menu {
 
 		if (!this.entryInput.validate()) return;
 
-		const data = this.entryInput.getData();
+		const inputData = this.entryInput.getData();
+		inputData.expressionEntry = this.entryInput.fields[1].input;
 
-		const expressionAnswer = this.validateExpression();
+		inputData.callback = (answer) =>{
 
-		if (!expressionAnswer.valid) {
+			if (answer.error) {
 
-			this.entryInput.fields[1].showWarning(expressionAnswer.msg);
-			return;
+				if (answer.nameError) this.entryInput.formThree.newDashboardSpliter.name.showWarning(answer.nameError);
+				if (answer.expressionError) this.entryInput.formThree.newDashboardSpliter.expression.showWarning(answer.expressionError);
 
-		} else {
+			} else {
 
-			data.expression = {};
-			data.expression.formatted = expressionAnswer.expression;
-			data.expression.raw = this.entryInput.fields[1].input.innerHTML;
+				this.attInputList();
+				this.cleanInputEntry();
 
-		}
+			}
 
-		const createdAnswer = window.CurrentInputGroup.addNewInput(data, 'entry');
+		};
 
-		if (createdAnswer.created) {
+		this.EventHandler.NewInput(inputData);
 
-			this.attInputList();
-			this.cleanInputEntry();
-
-		} else {
-
-			this.entryInput.formThree.newDashboardSpliter.name.showWarning(createdAnswer.msg);
-
-		}
-
-	} 	
+	}
 
 	setFormConfigs() {
 
 		this.button.onclick = () => {
 
-			if (!this.editMode){
-				
+			if (!this.editMode) {
+
 				this.newInput();
 
 			} else {
 
+				if (!this.entryInput.validate()) return;
+
 				this.button.htmlComponent.textContent = 'Salvar';
 
-				// TODO: Fazer a edição de fato
-				
+				this.EventHandler.EditInput(this.entryInput.getData());
+
 				this.cleanInputEntry();
 				this.editMode = false;
 
@@ -213,8 +144,8 @@ module.exports = class InputsMenu extends Menu {
 
 					return (
 						'<a contenteditable="false" class="inputTag">' +
-							'${' + item.original.name + '}' +
-							'</a>'
+						'${' + item.original.name + '}' +
+						'</a>'
 					);
 
 				},
@@ -231,8 +162,8 @@ module.exports = class InputsMenu extends Menu {
 
 					return (
 						'<a contenteditable="false" class="inputTag">' +
-							'#{' + item.original.name + '}' +
-							'</a>'
+						'#{' + item.original.name + '}' +
+						'</a>'
 					);
 
 				},
@@ -244,11 +175,11 @@ module.exports = class InputsMenu extends Menu {
 	}
 
 	setEditMode(currentName, currentExp) {
-		
+
 		this.button.htmlComponent.textContent = 'Editar entrada';
 		this.entryInput.fields[0].value = currentName;
 		this.entryInput.fields[1].value = currentExp;
-		
+		this.currentInputName = currentName;
 		this.editMode = true;
 
 	}
