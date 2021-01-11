@@ -6,6 +6,7 @@ const DataReader = require('./components/dataReader/dataReader');
 const DashBoard = require('./components/dashBoard/DashBoard');
 const TitleBar = require('./components/titleBar/titleBar');
 const EventHandler = require('./components/eventHandler/eventHandler');
+const InputHandler = require('./components/inputHandler/inputHandler');
 
 class MainWindow {
 
@@ -17,6 +18,7 @@ class MainWindow {
 		this.DashBoard = new DashBoard();
 		this.TitleBar = new TitleBar();
 		this.EventHandler = new EventHandler();
+		this.InputHandler = new InputHandler();
 
 	}
 	saveConfig() {
@@ -80,6 +82,7 @@ class MainWindow {
 		this.DashBoardsManager.build();
 		this.DataReader.build();
 		this.DashBoard.build();
+		this.InputHandler.build();
 
 		this.EventHandler.GlobalContextChange({
 			context: 'any',

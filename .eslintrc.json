@@ -16,14 +16,15 @@
             "allowIndentationTabs": true
         }],
         "padded-blocks": ["error", "always"],
-        "new-cap": ["error", { "capIsNew": false }],
+        "new-cap": ["error", {
+            "capIsNew": false
+        }],
         "eol-last": ["error", "never"],
         "max-len": ["error", {
             "code": 150
         }],
         "indent": [
-            "error",
-            "tab"
+            "off"
         ],
         "linebreak-style": [
             "error",
@@ -37,6 +38,13 @@
             "error",
             "always"
         ],
+        "no-multi-spaces": [
+            "error", 
+            {"exceptions": {"VariableDeclaration": true}}
+        ],
+        "no-trailing-spaces": [2, {
+            "skipBlankLines": true
+        }],
         "require-jsdoc": ["error", {
             "require": {
                 "FunctionDeclaration": true,
