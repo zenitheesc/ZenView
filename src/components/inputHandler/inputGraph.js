@@ -156,7 +156,7 @@ module.exports = class InputGraph {
 
 				if (node.dependencies.length === 0) {
 
-					this.resetLeves();
+					this.resetBusca();
 
 					try {
 
