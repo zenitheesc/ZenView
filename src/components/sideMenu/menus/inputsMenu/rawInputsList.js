@@ -1,13 +1,12 @@
-const {Form, Container, Field} = require('../../../formBuilder/formBuilder');
+const { Form, Container, Field } = require('../../../formBuilder/formBuilder');
 const Validator = require('../../../formBuilder/validator');
 const Components = require('../../../components');
 const EventHandler = require('../../../eventHandler/eventHandler');
-const Input = require('../../../../classes/input');
 
 module.exports = class RawInputsList {
 
-    constructor() {
-        
+	constructor() {
+
 		this.addButton = Field.button({
 			text: 'Adicionar nova coluna',
 			classList: ['green-btn', 'formCenteredBtn', 'rawInputsButton'],
@@ -43,25 +42,26 @@ module.exports = class RawInputsList {
 			}],
 		}),
 
-        this.rawInputList = new Form({
-			newDashboardSpliter: Container.spliter({
-				rawInput: this.rawInputSelector,
-				editField: this.editField,
-				rawInputsAddButton: this.addButton,
-				rawInputsDelButton: this.delButton,
-			}, {
-				startOpen: true,
-				text: 'Dados Recebidos',
-				id: 'rawInputSpliter',
-			},
-			),
-        });
-		
+			this.rawInputList = new Form({
+				newDashboardSpliter: Container.spliter({
+					rawInput: this.rawInputSelector,
+					editField: this.editField,
+					rawInputsAddButton: this.addButton,
+					rawInputsDelButton: this.delButton,
+				}, {
+					startOpen: true,
+					text: 'Dados Recebidos',
+					id: 'rawInputSpliter',
+				},
+				),
+			});
+
 		this.eventHandler = new EventHandler();
+		this.currentInputName;
 
-    }
+	}
 
-    attRawInputList() {
+	attRawInputList() {
 
 		const currentInputGroup = window.CurrentInputGroup.rawInputs;
 
@@ -73,8 +73,8 @@ module.exports = class RawInputsList {
 
 	}
 
-    setFormConfigs() {
-        
+	setFormConfigs() {
+
 		this.rawInputSelector.append[0].onclick = () => {
 
 			const tag = document.createElement('a');
@@ -82,7 +82,7 @@ module.exports = class RawInputsList {
 			tag.className = 'inputTag';
 			tag.textContent = '#{' + this.rawInputSelector.value + '}';
 
-			this.eventHandler.dispatchEvent('AppendTag', {tag: tag});
+			this.eventHandler.dispatchEvent('AppendTag', { tag: tag });
 
 		};
 
@@ -90,60 +90,74 @@ module.exports = class RawInputsList {
 
 			this.editField.htmlComponent.classList.remove('d-none');
 			this.editField.value = this.rawInputSelector.value;
+			this.currentInputName = this.rawInputSelector.value;
 
 		};
 
 		this.editField.append[0].onclick = () => {
 
-			// TODO: Realizar a edição de fato
+			if (!this.rawInputList.validate()) return;
 
-			this.editField.htmlComponent.classList.add('d-none');
-			this.editField.value = '';
+			this.eventHandler.EditInput({
+				name: this.currentInputName,
+				newName: this.editField.value,
+				type: 'raw',
+				callback: (error, msg) => {
+
+					if (error) {
+
+						this.editField.showWarning(msg);
+
+					} else {
+
+						this.editField.htmlComponent.classList.add('d-none');
+						this.editField.value = '';
+
+					}
+
+				},
+			});
+			
 
 		};
 
 		this.addButton.onclick = () => {
 
-			window.CurrentDashBoard.inputGroup.numberOfInputs += 1;
+			const i = window.CurrentDashBoard.inputGroup.numberOfInputs;
 
-			const i = window.CurrentDashBoard.inputGroup.numberOfInputs - 1;
-			const customMath = window.CurrentDashBoard.inputGroup.customMath;
-
-			const expression = {
-				formatted: `${'collum_' + i}`,
-			};
-
-			const newInput = new Input('collum_' + i, expression, window.scope, customMath);
-
-			window.CurrentInputGroup.addNewInput(newInput, 'raw');
-
-			this.attRawInputList();
+			this.eventHandler.NewInput({
+				name: 'collum_' + i,
+				type: 'raw',
+				expression: {
+					formatted: `${'collum_' + i}`,
+				},
+			});
 
 		};
 
 		this.delButton.onclick = () => {
 
-			window.CurrentDashBoard.inputGroup.numberOfInputs -= 1;
-			window.CurrentInputGroup.removeInput(this.rawInputSelector.value, 'raw');
+			this.eventHandler.RemoveInput({
+				name: this.rawInputSelector.value,
+				type: 'raw',
+			});
 
-			this.attRawInputList();
+		};
 
-        };
-        
-    }
+	}
 
-    build() {
+	build() {
 
 		this.editField.htmlComponent.classList.add('d-none');
 
-        this.setFormConfigs();
+		this.setFormConfigs();
 
-        this.eventHandler.addEventListener('AttInputList', () => {
+		this.eventHandler.addEventListener('AttInputList', () => {
 
 			this.attRawInputList();
 
-        });
-        
-    }
+		});
 
-}
+	}
+
+};
