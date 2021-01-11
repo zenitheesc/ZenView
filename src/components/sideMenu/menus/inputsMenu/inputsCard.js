@@ -3,12 +3,13 @@ const Components = require('../../../components');
 
 module.exports = class InputCard {
 
-	constructor(name, expFormatted, expRaw) {
+	constructor(input) {
 
 		this.inputInfo = {
-			'name': name,
-			'expression': expFormatted,
-			'rawExpression': expRaw,
+			'name': input.name,
+			'expression': input.expression.formatted,
+			'rawExpression': input.expression.raw,
+			'hasInconsistency': input.hasInconsistency,
 		};
 
 		this.eventHandler = new EventHandler();
@@ -22,8 +23,18 @@ module.exports = class InputCard {
 	inputHeader() {
 
 		const cardHeader = document.createElement('div');
-		cardHeader.setAttribute('class', 'row inputCard m-0 justify-content-between');
+		cardHeader.setAttribute('class', 'row  m-0 justify-content-between');
+	
+		if (this.inputInfo.hasInconsistency) {
 
+			cardHeader.classList.add('inputCardWithError');
+
+		} else {
+
+			cardHeader.classList.add('inputCard');
+
+		}
+		
 		const cardHeaderIcon = document.createElement('i');
 		cardHeaderIcon.innerHTML = Components.icon('list-ol-solid');
 		cardHeaderIcon.className = 'inputCardIcon';
@@ -96,7 +107,10 @@ module.exports = class InputCard {
 
 		this.delBtn.addEventListener('click', () => {
 
-			window.CurrentInputGroup.removeInput(this.inputInfo.name, 'input');
+			this.eventHandler.RemoveInput({
+				name: this.inputInfo.name,
+			});
+
 			this.eventHandler.dispatchEvent('AttInputList');
 
 		});
