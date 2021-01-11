@@ -67,8 +67,10 @@ module.exports = class DashBoardsManager {
 		window.CurrentInputGroup = CurrentDashBoard.inputGroup;
 		window.scope = CurrentDashBoard.inputGroup.scope;
 
+		this.EventHandler.InitInputs();
 		this.EventHandler.AttInputList();
 		this.EventHandler.DashboardWasOpened();
+		
 		return true;
 
 	}
