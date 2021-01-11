@@ -1,6 +1,4 @@
 const Input = require('./input');
-const InputGraph = require('./inputGraph');
-const Math = require('mathjs');
 module.exports = class InputGroup {
 
 	/**
@@ -11,13 +9,12 @@ module.exports = class InputGroup {
 	 */
 	constructor(numberOfInputs, isFromJson) {
 
-		this.customMath;
 		this.numberOfInputs;
 		this.inputs = [];
 		this.rawInputs = [];
-		this._associationInput = {};
+		this.inputsDictionary = {};
 		this.scope = {};
-		this.inputGraph = new InputGraph();
+		//this.inputGraph = new InputGraph();
 		this.initReadFunction();
 
 		if (isFromJson) {
@@ -29,21 +26,11 @@ module.exports = class InputGroup {
 			this.newConstructor(numberOfInputs);
 
 		}
-		this.initGraph();
-
-	}
-
-	initGraph() {
-
-		this.inputGraph.addEgdes();
-		this.inputGraph.hasCycle();
-		this.inputGraph.topologicalSort();
 
 	}
 
 	initReadFunction() {
 
-		this.customMath = Math.create(Math.all);
 
 		window.addEventListener('DataIsReady', (evt) => {
 
@@ -60,7 +47,7 @@ module.exports = class InputGroup {
 	 */
 	newConstructor(numberOfInputs) {
 
-		this._associationInput = {};
+		this.inputsDictionary = {};
 		this.numberOfInputs = numberOfInputs;
 		this.generateInputs();
 
@@ -77,25 +64,19 @@ module.exports = class InputGroup {
 
 		inputGroupJSON.inputs.forEach((input) => {
 
-			const newInput = new Input(input.name, input.expression, this.scope, this.customMath);
+			const newInput = new Input(input.name, input.expression, this.scope);
 			this.inputs.push(newInput);
-			this.inputGraph.addInput(newInput);
-			this._associationInput[newInput.name] = newInput;
+			this.inputsDictionary[newInput.name] = newInput;
 
 		});
 
 		inputGroupJSON.rawInputs.forEach((input) => {
 
-			const newInput = new Input(input.name, input.expression, this.scope, this.customMath);
+			const newInput = new Input(input.name, input.expression, this.scope);
 			this.rawInputs.push(newInput);
-			this.inputGraph.addInput(newInput);
-			this._associationInput[newInput.name] = newInput;
+			this.inputsDictionary[newInput.name] = newInput;
 
 		});
-
-		this.inputGraph.addEgdes();
-		this.inputGraph.hasCycle();
-		this.inputGraph.topologicalSort();
 
 	}
 
@@ -110,145 +91,11 @@ module.exports = class InputGroup {
 			const expression = {
 				formatted: `${'collum_' + i}`,
 			};
-			const newInput = new Input('collum_' + i, expression, this.scope, this.customMath);
+			const newInput = new Input('collum_' + i, expression, this.scope);
 			this.rawInputs.push(newInput);
-			this._associationInput[newInput.name] = newInput;
+			this.inputsDictionary[newInput.name] = newInput;
 
 		}
-
-	}
-
-	/**
-	 *
-	 *
-	 * @param {*} inputConfig
-	 * @return {*}
-	 */
-	addNewInput(inputConfig, type) {
-
-		console.log('TENTANDO CRIAR NOVO INPUT');
-		if (this._associationInput[inputConfig.name] !== undefined && type !== 'raw') {
-
-			return {
-				created: false,
-				msg: 'Este nome já existe',
-			};
-
-		}
-
-		const newInput = new Input(inputConfig.name, inputConfig.expression, this.scope, this.customMath);
-		this._associationInput[newInput.name] = newInput;
-
-		if (type === 'raw') {
-
-			this.rawInputs.push(newInput);
-
-		} else {
-
-			this.inputs.push(newInput);
-
-		}
-
-		this.inputGraph.addInput(newInput);
-		this.inputGraph.addEgdes();
-		this.inputGraph.hasCycle();
-		this.inputGraph.topologicalSort();
-
-		window.dispatchEvent(new CustomEvent('SaveCurrentDashBoard'));
-
-		return {
-			created: true,
-			name: newInput.name,
-			expression: newInput.expression,
-		};
-
-	}
-
-	removeInput(name, type) {
-
-		console.log('TENTANDO DELETAR INPUT');
-
-		if (type === 'raw') {
-
-			this.rawInputs.pop();
-
-		} else {
-
-			const currentInputGroup = window.CurrentInputGroup.inputs;
-			const input = window.CurrentInputGroup.getInputByName(name);
-			const index = currentInputGroup.indexOf(input);
-
-			if (index > -1) {
-				currentInputGroup.splice(index, 1);
-			}
-
-		}
-
-		/* TODO: Fazer busca topológica após remover a entrada
-
-		this.inputGraph.addInput(newInput);
-		this.inputGraph.addEgdes();
-		this.inputGraph.hasCycle();
-		this.inputGraph.topologicalSort();
-
-		*/
-
-		window.dispatchEvent(new CustomEvent('SaveCurrentDashBoard'));
-
-	}
-
-	/**
-	 *
-	 *
-	 * @param {*} name
-	 * @return {*}
-	 */
-	getInputByName(name) {
-
-		return this._associationInput[name];
-
-	}
-
-	/**
-	 *
-	 *
-	 * @param {*} inputConfig
-	 * @return {*}
-	 */
-	editInput(inputConfig) {
-
-		console.log('TENTANDO EDITAR O INPUT');
-		if (!(this._associationInput[inputConfig.newName] === undefined || inputConfig.newName === inputConfig.inputName)) {
-
-			return {
-				created: false,
-				msg: 'Este nome já existe',
-			};
-
-		}
-
-		for (let i = this.inputs.length - 1; i >= 0; i--) {
-
-			if (this.inputs[i].name === inputConfig.inputName) {
-
-				this.inputs.splice(i, 1);
-				break;
-
-			}
-
-		}
-
-		this._associationInput[inputConfig.inputName] = undefined;
-		const newInput = new Input(inputConfig.newName, inputConfig.expression, this.scope, this.customMath);
-		this._associationInput[newInput.newName] = newInput;
-		this.inputs.push(newInput);
-
-		this.inputGraph.addInput(newInput);
-		this.inputGraph.addEgdes();
-		this.inputGraph.hasCycle();
-		this.inputGraph.topologicalSort();
-
-		window.dispatchEvent(new CustomEvent('SaveCurrentDashBoard'));
 
 	}
 
