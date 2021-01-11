@@ -152,6 +152,30 @@ module.exports = class EventHandler {
 
 		};
 
+		this['NewInput'] = (detail) => {
+
+			this.dispatchEvent('NewInput', detail);
+
+		};
+
+		this['RemoveInput'] = (detail) => {
+
+			this.dispatchEvent('RemoveInput', detail);
+
+		};
+
+		this['EditInput'] = (detail) => {
+
+			this.dispatchEvent('EditInput', detail);
+
+		};
+
+		this['InitInputs'] = (detail) => {
+
+			this.dispatchEvent('InitInputs', detail);
+
+		};
+
 	}
 
 	addEventListener(eventName, callBackFunction) {
