@@ -1,18 +1,17 @@
+const Math = require('mathjs');
 module.exports = class Input {
 
-	constructor(name, expression, scope, customMathModule) {
-
-		this.Math = customMathModule;
+	constructor(name, expression, scope) {
 
 		this.name = name;
 		this.dependencies = [];
-
+		this.hasInconsistency = false;
 		this.expression = {
 			raw: expression.raw || expression.formatted,
 			formatted: expression.formatted,
 		};
 
-		this.compiledExpression = this.Math.compile(this.expression.formatted);
+		this.compiledExpression = Math.compile(this.expression.formatted);
 
 		this.scope = scope;
 
@@ -20,15 +19,24 @@ module.exports = class Input {
 
 	}
 
+	reset() {
+
+		this.dependencies = [];
+		this.compiledExpression = Math.compile(this.expression.formatted);
+		this.setDependencies();
+
+	}
+
+
 	setDependencies() {
 
-		this.Math.parse(this.expression.formatted).filter((node) => {
+		Math.parse(this.expression.formatted).filter((node) => {
 
 			return node.isSymbolNode;
 
 		}).forEach((node) => {
 
-			if (node.name !== 'r$') {
+			if (node.name !== this.name) {
 
 				this.dependencies.push(node.name);
 
