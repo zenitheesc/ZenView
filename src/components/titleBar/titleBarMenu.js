@@ -5,20 +5,27 @@ module.exports = class TitleBarMenu {
 	constructor() {
 
 		const template = [
-			{
-				label: 'Edit',
-				submenu: [
-					{
-						role: 'copy',
-					},
-					{
-						role: 'paste',
-					},
-				],
-			}];
+            {
+                label: 'Importar dashboard       Ctrl+O',
+                accelerator: 'Control+O',
+                click(event, focusedWindow, focusedWebContents) { 
 
-		this.menu = Menu.buildFromTemplate(template);
-		    Menu.setApplicationMenu(this.menu);
+                    focusedWindow.webContents.send('ImportDashboard');
+                                    
+                },
+            },
+            {
+                label: 'Salvar dashboard             Ctrl+S',
+                accelerator: 'Control+S',
+                click(event, focusedWindow, focusedWebContents) {
+
+                    focusedWindow.webContents.send('SaveDashboard');                    
+                },
+            }
+        ];
+
+        this.menu = Menu.buildFromTemplate(template);
+		Menu.setApplicationMenu(this.menu);
 
 	}
 

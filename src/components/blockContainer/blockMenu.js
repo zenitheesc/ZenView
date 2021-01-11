@@ -21,7 +21,7 @@ module.exports = class BlockMenu {
             click() { 
 
                 window.dispatchEvent(new CustomEvent('RemoveBlock', {
-                    detail: blockContainer.htmlComponent,
+                    detail: blockContainer,
                 }));
             
             }

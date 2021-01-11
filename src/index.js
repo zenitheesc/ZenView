@@ -1,6 +1,5 @@
 console.log('running....');
 
-const {ipcMain} = require('electron');
 const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
@@ -158,7 +157,7 @@ ipc.on('openDialog', (event, config) => {
 
 });
 
-ipcMain.on('display-app-titleBar', function(err, args) {
+ipc.on('display-app-titleBar', function(err, args) {
 
 	const titleBarMenu = new TitleBarMenu();
 

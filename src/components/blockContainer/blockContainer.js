@@ -18,7 +18,7 @@ module.exports = class BlockContainer {
 		this.trash.style.display = 'none';
 
 		this.setEvents();
-
+		
 	}
 
 	init() {
@@ -58,9 +58,7 @@ module.exports = class BlockContainer {
 
 			}
 
-
 		}
-
 
 	}
 
@@ -97,6 +95,18 @@ module.exports = class BlockContainer {
 			});
 
 		}
+
+	}
+
+	blockLog() {
+
+		return {
+			preConfig: this.preConfig,
+			x: this.htmlComponent.dataset.gsX,
+			y: this.htmlComponent.dataset.gsY,
+			w: this.htmlComponent.dataset.gsWidth,
+			h: this.htmlComponent.dataset.gsHeight
+		};
 
 	}
 
