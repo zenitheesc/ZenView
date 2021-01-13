@@ -98,6 +98,38 @@ module.exports = class InputsMenu extends Menu {
 
 	}
 
+	editInput() {
+
+		if (!this.entryInput.validate()) return;
+
+		const inputData = this.entryInput.getData();
+		inputData.expressionEntry = this.entryInput.fields[1].input;
+
+		inputData.callback = (answer) =>{
+
+			if (answer.error) {
+
+				if (answer.nameError) this.entryInput.formThree.newDashboardSpliter.name.showWarning(answer.nameError);
+				if (answer.expressionError) this.entryInput.formThree.newDashboardSpliter.expression.showWarning(answer.expressionError);
+
+			} else {
+
+				
+				this.button.htmlComponent.textContent = 'Salvar';
+				this.cleanInputEntry();
+				this.editMode = false;
+				this.attInputList();
+
+			}
+
+		};
+
+		inputData.oldName = this.currentInputName;
+
+		this.EventHandler.EditInput(inputData);
+
+	}
+
 	setFormConfigs() {
 
 		this.button.onclick = () => {
@@ -108,14 +140,7 @@ module.exports = class InputsMenu extends Menu {
 
 			} else {
 
-				if (!this.entryInput.validate()) return;
-
-				this.button.htmlComponent.textContent = 'Salvar';
-
-				this.EventHandler.EditInput(this.entryInput.getData());
-
-				this.cleanInputEntry();
-				this.editMode = false;
+				this.editInput();
 
 			}
 

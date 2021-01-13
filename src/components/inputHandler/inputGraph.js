@@ -65,13 +65,10 @@ module.exports = class InputGraph {
 
 		this.hasInconsistency = graphInconsistency;
 
-		return this.topologicalSort();
-
 	}
 
 	addNode(input) {
 
-		let maxLevel = -1;
 		const newNode = new Node(input);
 
 		this.nodes.push(newNode);
@@ -81,16 +78,24 @@ module.exports = class InputGraph {
 
 			this.nodesDictionary[dependenceName].nextInputs.push(newNode);
 
-			if (maxLevel < this.nodesDictionary[dependenceName].level) {
-
-				maxLevel = this.nodesDictionary[dependenceName].level;
-
-			}
-
 		});
 
-		newNode.level = maxLevel + 1;
+		this.CheckAndCorrectInconsistencies();
 
+		if (!this.topologicalSort()) {
+
+			this.removeNode(input.name);
+			this.CheckAndCorrectInconsistencies();
+			this.topologicalSort();
+			return false;
+
+		} else {
+
+			return true;
+
+		}
+
+		
 	}
 
 	resetBusca() {
@@ -107,7 +112,7 @@ module.exports = class InputGraph {
 
 		this.nodes.forEach((node) => {
 
-			node.level = 0;
+			node.level = -1;
 
 		});
 
@@ -121,6 +126,7 @@ module.exports = class InputGraph {
 
 			this.nodes.splice(index, 1);
 			delete this.nodesDictionary[inputName];
+			this.CheckAndCorrectInconsistencies();
 
 		}
 
@@ -133,7 +139,7 @@ module.exports = class InputGraph {
 			this.nodes.sort((node1, node2) => {
 
 				return node1.level - node2.level;
-	
+
 			});
 
 			return true;
@@ -147,60 +153,41 @@ module.exports = class InputGraph {
 	}
 
 	DepthFirstSearch() {
-		
+
 		this.resetBusca();
 		this.resetLeves();
 
-		this.nodes.forEach(
-			(node) => {
+		for (let i = 0; i < this.nodes.length; i++) {
 
-				if (node.dependencies.length === 0) {
+			if (this.nodes[i].dependencies.length === 0 || this.nodes[i].input.hasInconsistency) {
 
-					this.resetBusca();
+				this.resetBusca();
 
-					try {
+				try {
 
-						if (!this.DepthFirstSearchRecursion(node, 0)) {
+					this.DepthFirstSearchRecursion(this.nodes[i], 0);
 
-							return true;
+				} catch (error) {
 
-						}
-
-					} catch (error) {
-						
-						console.warn(error);
-						return false;
-
-					}
+					return false;
 
 				}
 
-			});
-		
-		return true;
-		
-	}
-
-	editNode(inputData) {
-
-		const input = this.nodes.indexOf(this.nodesDictionary[inputData.name]);
-
-		this.removeNode(inputData.name);
-		this.addNode(inputData.input);
-		
-		if (this.CheckAndCorrectInconsistencies()) {
-
-			return true;
-
-		} else {
-
-			this.removeNode(inputData.newName);
-			this.addNode(input);
-			this.CheckAndCorrectInconsistencies();
-
-			return false;
+			}
 
 		}
+
+		for (let i = 0; i < this.nodes.length; i++) {
+
+			if (this.nodes[i].level == -1) {
+
+				return false;
+
+			}
+
+		}
+
+		return true;
 
 	}
 
@@ -213,7 +200,7 @@ module.exports = class InputGraph {
 		}
 
 		node.visited = 0;
-		if (node.level === 0 || node.level < currentPos) {
+		if (node.level === -1 || node.level < currentPos) {
 
 			node.level = currentPos;
 			node.nextInputs.forEach((nextInput) => {
@@ -225,7 +212,6 @@ module.exports = class InputGraph {
 		}
 
 		node.visited = 1;
-		return true;
 
 	}
 
@@ -243,7 +229,7 @@ class Node {
 		this.input = input;
 		this.nextInputs = [];
 		this.visited = -1;
-		this.level = 0;
+		this.level = -1;
 		this.dependencies = input.dependencies;
 
 	}

@@ -36,10 +36,7 @@ module.exports = class InputHandler {
 			delete window.CurrentInputGroup.inputsDictionary[currentInput.name];
 
 			this.inputGraph.removeNode(currentInput.name);
-			this.inputGraph.CheckAndCorrectInconsistencies();
-			
-			this.eventHandler.AttInputList();
-			
+
 		}
 
 	}
@@ -53,13 +50,68 @@ module.exports = class InputHandler {
 		delete window.CurrentInputGroup.inputsDictionary[currentInput.name];
 
 		this.inputGraph.removeNode(currentInput.name);
-		this.inputGraph.CheckAndCorrectInconsistencies();
-		
-		this.eventHandler.AttInputList();
 
 	}
 
 	editInput(inputData) {
+
+		
+		let hasNameError = false;
+		let hasExpressionError = false;
+		let currentNameError;
+		let currentExpressionError;
+		let parsedExpression;
+
+		if (window.CurrentInputGroup.inputsDictionary[inputData.name] && inputData.oldName !== inputData.name) {
+
+			currentNameError = 'Esse nome já existe';
+			hasNameError = true;
+
+		}
+
+		[hasExpressionError, currentExpressionError, parsedExpression] = this.validateExpression(inputData.expressionEntry.childNodes);
+
+
+		if (!(hasNameError || hasExpressionError)) {
+
+			const oldInput = window.CurrentInputGroup.inputsDictionary[inputData.oldName];
+			this.inputGraph.removeNode(inputData.oldName);
+
+			const finalExpression = {
+				raw: inputData.expressionEntry.innerHTML,
+				formatted: parsedExpression,
+			};
+
+			const newInput = new Input(inputData.name, finalExpression, this.scope);
+
+			if (this.inputGraph.addNode(newInput)) {
+
+				const inputIndex = window.CurrentInputGroup.inputs.indexOf(oldInput);
+
+				delete window.CurrentInputGroup.inputsDictionary[inputData.oldName];
+				window.CurrentInputGroup.inputsDictionary[inputData.name] = newInput;
+
+				window.CurrentInputGroup.inputs[inputIndex] = newInput;
+
+			} else {
+
+				this.inputGraph.addNode(oldInput);
+				hasExpressionError = true;
+				currentExpressionError = 'Essa expressão gera um ciclo de dependências';
+
+			};
+
+		}
+
+		inputData.callback({
+
+			error: hasNameError || hasExpressionError,
+			nameError: currentNameError,
+			expressionError: currentExpressionError,
+
+		});
+
+		return hasNameError || hasExpressionError;
 
 	}
 
@@ -101,7 +153,6 @@ module.exports = class InputHandler {
 		window.CurrentInputGroup.inputsDictionary[inputData.name] = newInput;
 
 		this.inputGraph.addNode(newInput);
-		this.inputGraph.CheckAndCorrectInconsistencies();
 
 		this.eventHandler.AttInputList();
 
@@ -134,13 +185,19 @@ module.exports = class InputHandler {
 
 			const newInput = new Input(inputData.name, finalExpression, this.scope);
 
-			window.CurrentInputGroup.inputs.push(newInput);
-			window.CurrentInputGroup.inputsDictionary[inputData.name] = newInput;
-			this.inputGraph.addNode(newInput);
+			if (this.inputGraph.addNode(newInput)) {
+
+				window.CurrentInputGroup.inputs.push(newInput);
+				window.CurrentInputGroup.inputsDictionary[inputData.name] = newInput;
+
+			} else {
+
+				hasExpressionError = true;
+				currentExpressionError = 'Essa expressão gera um ciclo de dependências';
+
+			};
 
 		}
-
-		this.inputGraph.CheckAndCorrectInconsistencies();
 
 		inputData.callback({
 
@@ -149,6 +206,8 @@ module.exports = class InputHandler {
 			expressionError: currentExpressionError,
 
 		});
+
+		return hasNameError || hasExpressionError;
 
 	}
 
@@ -235,6 +294,8 @@ module.exports = class InputHandler {
 
 			}
 
+			this.eventHandler.AttInputList();
+
 		});
 
 		this.eventHandler.addEventListener('EditInput', (inputData) => {
@@ -248,6 +309,8 @@ module.exports = class InputHandler {
 				this.editInput(inputData);
 
 			}
+
+			this.eventHandler.AttInputList();
 
 		});
 
