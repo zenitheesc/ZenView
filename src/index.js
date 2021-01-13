@@ -13,11 +13,6 @@ const debugMode = true;
 let initialWindow;
 let mainWindow;
 
-try {
-
-	require('electron-reloader')(module);
-
-} catch (_) { }
 
 // parametros iniciais da janela inicial
 const initialWindowparams = {
@@ -74,14 +69,14 @@ function createWindow(params) {
 // event listener que espera o app ser criado para criar as janelas
 app.on('ready', () => {
 
-	// initialWindow = createWindow(initialWindowparams);
+	initialWindow = createWindow(initialWindowparams);
 	mainWindow = createWindow(mainWindowparams);
 	// apenas mostrara a janela quando estiver pronta
-	/* initialWindow.once('ready-to-show', () => {
+	initialWindow.once('ready-to-show', () => {
 
 		initialWindow.show();
 
-	});*/
+	});
 
 });
 
@@ -101,7 +96,7 @@ app.on('activate', () => {
 
 	if (mainWindow === null) {
 
-		// createWindow(initialWindow);
+		createWindow(initialWindow);
 		createWindow(mainWindow);
 
 	}
@@ -111,7 +106,7 @@ app.on('activate', () => {
 // listerner que avisa que o load da janela principal terminou
 ipc.on('mainLoadCompleto', () => {
 
-	// initialWindow.close();
+	initialWindow.close();
 	setTimeout(() => {
 
 		mainWindow.show();
