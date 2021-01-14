@@ -4,7 +4,7 @@ const Form = require('../../../formBuilder/formBuilder').Form;
 const Container = require('../../../formBuilder/formBuilder').Container;
 const Field = require('../../../formBuilder/formBuilder').Field;
 const EventHandler = require('../../../eventHandler/eventHandler');
-
+const Dialog = require('../../../dialog/dialog');
 module.exports = class StartRead extends Menu {
 
 	constructor() {
@@ -246,7 +246,20 @@ module.exports = class StartRead extends Menu {
 
 			if (!this.isReading) {
 
-				this.startRead();
+				if (!window.CurrentInputGraph.hasInconsistency) {
+
+					this.startRead();
+
+				} else {
+
+					Dialog.showDialog({
+						title: 'Error',
+						message: 'Suas entradas possuem inconsistências',
+						buttons: ['Ok'],
+					});
+
+				}
+				
 
 			} else {
 
