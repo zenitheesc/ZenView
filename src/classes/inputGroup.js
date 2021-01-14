@@ -14,8 +14,6 @@ module.exports = class InputGroup {
 		this.rawInputs = [];
 		this.inputsDictionary = {};
 		this.scope = {};
-		//this.inputGraph = new InputGraph();
-		this.initReadFunction();
 
 		if (isFromJson) {
 
@@ -26,17 +24,6 @@ module.exports = class InputGroup {
 			this.newConstructor(numberOfInputs);
 
 		}
-
-	}
-
-	initReadFunction() {
-
-
-		window.addEventListener('DataIsReady', (evt) => {
-
-			this.solve(evt.detail);
-
-		});
 
 	}
 
@@ -96,26 +83,6 @@ module.exports = class InputGroup {
 			this.inputsDictionary[newInput.name] = newInput;
 
 		}
-
-	}
-
-	solve(data) {
-
-		for (let i = 0; i < data.length; i++) {
-
-			this.scope['collum_' + i] = data[i];
-
-		}
-
-		this.inputGraph.inputs.forEach((input) => {
-
-			input.evaluate();
-
-		});
-
-		console.log(this.scope);
-
-		window.dispatchEvent(new CustomEvent('DataIsProcessed', {detail: this.scope}));
 
 	}
 
