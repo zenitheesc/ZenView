@@ -15,8 +15,9 @@ module.exports = class InputHandler {
 
 	initInputs() {
 
+		this.scope = window.CurrentInputGroup.scope;
+
 		this.inputGraph = new InputGraph();
-		this.scope = {};
 
 		this.inputGraph.initGraph();
 
@@ -319,6 +320,33 @@ module.exports = class InputHandler {
 			this.initInputs();
 
 		});
+
+		window.addEventListener('DataIsReady', (evt) => {
+
+			this.solve(evt.detail);
+
+		});
+
+
+	}
+
+	solve(data) {
+
+		for (let i = 0; i < window.CurrentInputGroup.numberOfInputs; i++) {
+
+			this.scope[window.CurrentInputGroup.rawInputs[i].name] = data[i];
+
+		}
+
+		for (let i = window.CurrentInputGroup.numberOfInputs; i < this.inputGraph.nodes.length; i++) {
+
+			this.scope[window.CurrentInputGroup.rawInputs[i].name] = data[i];
+
+		}
+
+		console.log(this.scope);
+
+		window.dispatchEvent(new CustomEvent('DataIsProcessed', {detail: this.scope}));
 
 	}
 
