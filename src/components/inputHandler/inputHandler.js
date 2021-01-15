@@ -340,7 +340,7 @@ module.exports = class InputHandler {
 
 		for (let i = window.CurrentInputGroup.numberOfInputs; i < this.inputGraph.nodes.length; i++) {
 
-			this.scope[window.CurrentInputGroup.rawInputs[i].name] = data[i];
+			this.inputGraph.nodes[i].input.evaluate();
 
 		}
 
