@@ -9,7 +9,7 @@ module.exports = class StartRead extends Menu {
 
 	constructor() {
 
-		super('Iniciar Leitura', 'start_menu');
+		super('Leitura', 'start_menu');
 		this.EventHandler = new EventHandler();
 		this.isReading = false;
 
