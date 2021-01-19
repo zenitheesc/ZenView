@@ -3,6 +3,7 @@
  */
 
 const ipc = require('electron').ipcRenderer;
+const JSColor = require('../../externalSources/jscolor');
 
 class FormPattern {
 
@@ -769,32 +770,29 @@ class Field {
 		return field;
 
 	}
-	static colorPicker(options){
+	static colorPicker(options) {
 
 		// Extração do valor da cor: this.colorPicker.input.jscolor.toHEXString()
 
 		const input = document.createElement('input');
 		const opts = {
-			preset: 'large dark', 
-			value:'#FFFFFF', 
-			backgroundColor:'#1a1a1a', 
-			borderColor:'#a9a9a963',
+			preset: 'large dark',
+			value: '#FFFFFF',
+			backgroundColor: '#1a1a1a',
+			borderColor: '#a9a9a963',
 			borderRadius: '4',
-			pointerColor:'#2b2b2b',
+			pointerColor: '#2b2b2b',
 			controlBorderColor: 'darkgray',
-			pointerBorderColor:'darkgray',
+			pointerBorderColor: 'darkgray',
 		};
 
 		input.type = options.type = 'colorPicker';
 		input.classList.add('form-control');
 		input.style.width = '100%';
 
-		if (options.id !== undefined) {
-			input.id = options.id;
-		} else {
-			input.id = 'colorPicker';
-		} 
+		input.id = options.id || 'colorPicker';
 
+		// eslint-disable-next-line no-unused-vars
 		const colorPicker = new JSColor(input, opts);
 
 		const inputGroup = this._inputGroup(options);
