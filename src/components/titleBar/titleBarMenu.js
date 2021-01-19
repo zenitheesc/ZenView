@@ -6,22 +6,23 @@ module.exports = class TitleBarMenu {
 
 		const template = [
             {
-                label: 'Importar dashboard       Ctrl+O',
+                label: 'Importar dashboard',
                 accelerator: 'Control+O',
-                click(event, focusedWindow, focusedWebContents) { 
+                click(event, focusedWindow, focusedWebContents) {
 
                     focusedWindow.webContents.send('ImportDashboard');
                                     
                 },
             },
             {
-                label: 'Salvar dashboard             Ctrl+S',
+                label: 'Salvar dashboard',
                 accelerator: 'Control+S',
                 click(event, focusedWindow, focusedWebContents) {
 
-                    focusedWindow.webContents.send('SaveDashboard');                    
+                    focusedWindow.webContents.send('SaveDashboard');
+                    
                 },
-            }
+            },
         ];
 
         this.menu = Menu.buildFromTemplate(template);
