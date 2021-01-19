@@ -1,7 +1,8 @@
-const ipcRenderer    = require('electron').ipcRenderer;
-const GridStack      = require('gridstack/dist/gridstack.all');
+const ipcRenderer = require('electron').ipcRenderer;
+const GridStack = require('gridstack/dist/gridstack.all');
 const BlockContainer = require('../blockContainer/blockContainer');
-const EventHandler   = require('../eventHandler/eventHandler');
+const EventHandler = require('../eventHandler/eventHandler');
+const fs = require('fs');
 
 module.exports = class DahsBoard {
 
@@ -48,6 +49,19 @@ module.exports = class DahsBoard {
 
 		});
 
+		this.EventHandler.addEventListener('SaveDashboard', (evt) => {
+
+			this.saveDashboard();
+
+		});
+
+
+		this.EventHandler.addEventListener('ImportDashboard', (evt) => {
+
+			this.importDashboard(evt);
+
+		});
+
 		ipcRenderer.on('SaveDashboard', (evt) => {
 
 			this.saveDashboard();
@@ -57,7 +71,9 @@ module.exports = class DahsBoard {
 
 		ipcRenderer.on('ImportDashboard', (evt) => {
 
-			this.importDashboard();
+			// TODO: Abrir caixa de escolha de diretório
+
+			this.importDashboard(evt);
 
 		});
 
@@ -75,30 +91,32 @@ module.exports = class DahsBoard {
 
 	removeBlock(removedBlock) {
 
-		this.blocks = this.blocks.filter(block => block !== removedBlock);
+		this.blocks = this.blocks.filter((block) => block !== removedBlock);
 		this.gridStack.removeWidget(removedBlock.htmlComponent);
 
 	}
 
-	saveDashboard(){
-
-		console.log('Salvou');
-
-		/*
-		let blocksLog = [];
+	saveDashboard() {
+		
+		const blocksLog = [];
 		this.blocks.forEach((block) => blocksLog.push(block.blockLog()));
 		console.log(blocksLog);
 		
 		const currentDashBoard = window.CurrentDashBoard;
 		currentDashBoard.blocks = blocksLog;
-		fs.writeFile(currentDashBoard.path, JSON.stringify(currentDashBoard, null, '\t'));
-		*/
+		fs.writeFile(currentDashBoard.path, JSON.stringify(currentDashBoard, null, '\t'), (err) => {
+
+			if (err) throw err;
+			console.log('Salvou');
+			
+		});
 
 	}
 
-	importDashboard() {
+	importDashboard(path) {
 
-		console.log('Importou');
+		console.log('Importou: ' + path);
+		console.log('Abriu novo dashboard');
 
 	}
 

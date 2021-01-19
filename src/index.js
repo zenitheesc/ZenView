@@ -131,12 +131,13 @@ ipc.on('open-file-dialog-for-dir', async (event) => {
 
 ipc.on('open-file-dialog-for-file', async (event) => {
 
-	const dir = await dialog.showOpenDialog(mainWindow, {
+	const file = await dialog.showOpenDialog(mainWindow, {
 		properties: ['openFile'],
+		filters: [{name: 'Dashboard', extensions: ['json']}],
 	});
-	if (dir) {
+	if (file) {
 
-		event.sender.send('selected-dir', dir.filePaths[0]);
+		event.sender.send('selected-dir', file.filePaths[0]);
 
 	}
 

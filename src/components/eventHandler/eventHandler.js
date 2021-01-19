@@ -176,6 +176,18 @@ module.exports = class EventHandler {
 
 		};
 
+		this['ImportDashboard'] = (detail) => {
+
+			this.dispatchEvent('ImportDashboard', detail);
+
+		};
+
+		this['SaveDashboard'] = (detail) => {
+
+			this.dispatchEvent('SaveDashboard', detail);
+
+		};
+
 	}
 
 	addEventListener(eventName, callBackFunction) {
