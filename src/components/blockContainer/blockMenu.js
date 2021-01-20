@@ -1,4 +1,4 @@
-const remote           = require('electron').remote;
+const remote = require('electron').remote;
 const {Menu, MenuItem} = remote;
 
 module.exports = class BlockMenu {
@@ -7,24 +7,24 @@ module.exports = class BlockMenu {
 
         this.menu = new Menu();
 
-        this.menu.append (new MenuItem ({
+        this.menu.append(new MenuItem({
             label: 'Editar',
-            click() { 
+            click() {
 
                 blockContainer.editBlock();
             
-            }
+            },
          }));
 
-        this.menu.append (new MenuItem ({
+        this.menu.append(new MenuItem({
             label: 'Deletar',
-            click() { 
+            click() {
 
                 window.dispatchEvent(new CustomEvent('RemoveBlock', {
                     detail: blockContainer,
                 }));
             
-            }
+            },
         }));
     
     }
@@ -35,4 +35,4 @@ module.exports = class BlockMenu {
 
     }
 
-}
+};

@@ -36,29 +36,23 @@ module.exports = class DahsBoard {
 			this.addNewBlock(evt);
 
 		});
-
+		
+		this.EventHandler.addEventListener('RemoveBlock', (evt) => {
+			
+			this.removeBlock(evt);
+			
+		});
+		
 		this.EventHandler.addEventListener('ClearDashboard', () => {
 
 			this.gridStack.removeAll();
+			this.blocks = [];
 
 		});
 
-		this.EventHandler.addEventListener('RemoveBlock', (evt) => {
+		this.EventHandler.addEventListener('InitBlocks', () => {
 
-			this.removeBlock(evt);
-
-		});
-
-		this.EventHandler.addEventListener('SaveDashboard', (evt) => {
-
-			this.saveDashboard();
-
-		});
-
-
-		this.EventHandler.addEventListener('ImportDashboard', (evt) => {
-
-			this.importDashboard(evt);
+			this.initBlocks();
 
 		});
 
@@ -68,6 +62,11 @@ module.exports = class DahsBoard {
 
 		});
 
+		this.EventHandler.addEventListener('ImportDashboard', (evt) => {
+
+			this.importDashboard(evt);
+
+		});
 
 		ipcRenderer.on('ImportDashboard', (evt) => {
 
@@ -96,11 +95,30 @@ module.exports = class DahsBoard {
 
 	}
 
+	initBlocks() {
+
+		window.CurrentDashBoard.blocks.forEach((block) => {
+
+			const newBlock = new BlockContainer(block.preConfig);
+			
+			this.gridStack.addWidget(newBlock.htmlComponent, {
+				x: Number(block.x),
+				y: Number(block.y),
+				height: Number(block.h),
+				width: Number(block.w),
+			});
+
+			this.blocks.push(newBlock);
+			newBlock.init();
+			
+		});
+
+	}
+
 	saveDashboard() {
 		
 		const blocksLog = [];
 		this.blocks.forEach((block) => blocksLog.push(block.blockLog()));
-		console.log(blocksLog);
 		
 		const currentDashBoard = window.CurrentDashBoard;
 		currentDashBoard.blocks = blocksLog;

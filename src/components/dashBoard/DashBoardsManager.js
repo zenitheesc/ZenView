@@ -70,6 +70,7 @@ module.exports = class DashBoardsManager {
 
 		this.EventHandler.InitInputs();
 		this.EventHandler.AttInputList();
+		this.EventHandler.InitBlocks();
 		this.EventHandler.DashboardWasOpened();
 		
 		return true;

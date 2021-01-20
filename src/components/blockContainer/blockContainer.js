@@ -1,7 +1,7 @@
-const Blocks       = require('../blocks/Blocks');
-const BlockMenu    = require('./blockMenu');
+const Blocks = require('../blocks/Blocks');
+const BlockMenu = require('./blockMenu');
 const EventHandler = require('../eventHandler/eventHandler');
-const Components   = require('../components');
+const Components = require('../components');
 
 module.exports = class BlockContainer {
 
@@ -105,7 +105,7 @@ module.exports = class BlockContainer {
 			x: this.htmlComponent.dataset.gsX,
 			y: this.htmlComponent.dataset.gsY,
 			w: this.htmlComponent.dataset.gsWidth,
-			h: this.htmlComponent.dataset.gsHeight
+			h: this.htmlComponent.dataset.gsHeight,
 		};
 
 	}
@@ -122,13 +122,13 @@ module.exports = class BlockContainer {
 			
 			this.trash.style.display = 'block';
 
-		}
+		};
 
 		this.htmlComponent.onmouseleave = () => {
 			
 			this.trash.style.display = 'none';
 
-		}
+		};
 
 		this.htmlComponent.addEventListener('contextmenu', (evt) => {
 
@@ -143,7 +143,7 @@ module.exports = class BlockContainer {
 
 			this.EventHandler.dispatchEvent('RemoveBlock', this.htmlComponent);
 
-		})
+		});
 
 		this.EventHandler.addEventListener('BlockWasSelected', (evt) => {
 
