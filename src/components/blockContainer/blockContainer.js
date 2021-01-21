@@ -7,7 +7,7 @@ module.exports = class BlockContainer {
 
 	constructor(preConfig) {
 
-		this.EventHandler = new EventHandler();
+		this.eventHandler = new EventHandler();
 		this.preConfig = preConfig;
 		this.width = 3;
 		this.height = 2;
@@ -34,6 +34,8 @@ module.exports = class BlockContainer {
 	updateBlockConfig(newConfig) {
 
 		console.log(newConfig, this.block);
+
+		this.eventHandler.dispatchEvent('DashboardNotSaved');
 
 		if (newConfig.type === this.block.type) {
 
@@ -70,17 +72,17 @@ module.exports = class BlockContainer {
 			this.editing = true;
 			window.CurrentBlock = this;
 
-			this.EventHandler.BlockWasSelected(this);
+			this.eventHandler.BlockWasSelected(this);
 
-			this.EventHandler.OpenSideMenu({
+			this.eventHandler.OpenSideMenu({
 				requested: 'edit',
 			});
 
-			this.EventHandler.OpenMenu({
+			this.eventHandler.OpenMenu({
 				name: 'edit',
 			});
 
-			this.EventHandler.SetSelectionEffect({
+			this.eventHandler.SetSelectionEffect({
 				name: 'edit',
 			});
 
@@ -90,7 +92,7 @@ module.exports = class BlockContainer {
 			this.content.classList.remove('editingBlock');
 			this.editing = false;
 
-			this.EventHandler.OpenMenu({
+			this.eventHandler.OpenMenu({
 				name: 'edit',
 			});
 
@@ -141,11 +143,11 @@ module.exports = class BlockContainer {
 
 		this.trash.addEventListener('click', (evt) => {
 
-			this.EventHandler.dispatchEvent('RemoveBlock', this.htmlComponent);
+			this.eventHandler.dispatchEvent('RemoveBlock', this.htmlComponent);
 
 		});
 
-		this.EventHandler.addEventListener('BlockWasSelected', (evt) => {
+		this.eventHandler.addEventListener('BlockWasSelected', (evt) => {
 
 			if (evt !== this) {
 

@@ -16,7 +16,7 @@ module.exports = class DahsBoard {
 		this.blocks = [];
 		this.gridStack;
 
-		this.EventHandler = new EventHandler();
+		this.eventHandler = new EventHandler();
 
 	}
 
@@ -31,26 +31,26 @@ module.exports = class DahsBoard {
 
 		this.gridStack.enable('.grid-stack-item-content', true);
 
-		this.EventHandler.addEventListener('AddNewBlock', (evt) => {
+		this.eventHandler.addEventListener('AddNewBlock', (evt) => {
 
 			this.addNewBlock(evt);
 
 		});
 		
-		this.EventHandler.addEventListener('RemoveBlock', (evt) => {
+		this.eventHandler.addEventListener('RemoveBlock', (evt) => {
 			
 			this.removeBlock(evt);
 			
 		});
 		
-		this.EventHandler.addEventListener('ClearDashboard', () => {
+		this.eventHandler.addEventListener('ClearDashboard', () => {
 
 			this.gridStack.removeAll();
 			this.blocks = [];
 
 		});
 
-		this.EventHandler.addEventListener('InitBlocks', () => {
+		this.eventHandler.addEventListener('InitBlocks', () => {
 
 			this.initBlocks();
 
@@ -62,7 +62,7 @@ module.exports = class DahsBoard {
 
 		});
 
-		this.EventHandler.addEventListener('ImportDashboard', (evt) => {
+		this.eventHandler.addEventListener('ImportDashboard', (evt) => {
 
 			this.importDashboard(evt);
 
@@ -111,6 +111,12 @@ module.exports = class DahsBoard {
 			this.blocks.push(newBlock);
 			newBlock.init();
 			
+		});
+
+		this.gridStack.on('added change enable', (evt, el) => {
+
+			this.eventHandler.dispatchEvent('DashboardNotSaved');
+
 		});
 
 	}

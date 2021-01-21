@@ -139,6 +139,12 @@ module.exports = class EventHandler {
 			this.dispatchEvent('SaveDashBoardDescAndName', detail);
 
 		};
+
+		this['DashboardNotSaved'] = (detail) => {
+
+			this.dispatchEvent('DashboardNotSaved', detail);
+
+		};
 		
 		this['AppendTag'] = (detail) => {
 

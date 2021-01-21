@@ -3,7 +3,7 @@ const remote = require('electron').remote;
 
 module.exports = class TitleBarActions {
 
-    constructor(x, y){
+    constructor(x, y) {
 
         this.x = x;
         this.y = y;
@@ -13,7 +13,7 @@ module.exports = class TitleBarActions {
 
     openMenu() {
 
-        ipcRenderer.send(`display-app-titleBar`, { x: this.x, y: this.y });
+        ipcRenderer.send('display-app-titleBar', {x: this.x, y: this.y});
 
     }
 
@@ -78,4 +78,5 @@ module.exports = class TitleBarActions {
         });
 
     }
-}
+
+};

@@ -17,14 +17,21 @@
     align-items: center;
   }
 
+  #save-circle {
+    color: lightgray;
+    width: 7px;
+    margin-right: 5px;
+  }
+
   #titlebar-name {
-    position: absolute;
-    left: 50%;
-    -webkit-transform: translate(-50%, 0);
-    transform: translate(-50%, 0);
-    overflow: hidden;
     padding-top: 8px;
     color: lightgray !important;
+  }
+
+  #name-wrapper {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%,0);
   }
   
   .titlebar-btn {
