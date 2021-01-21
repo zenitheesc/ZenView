@@ -143,7 +143,7 @@ module.exports = class BlockContainer {
 
 		this.trash.addEventListener('click', (evt) => {
 
-			this.eventHandler.dispatchEvent('RemoveBlock', this.htmlComponent);
+			this.eventHandler.dispatchEvent('RemoveBlock', this);
 
 		});
 
