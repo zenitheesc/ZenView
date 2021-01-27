@@ -12,6 +12,7 @@ const TitleBarMenu = require('./components/titleBar/titleBarMenu');
 const debugMode = true;
 let initialWindow;
 let mainWindow;
+let titleBarMenu;
 
 
 // parametros iniciais da janela inicial
@@ -71,6 +72,8 @@ app.on('ready', () => {
 
 	initialWindow = createWindow(initialWindowparams);
 	mainWindow = createWindow(mainWindowparams);
+	titleBarMenu = new TitleBarMenu();
+
 	// apenas mostrara a janela quando estiver pronta
 	initialWindow.once('ready-to-show', () => {
 
