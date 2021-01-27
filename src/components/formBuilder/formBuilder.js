@@ -726,7 +726,7 @@ class Field {
 
 			field.prepend[0].onclick = () => {
 
-				ipc.send('open-file-dialog-for-file');
+				ipc.send('open-file-dialog-for-file', 'csv');
 
 				ipc.on('selected-dir', (evt, arg) => {
 

@@ -132,11 +132,11 @@ ipc.on('open-file-dialog-for-dir', async (event) => {
 
 });
 
-ipc.on('open-file-dialog-for-file', async (event) => {
+ipc.on('open-file-dialog-for-file', async (event, args) => {
 
 	const file = await dialog.showOpenDialog(mainWindow, {
 		properties: ['openFile'],
-		filters: [{name: 'Dashboard', extensions: ['json']}],
+		filters: [{name: 'Dashboard', extensions: [args]}],
 	});
 	if (file) {
 

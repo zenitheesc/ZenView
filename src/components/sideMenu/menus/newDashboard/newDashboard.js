@@ -100,7 +100,7 @@ module.exports = class newDashBoardMenu extends Menu {
 
 		this.dropzone.onclick = () => {
 
-			ipc.send('open-file-dialog-for-file');
+			ipc.send('open-file-dialog-for-file', 'json');
 
 			ipc.on('selected-dir', (evt, arg) => {
 
