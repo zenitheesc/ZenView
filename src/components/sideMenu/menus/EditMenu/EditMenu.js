@@ -2,7 +2,7 @@ const Menu = require('../menu');
 const Form = require('../../../formBuilder/formBuilder').Form;
 const Container = require('../../../formBuilder/formBuilder').Container;
 const Field = require('../../../formBuilder/formBuilder').Field;
-const PlotlyEditingMenuConfig = require('./menus/EditMenus').Plotly;
+const PlotlyEditingMenu = require('./menus/EditMenus').Plotly;
 
 module.exports = class EditMenu extends Menu {
 
@@ -11,6 +11,7 @@ module.exports = class EditMenu extends Menu {
 		super('Edição', 'edit_menu');
 
 		this.panel = document.createElement('div');
+		this.plotlyEditingMenu = new PlotlyEditingMenu();
 
 		this.form = new Form({
 			BlockModuleContainer: Container.spliter({
@@ -34,7 +35,7 @@ module.exports = class EditMenu extends Menu {
 				text: 'Módulos',
 				id: 'BlockModuleContainer',
 			}),
-			PlotlyModule: PlotlyEditingMenuConfig,
+			PlotlyModule: this.plotlyEditingMenu.form,
 			ThreejsModule: Container.div({
 
 			}, {

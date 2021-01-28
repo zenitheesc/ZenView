@@ -14,13 +14,44 @@ module.exports = class Scatter extends Block {
 		this.type = preConfig.type;
 		preConfig = preConfig.Plotly;
 
-		this.config = (preConfig) ? preConfig.config : {};
-		this.layout = (preConfig) ? preConfig.layout : {};
-		this.data = (preConfig) ? preConfig.data : [];
+		this.config = (preConfig.config) ? preConfig.config : {};
+		this.layout = (preConfig.layout) ? preConfig.layout : {};
+		this.data = (preConfig.data) ? preConfig.data : [];
+		this.traces = [];
 
 	}
 
-	addTrace() {
+	addTrace(newTrace) {
+
+		this.traces.push(newTrace);
+
+		let x = [];
+		let y = [];
+		console.log(this.data);
+		for (let i = 0; i < 10; i++) {
+
+			x[i] = Math.floor(i * 3);
+			y[i] = Math.floor(100 * (Math.random()) % 20);
+
+		}
+
+		x.sort((a, b) => {
+
+			return a - b;
+
+		});
+
+		Plotly.addTraces(this.htmlComponent, {
+			name: newTrace.name,
+			x: x,
+			y: y,
+			mode: newTrace.mode,
+			line: newTrace.line,
+			marker: newTrace.marker,
+
+		});
+
+		Plotly.update(this.htmlComponent);
 
 	}
 

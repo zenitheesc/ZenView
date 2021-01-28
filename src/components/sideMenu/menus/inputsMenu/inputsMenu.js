@@ -87,7 +87,7 @@ module.exports = class InputsMenu extends Menu {
 
 			} else {
 
-				this.attInputList();
+				this.EventHandler.AttInputList();
 				this.cleanInputEntry();
 
 			}
