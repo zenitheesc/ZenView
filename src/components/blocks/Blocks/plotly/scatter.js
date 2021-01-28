@@ -14,10 +14,40 @@ module.exports = class Scatter extends Block {
 		this.type = preConfig.type;
 		preConfig = preConfig.Plotly;
 
-		this.config = (preConfig.config) ? preConfig.config : {};
-		this.layout = (preConfig.layout) ? preConfig.layout : {};
-		this.data = (preConfig.data) ? preConfig.data : [];
+		preConfig.config = (preConfig.config) ? preConfig.config : {};
+		preConfig.layout = (preConfig.layout) ? preConfig.layout : {};
+		preConfig.data = (preConfig.data) ? preConfig.data : [];
+
+		this.config = preConfig.config;
+		this.layout = preConfig.layout;
+		this.data = preConfig.data;
+
 		this.traces = [];
+
+	}
+
+	instructionHandler(instruction) {
+
+		switch (instruction.command) {
+
+			case 'addTrace':
+
+				this.addTrace(instruction.data);
+
+				break;
+			case 'rmvTrace':
+
+				this.rmvTrace(instruction.data);
+				break;
+			case 'editTrace':
+
+				this.editTrace(instruction.data);
+
+				break;
+			default:
+				break;
+
+		}
 
 	}
 
@@ -25,9 +55,9 @@ module.exports = class Scatter extends Block {
 
 		this.traces.push(newTrace);
 
-		let x = [];
-		let y = [];
-		console.log(this.data);
+		const x = [];
+		const y = [];
+
 		for (let i = 0; i < 10; i++) {
 
 			x[i] = Math.floor(i * 3);
@@ -51,6 +81,7 @@ module.exports = class Scatter extends Block {
 
 		});
 
+
 		Plotly.update(this.htmlComponent);
 
 	}
@@ -61,7 +92,6 @@ module.exports = class Scatter extends Block {
 		newConfig = newConfig.Plotly;
 		if (newConfig !== undefined) this.attConfig(newConfig.config);
 		if (newConfig !== undefined) this.attLayout(newConfig.layout);
-		//if (newConfig !== undefined) this.attData(newConfig.data);
 
 	}
 
