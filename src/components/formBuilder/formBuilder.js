@@ -190,7 +190,7 @@ class FormPattern {
 
 					for (let i = 0; i < field.input.options.length; i++) {
 
-						if (field.input.options[i].value == field.att || field.input.options[i].text == field.att) {
+						if (field.input.options[i].value == atts[field.att] || field.input.options[i].text == atts[field.att]) {
 
 							found = true;
 							field.input.options[i].selected = 'select';
