@@ -7,7 +7,9 @@ module.exports = class Blank extends Block {
 		super();
 		this.id = 'Blank';
 		this.type = 'Blank';
-		this.formConfig = preConfig;
+		this.formConfig = preConfig = {
+			type: 'Blank',
+		};
 
 	}
 
