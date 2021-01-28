@@ -180,11 +180,37 @@ class FormPattern {
 		wrapper.form = DataObj;
 		const atts = this.objToPathList(wrapper);
 
-		this.fields.forEach((field)=>{
+		this.fields.forEach((field) => {
 
-			if (atts[field.att] !== undefined ) {
+			if (atts[field.att] !== undefined) {
 
-				field.value = atts[field.att];
+				if (field.type === 'select') {
+
+					let found = false;
+
+					for (let i = 0; i < field.input.options.length; i++) {
+
+						if (field.input.options[i].value == field.att || field.input.options[i].text == field.att) {
+
+							found = true;
+							field.input.options[i].selected = 'select';
+							break;
+
+						}
+
+					}
+
+					if (!found && field.input.options.length > 0) {
+
+						field.input.options[0].selected = 'select';
+
+					}
+
+				} else {
+
+					field.value = atts[field.att];
+
+				}
 
 			}
 
@@ -352,6 +378,18 @@ class Field {
 		if (this.type === 'editableDiv') {
 
 			this.input.innerHTML = '';
+
+		} else if (this.type === 'select') {
+
+			if (this.input.options.length > 0) {
+
+				this.input.options[0].selected = 'selected';
+
+			} else {
+
+				this.input.value = '';
+
+			}
 
 		} else {
 
@@ -654,7 +692,7 @@ class Field {
 
 		field.addOption = (option, callBack) => {
 
-			callBack = callBack || function(option) {
+			callBack = callBack || function (option) {
 
 				return [option.value || option.text, option.text || option.value];
 
@@ -669,7 +707,7 @@ class Field {
 		field.setOptions = (options, callBack) => {
 
 			field.input.innerHTML = '';
-			callBack = callBack || function(option) {
+			callBack = callBack || function (option) {
 
 				return [option.value || option.text, option.text || option.value];
 
@@ -683,6 +721,8 @@ class Field {
 				field.input.appendChild(newOption);
 
 			});
+
+			field.input.options[0].selected = 'selected';
 
 		};
 
