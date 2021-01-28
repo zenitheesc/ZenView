@@ -64,6 +64,13 @@ module.exports = class BlockContainer {
 
 	}
 
+	sendBlockInstruction(newInstruction) {
+		
+		this.eventHandler.dispatchEvent('DashboardNotSaved');
+		this.block.instructionHandler(newInstruction);
+
+	}
+
 	editBlock() {
 
 		if (!this.editing) {
