@@ -416,19 +416,23 @@ module.exports = class PlotlyScatter {
 
 	addNewTrace() {
 
-		window.CurrentBlock.block.addTrace({
-            name: this.form.formThree.PlotlySeries.newSerieName.value,
-            mode: 'lines+markers',
-            line: {
-                width: '3',
-                dash: 'solid',
-                shape: 'linear',
-            },
-            marker: {
-                size: '5',
-            },
+		window.CurrentBlock.sendBlockInstruction({
+
+			command: 'addTrace',
+			data: {
+				name: this.form.formThree.PlotlySeries.newSerieName.value,
+				mode: 'lines+markers',
+				line: {
+					width: '3',
+					dash: 'solid',
+					shape: 'linear',
+				},
+				marker: {
+					size: '5',
+				},
+			},
 		});
-		
+
 	}
 
 	init() {
@@ -438,8 +442,6 @@ module.exports = class PlotlyScatter {
 			this.attXandYInputList();
 
 		});
-
-		console.log(this.form.formThree.PlotlySeries);
 
 		this.form.formThree.PlotlySeries.self.htmlComponent.addEventListener('input', (evt) => {
 
@@ -456,6 +458,16 @@ module.exports = class PlotlyScatter {
 			}
 
 		};
+
+		this.eventHandler.addEventListener('BlockWasSelected', (evt) => {
+
+			if (evt.block.formConfig.type === 'Plotly' && evt.block.formConfig.Plotly.type === 'scatter') {
+
+				console.log('ok');
+
+			}
+
+		});
 
 	}
 
