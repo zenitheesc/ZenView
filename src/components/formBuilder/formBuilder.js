@@ -722,7 +722,12 @@ class Field {
 
 			});
 
-			field.input.options[0].selected = 'selected';
+			if (options.length > 0) {
+
+				field.input.options[0].selected = 'selected';
+
+			}
+
 
 		};
 
