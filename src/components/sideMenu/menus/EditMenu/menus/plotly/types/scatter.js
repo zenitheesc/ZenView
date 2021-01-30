@@ -14,7 +14,7 @@ module.exports = class PlotlyScatter {
 			PlotlySeries: Container.spliter({
 				newSerieName: Field.text({
 					att: 'name',
-					validators: [Validator.isFilled, Validator.noSpecialChars],
+					validators: [Validator.isFilled, Validator.noSpecialChars, this.nameAlreadyExist],
 					append: [
 						{
 							type: 'button',
@@ -88,42 +88,10 @@ module.exports = class PlotlyScatter {
 								],
 							},
 						),
-						markersColor: Field.select({
+						markersColor: Field.colorPicker({
 							label: 'Cor',
 							att: 'color',
 							classList: ['col-6'],
-							options: [
-								{
-									text: '#1f77b4',
-								},
-								{
-									text: '#ff7f0e',
-								},
-								{
-									text: '#2ca02c',
-								},
-								{
-									text: '#d62728',
-								},
-								{
-									text: '#9467bd',
-								},
-								{
-									text: '#8c564b',
-								},
-								{
-									text: '#e377c2',
-								},
-								{
-									text: '#7f7f7f',
-								},
-								{
-									text: '#bcbd22',
-								},
-								{
-									text: '#17becf',
-								},
-							],
 						}),
 					}),
 				}, {
@@ -170,42 +138,10 @@ module.exports = class PlotlyScatter {
 								],
 							},
 						),
-						lineColor: Field.select({
+						lineColor: Field.colorPicker({
 							label: 'Cor',
 							att: 'color',
 							classList: ['col-6'],
-							options: [
-								{
-									text: '#1f77b4',
-								},
-								{
-									text: '#ff7f0e',
-								},
-								{
-									text: '#2ca02c',
-								},
-								{
-									text: '#d62728',
-								},
-								{
-									text: '#9467bd',
-								},
-								{
-									text: '#8c564b',
-								},
-								{
-									text: '#e377c2',
-								},
-								{
-									text: '#7f7f7f',
-								},
-								{
-									text: '#bcbd22',
-								},
-								{
-									text: '#17becf',
-								},
-							],
 						}),
 					}),
 					lineOption: Container.formRow({
@@ -414,6 +350,22 @@ module.exports = class PlotlyScatter {
 
 	}
 
+	nameAlreadyExist(currentSerieName) {
+
+		for (let i = 0; i < window.CurrentBlock.block.data.length; i++) {
+
+			if (window.CurrentBlock.block.data[i].name === currentSerieName) {
+
+				return 'Esse nome já existe';
+
+			}
+
+		}
+		
+		return true;
+
+	}
+
 	addNewTrace() {
 
 		window.CurrentBlock.sendBlockInstruction({
@@ -435,6 +387,80 @@ module.exports = class PlotlyScatter {
 
 	}
 
+	editTrace() {
+
+		window.CurrentBlock.sendBlockInstruction({
+
+			command: 'editTrace',
+			data: this.form.formThree.PlotlySeriesStyle.self.getData(),
+		});
+
+	}
+
+	attStyleSection() {
+
+		const currentSerieName = this.form.formThree.PlotlySeriesStyle.selectedSerie.value;
+		let currentSerie;
+
+		for (let i = 0; i < window.CurrentBlock.block.data.length; i++) {
+
+			if (window.CurrentBlock.block.data[i].name === currentSerieName) {
+
+				currentSerie = window.CurrentBlock.block.data[i];
+				break;
+
+			}
+
+		}
+
+		if (currentSerie === undefined) {
+
+			return;
+
+		}
+
+		if (currentSerie.mode === 'lines+markers' || currentSerie.mode === undefined) {
+
+			currentSerie.showmarkers = true;
+			currentSerie.showlines = true;
+
+		} else if (currentSerie.mode === 'markers') {
+
+			currentSerie.showmarkers = true;
+			currentSerie.showlines = false;
+
+		} else if (currentSerie.mode === 'lines') {
+
+			currentSerie.showlines = true;
+			currentSerie.showmarkers = false;
+			if (currentSerie.visible == false) {
+
+				currentSerie.showlines = false;
+
+			}
+
+		}
+
+
+		const wrapper = {};
+		wrapper['Plotly.scatter.trace'] = currentSerie;
+		this.form.formThree.PlotlySeriesStyle.self.setData(wrapper);
+
+
+	}
+
+	attSeriesSelector() {
+
+		const callBack = (trace) => {
+
+			return [trace.name, trace.name];
+
+		};
+
+		this.form.formThree.PlotlySeriesStyle.selectedSerie.setOptions(window.CurrentBlock.block.data, callBack);
+
+	}
+
 	init() {
 
 		this.eventHandler.addEventListener('AttInputList', () => {
@@ -445,6 +471,20 @@ module.exports = class PlotlyScatter {
 
 		this.form.formThree.PlotlySeries.self.htmlComponent.addEventListener('input', (evt) => {
 
+			evt.stopPropagation();
+
+		});
+
+		this.form.formThree.PlotlySeriesStyle.selectedSerie.htmlComponent.addEventListener('input', (evt) => {
+
+			this.attStyleSection();
+			evt.stopPropagation();
+
+		});
+
+		this.form.formThree.PlotlySeriesStyle.self.htmlComponent.addEventListener('input', (evt) => {
+
+			this.editTrace();
 			evt.stopPropagation();
 
 		});
@@ -463,7 +503,8 @@ module.exports = class PlotlyScatter {
 
 			if (evt.block.formConfig.type === 'Plotly' && evt.block.formConfig.Plotly.type === 'scatter') {
 
-				console.log('ok');
+				this.attSeriesSelector();
+				this.attStyleSection();
 
 			}
 
