@@ -56,6 +56,12 @@ module.exports = class DahsBoard {
 
 		});
 
+		this.eventHandler.addEventListener('SaveDashboard', (evt) => {
+
+			this.saveDashboard();
+
+		});
+
 		ipcRenderer.on('SaveDashboard', (evt) => {
 
 			this.saveDashboard();

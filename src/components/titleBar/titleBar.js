@@ -74,6 +74,7 @@ module.exports = class TitleBar {
 			this.icon.style.display = 'none';
 			this.windowName.textContent = window.CurrentDashBoard.name + ' - ZenView';
 
+			window.CurrentDashBoard.saved = true;
 			ipcRenderer.send('isSaved', true);
 
 		});
@@ -81,6 +82,8 @@ module.exports = class TitleBar {
 		this.eventHandler.addEventListener('DashboardNotSaved', (evt) => {
 
 			this.icon.style.display = 'block';
+
+			window.CurrentDashBoard.saved = false;
 			ipcRenderer.send('isSaved', false);
 			
 		});
@@ -88,6 +91,8 @@ module.exports = class TitleBar {
 		ipcRenderer.on('SaveDashboard', (evt) => {
 
 			this.icon.style.display = 'none';
+
+			window.CurrentDashBoard.saved = true;
 			ipcRenderer.send('isSaved', true);
 
 		});

@@ -9,6 +9,7 @@ module.exports = class DashBoard {
 		this.blocks;
 		this.path;
 		this.description;
+		this.saved;
 
 		if (arguments.length === 1) {
 

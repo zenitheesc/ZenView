@@ -2,6 +2,7 @@ const fs = require('fs');
 const number = require('mathjs').number;
 const DashBoard = require('../../classes/dashBoard');
 const Dialog = require('../dialog/dialog');
+const ConfirmationDialog = require('../dialog/confirmationDialog');
 const EventHandler = require('../eventHandler/eventHandler');
 
 module.exports = class DashBoardsManager {
@@ -195,16 +196,23 @@ module.exports = class DashBoardsManager {
 
 		this.EventHandler.addEventListener('OpenDashBoard', (evt) => {
 
-			if (evt.context === 'editing') {
-
-				this.editingDashBoard(evt);
-
+			if (window.CurrentDashBoard !== undefined && !window.CurrentDashBoard.saved) {
+				
+				ConfirmationDialog.showConfirmationDialog(evt, (evt) => {
+					
+					if (evt.context === 'editing') this.editingDashBoard(evt);
+					else this.startDashboard(evt);
+				
+				});
+			
 			} else {
 
-				this.startDashboard(evt);
-
+				if (evt.context === 'editing') this.editingDashBoard(evt);
+				else this.startDashboard(evt);
+	
 			}
-
+			
+			
 		});
 
 		this.EventHandler.addEventListener('DeleteDashboard', (evt) => {

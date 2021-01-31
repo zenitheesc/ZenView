@@ -188,6 +188,12 @@ module.exports = class EventHandler {
 
 		};
 
+		this['SaveDashboard'] = (detail) => {
+
+			this.dispatchEvent('SaveDashboard', detail);
+
+		};
+
 		this['ImportDashboard'] = (detail) => {
 
 			this.dispatchEvent('ImportDashboard', detail);
