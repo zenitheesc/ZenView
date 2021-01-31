@@ -74,17 +74,21 @@ module.exports = class TitleBar {
 			this.icon.style.display = 'none';
 			this.windowName.textContent = window.CurrentDashBoard.name + ' - ZenView';
 
+			ipcRenderer.send('isSaved', true);
+
 		});
 
 		this.eventHandler.addEventListener('DashboardNotSaved', (evt) => {
 
 			this.icon.style.display = 'block';
+			ipcRenderer.send('isSaved', false);
 			
 		});
 		
 		ipcRenderer.on('SaveDashboard', (evt) => {
 
 			this.icon.style.display = 'none';
+			ipcRenderer.send('isSaved', true);
 
 		});
 

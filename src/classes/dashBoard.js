@@ -1,4 +1,5 @@
 const InputGroup = require('./inputGroup');
+
 module.exports = class DashBoard {
 
 	constructor(name, nbmrInputs, path, description) {
@@ -8,6 +9,7 @@ module.exports = class DashBoard {
 		this.blocks;
 		this.path;
 		this.description;
+
 		if (arguments.length === 1) {
 
 			this.constructFromJson(name);

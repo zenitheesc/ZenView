@@ -21,6 +21,7 @@ class MainWindow {
 		this.InputHandler = new InputHandler();
 
 	}
+
 	saveConfig() {
 
 		fs.writeFileSync('./assets/config.json', JSON.stringify(window['ZenViewConfig'], null, '\t'));
@@ -71,10 +72,10 @@ class MainWindow {
 		this.readInitialConfig();
 
 	}
+	
 	build() {
 
 		let duracao = Date.now();
-
 
 		this.init();
 		this.TitleBar.build();

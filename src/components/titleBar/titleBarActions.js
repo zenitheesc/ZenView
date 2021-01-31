@@ -58,9 +58,9 @@ module.exports = class TitleBarActions {
     }
 
     closeWindow() {
-
+        
         this.browserWindow.close();
-
+        
     }
     
     setEvents() {

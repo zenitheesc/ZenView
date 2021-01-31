@@ -113,7 +113,7 @@ module.exports = class DahsBoard {
 			
 		});
 
-		this.gridStack.on('added change enable', (evt, el) => {
+		this.gridStack.on('added change enable removed', (evt, el) => {
 
 			this.eventHandler.dispatchEvent('DashboardNotSaved');
 

@@ -13,7 +13,7 @@ const debugMode = true;
 let initialWindow;
 let mainWindow;
 let titleBarMenu;
-
+let dashboardIsSaved = true;
 
 // parametros iniciais da janela inicial
 const initialWindowparams = {
@@ -78,6 +78,36 @@ app.on('ready', () => {
 	initialWindow.once('ready-to-show', () => {
 
 		initialWindow.show();
+
+	});
+
+	mainWindow.on('close', async (evt) => {
+		
+		if (!dashboardIsSaved) {
+		
+			const response = dialog.showMessageBoxSync(mainWindow, {
+				type: 'question',
+				buttons: ['Salvar', 'Descartar', 'Cancelar'],
+				title: 'Confirmação',
+				message: 'Esse dashboard ainda não foi salvo',
+				defaultId: 2,
+				cancelId: 2,
+			});
+			
+			if (response === 0) {
+		
+				evt.preventDefault();
+				await mainWindow.webContents.send('SaveDashboard');
+				dashboardIsSaved = true;
+				mainWindow.close();
+
+			} else if (response === 2) {
+		
+				evt.preventDefault();
+		
+			}
+	
+		}
 
 	});
 
@@ -169,5 +199,11 @@ ipc.on('display-app-titleBar', function(err, args) {
 		});
 
 	}
+
+});
+
+ipc.on('isSaved', (evt, args) => {
+
+	dashboardIsSaved = args;
 
 });
