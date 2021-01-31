@@ -92,9 +92,6 @@ module.exports = class TitleBar {
 
 			this.icon.style.display = 'none';
 
-			window.CurrentDashBoard.saved = true;
-			ipcRenderer.send('isSaved', true);
-
 		});
 
 	}

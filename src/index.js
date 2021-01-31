@@ -81,7 +81,7 @@ app.on('ready', () => {
 
 	});
 
-	mainWindow.on('close', async (evt) => {
+	mainWindow.on('close', (evt) => {
 		
 		if (!dashboardIsSaved) {
 		
@@ -97,9 +97,7 @@ app.on('ready', () => {
 			if (response === 0) {
 		
 				evt.preventDefault();
-				await mainWindow.webContents.send('SaveDashboard');
-				dashboardIsSaved = true;
-				mainWindow.close();
+				mainWindow.webContents.send('SaveDashboard', true);
 
 			} else if (response === 2) {
 		
@@ -205,5 +203,11 @@ ipc.on('display-app-titleBar', function(err, args) {
 ipc.on('isSaved', (evt, args) => {
 
 	dashboardIsSaved = args;
+
+});
+
+ipc.on('closeOnSave', (evt) => {
+
+	mainWindow.close();
 
 });

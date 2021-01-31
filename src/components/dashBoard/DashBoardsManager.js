@@ -1,6 +1,7 @@
 const fs = require('fs');
 const number = require('mathjs').number;
 const DashBoard = require('../../classes/dashBoard');
+const BSONconverter = require('../../classes/bson');
 const Dialog = require('../dialog/dialog');
 const ConfirmationDialog = require('../dialog/confirmationDialog');
 const EventHandler = require('../eventHandler/eventHandler');
@@ -10,6 +11,7 @@ module.exports = class DashBoardsManager {
 	constructor() {
 
 		this.EventHandler = new EventHandler();
+		this.BSON = new BSONconverter();
 
 	}
 
@@ -25,31 +27,35 @@ module.exports = class DashBoardsManager {
 
 		try {
 
-			JSON.parse(fs.readFileSync(path));
-			return true;
+			if (fs.existsSync(path)) return true;
+			else {
 
-		} catch (error) {
+				Dialog.showDialog({
+					title: 'Error',
+					message: 'Este dashboard foi movido de seu diretório ou excluído',
+					buttons: ['Ok'],
+				});
+				for (let i = window['ZenViewConfig'].dashboards.length - 1; i >= 0; i--) {
 
-			console.log(error);
-			Dialog.showDialog({
-				title: 'Error',
-				message: 'Este dashboard foi movido de seu diretório ou excluído',
-				buttons: ['Ok'],
-			});
-			for (let i = window['ZenViewConfig'].dashboards.length - 1; i >= 0; i--) {
+					if (window['ZenViewConfig'].dashboards[i].path === path) {
 
-				if (window['ZenViewConfig'].dashboards[i].path === path) {
+						window['ZenViewConfig'].dashboards.splice(i, 1);
 
-					window['ZenViewConfig'].dashboards.splice(i, 1);
+						this.EventHandler.AttDashBoardsList();
+						this.EventHandler.SaveConfigs();
 
-					this.EventHandler.AttDashBoardsList();
-					this.EventHandler.SaveConfigs();
+						break;
 
-					break;
+					}
 
 				}
-
+				return false;
+			
 			}
+			
+		} catch (err) {
+
+			console.log(err);
 			return false;
 
 		}
@@ -62,7 +68,7 @@ module.exports = class DashBoardsManager {
 		this.EventHandler.dispatchEvent('ClearDashboard');
 		if (!this.testIfDashBoardExist(path)) return;
 
-		const CurrentDashBoardConfig = JSON.parse(fs.readFileSync(path));
+		const CurrentDashBoardConfig = this.BSON.readFile(path);
 		const CurrentDashBoard = new DashBoard(CurrentDashBoardConfig);
 
 		window.CurrentDashBoard = CurrentDashBoard;
@@ -101,7 +107,7 @@ module.exports = class DashBoardsManager {
 
 		const dashBoard = new DashBoard(detail.name, number(detail.numberOfInputs), detail.path, detail.desc);
 		dashBoard.inputGroup.inputGraph = {};
-		fs.writeFileSync(detail.path, JSON.stringify(dashBoard, null, '\t'));
+		this.BSON.writeFile(detail.path, dashBoard);
 
 		this.EventHandler.SaveConfigs();
 		this.EventHandler.AttDashBoardsList();
@@ -159,14 +165,14 @@ module.exports = class DashBoardsManager {
 
 				if (!this.testIfDashBoardExist(path)) return;
 
-				const CurrentDashBoardConfig = JSON.parse(fs.readFileSync(path));
+				const CurrentDashBoardConfig = this.BSON.readFile(path);
 				const CurrentDashBoard = new DashBoard(CurrentDashBoardConfig);
 
 				CurrentDashBoard.name = newName;
 				CurrentDashBoard.description = newDesc;
 				CurrentDashBoard.inputGroup.inputGraph = {};
 
-				fs.writeFileSync(path, JSON.stringify(CurrentDashBoard, null, '\t'));
+				this.BSON.writeFile(path, CurrentDashBoard);
 
 				window['ZenViewConfig'].dashboards[i].desc = newDesc;
 				window['ZenViewConfig'].dashboards[i].name = newName;
@@ -187,7 +193,7 @@ module.exports = class DashBoardsManager {
 		const currentDashBoard = window.CurrentDashBoard;
 		const tempGraph = currentDashBoard.inputGroup.inputGraph;
 		currentDashBoard.inputGroup.inputGraph = {};
-		fs.writeFileSync(currentDashBoard.path, JSON.stringify(currentDashBoard, null, '\t'));
+		this.BSON.writeFile(currentDashBoard.path, currentDashBoard);
 		window.CurrentDashBoard.inputGroup.inputGraph = tempGraph;
 
 	}

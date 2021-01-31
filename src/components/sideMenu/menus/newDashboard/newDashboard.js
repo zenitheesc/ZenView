@@ -60,12 +60,12 @@ module.exports = class newDashBoardMenu extends Menu {
 				const data = this.form.getData();
 				let i = 0;
 				const fileNames = fs.readdirSync(data['dir']);
-				let newName = data['name'] + '.json';
+				let newName = data['name'] + '.bson';
 
 				while (fileNames.includes(newName)) {
 
 					i = i + 1;
-					newName = data['name'] + `(${i})` + '.json';
+					newName = data['name'] + `(${i})` + '.bson';
 
 				}
 
@@ -100,16 +100,12 @@ module.exports = class newDashBoardMenu extends Menu {
 
 		this.dropzone.onclick = () => {
 
-			ipc.send('open-file-dialog-for-file', 'json');
+			ipc.send('open-file-dialog-for-file', 'bson');
 
 			ipc.on('selected-dir', (evt, arg) => {
 
-				if (!arg) {
-			
-					this.progressBarLoading(arg);
-					this.eventHandler.dispatchEvent('ImportDashboard', arg);
-					
-				}
+				this.progressBarLoading(arg);
+				this.eventHandler.dispatchEvent('ImportDashboard', arg);
 					
 				ipc.removeAllListeners('selected-dir');
 
@@ -153,7 +149,7 @@ module.exports = class newDashBoardMenu extends Menu {
 
 			const file = e.dataTransfer.files[0];
 
-			if (path.extname(file.path) != '.json') {
+			if (path.extname(file.path) != '.bson') {
 
 				Dialog.showDialog({
 					type: 'error',

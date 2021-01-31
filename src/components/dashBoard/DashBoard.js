@@ -1,8 +1,9 @@
 const ipcRenderer = require('electron').ipcRenderer;
 const GridStack = require('gridstack/dist/gridstack.all');
+const hash = require('object-hash');
 const BlockContainer = require('../blockContainer/blockContainer');
 const EventHandler = require('../eventHandler/eventHandler');
-const fs = require('fs');
+const BSONconverter = require('../../classes/bson');
 
 module.exports = class DahsBoard {
 
@@ -17,6 +18,7 @@ module.exports = class DahsBoard {
 		this.gridStack;
 
 		this.eventHandler = new EventHandler();
+		this.BSON = new BSONconverter();
 
 	}
 
@@ -62,9 +64,9 @@ module.exports = class DahsBoard {
 
 		});
 
-		ipcRenderer.on('SaveDashboard', (evt) => {
+		ipcRenderer.on('SaveDashboard', (evt, onClose) => {
 
-			this.saveDashboard();
+			this.saveDashboard(onClose);
 
 		});
 
@@ -127,26 +129,34 @@ module.exports = class DahsBoard {
 
 	}
 
-	saveDashboard() {
+	saveDashboard(onClose) {
 		
 		const blocksLog = [];
-		this.blocks.forEach((block) => blocksLog.push(block.blockLog()));
-		
 		const currentDashBoard = window.CurrentDashBoard;
+		
+		this.blocks.forEach((block) => blocksLog.push(block.blockLog()));
 		currentDashBoard.blocks = blocksLog;
-		fs.writeFile(currentDashBoard.path, JSON.stringify(currentDashBoard, null, '\t'), (err) => {
-
-			if (err) throw err;
-			console.log('Salvou');
-			
-		});
+		
+		delete currentDashBoard.saved;
+		
+		const dashboardHash = hash(currentDashBoard);
+		currentDashBoard.hash = dashboardHash;
+		
+		this.BSON.writeFile(currentDashBoard.path, currentDashBoard);
+		
+		currentDashBoard.saved = true;
+		ipcRenderer.send('isSaved', true);
+		
+		if (onClose) ipcRenderer.send('closeOnSave');
 
 	}
 
 	importDashboard(path) {
-
+		
 		console.log('Importou: ' + path);
 		console.log('Abriu novo dashboard');
+
+		// const document = this.BSON.readFile(path);
 
 	}
 
