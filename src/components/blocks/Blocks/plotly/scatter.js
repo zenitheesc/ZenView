@@ -22,8 +22,6 @@ module.exports = class Scatter extends Block {
 		this.layout = preConfig.layout;
 		this.data = preConfig.data;
 
-		this.traces = [];
-
 	}
 
 	instructionHandler(instruction) {
@@ -52,8 +50,6 @@ module.exports = class Scatter extends Block {
 	}
 
 	addTrace(newTrace) {
-
-		this.traces.push(newTrace);
 
 		const x = [];
 		const y = [];
@@ -99,14 +95,16 @@ module.exports = class Scatter extends Block {
 
 	}
 
-	attData(newData) {
+	editTrace(newData) {
+
+		newData = newData.Plotly.scatter.trace;
 
 		let i = 0;
 		let found = false;
 
 		for (i = 0; i < this.data.length; i++) {
 
-			if (this.data[i].name === newData.currentSerieName) {
+			if (this.data[i].name === newData.currTraceName) {
 
 				found = true;
 				break;
@@ -117,17 +115,17 @@ module.exports = class Scatter extends Block {
 
 		if (found) {
 
-			if (newData['showmarkers'] && newData['showlines']) {
+			if (newData['showMarkers'] && newData['showLines']) {
 
 				newData.mode = 'lines+markers';
 				newData.visible = true;
 
-			} else if (newData['showmarkers'] && !newData['showlines']) {
+			} else if (newData['showMarkers'] && !newData['showLines']) {
 
 				newData.mode = 'markers';
 				newData.visible = true;
 
-			} else if (!newData['showmarkers'] && newData['showlines']) {
+			} else if (!newData['showMarkers'] && newData['showLines']) {
 
 				newData.mode = 'lines';
 				newData.visible = true;
