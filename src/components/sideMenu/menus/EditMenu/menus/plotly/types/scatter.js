@@ -345,8 +345,13 @@ module.exports = class PlotlyScatter {
 
 		};
 
-		this.form.formThree.PlotlySeries.xAxis.setOptions(window.CurrentInputGroup.inputs, callBack);
-		this.form.formThree.PlotlySeries.yAxis.setOptions(window.CurrentInputGroup.inputs, callBack);
+		let allInputs = [];
+
+		allInputs = allInputs.concat(window.CurrentInputGroup.rawInputs);
+		allInputs = allInputs.concat(window.CurrentInputGroup.inputs);
+
+		this.form.formThree.PlotlySeries.xAxis.setOptions(allInputs, callBack);
+		this.form.formThree.PlotlySeries.yAxis.setOptions(allInputs, callBack);
 
 	}
 
