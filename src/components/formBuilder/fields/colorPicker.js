@@ -51,6 +51,19 @@ module.exports = class ColorPicker extends Field {
 
 	}
 
+	set value(value) {
+
+		this.input.value = value;
+		this.input.jscolor.fromString(value);
+
+	}
+
+	get value() {
+
+		return this.input.value;
+
+	}
+
 	setInputEvent() {
 
 
