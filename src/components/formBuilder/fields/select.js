@@ -25,7 +25,7 @@ module.exports = class Select extends Field {
 	setOptions(options, callBack) {
 
 		this.input.innerHTML = '';
-		callBack = callBack || function(option) {
+		callBack = callBack || function (option) {
 
 			return [option.value || option.text, option.text || option.value];
 
@@ -49,11 +49,25 @@ module.exports = class Select extends Field {
 
 	};
 
-	setSelectedOptios(value) {
+	setSelectedOption(value) {
 
 		input.value = value;
 
 	};
+
+	reset() {
+
+		if (this.input.options.length > 0) {
+
+			this.input.options[0].selected = 'selected';
+
+		} else {
+
+			this.input.value = '';
+
+		}
+
+	}
 
 	static buildCore(options) {
 

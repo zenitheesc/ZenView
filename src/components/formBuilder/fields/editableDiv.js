@@ -8,6 +8,24 @@ module.exports = class EditableDiv extends Field {
 
 	}
 
+	get value() {
+
+		return this.input.textContent;
+
+	}
+
+	set value(value) {
+
+		this.input.innerHTML = value;
+
+	}
+
+	reset() {
+
+		this.input.innerHTML = this.standardValue || '';
+
+	}
+
 	static buildCore(options) {
 
 		const input = document.createElement('div');

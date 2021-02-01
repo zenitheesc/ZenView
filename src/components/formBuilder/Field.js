@@ -20,17 +20,6 @@ module.exports = class Field {
 		this.append = options.append || {};
 		this.onclick;
 		this.warning = options.warning;
-		this._init();
-
-	}
-
-	_init() {
-
-		if (this.type === 'button') {
-
-			this.validators = undefined;
-
-		}
 
 	}
 
@@ -42,61 +31,19 @@ module.exports = class Field {
 
 	get value() {
 
-		if (this.type === 'editableDiv') {
-
-			return this.input.textContent;
-
-		} else if (this.type === 'checkbox') {
-
-			return this.input.checked;
-
-		}
 		return this.input.value;
 
 	}
 
 	set value(value) {
 
-		if (this.type === 'editableDiv') {
-
-			this.input.innerHTML = value;
-
-		} else if (this.type === 'checkbox') {
-
-			this.input.value = value;
-			this.input.checked = value;
-
-		} else {
-
-			this.input.value = value;
-
-		}
+		this.input.value = value;
 
 	}
 
 	reset() {
 
-		if (this.type === 'editableDiv') {
-
-			this.input.innerHTML = '';
-
-		} else if (this.type === 'select') {
-
-			if (this.input.options.length > 0) {
-
-				this.input.options[0].selected = 'selected';
-
-			} else {
-
-				this.input.value = '';
-
-			}
-
-		} else {
-
-			this.input.value = this.standardValue;
-
-		}
+		this.input.value = this.standardValue;
 
 	}
 
@@ -145,7 +92,7 @@ module.exports = class Field {
 		}
 
 	}
-	
+
 	setAttribute(attributesUntilHere) {
 
 		let cont = 0;

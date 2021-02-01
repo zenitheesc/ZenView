@@ -5,7 +5,8 @@ module.exports = class Button extends Field {
 	constructor(options) {
 
 		super(options);
-
+		this.validators = undefined;
+		
 	}
 
 	static buildCore(options) {

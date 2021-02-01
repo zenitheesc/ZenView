@@ -8,6 +8,19 @@ module.exports = class CheckBox extends Field {
 
 	}
 
+	get value() {
+
+		return this.input.checked;
+
+	}
+
+	set value(value) {
+
+		this.input.value = value;
+		this.input.checked = value;
+
+	}
+
 	static buildCore(options) {
 		
 		const checkGroup = document.createElement('div');
