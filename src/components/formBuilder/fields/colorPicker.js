@@ -1,15 +1,17 @@
 const Field = require('../Field');
-
+const JSColor = require('../../../externalSources/jscolor');
 module.exports = class ColorPicker extends Field {
 
 	constructor(options) {
 
 		super(options);
+		this.setInputEvent();
+
 
 	}
 
 	static buildCore(options) {
-		
+
 		const input = document.createElement('input');
 		const opts = {
 			preset: 'large dark',
@@ -46,6 +48,30 @@ module.exports = class ColorPicker extends Field {
 		options.input = input;
 
 		return options;
+
+	}
+
+	setInputEvent() {
+
+
+		this.input.addEventListener('input', (evt) => {
+
+			if (!evt.doNotIgnore) {
+
+				evt.stopPropagation();
+
+			}
+
+		});
+
+		this.input.addEventListener('change', (evt) => {
+
+			const event = new Event('input', {bubbles: true});
+			event.doNotIgnore = true;
+			this.input.dispatchEvent(event);
+			evt.stopPropagation();
+
+		});
 
 	}
 
