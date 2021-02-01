@@ -6,7 +6,7 @@ module.exports = class BSONconverter {
     writeFile(path, object) {
 
         const BSONdocument = BSON.serialize(object);
-        fs.writeFile(path, BSONdocument, (err) => {
+        fs.writeFileSync(path, BSONdocument, (err) => {
 
             if (err) throw err;
 
