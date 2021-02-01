@@ -2,8 +2,6 @@
  * ColorPicker
  */
 
-const ipc = require('electron').ipcRenderer;
-const JSColor = require('../../externalSources/jscolor');
 const FieldClass = require('./Field');
 const Field = require('./FieldsBuilder');
 

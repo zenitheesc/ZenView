@@ -1,5 +1,5 @@
 const Fields = require('./fieldsWrapper');
-
+const ipc = require('electron').ipcRenderer;
 module.exports = class FieldsBuilder {
 
 	static _attClassList(htmlComponent, classList) {
