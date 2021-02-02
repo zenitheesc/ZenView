@@ -14,7 +14,12 @@ module.exports = class Components {
 		cardHeader.setAttribute('data-target', `#menu_${id}_option`);
 		cardHeader.setAttribute('aria-expanded', startOpen);
 		cardHeader.setAttribute('aria-controls', `menu_${id}_option`);
-		cardHeader.textContent = text;
+
+		const headerTitle = document.createElement('span');
+		headerTitle.textContent = text;
+		cardHeader.appendChild(headerTitle);
+
+		cardHeader.innerHTML += Components.icon('chevron-down');
 
 		const cardBodyCollapse = document.createElement('div');
 		cardBodyCollapse.id = `menu_${id}_option`;

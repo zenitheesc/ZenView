@@ -335,7 +335,15 @@ class Container extends FormPattern {
 		cardHeader.setAttribute('data-target', `#menu_${containerConfig.id}_option`);
 		cardHeader.setAttribute('aria-expanded', containerConfig.startOpen);
 		cardHeader.setAttribute('aria-controls', `menu_${containerConfig.id}_option`);
-		cardHeader.textContent = containerConfig.text;
+
+		const headerTitle = document.createElement('span');
+		headerTitle.textContent = containerConfig.text;
+		cardHeader.appendChild(headerTitle);
+
+		cardHeader.innerHTML += 
+		`<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-chevron-down" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+		<path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5
+		 0 0 1 0-.708z"/></svg>`;
 
 		const cardBodyCollapse = document.createElement('div');
 		cardBodyCollapse.id = `menu_${containerConfig.id}_option`;
