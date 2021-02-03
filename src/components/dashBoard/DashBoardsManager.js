@@ -1,10 +1,12 @@
 const fs = require('fs');
+const hash = require('object-hash');
 const number = require('mathjs').number;
 const DashBoard = require('../../classes/dashBoard');
 const BSONconverter = require('../../classes/bson');
 const Dialog = require('../dialog/dialog');
 const ConfirmationDialog = require('../dialog/confirmationDialog');
 const EventHandler = require('../eventHandler/eventHandler');
+const ipcRenderer = require('electron').ipcRenderer;
 
 module.exports = class DashBoardsManager {
 
@@ -62,6 +64,16 @@ module.exports = class DashBoardsManager {
 
 	}
 
+	resetInitialContext() {
+
+		this.EventHandler.dispatchEvent('ClearDashboard');
+		this.changeGlobalContext('any');
+
+		window.CurrentDashBoard = undefined;
+		ipcRenderer.send('isSaved', true);
+
+	}
+
 	openDashBoard(path) {
 
 		console.log('ABRINDO NOVO DASHBOARD');
@@ -81,6 +93,44 @@ module.exports = class DashBoardsManager {
 		this.EventHandler.DashboardWasOpened();
 		
 		return true;
+
+	}
+
+	openImportedDashboard(detail) {
+
+		for (let i = window['ZenViewConfig'].dashboards.length - 1; i >= 0; i--) {
+
+			if (window['ZenViewConfig'].dashboards[i].path === detail.path) {
+
+				this.EventHandler.AttDashBoardsList();
+				this.EventHandler.SaveConfigs();
+				this.EventHandler.OpenDashBoard({
+
+					context: 'editing',
+					dashBoardPath: detail.path,
+		
+				});
+
+				return;
+
+			}
+
+		}
+
+		window['ZenViewConfig'].dashboards.unshift({
+			'name': detail.name,
+			'path': detail.path,
+			'desc': detail.desc,
+		});
+
+		this.EventHandler.SaveConfigs();
+		this.EventHandler.AttDashBoardsList();
+		this.EventHandler.OpenDashBoard({
+
+			context: 'editing',
+			dashBoardPath: detail.path,
+
+		});
 
 	}
 
@@ -107,7 +157,13 @@ module.exports = class DashBoardsManager {
 
 		const dashBoard = new DashBoard(detail.name, number(detail.numberOfInputs), detail.path, detail.desc);
 		dashBoard.inputGroup.inputGraph = {};
+		
+		const dashBoardHash = hash(dashBoard);
+		dashBoard.hash = dashBoardHash;
+
 		this.BSON.writeFile(detail.path, dashBoard);
+
+		delete dashBoard.hash;
 
 		this.EventHandler.SaveConfigs();
 		this.EventHandler.AttDashBoardsList();
@@ -134,6 +190,13 @@ module.exports = class DashBoardsManager {
 					if (window['ZenViewConfig'].dashboards[i].path === deletePath) {
 
 						window['ZenViewConfig'].dashboards.splice(i, 1);
+
+						if (deletePath === window.CurrentDashBoard.path) {
+
+							this.resetInitialContext();
+							this.EventHandler.dispatchEvent('ResetInitialContext');
+			
+						}
 
 						this.EventHandler.AttDashBoardsList();
 						this.EventHandler.SaveConfigs();
@@ -222,7 +285,7 @@ module.exports = class DashBoardsManager {
 		});
 
 		this.EventHandler.addEventListener('DeleteDashboard', (evt) => {
-
+			
 			this.deleteDashboard(evt.dashBoardPath);
 
 		});
@@ -242,6 +305,12 @@ module.exports = class DashBoardsManager {
 		this.EventHandler.addEventListener('SaveDashBoardDescAndName', (evt) => {
 
 			this.saveDashBoardDescAndName(evt.path, evt.name, evt.desc);
+
+		});
+
+		this.EventHandler.addEventListener('OpenImportedDashboard', (evt) => {
+
+			this.openImportedDashboard(evt);
 
 		});
 

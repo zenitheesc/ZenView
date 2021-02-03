@@ -200,6 +200,18 @@ module.exports = class EventHandler {
 
 		};
 
+		this['OpenImportedDashboard'] = (detail) => {
+
+			this.dispatchEvent('OpenImportedDashboard', detail);
+
+		};
+
+		this['ResetInitialContext'] = (detail) => {
+
+			this.dispatchEvent('ResetInitialContext', detail);
+
+		};
+
 	}
 
 	addEventListener(eventName, callBackFunction) {

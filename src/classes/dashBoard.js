@@ -29,6 +29,7 @@ module.exports = class DashBoard {
 		this.path = path;
 		this.description = description;
 		this.inputGroup = new InputGroup(nbmrInputs);
+		this.saved = true;
 
 	}
 	constructFromJson(dashBoardJson) {
@@ -38,6 +39,7 @@ module.exports = class DashBoard {
 		this.path = dashBoardJson.path;
 		this.description = dashBoardJson.description;
 		this.inputGroup = new InputGroup(dashBoardJson.inputGroup, true);
+		this.saved = dashBoardJson.saved;
 
 	}
 

@@ -87,6 +87,13 @@ module.exports = class TitleBar {
 			ipcRenderer.send('isSaved', false);
 			
 		});
+
+		this.eventHandler.addEventListener('ResetInitialContext', (evt) => {
+
+			this.icon.style.display = 'none';
+			this.windowName.textContent = 'ZenView';
+
+		});
 		
 		ipcRenderer.on('SaveDashboard', (evt) => {
 
