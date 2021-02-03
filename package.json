@@ -2,7 +2,7 @@
   "name": "ZenView",
   "productName": "ZenView",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "A Electron app that eases serial data formatting and visualization. ZenView is a powerful Data visualization tool, which was made especially for Zenith's missions.",
   "main": "src/index.js",
   "scripts": {
     "start": "electron-forge start",
@@ -12,10 +12,16 @@
     "lint": "echo \"No linting configured\""
   },
   "keywords": [],
-  "author": {
-    "name": "NedLandy",
-    "email": "matheus.v4200@gmail.com"
-  },
+  "contributors": [
+    {
+      "name": "Maíra Canal",
+      "url": "https://github.com/mairacanal"
+    },
+    {
+      "name": "Matheus Vieira Gonçalves",
+      "url": "https://github.com/Math-42"
+    }
+  ],
   "license": "MIT",
   "config": {
     "forge": {
