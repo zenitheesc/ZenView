@@ -80,9 +80,15 @@ module.exports = class DahsBoard {
 
 		ipcRenderer.on('ImportDashboard', (evt) => {
 
-			// TODO: Abrir caixa de escolha de diretório
+			ipcRenderer.send('open-file-dialog-for-file', 'bson');
 
-			this.importDashboard(evt);
+			ipcRenderer.on('selected-dir', (evt, arg) => {
+
+				this.importDashboard(arg);
+					
+				ipc.removeAllListeners('selected-dir');
+
+			});
 
 		});
 
