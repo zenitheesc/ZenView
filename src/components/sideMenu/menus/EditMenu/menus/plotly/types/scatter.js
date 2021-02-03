@@ -390,6 +390,8 @@ module.exports = class PlotlyScatter {
 			},
 		});
 
+		this.form.formThree.PlotlySeries.newSerieName.value = '';
+
 	}
 
 	editTrace() {
@@ -398,6 +400,7 @@ module.exports = class PlotlyScatter {
 
 			command: 'editTrace',
 			data: this.form.formThree.PlotlySeriesStyle.self.getData(),
+
 		});
 
 	}
@@ -499,6 +502,7 @@ module.exports = class PlotlyScatter {
 			if (this.form.formThree.PlotlySeries.self.validate()) {
 
 				this.addNewTrace();
+				this.attSeriesSelector();
 
 			}
 
