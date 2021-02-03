@@ -200,6 +200,12 @@ module.exports = class EventHandler {
 
 		};
 
+		this['OpenImportedDashboard'] = (detail) => {
+
+			this.dispatchEvent('OpenImportedDashboard', detail);
+
+		};
+
 	}
 
 	addEventListener(eventName, callBackFunction) {

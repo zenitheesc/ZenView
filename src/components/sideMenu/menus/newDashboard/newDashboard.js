@@ -247,6 +247,12 @@ module.exports = class newDashBoardMenu extends Menu {
 
 		});
 
+		this.eventHandler.addEventListener('ImportDashboard', (evt) => {
+
+			this.resetProgressBarSettings();
+
+		});
+
 	}
 
 };

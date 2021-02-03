@@ -1,4 +1,5 @@
 const fs = require('fs');
+const hash = require('object-hash');
 const number = require('mathjs').number;
 const DashBoard = require('../../classes/dashBoard');
 const BSONconverter = require('../../classes/bson');
@@ -84,6 +85,44 @@ module.exports = class DashBoardsManager {
 
 	}
 
+	openImportedDashboard(detail) {
+
+		for (let i = window['ZenViewConfig'].dashboards.length - 1; i >= 0; i--) {
+
+			if (window['ZenViewConfig'].dashboards[i].path === detail.path) {
+
+				this.EventHandler.AttDashBoardsList();
+				this.EventHandler.SaveConfigs();
+				this.EventHandler.OpenDashBoard({
+
+					context: 'editing',
+					dashBoardPath: detail.path,
+		
+				});
+
+				return;
+
+			}
+
+		}
+
+		window['ZenViewConfig'].dashboards.unshift({
+			'name': detail.name,
+			'path': detail.path,
+			'desc': detail.desc,
+		});
+
+		this.EventHandler.SaveConfigs();
+		this.EventHandler.AttDashBoardsList();
+		this.EventHandler.OpenDashBoard({
+
+			context: 'editing',
+			dashBoardPath: detail.path,
+
+		});
+
+	}
+
 	editingDashBoard(details) {
 
 		if (this.openDashBoard(details.dashBoardPath)) this.changeGlobalContext('editing');
@@ -107,7 +146,13 @@ module.exports = class DashBoardsManager {
 
 		const dashBoard = new DashBoard(detail.name, number(detail.numberOfInputs), detail.path, detail.desc);
 		dashBoard.inputGroup.inputGraph = {};
+		
+		const dashBoardHash = hash(dashBoard);
+		dashBoard.hash = dashBoardHash;
+
 		this.BSON.writeFile(detail.path, dashBoard);
+
+		delete dashBoard.hash;
 
 		this.EventHandler.SaveConfigs();
 		this.EventHandler.AttDashBoardsList();
@@ -242,6 +287,12 @@ module.exports = class DashBoardsManager {
 		this.EventHandler.addEventListener('SaveDashBoardDescAndName', (evt) => {
 
 			this.saveDashBoardDescAndName(evt.path, evt.name, evt.desc);
+
+		});
+
+		this.EventHandler.addEventListener('OpenImportedDashboard', (evt) => {
+
+			this.openImportedDashboard(evt);
 
 		});
 

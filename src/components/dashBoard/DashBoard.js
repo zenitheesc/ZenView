@@ -4,6 +4,8 @@ const hash = require('object-hash');
 const BlockContainer = require('../blockContainer/blockContainer');
 const EventHandler = require('../eventHandler/eventHandler');
 const BSONconverter = require('../../classes/bson');
+const DashBoard = require('../../classes/dashBoard');
+const Dialog = require('../dialog/dialog');
 
 module.exports = class DahsBoard {
 
@@ -135,16 +137,15 @@ module.exports = class DahsBoard {
 		const currentDashBoard = window.CurrentDashBoard;
 		
 		this.blocks.forEach((block) => blocksLog.push(block.blockLog()));
-		currentDashBoard.blocks = blocksLog;
 		
-		delete currentDashBoard.saved;
+		currentDashBoard.blocks = blocksLog;
+		currentDashBoard.saved = true;
 		
 		const dashboardHash = hash(currentDashBoard);
 		currentDashBoard.hash = dashboardHash;
 		
 		this.BSON.writeFile(currentDashBoard.path, currentDashBoard);
 		
-		currentDashBoard.saved = true;
 		ipcRenderer.send('isSaved', true);
 		
 		if (onClose) ipcRenderer.send('closeOnSave');
@@ -153,10 +154,32 @@ module.exports = class DahsBoard {
 
 	importDashboard(path) {
 		
-		console.log('Importou: ' + path);
-		console.log('Abriu novo dashboard');
+		const dashboardJSON = this.BSON.readFile(path);
+		const dashboardHash = dashboardJSON.hash;
+		const dashboard = new DashBoard(dashboardJSON);
+		
+		if (dashboard.blocks.length === 0) {
+			
+			dashboard.inputGroup.inputGraph = {};
+			
+		}
+		
+		const dashboardIdealHash = hash(dashboard);
+		
+		if (dashboardHash === dashboardIdealHash) {
+			
+			dashboard.path = path;
+			this.eventHandler.dispatchEvent('OpenImportedDashboard', dashboard);
 
-		// const document = this.BSON.readFile(path);
+		} else {
+
+			Dialog.showDialog({
+				title: 'Error',
+				message: 'Este dashboard foi modificado externamente e não pode ser aberto.',
+				buttons: ['Ok'],
+			});
+
+		}
 
 	}
 

@@ -16,8 +16,7 @@ module.exports = class BSONconverter {
 
     readFile(path) {
 
-        const JSONdocument = BSON.deserialize(fs.readFileSync(path));
-        return JSONdocument;
+        return BSON.deserialize(fs.readFileSync(path));
 
     }
 
