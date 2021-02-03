@@ -6,6 +6,7 @@ const BSONconverter = require('../../classes/bson');
 const Dialog = require('../dialog/dialog');
 const ConfirmationDialog = require('../dialog/confirmationDialog');
 const EventHandler = require('../eventHandler/eventHandler');
+const ipcRenderer = require('electron').ipcRenderer;
 
 module.exports = class DashBoardsManager {
 
@@ -60,6 +61,16 @@ module.exports = class DashBoardsManager {
 			return false;
 
 		}
+
+	}
+
+	resetInitialContext() {
+
+		this.EventHandler.dispatchEvent('ClearDashboard');
+		this.changeGlobalContext('any');
+
+		window.CurrentDashBoard = undefined;
+		ipcRenderer.send('isSaved', true);
 
 	}
 
@@ -180,6 +191,13 @@ module.exports = class DashBoardsManager {
 
 						window['ZenViewConfig'].dashboards.splice(i, 1);
 
+						if (deletePath === window.CurrentDashBoard.path) {
+
+							this.resetInitialContext();
+							this.EventHandler.dispatchEvent('ResetInitialContext');
+			
+						}
+
 						this.EventHandler.AttDashBoardsList();
 						this.EventHandler.SaveConfigs();
 
@@ -267,7 +285,7 @@ module.exports = class DashBoardsManager {
 		});
 
 		this.EventHandler.addEventListener('DeleteDashboard', (evt) => {
-
+			
 			this.deleteDashboard(evt.dashBoardPath);
 
 		});

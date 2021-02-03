@@ -209,7 +209,7 @@ module.exports = class newDashBoardMenu extends Menu {
 					
 					clearInterval(id);
 					this.progress = 0;
-					
+
 				} else {
 					
 					width++;
@@ -218,7 +218,7 @@ module.exports = class newDashBoardMenu extends Menu {
 				}
 
 			}, 10);
-		
+
 		}
 
 	}
@@ -241,15 +241,9 @@ module.exports = class newDashBoardMenu extends Menu {
 		this.dropzoneConfig();
 		this.setFormConfigs();
 
-		this.eventHandler.addEventListener('DashboardWasOpened', (evt) => {
+		this.EventHandler.addEventListener('DashboardWasOpened', (evt) => {
 
-			this.resetProgressBarSettings();
-
-		});
-
-		this.eventHandler.addEventListener('ImportDashboard', (evt) => {
-
-			this.resetProgressBarSettings();
+			setTimeout(() => this.resetProgressBarSettings(), 2000);
 
 		});
 

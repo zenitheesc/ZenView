@@ -206,6 +206,12 @@ module.exports = class EventHandler {
 
 		};
 
+		this['ResetInitialContext'] = (detail) => {
+
+			this.dispatchEvent('ResetInitialContext', detail);
+
+		};
+
 	}
 
 	addEventListener(eventName, callBackFunction) {
