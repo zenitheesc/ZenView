@@ -20,6 +20,7 @@ class FormPattern {
 		if (formConfig.className !== undefined) this.htmlComponent.className = formConfig.className;
 		this.config = config;
 		this.fields = [];
+		this.containers = [];
 		this.conditions = [];
 		this.formThree = {};
 		this._BuildFormThree();
@@ -50,10 +51,11 @@ class FormPattern {
 				this.formThree[property] = this.config[property];
 				this.fields.push(this.config[property]);
 
+
 			} else {
 
-				this.fields = this.fields.concat(this.config[property].fields);
 				this.formThree[property] = this.config[property].formThree;
+				this.containers.push(this.config[property]);
 
 			}
 
@@ -149,7 +151,14 @@ class FormPattern {
 
 		let response = true;
 
-		for (let i = 0, j = this.fields.length; i < j; i++) {
+
+		for (let i = 0; i < this.containers.length; i++) {
+
+			response = this.containers[i].validate();
+
+		}
+
+		for (let i = 0; i < this.fields.length; i++) {
 
 			if (!this.fields[i].validate()) {
 
@@ -158,18 +167,27 @@ class FormPattern {
 			}
 
 		}
+
 		return response;
 
 	}
 
-	getData() {
+	getData(preResponse) {
 
-		const response = {};
+		const response = preResponse || {};
+
+		this.containers.forEach((container) => {
+
+			container.getData(response);
+
+		});
+
 		this.fields.forEach((field) => {
 
 			this.createResponseObj(response, field.parsedAtt, field.value);
 
 		});
+
 		return response.form || response;
 
 	}
@@ -180,37 +198,17 @@ class FormPattern {
 		wrapper.form = DataObj;
 		const atts = this.objToPathList(wrapper);
 
+		this.containers.forEach((container) => {
+
+			container.setData(DataObj);
+
+		});
+
 		this.fields.forEach((field) => {
 
 			if (atts[field.att] !== undefined) {
 
-				if (field.type === 'select') {
-
-					let found = false;
-
-					for (let i = 0; i < field.input.options.length; i++) {
-
-						if (field.input.options[i].value == atts[field.att] || field.input.options[i].text == atts[field.att]) {
-
-							found = true;
-							field.input.options[i].selected = 'select';
-							break;
-
-						}
-
-					}
-
-					if (!found && field.input.options.length > 0) {
-
-						field.input.options[0].selected = 'select';
-
-					}
-
-				} else {
-
-					field.value = atts[field.att];
-
-				}
+				field.value = atts[field.att];
 
 			}
 
@@ -279,6 +277,13 @@ class FormPattern {
 
 	reset() {
 
+		this.containers.forEach((container) => {
+
+			container.reset();
+
+		});
+
+
 		this.fields.forEach((field) => {
 
 			field.reset();
@@ -340,8 +345,8 @@ class Container extends FormPattern {
 		headerTitle.textContent = containerConfig.text;
 		cardHeader.appendChild(headerTitle);
 
-		cardHeader.innerHTML += 
-		`<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-chevron-down" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+		cardHeader.innerHTML +=
+			`<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-chevron-down" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 		<path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5
 		 0 0 1 0-.708z"/></svg>`;
 
