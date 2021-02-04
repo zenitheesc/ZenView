@@ -8,9 +8,39 @@ module.exports = class Select extends Field {
 
 	}
 
+	set value(value) {
+
+		let found = false;
+
+		for (let i = 0; i < this.input.options.length; i++) {
+
+			if (this.input.options[i].value == value || this.input.options[i].text == value) {
+
+				found = true;
+				this.input.options[i].selected = 'select';
+				break;
+
+			}
+
+		}
+
+		if (!found && this.input.options.length > 0) {
+
+			this.input.options[0].selected = 'select';
+
+		}
+
+	}
+
+	get value() {
+
+		return this.input.value;
+
+	}
+
 	addOption(option, callBack) {
 
-		callBack = callBack || function(option) {
+		callBack = callBack || function (option) {
 
 			return [option.value || option.text, option.text || option.value];
 
