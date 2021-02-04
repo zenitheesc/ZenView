@@ -33,7 +33,7 @@ module.exports = class BlockContainer {
 
 	updateBlockConfig(newConfig) {
 
-		console.log(newConfig, this.block);
+		console.log(newConfig);
 
 		this.eventHandler.dispatchEvent('DashboardNotSaved');
 
@@ -47,7 +47,6 @@ module.exports = class BlockContainer {
 
 				this.preConfig = newConfig;
 				this.block = new Blocks[this.preConfig.type](this.preConfig);
-				console.log(this.block);
 				this.htmlComponent.innerHTML = '';
 
 				this.content = this.block.htmlComponent;
