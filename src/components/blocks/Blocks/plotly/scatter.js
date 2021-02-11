@@ -18,6 +18,9 @@ module.exports = class Scatter extends Block {
 		preConfig.layout = (preConfig.layout) ? preConfig.layout : {};
 		preConfig.data = (preConfig.data) ? preConfig.data : [];
 
+		this.colors = ['#1F77B4', '#FF7F0E', '#2CA02C', '#D62728', '#9467BD', '#8C564D', '#E377C2', '#7F7F7F', '#BCBD22', '#17BECF'];
+		this.colorCount = 0;
+
 		this.config = preConfig.config;
 		this.layout = preConfig.layout;
 		this.data = preConfig.data;
@@ -67,17 +70,27 @@ module.exports = class Scatter extends Block {
 
 		});
 
+		newTrace.line
+
 		Plotly.addTraces(this.htmlComponent, {
 			name: newTrace.name,
 			x: x,
 			y: y,
 			mode: newTrace.mode,
-			line: newTrace.line,
-			marker: newTrace.marker,
+			line: {
+				width: 4,
+				dash: 'solid',
+				shape: 'linear',
+				color: String([this.colors[this.colorCount]]),
+			},
+			marker: {
+				size: 6,
+                color: String([this.colors[this.colorCount]]),
+			},
 
 		});
 
-
+		this.colorCount = (this.colorCount + 1) % this.colors.length;
 		Plotly.update(this.htmlComponent);
 
 	}
@@ -130,7 +143,7 @@ module.exports = class Scatter extends Block {
 				newData.mode = 'lines';
 				newData.visible = true;
 
-			} else if (!newData['showmarkers'] && !newData['showlines']) {
+			} else if (!newData['showMarkers'] && !newData['showLines']) {
 
 				newData.visible = false;
 
