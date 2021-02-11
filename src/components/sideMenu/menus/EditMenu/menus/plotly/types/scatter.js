@@ -10,6 +10,180 @@ module.exports = class PlotlyScatter {
 
 		this.eventHandler = new EventHandler();
 
+		this.styleSection = Container.spliter({
+			selectedSerie: Field.select({
+				att: 'currTraceName',
+				label: 'Série',
+			}),
+			showMarkers: Field.checkBox({
+				label: 'Pontos',
+				att: 'showMarkers',
+				id: 'PlotlyScatterShowMarkers',
+			}),
+			markersOptions: Container.div({
+				markerStyle: Container.formRow({
+					markersSize: Field.select(
+						{
+							label: 'Tamanho',
+							att: 'size',
+							classList: ['col-6'],
+							options: [
+								{
+									text: 4,
+								},
+								{
+									text: 6,
+								},
+								{
+									text: 8,
+								},
+								{
+									text: 10,
+								},
+								{
+									text: 12,
+								},
+								{
+									text: 14,
+								},
+							],
+						},
+					),
+					markersColor: Field.colorPicker({
+						label: 'Cor',
+						att: 'color',
+						classList: ['col-6'],
+					}),
+				}),
+			}, {
+				att: 'marker',
+				conditions: [
+					{
+						id: 'PlotlyScatterShowMarkers',
+						att: 'checked',
+						requiredValue: true,
+					},
+				],
+			}),
+			showLines: Field.checkBox({
+				label: 'Linhas',
+				att: 'showLines',
+				id: 'PlotlyScatterShowLines',
+			}),
+			lineOptions: Container.div({
+				linStyle: Container.formRow({
+					lineWidth: Field.select(
+						{
+							label: 'Tamanho',
+							att: 'width',
+							classList: ['col-6'],
+							options: [
+								{
+									text: 4,
+								},
+								{
+									text: 6,
+								},
+								{
+									text: 8,
+								},
+								{
+									text: 10,
+								},
+								{
+									text: 12,
+								},
+								{
+									text: 14,
+								},
+							],
+						},
+					),
+					lineColor: Field.colorPicker({
+						label: 'Cor',
+						att: 'color',
+						classList: ['col-6'],
+					}),
+				}),
+				lineOption: Container.formRow({
+					lineDash: Field.select(
+						{
+							label: 'Tracejado',
+							att: 'dash',
+							classList: ['col-6'],
+							options: [
+								{
+									text: 'Sólido',
+									value: 'solid',
+								},
+								{
+									text: 'Pontilhado',
+									value: 'dot',
+								},
+								{
+									text: 'Tracejado',
+									value: 'dash',
+								},
+								{
+									text: 'Travessão',
+									value: 'longdash',
+								},
+								{
+									text: 'Traço e ponto',
+									value: 'dashdot',
+								},
+							],
+						},
+					),
+					lineShape: Field.select({
+						label: 'Interpolação',
+						att: 'shape',
+						classList: ['col-6'],
+						options: [
+							{
+								text: 'Linear',
+								value: 'linear',
+							},
+							{
+								text: 'Suave',
+								value: 'spline',
+							},
+							{
+								text: 'Degraus 1',
+								value: 'hv',
+							},
+							{
+								text: 'Degraus 2',
+								value: 'vh',
+							},
+							{
+								text: 'Degraus 3',
+								value: 'hvh',
+							},
+							{
+								text: 'Degraus 4',
+								value: 'vhv',
+							},
+						],
+					}),
+				}),
+			}, {
+				att: 'line',
+				conditions: [
+					{
+						id: 'PlotlyScatterShowLines',
+						att: 'checked',
+						requiredValue: true,
+					},
+				],
+			}),
+		}, {
+			startOpen: false,
+			att: 'trace',
+			text: 'Estilo',
+			id: 'PlotlySeriesStyle',
+		});
+
 		this.form = Container.div({
 			PlotlySeries: Container.spliter({
 				newSerieName: Field.text({
@@ -49,179 +223,7 @@ module.exports = class PlotlyScatter {
 				text: 'Series',
 				id: 'PlotlySeries',
 			}),
-			PlotlySeriesStyle: Container.spliter({
-				selectedSerie: Field.select({
-					att: 'currTraceName',
-					label: 'Série',
-				}),
-				showMarkers: Field.checkBox({
-					label: 'Pontos',
-					att: 'showMarkers',
-					id: 'PlotlyScatterShowMarkers',
-				}),
-				markersOptions: Container.div({
-					markerStyle: Container.formRow({
-						markersSize: Field.select(
-							{
-								label: 'Tamanho',
-								att: 'size',
-								classList: ['col-6'],
-								options: [
-									{
-										text: 4,
-									},
-									{
-										text: 6,
-									},
-									{
-										text: 8,
-									},
-									{
-										text: 10,
-									},
-									{
-										text: 12,
-									},
-									{
-										text: 14,
-									},
-								],
-							},
-						),
-						markersColor: Field.colorPicker({
-							label: 'Cor',
-							att: 'color',
-							classList: ['col-6'],
-						}),
-					}),
-				}, {
-					att: 'marker',
-					conditions: [
-						{
-							id: 'PlotlyScatterShowMarkers',
-							att: 'checked',
-							requiredValue: true,
-						},
-					],
-				}),
-				showLines: Field.checkBox({
-					label: 'Linhas',
-					att: 'showLines',
-					id: 'PlotlyScatterShowLines',
-				}),
-				lineOptions: Container.div({
-					linStyle: Container.formRow({
-						lineWidth: Field.select(
-							{
-								label: 'Tamanho',
-								att: 'width',
-								classList: ['col-6'],
-								options: [
-									{
-										text: 4,
-									},
-									{
-										text: 6,
-									},
-									{
-										text: 8,
-									},
-									{
-										text: 10,
-									},
-									{
-										text: 12,
-									},
-									{
-										text: 14,
-									},
-								],
-							},
-						),
-						lineColor: Field.colorPicker({
-							label: 'Cor',
-							att: 'color',
-							classList: ['col-6'],
-						}),
-					}),
-					lineOption: Container.formRow({
-						lineDash: Field.select(
-							{
-								label: 'Tracejado',
-								att: 'dash',
-								classList: ['col-6'],
-								options: [
-									{
-										text: 'Sólido',
-										value: 'solid',
-									},
-									{
-										text: 'Pontilhado',
-										value: 'dot',
-									},
-									{
-										text: 'Tracejado',
-										value: 'dash',
-									},
-									{
-										text: 'Travessão',
-										value: 'longdash',
-									},
-									{
-										text: 'Traço e ponto',
-										value: 'dashdot',
-									},
-								],
-							},
-						),
-						lineShape: Field.select({
-							label: 'Interpolação',
-							att: 'shape',
-							classList: ['col-6'],
-							options: [
-								{
-									text: 'Linear',
-									value: 'linear',
-								},
-								{
-									text: 'Suave',
-									value: 'spline',
-								},
-								{
-									text: 'Degraus 1',
-									value: 'hv',
-								},
-								{
-									text: 'Degraus 2',
-									value: 'vh',
-								},
-								{
-									text: 'Degraus 3',
-									value: 'hvh',
-								},
-								{
-									text: 'Degraus 4',
-									value: 'vhv',
-								},
-							],
-						}),
-					}),
-				}, {
-					att: 'line',
-					conditions: [
-						{
-							id: 'PlotlyScatterShowLines',
-							att: 'checked',
-							requiredValue: true,
-						},
-					],
-				}),
-			}, {
-				startOpen: false,
-				att: 'trace',
-				text: 'Estilo',
-				id: 'PlotlySeriesStyle',
-			}),
+			PlotlySeriesStyle: this.styleSection,
 			plotlyXAxesStyle: Container.spliter({
 				xAxesTitle: Field.text({
 					att: 'title.text',
@@ -366,7 +368,7 @@ module.exports = class PlotlyScatter {
 			}
 
 		}
-		
+
 		return true;
 
 	}
@@ -379,14 +381,6 @@ module.exports = class PlotlyScatter {
 			data: {
 				name: this.form.formThree.PlotlySeries.newSerieName.value,
 				mode: 'lines+markers',
-				line: {
-					width: '3',
-					dash: 'solid',
-					shape: 'linear',
-				},
-				marker: {
-					size: '5',
-				},
 			},
 		});
 
@@ -399,7 +393,7 @@ module.exports = class PlotlyScatter {
 		window.CurrentBlock.sendBlockInstruction({
 
 			command: 'editTrace',
-			data: this.form.formThree.PlotlySeriesStyle.self.getData(),
+			data: this.styleSection.getData(),
 
 		});
 
@@ -407,52 +401,12 @@ module.exports = class PlotlyScatter {
 
 	attStyleSection() {
 
-		const currentSerieName = this.form.formThree.PlotlySeriesStyle.selectedSerie.value;
-		let currentSerie;
+		const currentSerieName = this.styleSection.formThree.selectedSerie.value;
+		const currentSerie = this.setTraceType(this.getTraceByName(currentSerieName));
 
-		for (let i = 0; i < window.CurrentBlock.block.data.length; i++) {
+		this.styleDataSetter(currentSerie);
 
-			if (window.CurrentBlock.block.data[i].name === currentSerieName) {
-
-				currentSerie = window.CurrentBlock.block.data[i];
-				break;
-
-			}
-
-		}
-
-		if (currentSerie === undefined) {
-
-			return;
-
-		}
-
-		if (currentSerie.mode === 'lines+markers' || currentSerie.mode === undefined) {
-
-			currentSerie.showmarkers = true;
-			currentSerie.showlines = true;
-
-		} else if (currentSerie.mode === 'markers') {
-
-			currentSerie.showmarkers = true;
-			currentSerie.showlines = false;
-
-		} else if (currentSerie.mode === 'lines') {
-
-			currentSerie.showlines = true;
-			currentSerie.showmarkers = false;
-			if (currentSerie.visible == false) {
-
-				currentSerie.showlines = false;
-
-			}
-
-		}
-
-
-		const wrapper = {};
-		wrapper['Plotly.scatter.trace'] = currentSerie;
-		this.form.formThree.PlotlySeriesStyle.self.setData(wrapper);
+		this.styleSection.setConditions();
 
 
 	}
@@ -469,7 +423,7 @@ module.exports = class PlotlyScatter {
 
 	}
 
-	init() {
+	setEvents() {
 
 		this.eventHandler.addEventListener('AttInputList', () => {
 
@@ -483,19 +437,109 @@ module.exports = class PlotlyScatter {
 
 		});
 
-		this.form.formThree.PlotlySeriesStyle.selectedSerie.htmlComponent.addEventListener('input', (evt) => {
+		this.styleSection.formThree.selectedSerie.htmlComponent.addEventListener('input', (evt) => {
 
 			this.attStyleSection();
 			evt.stopPropagation();
 
 		});
 
-		this.form.formThree.PlotlySeriesStyle.self.htmlComponent.addEventListener('input', (evt) => {
+		this.styleSection.htmlComponent.addEventListener('input', (evt) => {
 
 			this.editTrace();
 			evt.stopPropagation();
 
 		});
+
+
+	}
+
+	getTraceByName(serieName) {
+
+		let currentSerie;
+
+		for (let i = 0; i < window.CurrentBlock.block.data.length; i++) {
+
+			if (window.CurrentBlock.block.data[i].name === serieName) {
+
+				currentSerie = window.CurrentBlock.block.data[i];
+				break;
+
+			}
+
+		}
+
+		return currentSerie;
+
+	}
+
+	setTraceType(currentSerie) {
+
+		if (!currentSerie) {
+
+			return currentSerie = {
+				showMarkers: false,
+				showLines: false,
+			};
+
+		};
+
+		if (currentSerie.mode === 'lines+markers' || currentSerie.mode === undefined) {
+
+			currentSerie.showMarkers = true;
+			currentSerie.showLines = true;
+
+		} else if (currentSerie.mode === 'markers') {
+
+			currentSerie.showMarkers = true;
+			currentSerie.showLines = false;
+
+		} else {
+
+			currentSerie.showLines = true;
+			currentSerie.showMarkers = false;
+			if (currentSerie.visible == false) {
+
+				currentSerie.showLines = false;
+
+			}
+
+		}
+
+		return currentSerie;
+
+	}
+
+	styleDataSetter(currentSerie) {
+
+		const wrapper = {};
+		wrapper['Plotly.scatter.trace'] = currentSerie;
+
+		this.styleSection.containers.forEach((container) => {
+
+			container.setData(wrapper);
+
+		});
+
+		wrapper['form.Plotly.scatter.trace'] = currentSerie;
+		const atts = this.styleSection.objToPathList(wrapper);
+
+		this.styleSection.fields.forEach((field) => {
+
+
+			if (atts[field.att] !== undefined) {
+
+				field.value = atts[field.att];
+
+			}
+
+		});
+
+	}
+
+	init() {
+
+		this.setEvents();
 
 		this.form.formThree.PlotlySeries.newSerieName.append[0].onclick = () => {
 
@@ -503,21 +547,23 @@ module.exports = class PlotlyScatter {
 
 				this.addNewTrace();
 				this.attSeriesSelector();
+				if (window.CurrentBlock.block.data.length <= 1) this.attStyleSection();
+
 
 			}
 
 		};
 
-		this.eventHandler.addEventListener('BlockWasSelected', (evt) => {
+		this.styleSection.setData = () => {
 
-			if (evt.block.formConfig.type === 'Plotly' && evt.block.formConfig.Plotly.type === 'scatter') {
+			this.attSeriesSelector();
 
-				this.attSeriesSelector();
-				this.attStyleSection();
+			const currentSerieName = this.styleSection.formThree.selectedSerie.value;
+			const currentSerie = this.setTraceType(this.getTraceByName(currentSerieName));
 
-			}
+			this.styleDataSetter(currentSerie);
 
-		});
+		};
 
 	}
 
