@@ -73,8 +73,6 @@ module.exports = class EditMenu extends Menu {
 
 			this.form.htmlComponent.classList.remove('d-none');
 			this.panel.classList.add('d-none');
-			this.form.setData(window.CurrentBlock.block.formConfig);
-			this.form.setConditions();
 
 		} else {
 
