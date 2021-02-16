@@ -14,13 +14,6 @@ module.exports = class TitleBar {
 
 	}
 
-	setStyle() {
-
-		const closedWidth = String(Math.floor(screen.width / 32) + 'px');
-		document.getElementById('menu-btn').style.width = closedWidth;
-
-	}
-
 	setEvents() {
 
 		const menuButton = document.getElementById('menu-btn');
@@ -155,7 +148,6 @@ module.exports = class TitleBar {
 	build() {
 
 		this.createTitleBar();
-		this.setStyle();
 		this.setEvents();
 
 	}

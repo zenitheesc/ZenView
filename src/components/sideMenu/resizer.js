@@ -2,25 +2,25 @@ const interact = require('interactjs');
 
 module.exports = class Resizer {
 
-    constructor(){
+    constructor() {
 
         this.element = document.getElementById('SideMenu');
 
     }
-    build(){
+    build() {
         
         interact(this.element).resizable({
             edges: {
                 top: false,
                 left: true,
                 bottom: false,
-                right:  true,
+                right: true,
             },
             listeners: {
-                move (event) {
+                move(event) {
                 
-                    let target = event.target;
-                    let append = document.getElementById('Menus');
+                    const target = event.target;
+                    const append = document.getElementById('Menus');
                     let x = (parseFloat(target.getAttribute('data-x')) || 0);
                     
                     if (append.style.display === 'block') {
@@ -28,7 +28,7 @@ module.exports = class Resizer {
                         target.style.width = event.rect.width + 'px';
                         append.style.width = (event.rect.width - Math.floor(screen.width / 32)) + 'px';
                 
-                        x += event.deltaRect.left
+                        x += event.deltaRect.left;
                 
                         target.style.webkitTransform = target.style.transform =
                             'translate(' + x + 'px, 0)';
@@ -37,7 +37,7 @@ module.exports = class Resizer {
                     
                     }
 
-                }
+                },
             },
             modifiers: [
                 interact.modifiers.restrictSize({
@@ -46,13 +46,21 @@ module.exports = class Resizer {
                 }),
             ],
             cursorChecker: (action, interactable, element, interacting) => {
+
                 if (document.getElementById('Menus').style.display === 'block') {
+
                     return 'ew-resize';
+                
                 } else {
+
                     return 'default';
+                
                 }
-            }
+            
+            },
 
         });
+    
     }
-}
+
+};

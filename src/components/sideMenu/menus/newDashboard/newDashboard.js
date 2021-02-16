@@ -89,7 +89,7 @@ module.exports = class newDashBoardMenu extends Menu {
 		this.dropzone = document.createElement('div');
 		const spliter = Components.spliter('importDashboardSpliter', 'Importar Dashboard', this.dropzone, true);
 		
-		this.dropzone.style.padding = '4em 1.4em';
+		this.dropzone.style.padding = '3em 1.4em';
 		this.dropzone.style.color = 'whitesmoke';
 		this.dropzone.style.textAlign = 'center';
 		this.dropzone.style.border = '1px dashed #a9a9a963';
@@ -168,7 +168,7 @@ module.exports = class newDashBoardMenu extends Menu {
         
 		};
 
-		this.menuComponent.appendChild(spliter);
+		return spliter;
 
 	}
 
@@ -237,8 +237,13 @@ module.exports = class newDashBoardMenu extends Menu {
 
 	load() {
 
-		this.menuComponent.appendChild(this.form.htmlComponent);
-		this.dropzoneConfig();
+		const container = document.createElement('div');
+		container.style.overflowY = 'auto';
+		container.style.height = '100%';
+
+		container.appendChild(this.form.htmlComponent);
+		container.appendChild(this.dropzoneConfig());
+		this.menuComponent.appendChild(container);
 		this.setFormConfigs();
 
 		this.EventHandler.addEventListener('DashboardWasOpened', (evt) => {

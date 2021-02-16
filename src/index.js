@@ -31,6 +31,8 @@ const mainWindowparams = {
 	title: 'ZenView',
 	path: '../src/index.html',
 	frame: false,
+	width: 1024,
+	height: 600,
 	show: debugMode,
 	webPreferences: {
 		nodeIntegration: true,
