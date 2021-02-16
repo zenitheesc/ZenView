@@ -20,7 +20,7 @@ module.exports = class InputsMenu extends Menu {
 		});
 
 		this.entryInput = new Form({
-			newDashboardSpliter: Container.spliter({
+			newInputSpliter: Container.spliter({
 				name: Field.text({
 					label: 'Tag',
 					att: 'name',
@@ -76,14 +76,14 @@ module.exports = class InputsMenu extends Menu {
 		if (!this.entryInput.validate()) return;
 
 		const inputData = this.entryInput.getData();
-		inputData.expressionEntry = this.entryInput.fields[1].input;
+		inputData.expressionEntry = this.entryInput.formThree.newInputSpliter.expression.input;
 
 		inputData.callback = (answer) =>{
 
 			if (answer.error) {
 
-				if (answer.nameError) this.entryInput.formThree.newDashboardSpliter.name.showWarning(answer.nameError);
-				if (answer.expressionError) this.entryInput.formThree.newDashboardSpliter.expression.showWarning(answer.expressionError);
+				if (answer.nameError) this.entryInput.formThree.newInputSpliter.name.showWarning(answer.nameError);
+				if (answer.expressionError) this.entryInput.formThree.newInputSpliter.expression.showWarning(answer.expressionError);
 
 			} else {
 
@@ -103,14 +103,14 @@ module.exports = class InputsMenu extends Menu {
 		if (!this.entryInput.validate()) return;
 
 		const inputData = this.entryInput.getData();
-		inputData.expressionEntry = this.entryInput.fields[1].input;
+		inputData.expressionEntry = this.entryInput.formThree.newInputSpliter.expression.input;
 
 		inputData.callback = (answer) =>{
 
 			if (answer.error) {
 
-				if (answer.nameError) this.entryInput.formThree.newDashboardSpliter.name.showWarning(answer.nameError);
-				if (answer.expressionError) this.entryInput.formThree.newDashboardSpliter.expression.showWarning(answer.expressionError);
+				if (answer.nameError) this.entryInput.formThree.newInputSpliter.name.showWarning(answer.nameError);
+				if (answer.expressionError) this.entryInput.formThree.newInputSpliter.expression.showWarning(answer.expressionError);
 
 			} else {
 
@@ -195,15 +195,15 @@ module.exports = class InputsMenu extends Menu {
 			},
 			],
 		});
-		this.tribute.attach(this.entryInput.formThree.newDashboardSpliter.expression.input);
+		this.tribute.attach(this.entryInput.formThree.newInputSpliter.expression.input);
 
 	}
 
 	setEditMode(currentName, currentExp) {
 
 		this.button.htmlComponent.textContent = 'Editar entrada';
-		this.entryInput.fields[0].value = currentName;
-		this.entryInput.fields[1].value = currentExp;
+		this.entryInput.formThree.newInputSpliter.name.value = currentName;
+		this.entryInput.formThree.newInputSpliter.expression.value = currentExp;
 		this.currentInputName = currentName;
 		this.editMode = true;
 
@@ -211,14 +211,14 @@ module.exports = class InputsMenu extends Menu {
 
 	cleanInputEntry() {
 
-		this.entryInput.fields[0].value = '';
-		this.entryInput.fields[1].value = '';
+		this.entryInput.formThree.newInputSpliter.name.value = '';
+		this.entryInput.formThree.newInputSpliter.expression.value = '';
 
 	}
 
 	appendTag(tag) {
 
-		this.entryInput.formThree.newDashboardSpliter.expression.input.appendChild(tag);
+		this.entryInput.formThree.newInputSpliter.expression.input.appendChild(tag);
 
 	}
 
