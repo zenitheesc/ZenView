@@ -13,7 +13,7 @@ module.exports = class TextArea extends Field {
 		const input = document.createElement('textarea');
 		options.type = 'textArea';
 		input.classList.add('form-control');
-		input.style.height = '16em';
+		input.style.height = '12em';
 		if (options.id !== undefined) input.id = options.id;
 		options.input = input;
 

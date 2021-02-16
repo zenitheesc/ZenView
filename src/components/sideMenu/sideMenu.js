@@ -1,6 +1,6 @@
 const EventHandler = require('../eventHandler/eventHandler');
 const MenuList = require('./menuBar/menuList');
-const Resizer = require('./resizer');
+// const Resizer = require('./resizer');
 const Menus = require('./menus');
 
 module.exports = class SideMenu {
@@ -10,7 +10,7 @@ module.exports = class SideMenu {
 		this.isOpen = false;
 		this.currentMenu;
 		this.MenuList = new MenuList();
-		this.resizer = new Resizer();
+		// this.resizer = new Resizer();
 		this.Menus = [];
 		this.EventHandler = new EventHandler();
 
@@ -18,8 +18,8 @@ module.exports = class SideMenu {
 		this.menuListComponent = document.getElementById('MenuList');
 		this.menusComponent = document.getElementById('Menus');
 
-		this.closedWidth = String(Math.floor(screen.width / 32) + 'px');
-		this.openedWidth = String(Math.floor(screen.width / 4) + 'px');
+		this.closedWidth = '3em';
+		this.openedWidth = '28em';
 
 	}
 	setStyle() {
@@ -61,7 +61,7 @@ module.exports = class SideMenu {
 
 		this.sideMenuComponent.style.width = this.openedWidth;
 		this.menusComponent.style.display = 'block';
-		this.menusComponent.style.width = (Math.floor(screen.width / 4) - Math.floor(screen.width / 32)) + 'px';
+		this.menusComponent.style.width = '25em';
 		this.isOpen = true;
 
 	}
@@ -101,7 +101,7 @@ module.exports = class SideMenu {
 		this.MenuList.build();
 		this.loadMenus();
 		this.setStyle();
-		this.resizer.build();
+		// this.resizer.build();
 
 	}
 

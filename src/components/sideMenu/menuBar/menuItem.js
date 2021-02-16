@@ -38,7 +38,7 @@ module.exports = class MenuItem {
 	setStyle() {
 
 		this.itemComponent.style.width = '100%';
-		this.itemComponent.style.height = String(Math.floor(screen.width / 32) + 'px');
+		this.itemComponent.style.height = '3em';
 		this.itemComponent.className = 'btn menuItem row m-0 deactive';
 		this.itemComponent.title = this.menuName;
 		this.setIcon();
