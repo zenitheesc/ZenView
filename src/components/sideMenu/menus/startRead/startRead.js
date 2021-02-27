@@ -5,6 +5,7 @@ const Container = require('../../../formBuilder/formBuilder').Container;
 const Field = require('../../../formBuilder/formBuilder').Field;
 const EventHandler = require('../../../eventHandler/eventHandler');
 const Dialog = require('../../../dialog/dialog');
+const SerialPort = require('serialport');
 module.exports = class StartRead extends Menu {
 
 	constructor() {
@@ -12,6 +13,24 @@ module.exports = class StartRead extends Menu {
 		super('Leitura', 'start_menu');
 		this.EventHandler = new EventHandler();
 		this.isReading = false;
+
+		this.serialPorts = () => SerialPort.list().then(
+			(ports) => {
+
+				const options = [];
+
+				ports.forEach((port) => {
+
+					if (port.path.slice(5, 9) !== 'ttyS') options.push({text: port.path});
+				
+				});
+
+				this.form.formThree.startReadSplitter.serialContainer.port.setOptions(options);
+				return options;
+			
+			},
+			(err) => console.error(err),
+		);
 
 		this.button = Field.button({
 			text: 'Iniciar Leitura',
@@ -37,6 +56,7 @@ module.exports = class StartRead extends Menu {
 						label: 'Porta',
 						att: 'port',
 						validators: [Validator.isFilled],
+						options: [],
 					}),
 					baudRate: Field.select({
 						label: 'Baud Rate',
@@ -279,6 +299,7 @@ module.exports = class StartRead extends Menu {
 		this.EventHandler.addEventListener('DataReadingFinished', () => {
 
 			this.setInitReadState();
+			this.serialPorts();
 
 		});
 

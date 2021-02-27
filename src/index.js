@@ -72,6 +72,8 @@ function createWindow(params) {
 // event listener que espera o app ser criado para criar as janelas
 app.on('ready', () => {
 
+	app.allowRendererProcessReuse = false;
+
 	initialWindow = createWindow(initialWindowparams);
 	mainWindow = createWindow(mainWindowparams);
 	titleBarMenu = new TitleBarMenu();
