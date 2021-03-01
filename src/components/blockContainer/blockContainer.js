@@ -8,12 +8,26 @@ module.exports = class BlockContainer {
 	constructor(preConfig) {
 
 		this.eventHandler = new EventHandler();
+
 		this.preConfig = preConfig;
 		this.width = 3;
 		this.height = 2;
 		this.editing = false;
 
 		this.htmlComponent = document.createElement('div');
+		
+		this.body = document.createElement('div');
+		this.header = document.createElement('div');
+		this.content = document.createElement('div');
+
+		this.htmlComponent.classList.add('grid-stack-item');
+		this.body.classList.add('grid-stack-item-content');
+
+		this.htmlComponent.appendChild(this.body);
+		this.body.appendChild(this.buildHeader());
+		this.body.appendChild(this.content);
+
+
 		this.trash = Components.buttonWithIcon('trash-alt-regular', 'trashBlockButton');
 		this.trash.style.display = 'none';
 
@@ -21,12 +35,21 @@ module.exports = class BlockContainer {
 		
 	}
 
+	buildHeader() {
+
+		this.header = document.createElement('div');
+		this.header.innerText='titulo 1';
+		this.header.classList.add('blockHeader');
+		return this.header;
+
+	}
+
 	init() {
 
 		this.block = new Blocks[this.preConfig.type](this.preConfig);
-		this.content = this.block.htmlComponent;
+		this.content.innerHTML = '';
+		this.content.appendChild(this.block.htmlComponent);
 		this.htmlComponent.appendChild(this.trash);
-		this.htmlComponent.appendChild(this.content);
 		this.block.init();
 
 	}

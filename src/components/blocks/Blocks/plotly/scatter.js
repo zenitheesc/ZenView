@@ -170,12 +170,14 @@ module.exports = class Scatter extends Block {
 
 	setAutoResize() {
 
-		const widget = this.htmlComponent.parentElement;
+		const widget = this.htmlComponent.parentElement.parentElement;
 		addResizeListener(widget, () => {
 
+			console.log("parent: ", widget);
+			console.log("this : ", this.htmlComponent);
 			Plotly.relayout(this.htmlComponent, {
-				width: 0.9 * widget.style.width,
-				height: 0.9 * widget.style.height,
+				width: widget.style.width,
+				height: widget.style.height,
 			});
 
 		});

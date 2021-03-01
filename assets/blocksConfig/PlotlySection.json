@@ -9,12 +9,6 @@
 			}
 		},
 		"layout": {
-			"title": {
-				"text": "",
-				"font": {
-					"size": 16
-				}
-			},
 			"showlegend": true,
 			"xaxis": {
 				"title": {
@@ -33,6 +27,13 @@
 					}
 				},
 				"type": ""
+			},
+			"autosize": true,
+			"margin":{
+				"l": 25,
+				"r": 25,
+				"t": 25,
+				"b": 50
 			}
 		},
 		"scatter": {
