@@ -49,7 +49,7 @@ module.exports = class StartRead extends Menu {
 		this.form = new Form({
 			startReadSplitter: Container.spliter({
 				dataChannel: Field.select({
-					label: 'Fonte dos dados: ',
+					label: 'Fonte dos dados',
 					att: 'readFrom',
 					id: 'currReadFrom',
 					options: [{
@@ -90,7 +90,12 @@ module.exports = class StartRead extends Menu {
 						},
 						],
 					}),
-
+					parser: Field.text({
+						label: 'Parser',
+						att: 'parser',
+						value: ';',
+						validators: [Validator.isFilled],
+					}),
 				}, {
 					id: 'serialReadOptions',
 					att: 'serialReadConfig',

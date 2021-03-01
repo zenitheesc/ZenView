@@ -10,7 +10,7 @@ module.exports = class SerialReader {
         this.port;
         this.portName;
         this.baudRate;
-        this.data = [];
+        this.parser;
         this.isReading = false;
 
         this.eventHandler = new EventHandler();
@@ -19,10 +19,10 @@ module.exports = class SerialReader {
 
     init(readConfig) {
 
-        this.data = [];
         this.isReading = true;
         this.portName = readConfig.port;
         this.baudRate = parseInt(readConfig.baudRate);
+        this.parser = readConfig.parser === ' ' ? ' ' : readConfig.parser.replace(/ /g, '');
 
         this.port = new SerialPort(this.portName, {
             baudRate: this.baudRate,
@@ -36,6 +36,7 @@ module.exports = class SerialReader {
 					message: err.message,
 					buttons: ['Ok'],
 				});
+
                 this.stop();
                 this.eventHandler.dispatchEvent('DataReadingFinished');
             
@@ -43,23 +44,9 @@ module.exports = class SerialReader {
                         
         });
 
-        this.port.on('error', (err) => {
+        this.port.on('error', (err) => this.reconnectDialog());
 
-            if (err.disconnected) {
-
-                this.stop();
-                this.eventHandler.dispatchEvent('DataReadingFinished');
-            
-            }
-
-        });
-
-        this.port.on('close', (err) => {
-
-            this.stop();
-            this.eventHandler.dispatchEvent('DataReadingFinished');
-
-        });
+        this.port.on('close', (err) => this.reconnectDialog());
 
         this.read();
 
@@ -79,8 +66,52 @@ module.exports = class SerialReader {
 
     }
 
-    read() {
+    reconnectDialog() {
 
+        if (this.isReading) {
+            
+            Dialog.showDialog({
+                title: 'Conexão',
+                type: 'question',
+                message: 'O dispositivo foi desconectado. Deseja finalizar a leitura ou reconectar o dispositivo?',
+                buttons: ['Finalizar', 'Reconectar'],
+            }, (result) => {
+                
+                if (result.response === 0) {
+                    
+                    this.stop();
+                    this.eventHandler.dispatchEvent('DataReadingFinished');
+                    
+                } else if (result.response === 1) {
+                    
+                    this.port.open((err) => {
+                        
+                        if (err) {
+                            
+                            Dialog.showDialog({
+                                title: 'Erro',
+                                type: 'error',
+                                    message: 'O dispositivo não foi reconectado corretamente. A leitura será encerrada.',
+                                    buttons: ['Ok'],
+                                });
+                                
+                                this.stop();
+                                this.eventHandler.dispatchEvent('DataReadingFinished');
+                                
+                            }
+                            
+                        });
+                        
+                    }
+                    
+                });
+            
+            }
+            
+        }
+        
+        read() {
+            
         const parser = this.port.pipe(new Readline());
 
         this.eventHandler.addEventListener('SerialPipe', (evt) => {
@@ -91,7 +122,7 @@ module.exports = class SerialReader {
         
         parser.on('data', (line) => {
 
-            this.eventHandler.DataIsReady(line.toString().split(';'));
+            this.eventHandler.DataIsReady(line.toString().split(this.parser));
 
         });
 
