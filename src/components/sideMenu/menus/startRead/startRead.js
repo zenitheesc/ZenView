@@ -26,7 +26,15 @@ module.exports = class StartRead extends Menu {
 				
 				});
 
+				const value = this.form.formThree.startReadSplitter.serialContainer.port.value;
 				this.form.formThree.startReadSplitter.serialContainer.port.setOptions(options);
+
+				if (value !== '') {
+
+					this.form.formThree.startReadSplitter.serialContainer.port.setSelectedOption(value);
+				
+				}
+
 				return options;
 			
 			},
@@ -229,6 +237,8 @@ module.exports = class StartRead extends Menu {
 			context: 'editing',
 		});
 
+		this.serialInterval = setInterval(this.serialPorts, 3000);
+
 	}
 
 	setStopReadState() {
@@ -239,6 +249,8 @@ module.exports = class StartRead extends Menu {
 		this.button.htmlComponent.classList.add('red-btn');
 
 		this.isReading = true;
+
+		clearInterval(this.serialInterval);
 
 	}
 
@@ -301,7 +313,20 @@ module.exports = class StartRead extends Menu {
 		this.EventHandler.addEventListener('DataReadingFinished', () => {
 
 			this.setInitReadState();
-			this.serialPorts();
+
+		});
+
+		this.EventHandler.addEventListener('OpenMenu', (evt) => {
+
+			if ((evt.name) + '_menu' === this.menuComponent.id) {
+
+				this.serialInterval = setInterval(this.serialPorts, 3000);
+
+			} else {
+
+				clearInterval(this.serialInterval);
+
+			}
 
 		});
 

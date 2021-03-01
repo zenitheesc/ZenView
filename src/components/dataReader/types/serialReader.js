@@ -1,6 +1,7 @@
 const SerialPort = require('serialport');
 const Readline = SerialPort.parsers.Readline;
 const EventHandler = require('../../eventHandler/eventHandler');
+const Dialog = require('../../dialog/dialog');
 
 module.exports = class SerialReader {
 
@@ -27,7 +28,18 @@ module.exports = class SerialReader {
             baudRate: this.baudRate,
         }, (err) => {
 
-            if (err) return console.log('Error: ', err.message);
+            if (err) {
+
+                Dialog.showDialog({
+					title: 'Error',
+                    type: 'error',
+					message: err.message,
+					buttons: ['Ok'],
+				});
+                this.stop();
+                this.eventHandler.dispatchEvent('DataReadingFinished');
+            
+            };
                         
         });
 

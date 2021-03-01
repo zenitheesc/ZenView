@@ -81,7 +81,7 @@ module.exports = class Select extends Field {
 
 	setSelectedOption(value) {
 
-		input.value = value;
+		this.input.value = value;
 
 	};
 
