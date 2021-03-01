@@ -6,6 +6,7 @@ const Field = require('../../../formBuilder/formBuilder').Field;
 const EventHandler = require('../../../eventHandler/eventHandler');
 const Dialog = require('../../../dialog/dialog');
 const SerialPort = require('serialport');
+
 module.exports = class StartRead extends Menu {
 
 	constructor() {
@@ -21,7 +22,7 @@ module.exports = class StartRead extends Menu {
 
 				ports.forEach((port) => {
 
-					if (port.path.slice(5, 9) !== 'ttyS') options.push({text: port.path});
+					options.push({text: port.path});
 				
 				});
 
@@ -261,6 +262,7 @@ module.exports = class StartRead extends Menu {
 		spliterContainer.className = 'menuBody';
 		spliterContainer.appendChild(this.form.htmlComponent);
 		this.menuComponent.appendChild(this.form.htmlComponent);
+		this.serialPorts();
 
 		this.button.onclick = () => {
 
