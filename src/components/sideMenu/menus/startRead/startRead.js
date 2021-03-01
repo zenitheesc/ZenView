@@ -5,6 +5,8 @@ const Container = require('../../../formBuilder/formBuilder').Container;
 const Field = require('../../../formBuilder/formBuilder').Field;
 const EventHandler = require('../../../eventHandler/eventHandler');
 const Dialog = require('../../../dialog/dialog');
+const SerialPort = require('serialport');
+
 module.exports = class StartRead extends Menu {
 
 	constructor() {
@@ -12,6 +14,32 @@ module.exports = class StartRead extends Menu {
 		super('Leitura', 'start_menu');
 		this.EventHandler = new EventHandler();
 		this.isReading = false;
+
+		this.serialPorts = () => SerialPort.list().then(
+			(ports) => {
+
+				const options = [];
+
+				ports.forEach((port) => {
+
+					options.push({text: port.path});
+				
+				});
+
+				const value = this.form.formThree.startReadSplitter.serialContainer.port.value;
+				this.form.formThree.startReadSplitter.serialContainer.port.setOptions(options);
+
+				if (value !== '') {
+
+					this.form.formThree.startReadSplitter.serialContainer.port.setSelectedOption(value);
+				
+				}
+
+				return options;
+			
+			},
+			(err) => console.error(err),
+		);
 
 		this.button = Field.button({
 			text: 'Iniciar Leitura',
@@ -21,7 +49,7 @@ module.exports = class StartRead extends Menu {
 		this.form = new Form({
 			startReadSplitter: Container.spliter({
 				dataChannel: Field.select({
-					label: 'Fonte dos dados: ',
+					label: 'Fonte dos dados',
 					att: 'readFrom',
 					id: 'currReadFrom',
 					options: [{
@@ -37,6 +65,7 @@ module.exports = class StartRead extends Menu {
 						label: 'Porta',
 						att: 'port',
 						validators: [Validator.isFilled],
+						options: [],
 					}),
 					baudRate: Field.select({
 						label: 'Baud Rate',
@@ -61,7 +90,12 @@ module.exports = class StartRead extends Menu {
 						},
 						],
 					}),
-
+					parser: Field.text({
+						label: 'Parser',
+						att: 'parser',
+						value: ';',
+						validators: [Validator.isFilled],
+					}),
 				}, {
 					id: 'serialReadOptions',
 					att: 'serialReadConfig',
@@ -208,6 +242,8 @@ module.exports = class StartRead extends Menu {
 			context: 'editing',
 		});
 
+		this.serialInterval = setInterval(this.serialPorts, 3000);
+
 	}
 
 	setStopReadState() {
@@ -218,6 +254,8 @@ module.exports = class StartRead extends Menu {
 		this.button.htmlComponent.classList.add('red-btn');
 
 		this.isReading = true;
+
+		clearInterval(this.serialInterval);
 
 	}
 
@@ -241,6 +279,7 @@ module.exports = class StartRead extends Menu {
 		spliterContainer.className = 'menuBody';
 		spliterContainer.appendChild(this.form.htmlComponent);
 		this.menuComponent.appendChild(this.form.htmlComponent);
+		this.serialPorts();
 
 		this.button.onclick = () => {
 
@@ -279,6 +318,20 @@ module.exports = class StartRead extends Menu {
 		this.EventHandler.addEventListener('DataReadingFinished', () => {
 
 			this.setInitReadState();
+
+		});
+
+		this.EventHandler.addEventListener('OpenMenu', (evt) => {
+
+			if ((evt.name) + '_menu' === this.menuComponent.id) {
+
+				this.serialInterval = setInterval(this.serialPorts, 3000);
+
+			} else {
+
+				clearInterval(this.serialInterval);
+
+			}
 
 		});
 
