@@ -24,6 +24,10 @@ module.exports = class Block {
 
 	}
 
+	updateData() {
+		
+	}
+
 	addDependencie(dependenciesName) {
 
 		if (Array.isArray(dependenciesName)) {

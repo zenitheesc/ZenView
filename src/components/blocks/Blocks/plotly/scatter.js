@@ -1,9 +1,8 @@
 const Block = require('../block');
 const Plotly = require('plotly.js');
-const loadash = require('lodash');
 // eslint-disable-next-line no-unused-vars
 const ElementResize = require('javascript-detect-element-resize');
-
+const loadash = require('lodash');
 module.exports = class Scatter extends Block {
 
 	constructor(preConfig) {
@@ -64,18 +63,15 @@ module.exports = class Scatter extends Block {
 
 		}
 
-		x.sort((a, b) => {
+		x.sort((a, b) => a - b);
 
-			return a - b;
-
-		});
-
-		newTrace.line
 
 		Plotly.addTraces(this.htmlComponent, {
 			name: newTrace.name,
 			x: x,
 			y: y,
+			xInput: 'collum_0',
+			yInput: 'collum_1',
 			mode: newTrace.mode,
 			line: {
 				width: 4,
@@ -85,7 +81,7 @@ module.exports = class Scatter extends Block {
 			},
 			marker: {
 				size: 6,
-                color: String([this.colors[this.colorCount]]),
+				color: String([this.colors[this.colorCount]]),
 			},
 
 		});
@@ -164,17 +160,17 @@ module.exports = class Scatter extends Block {
 
 	attConfig(newConfig) {
 
-		this.config = loadash.merge(this.config, newConfig);
+		this.config = newConfig;
 
 	}
 
 	setAutoResize() {
 
 		const widget = this.htmlComponent.parentElement.parentElement;
+		this.htmlComponent.firstChild.classList.add('h-100');
+
 		addResizeListener(widget, () => {
 
-			console.log("parent: ", widget);
-			console.log("this : ", this.htmlComponent);
 			Plotly.relayout(this.htmlComponent, {
 				width: widget.style.width,
 				height: widget.style.height,

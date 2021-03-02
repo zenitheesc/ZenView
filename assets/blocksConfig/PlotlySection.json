@@ -1,62 +1,65 @@
 [{
-	"type": "Plotly",
-	"title": "Scatter",
-	"Plotly": {
-		"type": "scatter",
-		"config": {
-			"toImageButtonOptions": {
-				"format": "png"
-			}
-		},
-		"layout": {
-			"showlegend": true,
-			"xaxis": {
-				"title": {
-					"text": "",
-					"font": {
-						"size": ""
-					}
-				},
-				"type": ""
-			},
-			"yaxis": {
-				"title": {
-					"text": "",
-					"font": {
-						"size": ""
-					}
-				},
-				"type": ""
-			},
-			"autosize": true,
-			"margin":{
-				"l": 25,
-				"r": 25,
-				"t": 25,
-				"b": 50
-			}
-		},
-		"scatter": {
-			"newTrace": {
-				"name": "",
-				"x": "",
-				"y": ""
-			},
-			"trace": {
-				"currTraceName": "",
-				"showMarkers": true,
-				"marker": {
-					"size": "",
-					"color": ""
-				},
-				"showLines": true,
-				"line": {
-					"width": "",
-					"color": "",
-					"dash": "",
-					"shape": ""
-				}
-			}
-		}
-	}
+    "type": "Plotly",
+    "title": "Scatter",
+    "Plotly": {
+        "type": "scatter",
+        "config": {
+            "toImageButtonOptions": {
+                "format": "png"
+            }
+        },
+        "layout": {
+            "legend": {
+                "orientation": "h"
+            },
+            "showlegend": true,
+            "xaxis": {
+                "title": {
+                    "text": "",
+                    "font": {
+                        "size": ""
+                    }
+                },
+                "type": ""
+            },
+            "yaxis": {
+                "title": {
+                    "text": "",
+                    "font": {
+                        "size": ""
+                    }
+                },
+                "type": ""
+            },
+            "autosize": true,
+            "margin": {
+                "l": 25,
+                "r": 25,
+                "t": 25,
+                "b": 50
+            }
+        },
+        "scatter": {
+            "newTrace": {
+                "name": "",
+                "x": "",
+                "y": ""
+            },
+            "trace": {
+                "currTraceName": "",
+                "showMarkers": true,
+                "marker": {
+                    "size": "",
+                    "color": ""
+                },
+                "showLines": true,
+                "line": {
+                    "width": "",
+                    "color": "",
+                    "dash": "",
+                    "shape": ""
+                }
+            }
+        }
+    }
 }]

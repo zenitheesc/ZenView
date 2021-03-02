@@ -14,19 +14,7 @@ module.exports = class BlockContainer {
 		this.height = 2;
 		this.editing = false;
 
-		this.htmlComponent = document.createElement('div');
-		
-		this.body = document.createElement('div');
-		this.header = document.createElement('div');
-		this.content = document.createElement('div');
-
-		this.htmlComponent.classList.add('grid-stack-item');
-		this.body.classList.add('grid-stack-item-content');
-
-		this.htmlComponent.appendChild(this.body);
-		this.body.appendChild(this.buildHeader());
-		this.body.appendChild(this.content);
-
+		this.build();
 
 		this.trash = Components.buttonWithIcon('trash-alt-regular', 'trashBlockButton');
 		this.trash.style.display = 'none';
@@ -41,6 +29,33 @@ module.exports = class BlockContainer {
 		this.header.innerText='titulo 1';
 		this.header.classList.add('blockHeader');
 		return this.header;
+
+	}
+
+	buildBody() {
+
+		const body = document.createElement('div');
+
+		body.classList.add('grid-stack-item-content');
+
+		return body;
+
+	}
+
+	build() {
+
+		this.htmlComponent = document.createElement('div');
+		this.htmlComponent.classList.add('grid-stack-item');
+		this.content = document.createElement('div');
+		this.content.style.flex = '1';
+
+		this.body = this.buildBody();
+		this.header = this.buildHeader();
+		
+		this.body.appendChild(this.header);
+		this.body.appendChild(this.content);
+		
+		this.htmlComponent.appendChild(this.body);
 
 	}
 
@@ -97,7 +112,7 @@ module.exports = class BlockContainer {
 
 		if (!this.editing) {
 
-			this.content.classList.add('editingBlock');
+			this.body.classList.add('editingBlock');
 			this.editing = true;
 			window.CurrentBlock = this;
 
@@ -118,7 +133,7 @@ module.exports = class BlockContainer {
 		} else {
 
 			window.CurrentBlock = undefined;
-			this.content.classList.remove('editingBlock');
+			this.body.classList.remove('editingBlock');
 			this.editing = false;
 
 			this.eventHandler.OpenMenu({
@@ -180,13 +195,19 @@ module.exports = class BlockContainer {
 
 			if (evt !== this) {
 
-				this.content.classList.remove('editingBlock');
+				this.body.classList.remove('editingBlock');
 				this.editing = false;
 
 			}
 
 		});
 
+		this.eventHandler.addEventListener('DataIsProcessed', (evt)=>{
+
+			this.block.updateData(evt);
+
+		});
+	
 	}
 
 };
