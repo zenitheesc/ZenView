@@ -346,7 +346,7 @@ module.exports = class InputHandler {
 
 		console.log(this.scope);
 
-		window.dispatchEvent(new CustomEvent('DataIsProcessed', {detail: this.scope}));
+		this.eventHandler.DataIsProcessed(this.scope);
 
 	}
 

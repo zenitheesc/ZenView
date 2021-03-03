@@ -70,8 +70,8 @@ module.exports = class Scatter extends Block {
 			name: newTrace.name,
 			x: x,
 			y: y,
-			xInput: 'collum_0',
-			yInput: 'collum_1',
+			xInput: newTrace.xInput,
+			yInput: newTrace.yInput,
 			mode: newTrace.mode,
 			line: {
 				width: 4,
@@ -97,6 +97,19 @@ module.exports = class Scatter extends Block {
 		newConfig = newConfig.Plotly;
 		if (newConfig !== undefined) this.attConfig(newConfig.config);
 		if (newConfig !== undefined) this.attLayout(newConfig.layout);
+
+	}
+
+	updateData(newData) {
+
+		const newXdata = this.data.map((trace) => [newData[trace.xInput]]);
+		const newYdata = this.data.map((trace) => [newData[trace.yInput]]);
+		const indices = [...this.data.keys()];
+
+		Plotly.extendTraces(this.htmlComponent, {
+			x: newXdata,
+			y: newYdata,
+		}, indices, 200);
 
 	}
 
@@ -186,11 +199,12 @@ module.exports = class Scatter extends Block {
 
 	init() {
 
-		this.config.staticPlot = true;
+		this.config.staticPlot = false;
 		this.config.responsive = true;
 		this.config.displaylogo = false;
 		this.config.format = 'png';
 		this.config.type = 'scatter';
+		this.config.scrollZoom = true;
 
 		Plotly.newPlot(this.htmlComponent, this.data, this.layout, this.config);
 		this.setAutoResize();

@@ -381,6 +381,8 @@ module.exports = class PlotlyScatter {
 			data: {
 				name: this.form.formThree.PlotlySeries.newSerieName.value,
 				mode: 'lines+markers',
+				xInput: this.form.formThree.PlotlySeries.xAxis.value,
+				yInput: this.form.formThree.PlotlySeries.yAxis.value,
 			},
 		});
 
