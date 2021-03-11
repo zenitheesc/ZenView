@@ -45,6 +45,7 @@
         "no-trailing-spaces": [2, {
             "skipBlankLines": true
         }],
+        "newIsCap": false,
         "require-jsdoc": ["error", {
             "require": {
                 "FunctionDeclaration": true,
