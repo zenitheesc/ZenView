@@ -10,7 +10,7 @@ module.exports = class uPlotScatter {
 
 		this.eventHandler = new EventHandler();
 
-		this.styleSection = Container.spliter({
+		this.seriesSection = Container.spliter({
 			xAxis: Field.select({
 				att: 'x',
 				label: "Eixo x",
@@ -218,7 +218,7 @@ module.exports = class uPlotScatter {
 		});
 
 		this.form = Container.div({
-			uPlotSeriesStyle: this.styleSection,
+			uPlotSeriesStyle: this.seriesSection,
 			uPlotXAxesStyle: Container.spliter({
 				xAxesScale: Field.select({
 					label: 'Escala',
@@ -337,6 +337,72 @@ module.exports = class uPlotScatter {
 			],
 		},
 		);
+
+		this.setEvents();
+
+	}
+
+	attXandYInputList() {
+
+		const callBack = (input) => {
+
+			return [input.name, input.name];
+
+		};
+
+		let allInputs = [];
+
+		allInputs = allInputs.concat(window.CurrentInputGroup.rawInputs);
+		allInputs = allInputs.concat(window.CurrentInputGroup.inputs);
+
+		this.seriesSection.formThree.xAxis.setOptions(allInputs, callBack);
+		this.seriesSection.formThree.yAxis.setOptions(allInputs, callBack);
+
+	}
+
+	addNewTrace() {
+
+		window.CurrentBlock.sendBlockInstruction({
+
+			command: 'addTrace',
+			data: {
+				label: "série " + this.seriesSection.formThree.selectedSerie.input.options.length,
+			},
+		});
+
+	}
+
+	setEvents() {
+
+		this.eventHandler.addEventListener('AttInputList', () => {
+
+			this.attXandYInputList();
+
+		});
+
+		this.seriesSection.formThree.selectedSerie.append[0].onclick = () => {
+
+			if (this.seriesSection.validate()) {
+
+				this.addNewTrace();
+			}
+
+		};
+
+		this.seriesSection.formThree.selectedSerie.htmlComponent.addEventListener('input', (evt) => {
+
+			this.attseriesSection();
+			evt.stopPropagation();
+
+		});
+
+		this.seriesSection.htmlComponent.addEventListener('input', (evt) => {
+
+			this.editTrace();
+			evt.stopPropagation();
+
+		});
+
 
 	}
 
