@@ -20,8 +20,8 @@ module.exports = class Block {
 
 	}
 
-	instructionHandler() {
-
+	instructionHandler(instruction) {
+		this[instruction.command](instruction.data);
 	}
 
 	updateData() {
