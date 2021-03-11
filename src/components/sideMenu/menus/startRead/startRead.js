@@ -64,7 +64,7 @@ module.exports = class StartRead extends Menu {
 					port: Field.select({
 						label: 'Porta',
 						att: 'port',
-						validators: [Validator.isFilled],
+						validators: [Validator.isFilled, Validator.isNotNumber],
 						options: [],
 					}),
 					baudRate: Field.select({
