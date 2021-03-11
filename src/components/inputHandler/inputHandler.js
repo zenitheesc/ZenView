@@ -327,7 +327,6 @@ module.exports = class InputHandler {
 
 		});
 
-
 	}
 
 	solve(data) {
@@ -343,7 +342,7 @@ module.exports = class InputHandler {
 			this.inputGraph.nodes[i].input.evaluate();
 
 		}
-
+		
 		console.log(this.scope);
 
 		this.eventHandler.DataIsProcessed(this.scope);

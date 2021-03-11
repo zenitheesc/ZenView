@@ -10,6 +10,7 @@ module.exports = class DataReader {
 		this.EventHandler = new EventHandler();
 		this.currentReader;
 		this.readFrom;
+		this.save = false;
 
 		this.outputFileConfig;
 
@@ -23,6 +24,7 @@ module.exports = class DataReader {
 		window.ProcessedData = {};
 		window.rawData = {};
 		this.readFrom = readConfig.readFrom;
+		this.save = readConfig.save;
 
 		switch (readConfig.readFrom) {
 
@@ -48,19 +50,13 @@ module.exports = class DataReader {
 				flags: 'a',
 			});
 
-			this.EventHandler.dispatchEvent('SerialPipe', this.stream);
-
-			this.EventHandler.DataIsProcessed((evt) => {
-
-				this.saveOutput(evt);
-
-			});
-
 		}
 
 	}
 
 	stopRead() {
+
+		this.save = false;
 
 		if (this.readFrom === 'csv') {
 			
@@ -78,7 +74,19 @@ module.exports = class DataReader {
 
 	saveOutput(data) {
 
-		this.stream.write(JSON.stringify(data) + '\n');
+		let line = '';
+
+		for (const prop in data) {
+			
+			if (Object.prototype.hasOwnProperty.call(data, prop)) {
+
+				line += data[prop] + ',';
+			
+			}
+
+		}
+
+		this.stream.write(line.slice(0, -1) + '\n');
 
 	}
 
@@ -93,6 +101,12 @@ module.exports = class DataReader {
 		this.EventHandler.addEventListener('StopRead', () => {
 
 			this.stopRead();
+
+		});
+
+		this.EventHandler.addEventListener('DataIsProcessed', (evt) => {
+
+			if (this.save) this.saveOutput(evt);
 
 		});
 

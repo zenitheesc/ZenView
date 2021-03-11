@@ -110,16 +110,10 @@ module.exports = class SerialReader {
             
         }
         
-        read() {
+    read() {
             
         const parser = this.port.pipe(new Readline());
 
-        this.eventHandler.addEventListener('SerialPipe', (evt) => {
-
-            this.port.pipe(evt);
-
-        });
-        
         parser.on('data', (line) => {
 
             this.eventHandler.DataIsReady(line.toString().split(this.parser));
