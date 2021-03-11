@@ -3,7 +3,7 @@ const Form = require('../../../formBuilder/formBuilder').Form;
 const Container = require('../../../formBuilder/formBuilder').Container;
 const Field = require('../../../formBuilder/formBuilder').Field;
 const PlotlyEditingMenu = require('./menus/EditMenus').Plotly;
-
+const uPlotEditingMenu = require('./menus/EditMenus').uPlot;
 module.exports = class EditMenu extends Menu {
 
 	constructor() {
@@ -12,14 +12,22 @@ module.exports = class EditMenu extends Menu {
 
 		this.panel = document.createElement('div');
 		this.plotlyEditingMenu = new PlotlyEditingMenu();
+		this.uPlotEditingMenu = new uPlotEditingMenu();
 
 		this.form = new Form({
 			BlockModuleContainer: Container.spliter({
+				title: Field.text({
+					label: 'Título',
+					att: 'blockTitle',
+				}),
 				module: Field.select({
 					label: 'Selecione um módulo',
 					att: 'type',
 					id: 'BlockModule',
 					options: [{
+						text: 'uPlot',
+					},
+					{
 						text: 'Plotly',
 					},
 					{
@@ -32,10 +40,10 @@ module.exports = class EditMenu extends Menu {
 				}),
 			}, {
 				startOpen: true,
-				text: 'Módulos',
+				text: 'Geral',
 				id: 'BlockModuleContainer',
 			}),
-			PlotlyModule: this.plotlyEditingMenu.form,
+			uPlotModule: this.uPlotEditingMenu.form,
 			ThreejsModule: Container.div({
 
 			}, {
