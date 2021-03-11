@@ -1,0 +1,31 @@
+[{
+    "type": "uPlot",
+    "title": "Scatter",
+    "uPlot": {
+        "type": "scatter",
+        "opt": {
+            "pxAlign": false,
+            "scales": {
+                "x": {
+                    "time": false,
+                    "range" : [0,100]
+                },
+                "y": {
+                    "range" : [0,100]
+                }
+            },
+            "axes": [{
+                "space": 300
+            }],
+            "cursor": {
+                "drag": {
+                    "x": true,
+                    "y": true,
+                    "uni": 50
+                }
+            },
+            "series": [{}, {}]
+        },
+        "data": []
+    }
+}]
