@@ -1,9 +1,9 @@
 module.exports = class Block {
 
-	constructor() {
+	constructor(preConfig, htmlComponent) {
 
-		this.htmlComponent = document.createElement('div');
-		this.htmlComponent.classList.add('h-100');
+		this.htmlComponent = htmlComponent;
+		this.preConfig = preConfig;
 		this.inputDependencies = [];
 
 	}
@@ -25,7 +25,7 @@ module.exports = class Block {
 	}
 
 	updateData() {
-		
+
 	}
 
 	addDependencie(dependenciesName) {
