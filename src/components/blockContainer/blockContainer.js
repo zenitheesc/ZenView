@@ -61,9 +61,7 @@ module.exports = class BlockContainer {
 
 	init() {
 
-		this.block = new Blocks[this.preConfig.type](this.preConfig);
-		this.content.innerHTML = '';
-		this.content.appendChild(this.block.htmlComponent);
+		this.block = new Blocks[this.preConfig.type](this.preConfig, this.content);
 		this.htmlComponent.appendChild(this.trash);
 		this.block.init();
 
@@ -84,10 +82,9 @@ module.exports = class BlockContainer {
 			try {
 
 				this.preConfig = newConfig;
-				this.block = new Blocks[this.preConfig.type](this.preConfig);
+				this.block = new Blocks[this.preConfig.type](this.preConfig, this.content);
 				this.htmlComponent.innerHTML = '';
 
-				this.content = this.block.htmlComponent;
 				this.htmlComponent.appendChild(this.content);
 				this.block.init();
 
