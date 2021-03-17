@@ -3,7 +3,6 @@ const Block = require('../block');
 const uPlot = require('uplot');
 // eslint-disable-next-line no-unused-vars
 const ElementResize = require('javascript-detect-element-resize');
-const { sum } = require('mathjs');
 
 module.exports = class Scatter extends Block {
 
@@ -11,100 +10,138 @@ module.exports = class Scatter extends Block {
 
 		super(preConfig, htmlComponent);
 		this.formConfig = preConfig;
-		this.data = preConfig.uPlot.data ?? [[...Array(11).keys()], {}];
+		this.data = preConfig.uPlot.data ?? [[...Array(11).keys()], []];
 		this.opt = preConfig.uPlot.opt;
-		preConfig = preConfig.uPlot;
+		this.type = preConfig.type;
+		this.series = preConfig.series;
+		this.initR = false;
 	}
 
-	selectColor(colorNumber) {
-		const colors = [
-			"red", "green", "blue", "orange"
-		]
+	pathSetter(pathType) {
 
-		return colors[colorNumber % colors.length];
+		switch (pathType) {
+			case "1":
+				return uPlot.paths.linear()
+				break;
+			case "2":
+				return uPlot.paths.spline()
+				break;
+			case "3":
+				return uPlot.paths.stepped({ align: -1 })
+				break;
+			case "4":
+				return uPlot.paths.stepped({ align: 1 })
+				break;
+
+			default:
+				return () => null;
+				break;
+		}
 	}
 
-	addTrace(newTrace) {
+	addSerie(newSerie) {
 
-		const newMockData = [[...Array(11).keys()].map((value) => (Math.sin(value) + (this.data.length-2)))];
+		if (this.data[1].length === 0) {
+			this.plot.delSeries(1);
+			this.data.pop();
+		}
+
+		const newMockData = [...Array(11).keys()].map((value) => (Math.sin(value) + (this.data.length - 2)));
 
 		this.plot.addSeries({
-			spanGaps: false,
-			label: newTrace.label,
-			width: 3,
-			stroke: this.selectColor(this.data.length - 1),
+			...newSerie,
+			paths: this.pathSetter("1"),
 		}, this.data.length);
 
-		this.data = (this.plot.series.length > this.data.length) ? this.data.concat(newMockData) : this.data;
 
-		this.plot.setScale('y',{min:-2,max:this.data.length});
-	    this.plot.setData(this.data);
+		if (this.plot.series.length > this.data.length) this.data.push(newMockData);
+
+		//this.plot.setScale('y', { min: -2, max: this.data.length });
+		this.plot.setData(this.data);
 
 	}
 
 	updateConfig(newConfig) {
 
+		newConfig = newConfig[newConfig.type];
+
+		this.attLayout(newConfig.axis);
+		this.editXAxis(newConfig.series);
+		this.editSerie(newConfig.series);
+	}
+
+	editXAxis(newConfig) {
+		this.plot.series[0].xData = newConfig.xData
 	}
 
 	updateData(newData) {
 
+		requestAnimationFrame(() => {
+
+			if (!this.initR) {
+
+				for (let i = 0; i < this.plot.series.length; i++) {
+					this.data[i] = [];
+				}
+
+				this.initR = true;
+			}
+
+			this.data[0].push(newData[this.plot.series[0].xData])
+			this.data[0] = this.data[0].slice(-100)
+
+			for (let i = 1; i < this.plot.series.length; i++) {
+				this.data[i].push(newData[this.plot.series[i].yData])
+				this.data[i] = this.data[i].slice(-100)
+			}
+
+			this.plot.setData(this.data);
+
+		});
 	}
 
-	rmvTrace() {
+	rmvSerie() {
 
 	}
 
-	editTrace(newData) {
+	editSerie(newConfig, chageName) {
+		let index = -1;
 
-		newData = newData.Plotly.scatter.trace;
+		console.log(newConfig);
+		console.log(this.plot.series)
 
-		let i = 0;
-		let found = false;
+		for (const serie of this.plot.series) {
+			console.log(serie.label, newConfig.currSerie)
+			if (serie.label === newConfig.currSerie) {
 
-		for (i = 0; i < this.data.length; i++) {
-
-			if (this.data[i].name === newData.currTraceName) {
-
-				found = true;
+				index = this.plot.series.indexOf(serie);
 				break;
-
 			}
 
 		}
 
-		if (found) {
+		this.plot.addSeries({
+			label: (chageName) ? newConfig.label : this.plot.series[index].label,
+			width: newConfig.width,
+			pathType: newConfig.pathType,
+			showLines: newConfig.showLines,
+			points: {
+				show: newConfig.points.showPoints,
+				showPoints: newConfig.points.showPoints,
+			},
+			yData: newConfig.yData,
+			stroke: newConfig._stroke,
+			paths: this.pathSetter((!newConfig.showLines) ? null : newConfig.pathType),
+		}, index);
 
-			if (newData['showMarkers'] && newData['showLines']) {
 
-				newData.mode = 'lines+markers';
-				newData.visible = true;
-
-			} else if (newData['showMarkers'] && !newData['showLines']) {
-
-				newData.mode = 'markers';
-				newData.visible = true;
-
-			} else if (!newData['showMarkers'] && newData['showLines']) {
-
-				newData.mode = 'lines';
-				newData.visible = true;
-
-			} else if (!newData['showMarkers'] && !newData['showLines']) {
-
-				newData.visible = false;
-
-			}
-
-			Plotly.restyle(this.htmlComponent, newData, i);
-
-		}
+		this.plot.delSeries(index + 1);
+		this.plot.redraw();
 
 	}
 
 	attLayout(newLayout) {
 
-		this.layout = loadash.merge(this.layout, newLayout);
-		Plotly.relayout(this.htmlComponent, this.layout);
 
 	}
 
@@ -121,6 +158,11 @@ module.exports = class Scatter extends Block {
 
 		});
 
+	}
+
+	renameSerie(newConfig) {
+
+		this.editSerie(newConfig, true)
 	}
 
 	init() {
