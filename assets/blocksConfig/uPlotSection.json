@@ -8,21 +8,17 @@
             "scales": {
                 "x": {
                     "time": false,
-                    "range" : [0,10]
+                    "auto": true
                 },
                 "y": {
-                    "range" : [0,10]
+                    "auto": true
                 }
             },
             "axes": [{
                 "space": 300
             }],
             "cursor": {
-                "drag": {
-                    "x": true,
-                    "y": true,
-                    "uni": 50
-                }
+                "show": false
             },
             "series": [{}, {}]
         }
