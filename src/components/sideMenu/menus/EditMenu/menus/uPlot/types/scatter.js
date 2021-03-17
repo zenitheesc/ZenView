@@ -448,25 +448,42 @@ module.exports = class uPlotScatter {
 
 			if (this.seriesSection.validate()) {
 
-				this.addNewTrace();
+				const newSerie = this.addNewTrace();
+				this.seriesSection.setData(newSerie, true);
+				this.seriesSection.setConditions()
+
 			}
 
 		};
 
 		this.seriesSection.formThree.selectedSerie.htmlComponent.addEventListener('input', (evt) => {
 
-			this.attseriesSection();
+			this.seriesSection.setData();
+			this.seriesSection.setConditions()
 			evt.stopPropagation();
 
 		});
 
-		this.seriesSection.htmlComponent.addEventListener('input', (evt) => {
+		this.seriesSection.formThree.currSerie.htmlComponent.addEventListener('input', (evt) => {
 
-			this.editTrace();
 			evt.stopPropagation();
 
 		});
 
+		this.seriesSection.formThree.currSerie.append[0].onclick = () => {
+
+			const data = {...this.seriesSection.getData().uPlot.scatter.series};
+			window.CurrentBlock.sendBlockInstruction({
+
+				command: 'renameSerie',
+				data
+			});
+
+			this.attSeriesSelector(data.label);
+
+		};
+
+		this.overWriteSetData();
 
 	}
 
