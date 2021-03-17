@@ -12,6 +12,14 @@ module.exports = class Block {
 
 	}
 
+	load() {
+
+	}
+
+	save() {
+
+	}
+
 	setAutoResize() {
 
 	}
@@ -21,10 +29,14 @@ module.exports = class Block {
 	}
 
 	instructionHandler(instruction) {
-		this[instruction.command](instruction.data);
+		this[instruction.command](instruction?.data);
 	}
 
 	updateData() {
+
+	}
+
+	destroy() {
 
 	}
 
