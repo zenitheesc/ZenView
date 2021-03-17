@@ -360,6 +360,23 @@ module.exports = class uPlotScatter {
 		return data;
 	}
 
+	attSeriesSelector(value) {
+
+		const callBack = (trace) => {
+
+			return [trace.label, trace.label];
+
+		};
+
+		let slice = 1;
+		if (window.CurrentBlock.block.plot.data[1].length == 0) slice = 2;
+
+		const labels = window.CurrentBlock.block.plot.series.slice(slice);
+
+		this.seriesSection.formThree.selectedSerie.setOptions(labels, callBack);
+		if (value) this.seriesSection.formThree.selectedSerie.value = value;
+
+	}
 	
 	getSerieByName(serieName) {
 
