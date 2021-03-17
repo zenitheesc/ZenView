@@ -75,17 +75,15 @@ module.exports = class BlockContainer {
 
 		if (newConfig.type === this.block.type) {
 
-			this.block.updateConfig(newConfig);
+			this.block.updateConfig(newConfig[this.block.type]);
 
 		} else {
 
 			try {
 
 				this.preConfig = newConfig;
+				this.content.innerHTML = ''
 				this.block = new Blocks[this.preConfig.type](this.preConfig, this.content);
-				this.htmlComponent.innerHTML = '';
-
-				this.htmlComponent.appendChild(this.content);
 				this.block.init();
 
 			} catch (error) {
