@@ -2,7 +2,6 @@ const Menu = require('../menu');
 const Form = require('../../../formBuilder/formBuilder').Form;
 const Container = require('../../../formBuilder/formBuilder').Container;
 const Field = require('../../../formBuilder/formBuilder').Field;
-const PlotlyEditingMenu = require('./menus/EditMenus').Plotly;
 const uPlotEditingMenu = require('./menus/EditMenus').uPlot;
 module.exports = class EditMenu extends Menu {
 
@@ -11,7 +10,6 @@ module.exports = class EditMenu extends Menu {
 		super('Edição', 'edit_menu');
 
 		this.panel = document.createElement('div');
-		this.plotlyEditingMenu = new PlotlyEditingMenu();
 		this.uPlotEditingMenu = new uPlotEditingMenu();
 
 		this.form = new Form({
@@ -26,9 +24,6 @@ module.exports = class EditMenu extends Menu {
 					id: 'BlockModule',
 					options: [{
 						text: 'uPlot',
-					},
-					{
-						text: 'Plotly',
 					},
 					{
 						text: 'Blank',
