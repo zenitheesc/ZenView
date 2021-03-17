@@ -313,9 +313,36 @@ module.exports = class uPlotScatter {
 
 	}
 
+
 	addNewTrace() {
 
+		const newSerieName = "série " + this.seriesSection.formThree.selectedSerie.input.options.length;
+		const color = this.selectColor(this.seriesSection.formThree.selectedSerie.input.options.length)
+
+		const data = {
+			label: newSerieName,
+			width: 6,
+			paths: 1,
+			points: {
+				show: true,
+				showPoints: true,
+			},
+			pathType: "1",
+			show: true,
+			showLines: true,
+			stroke: color,
+			_stroke: color,
+		}
+
 		window.CurrentBlock.sendBlockInstruction({
+
+			command: 'addSerie',
+			data,
+		});
+
+		this.seriesSection.formThree.selectedSerie.value = newSerieName;
+		return data;
+	}
 
 	
 	getSerieByName(serieName) {
