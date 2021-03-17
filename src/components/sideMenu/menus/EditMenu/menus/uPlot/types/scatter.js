@@ -313,6 +313,22 @@ module.exports = class uPlotScatter {
 
 	}
 
+	selectColor(colorNumber) {
+		const colors = [
+			'#7EB26D', // 0: pale green
+			'#EAB839', // 1: mustard
+			'#6ED0E0', // 2: light blue
+			'#EF843C', // 3: orange
+			'#E24D42', // 4: red
+			'#1F78C1', // 5: ocean
+			'#BA43A9', // 6: purple
+			'#705DA0', // 7: violet
+			'#508642', // 8: dark green
+			'#CCA300',
+		]
+
+		return colors[colorNumber % colors.length];
+	}
 
 	addNewTrace() {
 
