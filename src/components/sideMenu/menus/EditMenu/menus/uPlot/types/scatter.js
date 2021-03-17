@@ -317,11 +317,26 @@ module.exports = class uPlotScatter {
 
 		window.CurrentBlock.sendBlockInstruction({
 
-			command: 'addTrace',
-			data: {
-				label: "série " + this.seriesSection.formThree.selectedSerie.input.options.length,
-			},
-		});
+	
+	getSerieByName(serieName) {
+
+		let currentSerie;
+
+		for (const serie of window.CurrentBlock.block.plot.series) {
+
+			if (serie.label === serieName) {
+
+				currentSerie = serie;
+				break;
+
+			}
+
+		}
+
+		return currentSerie;
+
+	}
+
 
 	}
 
