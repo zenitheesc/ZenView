@@ -397,7 +397,43 @@ module.exports = class uPlotScatter {
 
 	}
 
+	overWriteSetData() {
+		this.seriesSection.setData = (newSerie, ignore) => {
 
+
+			const currentSerieName = this.seriesSection.formThree.selectedSerie.value;
+			const currentSerie = (ignore) ? newSerie : this.getSerieByName(currentSerieName);
+			console.log(currentSerie);
+			if (currentSerie != null) {
+
+				this.seriesSection.containers.forEach((container) => {
+
+					container.setData(currentSerie);
+
+				});
+
+				this.seriesSection.fields.forEach((field) => {
+
+					const paths = field.att.split('.');
+					let result;
+
+					for (const path of paths) {
+						result = result?.[path] ?? currentSerie?.[path];
+					}
+
+					field.value = result ?? field.value;
+
+
+				});
+
+				this.attSeriesSelector(currentSerie.label);
+
+			} else {
+
+				this.attSeriesSelector();
+			}
+
+		};
 	}
 
 	setEvents() {
