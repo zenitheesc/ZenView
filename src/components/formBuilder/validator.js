@@ -93,4 +93,19 @@ module.exports = class Validator {
 
 	}
 
+	static isNotNumber(value) {
+
+		const format = /^[0-9]*$/;
+		if (format.test(value)) {
+
+			return 'Não são permitidos números nesse campo.';
+
+		} else {
+
+			return true;
+
+		}
+
+	}
+
 };

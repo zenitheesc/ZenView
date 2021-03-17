@@ -212,12 +212,6 @@ module.exports = class EventHandler {
 
 		};
 
-		this['SerialPipe'] = (detail) => {
-
-			this.dispatchEvent('SerialPipe', detail);
-
-		};
-
 	}
 
 	addEventListener(eventName, callBackFunction) {

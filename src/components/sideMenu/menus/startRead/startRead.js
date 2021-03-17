@@ -22,7 +22,15 @@ module.exports = class StartRead extends Menu {
 
 				ports.forEach((port) => {
 
-					options.push({text: port.path});
+					if (this.form.formThree.startReadSplitter.serialContainer.enableUSBOnly.value) {
+
+						if (port.path.slice(5, 9) !== 'ttyS') options.push({text: port.path});
+					
+					} else {
+
+						options.push({text: port.path});
+
+					}
 				
 				});
 
@@ -64,8 +72,14 @@ module.exports = class StartRead extends Menu {
 					port: Field.select({
 						label: 'Porta',
 						att: 'port',
-						validators: [Validator.isFilled],
+						validators: [Validator.isFilled, Validator.isNotNumber],
 						options: [],
+					}),
+					enableUSBOnly: Field.checkBox({
+						label: 'Habilitar apenas USB',
+						value: true,
+						att: 'enableUSBOnly',
+						id: 'enableUSBOnly',
 					}),
 					baudRate: Field.select({
 						label: 'Baud Rate',
