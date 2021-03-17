@@ -194,10 +194,6 @@ class FormPattern {
 
 	setData(DataObj) {
 
-		const wrapper = {};
-		wrapper.form = DataObj;
-		const atts = this.objToPathList(wrapper);
-
 		this.containers.forEach((container) => {
 
 			container.setData(DataObj);
@@ -206,11 +202,14 @@ class FormPattern {
 
 		this.fields.forEach((field) => {
 
-			if (atts[field.att] !== undefined) {
+			const paths = field.att.split('.');
+			let result;
 
-				field.value = atts[field.att];
-
+			for (const path of paths) {
+				result = result?.[path] ?? DataObj?.[path];
 			}
+
+			field.value = result ?? field.value;
 
 		});
 
