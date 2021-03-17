@@ -12,7 +12,7 @@ module.exports = class uPlotScatter {
 
 		this.seriesSection = Container.spliter({
 			xAxis: Field.select({
-				att: 'x',
+				att: 'xData',
 				label: "Eixo x",
 				prepend: [
 					{
@@ -23,9 +23,14 @@ module.exports = class uPlotScatter {
 				],
 			}),
 			selectedSerie: Field.select({
-				att: 'currTraceName',
+				att: 'currSerie',
 				label: 'Séries',
 				append: [
+					{
+						type: 'button',
+						content: Components.icon('plus-square'),
+						classList: ['formButtonWithIconPrepend'],
+					},
 					{
 						type: 'button',
 						content: Components.icon('plus-square'),
@@ -34,11 +39,18 @@ module.exports = class uPlotScatter {
 				],
 			}),
 			currSerie: Field.text({
-				att: 'currTraceNewName',
+				att: 'label',
 				label: 'Nome',
+				append: [
+					{
+						type: 'button',
+						content: Components.icon('plus-square'),
+						classList: ['formButtonWithIconPrepend'],
+					},
+				],
 			}),
 			yAxis: Field.select({
-				att: 'y',
+				att: 'yData',
 				label: 'Dados',
 				prepend: [
 					{
@@ -48,55 +60,10 @@ module.exports = class uPlotScatter {
 					},
 				],
 			}),
-			showMarkers: Field.checkBox({
+			showPoints: Field.checkBox({
 				label: 'Pontos',
-				att: 'showMarkers',
+				att: 'points.showPoints',
 				id: 'uPlotScatterShowMarkers',
-			}),
-			markersOptions: Container.div({
-				markerStyle: Container.formRow({
-					markersSize: Field.select(
-						{
-							label: 'Tamanho',
-							att: 'size',
-							classList: ['col-6'],
-							options: [
-								{
-									text: 4,
-								},
-								{
-									text: 6,
-								},
-								{
-									text: 8,
-								},
-								{
-									text: 10,
-								},
-								{
-									text: 12,
-								},
-								{
-									text: 14,
-								},
-							],
-						},
-					),
-					markersColor: Field.colorPicker({
-						label: 'Cor',
-						att: 'color',
-						classList: ['col-6'],
-					}),
-				}),
-			}, {
-				att: 'marker',
-				conditions: [
-					{
-						id: 'uPlotScatterShowMarkers',
-						att: 'checked',
-						requiredValue: true,
-					},
-				],
 			}),
 			showLines: Field.checkBox({
 				label: 'Linhas',
@@ -123,18 +90,12 @@ module.exports = class uPlotScatter {
 								{
 									text: 10,
 								},
-								{
-									text: 12,
-								},
-								{
-									text: 14,
-								},
 							],
 						},
 					),
 					lineColor: Field.colorPicker({
 						label: 'Cor',
-						att: 'color',
+						att: '_stroke',
 						classList: ['col-6'],
 					}),
 				}),
@@ -170,38 +131,30 @@ module.exports = class uPlotScatter {
 					),
 					lineShape: Field.select({
 						label: 'Interpolação',
-						att: 'shape',
+						att: 'pathType',
 						classList: ['col-6'],
 						options: [
 							{
 								text: 'Linear',
-								value: 'linear',
+								value: 1,
 							},
 							{
 								text: 'Suave',
-								value: 'spline',
+								value: 2,
 							},
 							{
 								text: 'Degraus 1',
-								value: 'hv',
+								value: 3,
 							},
 							{
 								text: 'Degraus 2',
-								value: 'vh',
-							},
-							{
-								text: 'Degraus 3',
-								value: 'hvh',
-							},
-							{
-								text: 'Degraus 4',
-								value: 'vhv',
+								value: 4,
 							},
 						],
 					}),
 				}),
 			}, {
-				att: 'line',
+				att: '../series',
 				conditions: [
 					{
 						id: 'uPlotScatterShowLines',
@@ -212,7 +165,7 @@ module.exports = class uPlotScatter {
 			}),
 		}, {
 			startOpen: false,
-			att: 'trace',
+			att: 'series',
 			text: 'Séries',
 			id: 'uPlotSeriesStyle',
 		});
@@ -267,7 +220,7 @@ module.exports = class uPlotScatter {
 					),
 				}),
 			}, {
-				att: '../layout.xaxis',
+				att: 'axis.x',
 				startOpen: false,
 				text: 'Eixo X',
 				id: 'uPlotXAxeStyle',
@@ -320,7 +273,7 @@ module.exports = class uPlotScatter {
 					),
 				}),
 			}, {
-				att: '../layout.xaxis',
+				att: 'axis.y',
 				startOpen: false,
 				text: 'Eixo Y',
 				id: 'uPlotYAxeStyle',
