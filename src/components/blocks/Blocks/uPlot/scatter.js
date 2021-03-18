@@ -72,12 +72,19 @@ module.exports = class Scatter extends Block {
 		newConfig = newConfig[newConfig.type];
 
 		this.attLayout(newConfig.axis);
-		this.editXAxis(newConfig.series);
 		this.editSerie(newConfig.series);
 	}
 
 	editXAxis(newConfig) {
-		this.plot.series[0].xData = newConfig.xData
+
+		this.plot.addSeries({
+			inputName: newConfig,
+			label: newConfig,
+		}, 0)
+
+		this.plot.delSeries(1);
+		this.plot.setData(this.data);
+
 	}
 
 	updateData(newData) {
