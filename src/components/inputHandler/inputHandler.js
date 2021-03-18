@@ -333,7 +333,7 @@ module.exports = class InputHandler {
 
 		for (let i = 0; i < window.CurrentInputGroup.numberOfInputs; i++) {
 
-			this.scope[window.CurrentInputGroup.rawInputs[i].name] = data[i];
+			this.scope[window.CurrentInputGroup.rawInputs[i].name] = Number(data[i]) ;
 
 		}
 
