@@ -62,7 +62,6 @@ module.exports = class Scatter extends Block {
 
 		if (this.plot.series.length > this.data.length) this.data.push(newMockData);
 
-		//this.plot.setScale('y', { min: -2, max: this.data.length });
 		this.plot.setData(this.data);
 
 	}
@@ -100,11 +99,8 @@ module.exports = class Scatter extends Block {
 				this.initR = true;
 			}
 
-			this.data[0].push(newData[this.plot.series[0].xData])
-			this.data[0] = this.data[0].slice(-100)
-
-			for (let i = 1; i < this.plot.series.length; i++) {
-				this.data[i].push(newData[this.plot.series[i].yData])
+			for (let i = 0; i < this.plot.series.length; i++) {
+				this.data[i].push(newData[this.plot.series[i].inputName])
 				this.data[i] = this.data[i].slice(-100)
 			}
 
@@ -120,11 +116,8 @@ module.exports = class Scatter extends Block {
 	editSerie(newConfig, chageName) {
 		let index = -1;
 
-		console.log(newConfig);
-		console.log(this.plot.series)
-
 		for (const serie of this.plot.series) {
-			console.log(serie.label, newConfig.currSerie)
+
 			if (serie.label === newConfig.currSerie) {
 
 				index = this.plot.series.indexOf(serie);
@@ -142,7 +135,7 @@ module.exports = class Scatter extends Block {
 				show: newConfig.points.showPoints,
 				showPoints: newConfig.points.showPoints,
 			},
-			yData: newConfig.yData,
+			inputName: newConfig.inputName,
 			stroke: newConfig._stroke,
 			paths: this.pathSetter((!newConfig.showLines) ? null : newConfig.pathType),
 		}, index);
@@ -180,6 +173,8 @@ module.exports = class Scatter extends Block {
 
 	init() {
 
+		this.opt.series[0].label = window.CurrentInputGroup.rawInputs[0].name;
+		this.opt.series[0].inputName = window.CurrentInputGroup.rawInputs[0].name;
 		this.plot = new uPlot(this.opt, this.data, this.htmlComponent);
 		this.setAutoResize();
 
