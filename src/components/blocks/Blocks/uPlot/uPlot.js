@@ -1,19 +1,18 @@
-const Scatter = require('./scatter');
+
+const scatter = require('./scatter');
+
+const blocks = {
+	scatter,
+}
 
 module.exports = class uPlot {
 
 	constructor(preConfig, htmlComponent) {
 
-		switch (preConfig.uPlot.type) {
-
-			case 'scatter':
-				return new Scatter(preConfig, htmlComponent);
-				break;
-
-			default:
-				return new Scatter(preConfig, htmlComponent);
-				break;
-
+		try {
+			return new blocks[preConfig.uPlot.type](preConfig, htmlComponent);
+		} catch {
+			console.warn(`TIPO DE BLOCO AINDA NÃO IMPLEMENTADO: ${preConfig.uPlot.type}`, error)
 		}
 
 	}
