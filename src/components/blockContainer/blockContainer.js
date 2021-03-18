@@ -13,20 +13,36 @@ module.exports = class BlockContainer {
 		this.width = 3;
 		this.height = 2;
 		this.editing = false;
-
 		this.build();
 
 		this.trash = Components.buttonWithIcon('trash-alt-regular', 'trashBlockButton');
 		this.trash.style.display = 'none';
 
 		this.setEvents();
-		
+
+	}
+
+	get title(){
+		return this.header.innerText;
+	}
+
+	set title(newTitle){
+		this.header.innerText = newTitle;
+	}
+
+	get formConfig() {
+		return {
+			blockTitle: this.title,
+			type: this.block.type,
+			blockConfig : this.block.formConfig,
+
+		}
 	}
 
 	buildHeader() {
 
 		this.header = document.createElement('div');
-		this.header.innerText='titulo 1';
+		this.header.innerText = '';
 		this.header.classList.add('blockHeader');
 		return this.header;
 
@@ -51,10 +67,10 @@ module.exports = class BlockContainer {
 
 		this.body = this.buildBody();
 		this.header = this.buildHeader();
-		
+
 		this.body.appendChild(this.header);
 		this.body.appendChild(this.content);
-		
+
 		this.htmlComponent.appendChild(this.body);
 
 	}
@@ -67,22 +83,20 @@ module.exports = class BlockContainer {
 
 	}
 
-	updateBlockConfig(newConfig) {
+	updateBlockConfig(newConfig){
+		this.block.updateConfig(newConfig.blockConfig[newConfig.type]);
+	}
 
+	updateModule(newConfig) {
 		console.log(newConfig);
+		
+		if (newConfig.type !== this.block.type) {
 
-		this.eventHandler.dispatchEvent('DashboardNotSaved');
-
-		if (newConfig.type === this.block.type) {
-
-			this.block.updateConfig(newConfig[this.block.type]);
-
-		} else {
+			this.preConfig = newConfig;
+			this.content.innerHTML = ''
 
 			try {
 
-				this.preConfig = newConfig;
-				this.content.innerHTML = ''
 				this.block = new Blocks[this.preConfig.type](this.preConfig, this.content);
 				this.block.init();
 
@@ -96,8 +110,16 @@ module.exports = class BlockContainer {
 
 	}
 
+	uptadeBlockGeneralConfig(newConfig) {
+
+		this.eventHandler.dispatchEvent('DashboardNotSaved');
+
+		this.title = newConfig.blockTitle;
+		this.updateModule(newConfig);
+	}
+
 	sendBlockInstruction(newInstruction) {
-		
+
 		this.eventHandler.dispatchEvent('DashboardNotSaved');
 		this.block.instructionHandler(newInstruction);
 
@@ -152,7 +174,7 @@ module.exports = class BlockContainer {
 	}
 
 	setEvents() {
-		
+
 		this.htmlComponent.ondblclick = () => {
 
 			this.editBlock();
@@ -160,13 +182,13 @@ module.exports = class BlockContainer {
 		};
 
 		this.htmlComponent.onmouseover = () => {
-			
+
 			this.trash.style.display = 'block';
 
 		};
 
 		this.htmlComponent.onmouseleave = () => {
-			
+
 			this.trash.style.display = 'none';
 
 		};
@@ -183,6 +205,7 @@ module.exports = class BlockContainer {
 		this.trash.addEventListener('click', (evt) => {
 
 			this.eventHandler.dispatchEvent('RemoveBlock', this);
+			this.block.destroy();
 
 		});
 
@@ -197,12 +220,12 @@ module.exports = class BlockContainer {
 
 		});
 
-		this.eventHandler.addEventListener('DataIsProcessed', (evt)=>{
+		this.eventHandler.addEventListener('DataIsProcessed', (evt) => {
 
 			this.block.updateData(evt);
 
 		});
-	
+
 	}
 
 };
