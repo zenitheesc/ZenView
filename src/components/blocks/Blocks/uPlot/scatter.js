@@ -9,12 +9,18 @@ module.exports = class Scatter extends Block {
 	constructor(preConfig, htmlComponent) {
 
 		super(preConfig, htmlComponent);
-		this.formConfig = preConfig;
+		this._formConfig = preConfig;
 		this.data = preConfig.uPlot.data ?? [[...Array(11).keys()], []];
 		this.opt = preConfig.uPlot.opt;
 		this.type = preConfig.type;
 		this.series = preConfig.series;
 		this.initR = false;
+		this.type = "uPlot";
+		this.cont = 0;
+	}
+
+	get formConfig() {
+		return this._formConfig
 	}
 
 	pathSetter(pathType) {
