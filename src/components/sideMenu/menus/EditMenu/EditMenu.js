@@ -2,7 +2,7 @@ const Menu = require('../menu');
 const Form = require('../../../formBuilder/formBuilder').Form;
 const Container = require('../../../formBuilder/formBuilder').Container;
 const Field = require('../../../formBuilder/formBuilder').Field;
-const uPlotEditingMenu = require('./menus/EditMenus').uPlot;
+const EditMenus = require('./menus/EditMenus');
 module.exports = class EditMenu extends Menu {
 
 	constructor() {
@@ -10,45 +10,52 @@ module.exports = class EditMenu extends Menu {
 		super('Edição', 'edit_menu');
 
 		this.panel = document.createElement('div');
-		this.uPlotEditingMenu = new uPlotEditingMenu();
+
+		this.formsComponents = {}
+		this.forms = {}
+
+		this.currentBlock;
+
+		for(const Menu in EditMenus){
+			this.formsComponents[Menu] = new EditMenus[Menu](this.currentBlock)
+			this.forms[Menu] = this.formsComponents[Menu].form
+		}
+
+		this.generalContainer = Container.spliter({
+			title: Field.text({
+				label: 'Título',
+				att: 'blockTitle',
+			}),
+			module: Field.select({
+				label: 'Selecione um módulo',
+				att: 'type',
+				id: 'BlockModule',
+				options: [{
+					text: 'uPlot',
+				},
+				{
+					text: 'Blank',
+				},
+				{
+					text: 'TODO Three.js',
+				},
+				],
+			}),
+		}, {
+			startOpen: true,
+			text: 'Geral',
+			id: 'generalContainer',
+		})
+
+		this.modulesForms = Container.div({
+			...this.forms,
+		},{
+			att: "blockConfig",
+		})
 
 		this.form = new Form({
-			BlockModuleContainer: Container.spliter({
-				title: Field.text({
-					label: 'Título',
-					att: 'blockTitle',
-				}),
-				module: Field.select({
-					label: 'Selecione um módulo',
-					att: 'type',
-					id: 'BlockModule',
-					options: [{
-						text: 'uPlot',
-					},
-					{
-						text: 'Blank',
-					},
-					{
-						text: 'TODO Three.js',
-					},
-					],
-				}),
-			}, {
-				startOpen: true,
-				text: 'Geral',
-				id: 'BlockModuleContainer',
-			}),
-			uPlotModule: this.uPlotEditingMenu.form,
-			ThreejsModule: Container.div({
-
-			}, {
-				id: 'ThreejsModule',
-			}),
-			GPSModule: Container.div({
-
-			}, {
-				id: 'GPSModule',
-			}),
+			generalContainer: this.generalContainer,
+			modulesForms: this.modulesForms,
 		});
 
 	}
@@ -86,6 +93,10 @@ module.exports = class EditMenu extends Menu {
 
 	}
 
+	changeGeneralConfig(){
+
+	}
+
 	load() {
 
 		const menuContainer = document.createElement('div');
@@ -97,16 +108,34 @@ module.exports = class EditMenu extends Menu {
 		this.menuComponent.appendChild(menuContainer);
 		this.panelConfig();
 
-		this.form.htmlComponent.oninput = () => {
+		this.modulesForms.htmlComponent.oninput = () => {
 
-			window.CurrentBlock.updateBlockConfig(this.form.getData());
+			if (this.form.validate()) {
+				this.currentBlock.updateBlockConfig(this.form.getData());
+			}
 
 		};
 
-		this.EventHandler.addEventListener('BlockWasSelected', (evt) => {
+		this.generalContainer.htmlComponent.oninput = () => {
+			console.log(this.currentBlock);
+			this.currentBlock.uptadeBlockGeneralConfig(this.form.getData());
 
+		};
+
+		this.modulesForms.htmlComponent.addEventListener('input', (evt) => {
+
+			if(this.modulesForms.validate()){
+				this.currentBlock.updateBlockConfig(this.form.getData());
+			}
+			evt.stopPropagation();
+
+		});
+
+		this.EventHandler.addEventListener('BlockWasSelected', (blockContainer) => {
+
+			this.currentBlock = blockContainer;
 			this.form.reset();
-			this.form.setData(evt.block.formConfig);
+			this.form.setData(blockContainer.formConfig);
 			this.form.setConditions();
 
 		});
