@@ -44,6 +44,7 @@ module.exports = class Field {
 	reset() {
 
 		this.input.value = this.standardValue;
+		this.hideWarning();
 
 	}
 

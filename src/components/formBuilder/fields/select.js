@@ -97,6 +97,8 @@ module.exports = class Select extends Field {
 
 		}
 
+		this.hideWarning();
+
 	}
 
 	static buildCore(options) {

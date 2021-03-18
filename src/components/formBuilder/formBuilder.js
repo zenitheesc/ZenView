@@ -154,7 +154,9 @@ class FormPattern {
 
 		for (let i = 0; i < this.containers.length; i++) {
 
-			response = this.containers[i].validate();
+			if (!this.containers[i].validate()) {
+				response = false;
+			}
 
 		}
 
