@@ -4,8 +4,14 @@ module.exports = class Block {
 
 		this.htmlComponent = htmlComponent;
 		this.preConfig = preConfig;
+		this.type = this.preConfig.type;
+		this._formConfig;
 		this.inputDependencies = [];
 
+	}
+
+	get formConfig(){
+		this._formConfig;
 	}
 
 	init() {
@@ -28,12 +34,24 @@ module.exports = class Block {
 
 	}
 
+	validate() {
+
+	}
+
 	instructionHandler(instruction) {
 		this[instruction.command](instruction?.data);
 	}
 
 	updateData() {
 
+	}
+
+	willRead() {
+
+	}
+
+	willStopRead() {
+		
 	}
 
 	destroy() {
