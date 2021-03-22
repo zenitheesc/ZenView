@@ -107,7 +107,6 @@ module.exports = class StartRead extends Menu {
 					parser: Field.text({
 						label: 'Parser',
 						att: 'parser',
-						value: ';',
 						validators: [Validator.isFilled],
 					}),
 				}, {

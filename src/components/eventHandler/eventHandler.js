@@ -212,6 +212,18 @@ module.exports = class EventHandler {
 
 		};
 
+		this['RawData'] = (detail) => {
+
+			this.dispatchEvent('RawData', detail);
+
+		};
+
+		this['SendSerialData'] = (detail) => {
+
+			this.dispatchEvent('SendSerialData', detail);
+
+		};
+
 	}
 
 	addEventListener(eventName, callBackFunction) {

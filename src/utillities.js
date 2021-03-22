@@ -10,7 +10,8 @@ module.exports = class Utillities {
 				6: "Deletar",
 				7: "Salvar",
 				8: "Sobre nós",
-				9: "Configurações"
+				9: "Configurações",
+				10: "Terminal"
 			}
 		},
 		en: {
@@ -23,7 +24,8 @@ module.exports = class Utillities {
 				6: "Delete",
 				7: "Save",
 				8: "About us",
-				9: "Config"
+				9: "Config",
+				10: "Terminal"
 			}
 		}
 	};
