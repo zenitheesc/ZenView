@@ -47,21 +47,21 @@ module.exports = class Scatter extends Block {
 
 	addSerie(newSerie) {
 
-		if (this.data[1].length === 0) {
-			this.plot.delSeries(1);
-			this.data.pop();
-		}
-
-		const newMockData = [...Array(11).keys()].map((value) => (Math.sin(value) + (this.data.length - 2)));
-
 		this.plot.addSeries({
 			...newSerie,
 			paths: this.pathSetter("1"),
 		}, this.data.length);
 
+		if (this.plot.series[1].inputName == null) {
+			console.log(this.plot.series)
+			this.plot.delSeries(1);
+			this.data.pop();
+		}
 
+		const newMockData = [...Array(11).keys()].map((value) => (Math.sin(value) + (this.plot.series.length - 2)));
 		if (this.plot.series.length > this.data.length) this.data.push(newMockData);
 
+		console.log(this.data);
 		this.plot.setData(this.data);
 
 	}
@@ -101,7 +101,7 @@ module.exports = class Scatter extends Block {
 
 			for (let i = 0; i < this.plot.series.length; i++) {
 				this.data[i].push(newData[this.plot.series[i].inputName])
-				this.data[i] = this.data[i].slice(-100)
+				this.data[i] = this.data[i].slice(-200)
 			}
 
 			this.plot.setData(this.data);
@@ -109,7 +109,35 @@ module.exports = class Scatter extends Block {
 		});
 	}
 
-	rmvSerie() {
+	rmvSerie(rmvdSerie) {
+
+		let index = -1;
+
+		for (const serie of this.plot.series) {
+
+			if (serie.label === rmvdSerie.label) {
+
+				index = this.plot.series.indexOf(serie);
+				break;
+
+			}
+
+		}
+
+		if (index >= 0) {
+
+			if (this.plot.series.length === 2) {
+				this.data = [[...Array(11).keys()], []];
+				this.plot.addSeries({}, 1);
+				this.plot.delSeries(index + 1);
+			} else {
+				this.plot.delSeries(index);
+			}
+			
+		}
+
+		console.log(this.plot.series)
+		this.plot.setData(this.data)
 
 	}
 

@@ -142,11 +142,7 @@ app.on('activate', () => {
 ipc.on('mainLoadCompleto', () => {
 
 	initialWindow.close();
-	setTimeout(() => {
-
-		mainWindow.show();
-
-	}, 250);
+	mainWindow.show();
 
 });
 

@@ -14,6 +14,7 @@ module.exports = class uPlotScatter {
 			selectedSerie: Field.select({
 				att: 'currSerie',
 				label: 'Séries',
+				validators: [this.validateSelectedSerie],
 				append: [
 					{
 						type: 'button',
@@ -379,19 +380,19 @@ module.exports = class uPlotScatter {
 		return colors[colorNumber % colors.length];
 	}
 
-	addNewTrace() {
+	addNewSerie() {
 
-		
+
 		const color = this.selectColor(this.seriesSection.formThree.selectedSerie.input.options.length)
 
 		let newSerieName = "série " + this.seriesSection.formThree.selectedSerie.input.options.length;
 		let cont = 0;
 
-		while(this.nameAlreadyExists(newSerieName)){
+		while (this.nameAlreadyExists(newSerieName)) {
 			newSerieName = "série " + cont;
 			cont++;
 		}
-		
+
 		const data = {
 			label: newSerieName,
 			width: 6,
@@ -418,11 +419,21 @@ module.exports = class uPlotScatter {
 		return data;
 	}
 
+	rmvSerie() {
+		window.CurrentBlock.sendBlockInstruction({
+
+			command: 'rmvSerie',
+			data: {
+				label: this.seriesSection.formThree.selectedSerie.value,
+			}
+		});
+	}
+
 	attSeriesSelector(value) {
 
-		const callBack = (trace) => {
+		const callBack = (serie) => {
 
-			return [trace.label, trace.label];
+			return [serie.label, serie.label];
 
 		};
 
@@ -503,7 +514,8 @@ module.exports = class uPlotScatter {
 
 		this.seriesSection.formThree.selectedSerie.append[0].onclick = () => {
 
-			const newSerie = this.addNewTrace();
+			const newSerie = this.addNewSerie();
+			this.seriesSection.reset()
 			this.seriesSection.setData(newSerie, true);
 			this.seriesSection.setConditions()
 
@@ -532,23 +544,35 @@ module.exports = class uPlotScatter {
 
 		this.seriesSection.formThree.currSerie.append[0].onclick = () => {
 
-			const response = this.nameAlreadyExists(this.seriesSection.formThree.currSerie.value)
+			if (this.seriesSection.validate()) {
 
-			if (!response) {
-				const data = { ...this.seriesSection.getData().blockConfig.uPlot.scatter.series };
-				window.CurrentBlock.sendBlockInstruction({
+				const response = this.nameAlreadyExists(this.seriesSection.formThree.currSerie.value)
 
-					command: 'renameSerie',
-					data
-				});
+				if (!response) {
+					const data = { ...this.seriesSection.getData().blockConfig.uPlot.scatter.series };
+					window.CurrentBlock.sendBlockInstruction({
 
-				this.attSeriesSelector(data.label);
-			} else {
-				this.seriesSection.formThree.currSerie.showWarning('Esse nome já existe')
+						command: 'renameSerie',
+						data
+					});
+
+					this.attSeriesSelector(data.label);
+				} else {
+					this.seriesSection.formThree.currSerie.showWarning('Esse nome já existe')
+				}
+
 			}
 
-
 		};
+
+		this.seriesSection.formThree.selectedSerie.append[1].onclick = () => {
+			if (this.seriesSection.validate()) {
+				this.rmvSerie()
+				this.seriesSection.setData();
+			}
+		}
+
+		console.log()
 
 		this.overWriteSetData();
 
