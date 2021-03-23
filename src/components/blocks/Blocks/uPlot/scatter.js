@@ -130,10 +130,15 @@ module.exports = class Scatter extends Block {
 				this.data = [[...Array(11).keys()], []];
 				this.plot.addSeries({}, 1);
 				this.plot.delSeries(index + 1);
+
+				const newMockData = [...Array(11).keys()].map((value) => (Math.sin(value) + (this.plot.series.length - 2)));
+				if (this.plot.series.length > this.data.length) this.data.push(newMockData);
 			} else {
 				this.plot.delSeries(index);
+				this.data.pop();
 			}
-			
+
+
 		}
 
 		console.log(this.plot.series)
