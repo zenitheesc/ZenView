@@ -22,7 +22,7 @@ module.exports = class uPlotScatter {
 					},
 					{
 						type: 'button',
-						content: Components.icon('plus-square'),
+						content: Components.icon('trash-alt-regular'),
 						classList: ['formButtonWithIconPrepend'],
 					},
 				],
@@ -33,7 +33,7 @@ module.exports = class uPlotScatter {
 				append: [
 					{
 						type: 'button',
-						content: Components.icon('plus-square'),
+						content: Components.icon('pencil-square'),
 						classList: ['formButtonWithIconPrepend'],
 					},
 				],

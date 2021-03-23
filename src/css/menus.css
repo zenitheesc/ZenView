@@ -90,6 +90,13 @@
     border: 1px solid #a9a9a963 !important;
     border-right: none;
 }
+.formButtonWithIconPrepend svg *{
+    fill: #54555c;
+}
+
+.formButtonWithIconPrepend:hover svg * {
+    fill: white;
+}
 
 button.formButtonWithIconPrepend {
     padding: 0px;
