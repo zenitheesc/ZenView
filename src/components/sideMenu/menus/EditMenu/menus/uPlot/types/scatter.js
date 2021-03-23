@@ -179,8 +179,8 @@ module.exports = class uPlotScatter {
 			}, {
 				att: 'inputName',
 				startOpen: false,
-				text: 'Eixo X',
-				id: 'uPlotXAxeStyle',
+				text: 'Entrada eixo X',
+				id: 'uPlotXAxeData',
 			}),
 			uPlotSeriesStyle: this.seriesSection,
 
