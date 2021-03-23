@@ -47,6 +47,12 @@ module.exports = class SerialReader {
         this.port.on('error', (err) => this.reconnectDialog());
 
         this.port.on('close', (err) => this.reconnectDialog());
+        
+        this.eventHandler.addEventListener('SendSerialData', (evt) => {
+
+            this.write(evt);
+
+        });
 
         this.read();
 
@@ -93,22 +99,22 @@ module.exports = class SerialReader {
                                 type: 'error',
                                     message: 'O dispositivo não foi reconectado corretamente. A leitura será encerrada.',
                                     buttons: ['Ok'],
-                                });
-                                
-                                this.stop();
-                                this.eventHandler.dispatchEvent('DataReadingFinished');
-                                
-                            }
+                            });
                             
-                        });
+                            this.stop();
+                            this.eventHandler.dispatchEvent('DataReadingFinished');
+                            
+                        }
                         
-                    }
+                    });
                     
-                });
-            
-            }
-            
+                }
+                
+            });
+        
         }
+            
+    }
         
     read() {
             
@@ -116,9 +122,16 @@ module.exports = class SerialReader {
 
         parser.on('data', (line) => {
 
+            this.eventHandler.RawData(line);
             this.eventHandler.DataIsReady(line.toString().split(this.parser));
 
         });
+
+    }
+
+    write(line) {
+
+        this.port.write(line);
 
     }
 
