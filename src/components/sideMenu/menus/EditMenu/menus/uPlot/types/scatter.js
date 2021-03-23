@@ -94,28 +94,28 @@ module.exports = class uPlotScatter {
 						lineDash: Field.select(
 							{
 								label: 'Tracejado',
-								att: 'dash',
+								att: 'dashType',
 								classList: ['col-6'],
 								options: [
 									{
 										text: 'Sólido',
-										value: 'solid',
+										value: '1',
 									},
 									{
 										text: 'Pontilhado',
-										value: 'dot',
+										value: '2',
 									},
 									{
 										text: 'Tracejado',
-										value: 'dash',
+										value: '3',
 									},
 									{
 										text: 'Travessão',
-										value: 'longdash',
+										value: '4',
 									},
 									{
 										text: 'Traço e ponto',
-										value: 'dashdot',
+										value: '5',
 									},
 								],
 							},
@@ -398,8 +398,7 @@ module.exports = class uPlotScatter {
 			width: 6,
 			paths: 1,
 			points: {
-				show: true,
-				showPoints: true,
+				size: 10,
 			},
 			pathType: "1",
 			show: true,
