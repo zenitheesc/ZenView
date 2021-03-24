@@ -45,19 +45,25 @@ module.exports = class TerminalMenu extends Menu {
     configSerialTerminal() {
 
         const terminalContainer = document.createElement('div');
+        
         const terminal = new Terminal({
             cols: 40,
             rows: 20,
+            theme: {
+                background: '#3c3c3c',
+                foreground: '#f5f5f5',
+                fontSize: 8
+            }
         });
         
         terminal.open(terminalContainer);
         terminal._initialized = false;
-
+        
         this.eventHandler.addEventListener('RawData', (evt) => {
-
+            
             terminal.writeln(evt);
             terminal.write('\r\n> ');
-
+            
         });
 
         return terminalContainer;
@@ -71,6 +77,12 @@ module.exports = class TerminalMenu extends Menu {
 
         this.menuComponent.appendChild(this.serialTerminal.htmlComponent);
         this.menuComponent.appendChild(this.systemTerminal.htmlComponent);
+
+        for (let i = 0; i < document.getElementsByClassName('xterm-cursor-layer').length; i++) {
+
+            document.getElementsByClassName('xterm-cursor-layer')[i].style.border = '1px solid #a9a9a963';
+
+        }
 
         this.serialTerminal.formThree.serialTerminalSpliter.sendData.htmlComponent.addEventListener('keyup', (evt) => {
 
