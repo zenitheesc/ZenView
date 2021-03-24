@@ -80,7 +80,7 @@ module.exports = class TerminalMenu extends Menu {
 
         for (let i = 0; i < document.getElementsByClassName('xterm-cursor-layer').length; i++) {
 
-            document.getElementsByClassName('xterm-cursor-layer')[i].style.border = '1px solid #a9a9a963';
+            document.getElementsByClassName('xterm-cursor-layer')[i].style.border = '1px solid #a9a9a942';
 
         }
 
