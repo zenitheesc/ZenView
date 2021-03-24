@@ -204,6 +204,10 @@ module.exports = class Scatter extends Block {
 		this.editSerie(newConfig, true)
 	}
 
+	destroy() {
+		this.plot.destroy();
+	}
+
 	init() {
 
 		this.opt.series[0].label = window.CurrentInputGroup.rawInputs[0].name;
@@ -211,6 +215,43 @@ module.exports = class Scatter extends Block {
 		this.plot = new uPlot(this.opt, this.data, this.htmlComponent);
 		this.setAutoResize();
 
+	}
+
+	save() {
+		return {
+			data: this.plot.data,
+			series: JSON.parse(JSON.stringify(this.plot.series)),
+			opt: this.opt,
+		}
+	}
+
+	load(preSavedConfig) {
+		
+		this.data = preSavedConfig.data;
+		this.opt = preSavedConfig.opt;
+		this.series = preSavedConfig.series;
+		this.opt.series = [];
+
+		for (const savedSerie of this.series) {
+
+			this.opt.series.push({
+				label: savedSerie.label,
+				width: savedSerie.width,
+				pathType: savedSerie.pathType,
+				showLines: savedSerie.showLines,
+				points: {
+					show: savedSerie.points.showPoints,
+					showPoints: savedSerie.points.showPoints,
+				},
+				inputName: savedSerie.inputName,
+				stroke: savedSerie._stroke,
+				paths: this.pathSetter((!savedSerie.showLines) ? null : savedSerie.pathType),
+			});
+		}
+
+		this.plot = new uPlot(this.opt, this.data, this.htmlComponent);
+
+		this.setAutoResize();
 	}
 
 };
