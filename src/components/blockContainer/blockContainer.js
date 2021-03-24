@@ -15,7 +15,7 @@ module.exports = class BlockContainer {
 		this.editing = false;
 		this.build();
 
-		this.trash = Components.buttonWithIcon('trash-alt-regular', 'trashBlockButton');
+		
 		this.trash.style.display = 'none';
 
 		this.setEvents();
@@ -59,6 +59,7 @@ module.exports = class BlockContainer {
 	}
 
 	build() {
+		this.trash = Components.buttonWithIcon('trash-alt-regular', 'trashBlockButton');
 
 		this.htmlComponent = document.createElement('div');
 		this.htmlComponent.classList.add('grid-stack-item');
@@ -72,13 +73,13 @@ module.exports = class BlockContainer {
 		this.body.appendChild(this.content);
 
 		this.htmlComponent.appendChild(this.body);
+		this.htmlComponent.appendChild(this.trash);
 
 	}
 
 	init() {
 
 		this.block = new Blocks[this.preConfig.type](this.preConfig, this.content);
-		this.htmlComponent.appendChild(this.trash);
 		this.block.init();
 
 	}
