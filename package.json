@@ -60,6 +60,7 @@
     "jquery": "^3.6.0",
     "mathjs": "^7.6.0",
     "n-readlines": "^1.0.1",
+    "node-pty": "^0.10.0",
     "object-hash": "^2.1.1",
     "popper.js": "^1.16.1",
     "serialport": "^9.0.7",
