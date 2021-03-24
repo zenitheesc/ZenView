@@ -30,30 +30,29 @@ module.exports = class DashBoardsManager {
 		try {
 
 			if (fs.existsSync(path)) return true;
-			else {
 
-				Dialog.showDialog({
-					title: 'Error',
-					message: 'Este dashboard foi movido de seu diretório ou excluído',
-					buttons: ['Ok'],
-				});
-				for (let i = window['ZenViewConfig'].dashboards.length - 1; i >= 0; i--) {
+			Dialog.showDialog({
+				title: 'Error',
+				message: 'Este dashboard foi movido de seu diretório ou excluído',
+				buttons: ['Ok'],
+			});
 
-					if (window['ZenViewConfig'].dashboards[i].path === path) {
+			for (let i = window['ZenViewConfig'].dashboards.length - 1; i >= 0; i--) {
 
-						window['ZenViewConfig'].dashboards.splice(i, 1);
+				if (window['ZenViewConfig'].dashboards[i].path === path) {
 
-						this.EventHandler.AttDashBoardsList();
-						this.EventHandler.SaveConfigs();
+					window['ZenViewConfig'].dashboards.splice(i, 1);
 
-						break;
+					this.EventHandler.AttDashBoardsList();
+					this.EventHandler.SaveConfigs();
 
-					}
+					break;
 
 				}
-				return false;
-			
+
 			}
+
+			return false;
 			
 		} catch (err) {
 
@@ -89,7 +88,7 @@ module.exports = class DashBoardsManager {
 
 		this.EventHandler.InitInputs();
 		this.EventHandler.AttInputList();
-		this.EventHandler.InitBlocks();
+		this.EventHandler.LoadBlocks();
 		this.EventHandler.DashboardWasOpened();
 		
 		return true;
@@ -191,7 +190,7 @@ module.exports = class DashBoardsManager {
 
 						window['ZenViewConfig'].dashboards.splice(i, 1);
 
-						if (deletePath === window.CurrentDashBoard.path) {
+						if (deletePath === window?.CurrentDashBoard?.path) {
 
 							this.resetInitialContext();
 							this.EventHandler.dispatchEvent('ResetInitialContext');
