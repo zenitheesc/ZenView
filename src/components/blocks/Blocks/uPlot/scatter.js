@@ -45,29 +45,11 @@ module.exports = class Scatter extends Block {
 		}
 	}
 
-	dashSetter(dashType) {
-		switch (dashType) {
-			case "1":
-				return [];
-			case "2":
-				return [1, 1];
-			case "3":
-				return [10, 10];
-			case "4":
-				return [20, 5];
-			case "5":
-				return [15, 3, 3, 3];
-			default:
-				return [];
-		}
-	}
-
 	addSerie(newSerie) {
 
 		this.plot.addSeries({
 			...newSerie,
 			paths: this.pathSetter("1"),
-			dash: this.dashSetter("1"),
 		}, this.data.length);
 
 		if (this.plot.series[1].inputName == null) {
@@ -181,9 +163,7 @@ module.exports = class Scatter extends Block {
 			label: (chageName) ? newConfig.label : this.plot.series[index].label,
 			width: newConfig.width,
 			pathType: newConfig.pathType,
-			dashType: newConfig.dashType,
 			showLines: newConfig.showLines,
-			dash: this.dashSetter(newConfig.dashType),
 			points: {
 				show: newConfig.points.showPoints,
 				showPoints: newConfig.points.showPoints,
