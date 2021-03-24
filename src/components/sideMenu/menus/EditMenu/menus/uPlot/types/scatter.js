@@ -90,59 +90,27 @@ module.exports = class uPlotScatter {
 							classList: ['col-6'],
 						}),
 					}),
-					lineOption: Container.formRow({
-						lineDash: Field.select(
+					lineShape: Field.select({
+						label: 'Interpolação',
+						att: 'pathType',
+						options: [
 							{
-								label: 'Tracejado',
-								att: 'dashType',
-								classList: ['col-6'],
-								options: [
-									{
-										text: 'Sólido',
-										value: '1',
-									},
-									{
-										text: 'Pontilhado',
-										value: '2',
-									},
-									{
-										text: 'Tracejado',
-										value: '3',
-									},
-									{
-										text: 'Travessão',
-										value: '4',
-									},
-									{
-										text: 'Traço e ponto',
-										value: '5',
-									},
-								],
+								text: 'Linear',
+								value: 1,
 							},
-						),
-						lineShape: Field.select({
-							label: 'Interpolação',
-							att: 'pathType',
-							classList: ['col-6'],
-							options: [
-								{
-									text: 'Linear',
-									value: 1,
-								},
-								{
-									text: 'Suave',
-									value: 2,
-								},
-								{
-									text: 'Degraus 1',
-									value: 3,
-								},
-								{
-									text: 'Degraus 2',
-									value: 4,
-								},
-							],
-						}),
+							{
+								text: 'Suave',
+								value: 2,
+							},
+							{
+								text: 'Degraus 1',
+								value: 3,
+							},
+							{
+								text: 'Degraus 2',
+								value: 4,
+							},
+						],
 					}),
 				}, {
 					att: '../series',
@@ -398,6 +366,7 @@ module.exports = class uPlotScatter {
 			width: 6,
 			paths: 1,
 			points: {
+				showPoints: true,
 				size: 10,
 			},
 			pathType: "1",
