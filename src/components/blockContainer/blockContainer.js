@@ -22,11 +22,11 @@ module.exports = class BlockContainer {
 
 	}
 
-	get title(){
+	get title() {
 		return this.header.innerText;
 	}
 
-	set title(newTitle){
+	set title(newTitle) {
 		this.header.innerText = newTitle;
 	}
 
@@ -34,7 +34,7 @@ module.exports = class BlockContainer {
 		return {
 			blockTitle: this.title,
 			type: this.block.type,
-			blockConfig : this.block.formConfig,
+			blockConfig: this.block.formConfig,
 
 		}
 	}
@@ -83,7 +83,14 @@ module.exports = class BlockContainer {
 
 	}
 
-	updateBlockConfig(newConfig){
+	load(blockConfig) {
+		console.log(this.preConfig);
+		this.block = new Blocks[this.preConfig.type](this.preConfig, this.content);
+		this.block.load(blockConfig);
+	}
+
+	updateBlockConfig(newConfig) {
+		this.eventHandler.dispatchEvent('DashboardNotSaved');
 		this.block.updateConfig(newConfig.blockConfig[newConfig.type]);
 	}
 
@@ -165,6 +172,8 @@ module.exports = class BlockContainer {
 
 		return {
 			preConfig: this.preConfig,
+			blockConfig: this.block.save(),
+			title: this.title,
 			x: this.htmlComponent.dataset.gsX,
 			y: this.htmlComponent.dataset.gsY,
 			w: this.htmlComponent.dataset.gsWidth,

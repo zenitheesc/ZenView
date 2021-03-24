@@ -7,6 +7,7 @@ module.exports = class DashBoard {
 		this.name;
 		this.inputGroup;
 		this.blocks;
+		this.blocksLog = [];
 		this.path;
 		this.description;
 		this.saved;
@@ -26,6 +27,7 @@ module.exports = class DashBoard {
 
 		this.name = name;
 		this.blocks = [];
+		this.blocksLog = [];
 		this.path = path;
 		this.description = description;
 		this.inputGroup = new InputGroup(nbmrInputs);
@@ -36,6 +38,7 @@ module.exports = class DashBoard {
 
 		this.name = dashBoardJson.name;
 		this.blocks = dashBoardJson.blocks;
+		this.blocksLog = dashBoardJson.blocksLog;
 		this.path = dashBoardJson.path;
 		this.description = dashBoardJson.description;
 		this.inputGroup = new InputGroup(dashBoardJson.inputGroup, true);

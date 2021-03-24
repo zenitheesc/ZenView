@@ -7,7 +7,7 @@ const BSONconverter = require('../../classes/bson');
 const DashBoard = require('../../classes/dashBoard');
 const Dialog = require('../dialog/dialog');
 
-module.exports = class DahsBoard {
+module.exports = class DashBoard {
 
 	constructor() {
 
@@ -54,9 +54,9 @@ module.exports = class DahsBoard {
 
 		});
 
-		this.eventHandler.addEventListener('InitBlocks', () => {
+		this.eventHandler.addEventListener('LoadBlocks', () => {
 
-			this.initBlocks();
+			this.loadBLocks();
 
 		});
 
@@ -111,22 +111,23 @@ module.exports = class DahsBoard {
 
 	}
 
-	initBlocks() {
+	loadBLocks() {
 
-		window.CurrentDashBoard.blocks.forEach((block) => {
+		window.CurrentDashBoard.blocksLog.forEach((blockLog) => {
 
-			const newBlock = new BlockContainer(block.preConfig);
+			const newBlock = new BlockContainer(blockLog.preConfig);
 			
 			this.gridStack.addWidget(newBlock.htmlComponent, {
-				x: Number(block.x),
-				y: Number(block.y),
-				height: Number(block.h),
-				width: Number(block.w),
+				x: Number(blockLog.x),
+				y: Number(blockLog.y),
+				height: Number(blockLog.h),
+				width: Number(blockLog.w),
 			});
 
+			newBlock.load(blockLog.blockConfig);
 			this.blocks.push(newBlock);
-			newBlock.init();
-			
+			window.CurrentDashBoard.blocks.push(newBlock)
+
 		});
 
 		this.gridStack.on('added change enable removed', (evt, el) => {
@@ -143,15 +144,17 @@ module.exports = class DahsBoard {
 		const currentDashBoard = window.CurrentDashBoard;
 		
 		this.blocks.forEach((block) => blocksLog.push(block.blockLog()));
-		
-		currentDashBoard.blocks = blocksLog;
+		currentDashBoard.blocksLog = blocksLog;
 		currentDashBoard.saved = true;
-		
+		const tempBlocks = currentDashBoard.blocks
+		currentDashBoard.blocks = [];
 		const dashboardHash = hash(currentDashBoard);
 		currentDashBoard.hash = dashboardHash;
 		
 		this.BSON.writeFile(currentDashBoard.path, currentDashBoard);
-		
+
+		currentDashBoard.blocks = tempBlocks;
+
 		ipcRenderer.send('isSaved', true);
 		
 		if (onClose) ipcRenderer.send('closeOnSave');

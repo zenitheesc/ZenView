@@ -182,9 +182,9 @@ module.exports = class EventHandler {
 
 		};
 
-		this['InitBlocks'] = (detail) => {
+		this['LoadBlocks'] = (detail) => {
 
-			this.dispatchEvent('InitBlocks', detail);
+			this.dispatchEvent('LoadBlocks', detail);
 
 		};
 
