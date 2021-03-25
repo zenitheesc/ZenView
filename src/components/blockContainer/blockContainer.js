@@ -59,7 +59,8 @@ module.exports = class BlockContainer {
 	}
 
 	build() {
-		this.trash = Components.buttonWithIcon('trash-alt-regular', 'trashBlockButton');
+		this.trash = Components.buttonWithIcon('trash-alt-regular', 'trashBlockButton blockButton');
+		this.edit = Components.buttonWithIcon('pencil-square', 'trashBlockButton1 blockButton');
 
 		this.htmlComponent = document.createElement('div');
 		this.htmlComponent.classList.add('grid-stack-item');
@@ -74,6 +75,7 @@ module.exports = class BlockContainer {
 
 		this.htmlComponent.appendChild(this.body);
 		this.htmlComponent.appendChild(this.trash);
+		this.htmlComponent.appendChild(this.edit);
 
 	}
 
@@ -185,7 +187,7 @@ module.exports = class BlockContainer {
 
 	setEvents() {
 
-		this.htmlComponent.ondblclick = () => {
+		this.header.ondblclick = () => {
 
 			this.editBlock();
 
@@ -194,12 +196,14 @@ module.exports = class BlockContainer {
 		this.htmlComponent.onmouseover = () => {
 
 			this.trash.style.display = 'block';
+			this.edit.style.display = 'block';
 
 		};
 
 		this.htmlComponent.onmouseleave = () => {
 
 			this.trash.style.display = 'none';
+			this.edit.style.display = 'none';
 
 		};
 
@@ -216,6 +220,12 @@ module.exports = class BlockContainer {
 
 			this.eventHandler.dispatchEvent('RemoveBlock', this);
 			this.block.destroy();
+
+		});
+
+		this.edit.addEventListener('click', (evt) => {
+
+			this.editBlock();
 
 		});
 
