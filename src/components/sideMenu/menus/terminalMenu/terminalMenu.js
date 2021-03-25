@@ -1,5 +1,8 @@
+const os = require('os');
+const pty = require('node-pty');
 const {Terminal} = require('xterm');
 const Menu = require('../menu');
+const Components = require('../../../components');
 const {Form, Container, Field} = require('../../../formBuilder/formBuilder');
 const EventHandler = require('../../../eventHandler/eventHandler');
 
@@ -29,14 +32,6 @@ module.exports = class TerminalMenu extends Menu {
 				startOpen: true,
 				text: 'Terminal Serial',
 				id: 'serialTerminalSpliter',
-			}),
-		});
-
-        this.systemTerminal = new Form({
-			systemTerminalSpliter: Container.spliter({}, {
-				startOpen: true,
-				text: 'Terminal do Sistema',
-				id: 'systemTerminalSpliter',
 			}),
 		});
 
@@ -70,13 +65,47 @@ module.exports = class TerminalMenu extends Menu {
 
     }
 
+    configSystemTerminal() {
+
+        const terminalContainer = document.createElement('div');
+        const shell = os.platform() === 'win32' ? 'powershell.exe' : 'bash';
+        
+        const terminal = new Terminal({
+            cols: 40,
+            rows: 20,
+            theme: {
+                background: '#3c3c3c',
+                foreground: '#f5f5f5',
+                fontSize: 8
+            }
+        });
+
+        const ptyProcess = pty.spawn(shell, [], {
+            cols: 40,
+            rows: 20,
+            cwd: process.env.HOME,
+            env: process.env
+        });
+        
+        terminal.open(terminalContainer);
+        terminal._initialized = true;
+        
+        ptyProcess.onData(recv => terminal.write(recv));
+        terminal.onData(send => ptyProcess.write(send));
+
+        return terminalContainer;
+
+    }
+
     load() {
 
         const serialTerminalContainer = this.configSerialTerminal();
-        this.serialTerminal.formThree.serialTerminalSpliter.sendData.htmlComponent.appendChild(serialTerminalContainer);
+        const systemTerminalContainer = this.configSystemTerminal();
+        const spliter = Components.spliter('systemTerminalSpliter', 'Terminal do Sistema', systemTerminalContainer, true);
 
+        this.serialTerminal.formThree.serialTerminalSpliter.sendData.htmlComponent.appendChild(serialTerminalContainer);
         this.menuComponent.appendChild(this.serialTerminal.htmlComponent);
-        this.menuComponent.appendChild(this.systemTerminal.htmlComponent);
+		this.menuComponent.appendChild(spliter);
 
         for (let i = 0; i < document.getElementsByClassName('xterm-cursor-layer').length; i++) {
 
