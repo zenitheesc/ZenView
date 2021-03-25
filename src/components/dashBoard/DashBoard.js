@@ -30,7 +30,9 @@ module.exports = class DashBoard {
 			float: true,
 			column: 12,
 			animate: true,
-
+			draggable: {
+				handle: '.blockHeader',
+			}
 		});
 
 		this.gridStack.enable('.grid-stack-item-content', true);
