@@ -56,6 +56,7 @@
     "bson": "^4.2.3",
     "electron-squirrel-startup": "^1.0.0",
     "gridstack": "^2.2.0",
+    "interactjs": "^1.10.11",
     "javascript-detect-element-resize": "^0.5.3",
     "jquery": "^3.6.0",
     "mathjs": "^7.6.0",
