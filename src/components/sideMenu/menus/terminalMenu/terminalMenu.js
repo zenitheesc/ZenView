@@ -24,10 +24,6 @@ module.exports = class TerminalMenu extends Menu {
                     label: 'Echo',
                     id: 'echoCheckout',
                 }),
-                timestampCheckout: Field.checkBox({
-                    label: 'Mostrar timestamp',
-                    id: 'timestampCheckout',
-                }),
             }, {
 				startOpen: true,
 				text: 'Terminal Serial',

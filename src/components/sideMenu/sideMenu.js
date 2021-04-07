@@ -1,6 +1,6 @@
 const EventHandler = require('../eventHandler/eventHandler');
 const MenuList = require('./menuBar/menuList');
-// const Resizer = require('./resizer');
+const Resizer = require('./resizer');
 const Menus = require('./menus');
 
 module.exports = class SideMenu {
@@ -10,7 +10,7 @@ module.exports = class SideMenu {
 		this.isOpen = false;
 		this.currentMenu;
 		this.MenuList = new MenuList();
-		// this.resizer = new Resizer();
+		this.resizer = new Resizer();
 		this.Menus = [];
 		this.EventHandler = new EventHandler();
 
@@ -101,7 +101,7 @@ module.exports = class SideMenu {
 		this.MenuList.build();
 		this.loadMenus();
 		this.setStyle();
-		// this.resizer.build();
+		this.resizer.build();
 
 	}
 
