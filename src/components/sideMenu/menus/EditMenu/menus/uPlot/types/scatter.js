@@ -132,10 +132,11 @@ module.exports = class uPlotScatter {
 		});
 
 		this.form = Container.div({
-			xDataContainer: Container.spliter({
+			uPlotSeriesStyle: this.seriesSection,
+			uPlotXAxesStyle: Container.spliter({
 				xAxis: Field.select({
 					att: 'inputName',
-					label: "Eixo x",
+					label: "Eixo X",
 					prepend: [
 						{
 							type: 'text',
@@ -143,16 +144,7 @@ module.exports = class uPlotScatter {
 							classList: ['formTextPrepend'],
 						},
 					],
-				})
-			}, {
-				att: 'inputName',
-				startOpen: false,
-				text: 'Entrada eixo X',
-				id: 'uPlotXAxeData',
-			}),
-			uPlotSeriesStyle: this.seriesSection,
-
-			uPlotXAxesStyle: Container.spliter({
+				}),
 				xAxesScale: Field.select({
 					label: 'Escala',
 					att: 'type',
@@ -175,10 +167,10 @@ module.exports = class uPlotScatter {
 							classList: ['col-6'],
 							options: [
 								{
-									text: "crescente",
+									text: "Crescente",
 								},
 								{
-									text: "decrescente",
+									text: "Decrescente",
 								},
 							],
 						},
@@ -190,10 +182,10 @@ module.exports = class uPlotScatter {
 							classList: ['col-6'],
 							options: [
 								{
-									text: 'top',
+									text: 'Top',
 								},
 								{
-									text: 'bottom',
+									text: 'Bottom',
 								},
 							],
 						},
@@ -228,10 +220,10 @@ module.exports = class uPlotScatter {
 							classList: ['col-6'],
 							options: [
 								{
-									text: "crescente",
+									text: "Crescente",
 								},
 								{
-									text: "decrescente",
+									text: "Decrescente",
 								},
 							],
 						},
@@ -243,10 +235,10 @@ module.exports = class uPlotScatter {
 							classList: ['col-6'],
 							options: [
 								{
-									text: 'direita',
+									text: 'Direita',
 								},
 								{
-									text: 'esquerda',
+									text: 'Esquerda',
 								},
 							],
 						},
@@ -292,9 +284,8 @@ module.exports = class uPlotScatter {
 	editXAxis() {
 
 		window.CurrentBlock.sendBlockInstruction({
-
 			command: 'editXAxis',
-			data: this.form.formThree.xDataContainer.xAxis.value,
+			data: this.form.formThree.uPlotXAxesStyle.xAxis.value,
 		});
 
 	}
@@ -327,11 +318,12 @@ module.exports = class uPlotScatter {
 		allInputs = allInputs.concat(window.CurrentInputGroup.inputs);
 
 		this.seriesSection.formThree.yAxis.setOptions(allInputs, callBack);
-		this.form.formThree.xDataContainer.xAxis.setOptions(allInputs, callBack);
+		this.form.formThree.uPlotXAxesStyle.xAxis.setOptions(allInputs, callBack);
 
 	}
 
 	selectColor(colorNumber) {
+
 		const colors = [
 			'#7EB26D', // 0: pale green
 			'#EAB839', // 1: mustard
@@ -346,10 +338,10 @@ module.exports = class uPlotScatter {
 		]
 
 		return colors[colorNumber % colors.length];
+
 	}
 
 	addNewSerie() {
-
 
 		const color = this.selectColor(this.seriesSection.formThree.selectedSerie.input.options.length)
 
@@ -385,16 +377,18 @@ module.exports = class uPlotScatter {
 
 		this.seriesSection.formThree.selectedSerie.value = newSerieName;
 		return data;
+
 	}
 
 	rmvSerie() {
-		window.CurrentBlock.sendBlockInstruction({
 
+		window.CurrentBlock.sendBlockInstruction({
 			command: 'rmvSerie',
 			data: {
 				label: this.seriesSection.formThree.selectedSerie.value,
 			}
 		});
+
 	}
 
 	attSeriesSelector(value) {
@@ -412,6 +406,7 @@ module.exports = class uPlotScatter {
 
 		this.seriesSection.formThree.selectedSerie.setOptions(labels, callBack);
 		if (value) this.seriesSection.formThree.selectedSerie.value = value;
+
 	}
 
 	getSerieByName(serieName) {
@@ -470,6 +465,7 @@ module.exports = class uPlotScatter {
 			}
 
 		};
+
 	}
 
 	setEvents() {
@@ -498,7 +494,8 @@ module.exports = class uPlotScatter {
 
 		});
 
-		this.form.formThree.xDataContainer.self.htmlComponent.addEventListener('input', (evt) => {
+		this.form.formThree.uPlotXAxesStyle.self.htmlComponent.addEventListener('input', (evt) => {
+
 			this.editXAxis();
 			evt.stopPropagation();
 
@@ -517,16 +514,19 @@ module.exports = class uPlotScatter {
 				const response = this.nameAlreadyExists(this.seriesSection.formThree.currSerie.value)
 
 				if (!response) {
+
 					const data = { ...this.seriesSection.getData().blockConfig.uPlot.scatter.series };
 					window.CurrentBlock.sendBlockInstruction({
-
 						command: 'renameSerie',
 						data
 					});
 
 					this.attSeriesSelector(data.label);
+
 				} else {
+
 					this.seriesSection.formThree.currSerie.showWarning('Esse nome já existe')
+
 				}
 
 			}
@@ -534,13 +534,15 @@ module.exports = class uPlotScatter {
 		};
 
 		this.seriesSection.formThree.selectedSerie.append[1].onclick = () => {
+
 			if (this.seriesSection.validate()) {
+
 				this.rmvSerie()
 				this.seriesSection.setData();
-			}
-		}
 
-		console.log()
+			}
+
+		}
 
 		this.overWriteSetData();
 

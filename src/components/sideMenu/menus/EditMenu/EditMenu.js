@@ -3,6 +3,7 @@ const Form = require('../../../formBuilder/formBuilder').Form;
 const Container = require('../../../formBuilder/formBuilder').Container;
 const Field = require('../../../formBuilder/formBuilder').Field;
 const EditMenus = require('./menus/EditMenus');
+
 module.exports = class EditMenu extends Menu {
 
 	constructor() {
