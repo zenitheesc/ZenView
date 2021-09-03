@@ -22,7 +22,7 @@ class FormPattern {
 		this.fields = [];
 		this.containers = [];
 		this.conditions = [];
-		this.formThree = {};
+		this.formTree = {};
 		this._BuildFormThree();
 		this._buildHtmlComponent(config);
 		formConfig = formConfig || {};
@@ -43,24 +43,24 @@ class FormPattern {
 
 	_BuildFormThree() {
 
-		this.formThree['self'] = this;
+		this.formTree['self'] = this;
 		Object.keys(this.config).forEach((property) => {
 
 			if (this.config[property] instanceof FieldClass) {
 
-				this.formThree[property] = this.config[property];
+				this.formTree[property] = this.config[property];
 				this.fields.push(this.config[property]);
 
 
 			} else {
 
-				this.formThree[property] = this.config[property].formThree;
+				this.formTree[property] = this.config[property].formTree;
 				this.containers.push(this.config[property]);
 
 			}
 
 		});
-		return this.formThree;
+		return this.formTree;
 
 	}
 
