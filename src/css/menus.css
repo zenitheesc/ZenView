@@ -16,12 +16,13 @@
 .menuContainer {
     height: 100%;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .menuBody {
-    height: 100%;
-    overflow-y: auto;
     overflow: overlay;
+    overflow-y: auto;
 }
 
 .menuHeader {

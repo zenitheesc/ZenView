@@ -26,7 +26,7 @@ module.exports = class Menu {
 			if ((evt.name) + '_menu' === this.menuComponent.id) {
 
 				this.onOpen();
-				this.menuComponent.style.display = 'block';
+				this.menuComponent.style.display = 'flex';
 
 			} else {
 
