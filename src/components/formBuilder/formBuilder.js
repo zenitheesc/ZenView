@@ -23,7 +23,7 @@ class FormPattern {
 		this.containers = [];
 		this.conditions = [];
 		this.formTree = {};
-		this._BuildFormThree();
+		this._BuildFormTree();
 		this._buildHtmlComponent(config);
 		formConfig = formConfig || {};
 		this.att = formConfig.att || false;
@@ -41,7 +41,7 @@ class FormPattern {
 
 	}
 
-	_BuildFormThree() {
+	_BuildFormTree() {
 
 		this.formTree['self'] = this;
 		Object.keys(this.config).forEach((property) => {
