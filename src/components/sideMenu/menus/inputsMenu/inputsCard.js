@@ -1,5 +1,5 @@
 const EventHandler = require('../../../eventHandler/eventHandler');
-const Components = require('../../../components');	
+const Components = require('../../../components');
 
 module.exports = class InputCard {
 
@@ -24,7 +24,7 @@ module.exports = class InputCard {
 
 		const cardHeader = document.createElement('div');
 		cardHeader.setAttribute('class', 'row  m-0 justify-content-between');
-	
+
 		if (this.inputInfo.hasInconsistency) {
 
 			cardHeader.classList.add('inputCardWithError');
@@ -34,7 +34,7 @@ module.exports = class InputCard {
 			cardHeader.classList.add('inputCard');
 
 		}
-		
+
 		const cardHeaderIcon = document.createElement('i');
 		cardHeaderIcon.innerHTML = Components.icon('list-ol-solid');
 		cardHeaderIcon.className = 'inputCardIcon';
@@ -42,7 +42,7 @@ module.exports = class InputCard {
 		const cardHeaderTitle = document.createElement('div');
 		cardHeaderTitle.className = 'inputCardTitle';
 		cardHeaderTitle.innerText = this.inputInfo.name;
-		
+
 		const cardHeaderWrapper = document.createElement('div');
 		cardHeaderWrapper.className = 'row m-0 inputCardWrapper';
 
@@ -77,15 +77,15 @@ module.exports = class InputCard {
 	setEvents() {
 
 		this.htmlComponent.addEventListener('mouseover', () => {
-			
+
 			this.title.innerText = this.inputInfo.expression;
-			
+
 		});
-		
+
 		this.htmlComponent.addEventListener('mouseout', () => {
-			
+
 			this.title.innerText = this.inputInfo.name;
-			
+
 		});
 
 		this.addBtn.addEventListener('click', () => {
