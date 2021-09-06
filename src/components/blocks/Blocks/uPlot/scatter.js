@@ -65,6 +65,7 @@ module.exports = class Scatter extends Block {
 	}
 
 	updateConfig(newConfig) {
+
 		newConfig = newConfig[newConfig.type];
 
 		this.attLayout(newConfig.axis);
@@ -146,6 +147,8 @@ module.exports = class Scatter extends Block {
 	editSerie(newConfig, changeName) {
 
 		let index = -1;
+
+		console.log(newConfig);
 
 		for (const serie of this.plot.series) {
 

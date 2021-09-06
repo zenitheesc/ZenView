@@ -99,7 +99,7 @@ module.exports = class Card {
 						],
 					}),
 				}, {
-					att: '../series',
+					att: 'card',
 					conditions: [
 						{
 							id: 'uPlotScatterShowLines',
@@ -111,7 +111,6 @@ module.exports = class Card {
 			}),
 		}
         );
-
 
 		this.load();
 

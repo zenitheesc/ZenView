@@ -159,6 +159,7 @@ module.exports = class uPlotScatter {
 		this.seriesSection.formThree.cards.self.htmlComponent.appendChild(this.inputListComponent);
 
 		this.inputList = [];
+		this.openedMenu;
 
 		this.overWriteSetData();
 		this.setEvents();
@@ -327,11 +328,15 @@ module.exports = class uPlotScatter {
 
 	overWriteSetData() {
 
-		this.seriesSection.formThree.cards.self.setData = () => {
-			const series = window.CurrentBlock.block.plot.series;
-			this.inputList.forEach((card, idx) => {
-				card.seriesSection.setData(series[idx + 1]);
-			})
+		this.seriesSection.formThree.cards.self.setData = (newSerie) => {
+
+			const array = window.CurrentBlock.block.plot.series;
+
+			this.inputList.forEach((card, index) => {
+
+				card.seriesSection.setData(array[index + 1]);
+
+			});
 
 		};
 
@@ -339,9 +344,13 @@ module.exports = class uPlotScatter {
 
 			const response = preResponse || {};
 
-			const a = this.inputList.map((card) => {
+			this.inputList.map((card) => {
 
-				return card.seriesSection.getData(response);
+				if (card.serie.label === this.openedMenu) {
+
+					return card.seriesSection.getData(response);
+
+				}
 
 			});
 
@@ -362,6 +371,12 @@ module.exports = class uPlotScatter {
 		this.eventHandler.addEventListener('UpdateSeries', () => {
 
 			this.attSeriesSelector();
+
+		});
+
+		this.eventHandler.addEventListener('MenuOpened', (name) => {
+
+			this.openedMenu = name;
 
 		});
 

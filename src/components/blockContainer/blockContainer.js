@@ -15,7 +15,7 @@ module.exports = class BlockContainer {
 		this.editing = false;
 		this.build();
 
-		
+
 		this.trash.style.display = 'none';
 
 		this.setEvents();
@@ -92,13 +92,14 @@ module.exports = class BlockContainer {
 	}
 
 	updateBlockConfig(newConfig) {
+
 		this.eventHandler.dispatchEvent('DashboardNotSaved');
-		this.block.updateConfig(newConfig);
+		this.block.updateConfig(newConfig.blockConfig[newConfig.type]);
+
 	}
 
 	updateModule(newConfig) {
-		console.log(newConfig);
-		
+
 		if (newConfig.type !== this.block.type) {
 
 			this.preConfig = newConfig;
@@ -125,6 +126,7 @@ module.exports = class BlockContainer {
 
 		this.title = newConfig.blockTitle;
 		this.updateModule(newConfig);
+
 	}
 
 	sendBlockInstruction(newInstruction) {
