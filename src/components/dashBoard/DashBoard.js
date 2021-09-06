@@ -4,7 +4,7 @@ const hash = require('object-hash');
 const BlockContainer = require('../blockContainer/blockContainer');
 const EventHandler = require('../eventHandler/eventHandler');
 const BSONconverter = require('../../classes/bson');
-const DashBoard = require('../../classes/dashBoard');
+const DataDashBoard = require('../../classes/dashBoard');
 const Dialog = require('../dialog/dialog');
 
 module.exports = class DashBoard {
@@ -167,10 +167,9 @@ module.exports = class DashBoard {
 		
 		const dashboardJSON = this.BSON.readFile(path);
 		const dashboardHash = dashboardJSON.hash;
-		const dashboard = new DashBoard(dashboardJSON);
+		const dashboard = new DataDashBoard(dashboardJSON);
 		
 		if (dashboard.blocks.length === 0) {
-			
 			dashboard.inputGroup.inputGraph = {};
 			
 		}
