@@ -118,7 +118,6 @@ module.exports = class EditMenu extends Menu {
 		};
 
 		this.generalContainer.htmlComponent.oninput = () => {
-			console.log(this.currentBlock);
 			this.currentBlock.uptadeBlockGeneralConfig(this.form.getData());
 
 		};

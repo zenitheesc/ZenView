@@ -109,7 +109,9 @@ module.exports = class Card {
 					],
 				}),
 			}),
-		});
+		}
+        );
+
 
 		this.load();
 
