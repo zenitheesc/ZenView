@@ -72,6 +72,7 @@ module.exports = class Scatter extends Block {
 
 		this.attLayout(newConfig.axis);
 		this.editSerie(newConfig.series);
+
 	}
 
 	editXAxis(newConfig) {
@@ -79,7 +80,7 @@ module.exports = class Scatter extends Block {
 		this.plot.addSeries({
 			inputName: newConfig,
 			label: newConfig,
-		}, 0)
+		}, 0);
 
 		this.plot.delSeries(1);
 		this.plot.setData(this.data);
@@ -109,7 +110,7 @@ module.exports = class Scatter extends Block {
 		});
 	}
 
-	rmvSerie(rmvdSerie) {
+	removeSerie(rmvdSerie) {
 
 		let index = -1;
 
@@ -146,7 +147,8 @@ module.exports = class Scatter extends Block {
 
 	}
 
-	editSerie(newConfig, chageName) {
+	editSerie(newConfig, changeName) {
+
 		let index = -1;
 
 		for (const serie of this.plot.series) {
@@ -155,12 +157,13 @@ module.exports = class Scatter extends Block {
 
 				index = this.plot.series.indexOf(serie);
 				break;
+
 			}
 
 		}
 
 		this.plot.addSeries({
-			label: (chageName) ? newConfig.label : this.plot.series[index].label,
+			label: (changeName) ? newConfig.label : this.plot.series[index].label,
 			width: newConfig.width,
 			pathType: newConfig.pathType,
 			showLines: newConfig.showLines,
@@ -202,10 +205,13 @@ module.exports = class Scatter extends Block {
 	renameSerie(newConfig) {
 
 		this.editSerie(newConfig, true)
+
 	}
 
 	destroy() {
+
 		this.plot.destroy();
+
 	}
 
 	init() {
@@ -218,15 +224,17 @@ module.exports = class Scatter extends Block {
 	}
 
 	save() {
+
 		return {
 			data: this.plot.data,
 			series: JSON.parse(JSON.stringify(this.plot.series)),
 			opt: this.opt,
 		}
+
 	}
 
 	load(preSavedConfig) {
-		
+
 		this.data = preSavedConfig.data;
 		this.opt = preSavedConfig.opt;
 		this.series = preSavedConfig.series;
@@ -252,6 +260,7 @@ module.exports = class Scatter extends Block {
 		this.plot = new uPlot(this.opt, this.data, this.htmlComponent);
 
 		this.setAutoResize();
+
 	}
 
 };
