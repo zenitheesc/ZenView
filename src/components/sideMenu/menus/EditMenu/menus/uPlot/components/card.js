@@ -9,7 +9,7 @@ module.exports = class Card {
 
 		this.eventHandler = new EventHandler();
 		this.serie = serie;
-		this.title = serie.label;
+		this.opened = true;
 
 		this.htmlComponent = document.createElement('div');
 		this.htmlComponent.className = 'mb-3';
@@ -111,7 +111,6 @@ module.exports = class Card {
 			}),
 		});
 
-		console.log(this.serie);
 		this.load();
 
 	}
@@ -128,7 +127,7 @@ module.exports = class Card {
 
 		const cardHeaderTitle = document.createElement('div');
 		cardHeaderTitle.className = 'inputCardTitle';
-		cardHeaderTitle.innerText = this.title;
+		cardHeaderTitle.innerText = this.serie.label;
 
 		const cardHeaderWrapper = document.createElement('div');
 		cardHeaderWrapper.className = 'row m-0 inputCardWrapper';
@@ -166,7 +165,7 @@ module.exports = class Card {
 		let alreadyExist = false;
 
 		for (const serie of window.CurrentBlock.block.plot.series) {
-			if (serie.label === newName && this.title !== newName) {
+			if (serie.label === newName && this.serie.label !== newName) {
 				alreadyExist = true;
 				break;
 			}
@@ -175,49 +174,30 @@ module.exports = class Card {
 		return alreadyExist;
 	}
 
-	overWriteSetData() {
+	openMenu() {
 
-		this.seriesSection.setData = (newSerie, ignore) => {
+		this.seriesSection.htmlComponent.style.display = 'block';
+		this.opened = true;
+		this.eventHandler.dispatchEvent('MenuOpened', this.serie.label);
 
-			this.seriesSection.formThree.currSerie.hideWarning();
+	}
 
-			const currentSerie = this.serie;
+	closeMenu() {
 
-			if (currentSerie != null) {
+		this.seriesSection.htmlComponent.style.display = 'none';
+		this.opened = false;
 
-				this.seriesSection.containers.forEach((container) => {
-
-					container.setData(currentSerie);
-
-				});
-
-				this.seriesSection.fields.forEach((field) => {
-
-					const paths = field.att.split('.');
-					let result;
-
-					for (const path of paths) {
-						result = result?.[path] ?? currentSerie?.[path];
-					}
-
-					field.value = result ?? field.value;
-
-
-				});
-
-			}
-
-		};
+		// TODO: salvar
 
 	}
 
 	load() {
 
-		this.overWriteSetData();
 		this.inputHeader();
 		this.setEvents();
+		this.openMenu();
 
-		this.seriesSection.setData();
+		this.seriesSection.setData(this.serie);
 		this.htmlComponent.appendChild(this.seriesSection.htmlComponent);
 
 	}
@@ -241,17 +221,26 @@ module.exports = class Card {
 
 		});
 
+		this.eventHandler.addEventListener('MenuOpened', (name) => {
+
+			if (name !== this.serie.label) {
+
+				this.closeMenu();
+
+			}
+
+		});
+
 		this.saveBtn.addEventListener('click', () => {
 
-			this.seriesSection.htmlComponent.style.display = 'none';
-			// TODO: salvar
+			this.closeMenu();
 
 		});
 
 		this.editBtn.addEventListener('click', () => {
 
-			this.seriesSection.htmlComponent.style.display = 'block';
-			this.seriesSection.setData();
+			this.openMenu();
+			this.seriesSection.setData(this.serie);
 
 		});
 
@@ -260,7 +249,7 @@ module.exports = class Card {
 			window.CurrentBlock.sendBlockInstruction({
 				command: 'removeSerie',
 				data: {
-					label: this.title,
+					label: this.serie.label,
 				}
 			});
 

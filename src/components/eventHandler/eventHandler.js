@@ -230,6 +230,12 @@ module.exports = class EventHandler {
 
 		};
 
+		this['MenuOpened'] = (detail) => {
+
+			this.dispatchEvent('MenuOpened', detail);
+
+		};
+
 	}
 
 	addEventListener(eventName, callBackFunction) {
