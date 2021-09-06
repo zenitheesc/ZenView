@@ -109,9 +109,10 @@ module.exports = class Card {
 					],
 				}),
 			}),
-		});
+		}
+        );
 
-		console.log(this.serie);
+
 		this.load();
 
 	}
@@ -178,9 +179,7 @@ module.exports = class Card {
 	overWriteSetData() {
 
 		this.seriesSection.setData = (newSerie, ignore) => {
-
 			this.seriesSection.formThree.currSerie.hideWarning();
-
 			const currentSerie = this.serie;
 
 			if (currentSerie != null) {
@@ -242,7 +241,6 @@ module.exports = class Card {
 		});
 
 		this.saveBtn.addEventListener('click', () => {
-
 			this.seriesSection.htmlComponent.style.display = 'none';
 			// TODO: salvar
 

@@ -53,7 +53,6 @@ module.exports = class Scatter extends Block {
 		}, this.data.length);
 
 		if (this.plot.series[1].inputName == null) {
-			console.log(this.plot.series)
 			this.plot.delSeries(1);
 			this.data.pop();
 		}
@@ -61,13 +60,11 @@ module.exports = class Scatter extends Block {
 		const newMockData = [...Array(11).keys()].map((value) => (Math.sin(value) + (this.plot.series.length - 2)));
 		if (this.plot.series.length > this.data.length) this.data.push(newMockData);
 
-		console.log(this.data);
 		this.plot.setData(this.data);
 
 	}
 
 	updateConfig(newConfig) {
-
 		newConfig = newConfig[newConfig.type];
 
 		this.attLayout(newConfig.axis);
@@ -142,7 +139,6 @@ module.exports = class Scatter extends Block {
 
 		}
 
-		console.log(this.plot.series)
 		this.plot.setData(this.data)
 
 	}
