@@ -13,6 +13,7 @@ module.exports = class uPlotScatter {
 			cards: Container.div({}),
 			button: Field.button({
 				text: 'Adicionar nova série',
+				att: 'newSerieBtn',
 				classList: ['formCenteredBtn', 'green-btn'],
 			}),
 		}, {
@@ -279,6 +280,7 @@ module.exports = class uPlotScatter {
 			data,
 		});
 
+
 		return data;
 
 	}
@@ -325,23 +327,21 @@ module.exports = class uPlotScatter {
 
 	overWriteSetData() {
 
-		this.seriesSection.setData = (newSerie, ignore) => {
-
-			for (const card of this.inputList) {
-
-				card.seriesSection.setData(newSerie, ignore);
-
-			}
+		this.seriesSection.formThree.cards.self.setData = () => {
+			const series = window.CurrentBlock.block.plot.series;
+			this.inputList.forEach((card, idx) => {
+				card.seriesSection.setData(series[idx + 1]);
+			})
 
 		};
 
-		this.seriesSection.getData = (preResponse) => {
+		this.seriesSection.formThree.cards.self.getData = (preResponse) => {
 
 			const response = preResponse || {};
 
-			this.inputList.map((card) => {
+			const a = this.inputList.map((card) => {
 
-				 return card.seriesSection.getData(response);
+				return card.seriesSection.getData(response);
 
 			});
 
@@ -368,10 +368,12 @@ module.exports = class uPlotScatter {
 		this.seriesSection.formThree.button.onclick = () => {
 
 			const newSerie = this.addNewSerie();
-			this.seriesSection.reset()
-			this.seriesSection.setData(newSerie, true);
-			this.seriesSection.setConditions()
-			this.attSeriesSelector();
+			setTimeout(() => {
+				this.seriesSection.reset()
+				this.attSeriesSelector();
+				this.seriesSection.setData();
+				this.seriesSection.setConditions()
+			}, 25);
 
 		};
 
