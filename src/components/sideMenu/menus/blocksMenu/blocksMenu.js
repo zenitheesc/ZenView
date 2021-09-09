@@ -24,6 +24,7 @@ module.exports = class BlocksMenu extends Menu {
 
 		this.appendSection(new Section('uPlotSection', 'Plots 2D'));
 		this.appendSection(new Section('uPlotSection', 'Plots 3D'));
+		this.appendSection(new Section('terminalSection', 'Terminal'));
 		this.appendSection(new Section('uPlotSection', 'GPS'));
 		this.appendSection(new Section('uPlotSection', 'Modelo 3D'));
 
