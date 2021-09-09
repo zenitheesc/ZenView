@@ -1,0 +1,31 @@
+{
+    "ptbr": {
+        "buttons": [
+            "Dashboards",
+            "Novo Dashboard",
+            "Começar Leitura",
+            "Entradas",
+            "Novo bloco",
+            "Deletar",
+            "Salvar",
+            "Sobre nós",
+            "Configurações",
+            "Terminal"
+        ]
+    },
+
+    "en": {
+        "buttons": [
+            "Dashboards",
+            "New Dashboard",
+            "Start Reading",
+            "Inputs",
+            "Add new Block",
+            "Delete",
+            "Save",
+            "About us",
+            "Config",
+            "Terminal"
+        ]
+    }
+}

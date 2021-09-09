@@ -8,6 +8,7 @@ const url = require('url');
 const ipc = electron.ipcMain;
 const dialog = require('electron').dialog;
 const TitleBarMenu = require('./components/titleBar/titleBarMenu');
+const fs = require('fs'); 
 
 const debugMode = true;
 let initialWindow;
@@ -16,32 +17,10 @@ let titleBarMenu;
 let dashboardIsSaved = true;
 
 // parametros iniciais da janela inicial
-const initialWindowparams = {
-	frame: false,
-	titleBarStyle: 'hidden',
-	width: 539,
-	height: 170,
-	resizable: false,
-	show: false,
-	path: '../src/initialWindow/initialWindow.html',
-	openDevTools: false,
-};
-// parametros inicias da janela principal
-const mainWindowparams = {
-	title: 'ZenView',
-	path: '../src/index.html',
-	frame: false,
-	width: 1024,
-	height: 600,
-	show: debugMode,
-	webPreferences: {
-		nodeIntegration: true,
-		webviewTag: true,
-		nodeIntegrationInWorker: true,
-		enableRemoteModule: true,
-	},
-	openDevTools: debugMode,
-};
+const initialWindowparams = JSON.parse(fs.readFileSync('./assets/windowParams/initialWindowParams.json'));
+
+// parametros iniciais da janela principal
+const mainWindowparams = JSON.parse(fs.readFileSync('./assets/windowParams/mainWindowParams.json'));
 /**
  * cria uma nova janela a partir dos parametros dados
  * @param {object} params objeto que descreve a nova janela
