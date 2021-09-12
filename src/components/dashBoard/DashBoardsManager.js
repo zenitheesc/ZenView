@@ -215,6 +215,7 @@ module.exports = class DashBoardsManager {
 			type: 'error',
 			buttons: ['Sim', 'Não'],
 			message: 'Você tem certeza que deseja deletar o dashboard?',
+			cancelId: 1,
 		}, callback);
 
 	}
