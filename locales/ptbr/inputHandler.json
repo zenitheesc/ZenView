@@ -1,0 +1,8 @@
+{
+"language": "ptbr",
+"inputHandler": [
+        {
+            "currentNameError": "Esse nome já existe"
+        }
+    ]
+}

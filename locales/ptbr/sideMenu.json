@@ -1,0 +1,69 @@
+{
+    "language": "ptbr",
+    "sideMenu": [
+        {
+            "menus": [
+                {
+                    "startRead": [
+                        {
+                            "title": "Error",
+                            "buttons": "Ok",
+                            "message": "Suas entradas possuem inconsistências",
+                            "label": [
+                                "Fonte dos dados",
+                                "Porta",
+                                "Habilitar apenas USB",
+                                "Baud Rate",
+                                "Parser",
+                                "Arquivo",
+                                "Simular",
+                                "Tipo de intervalo",
+                                "Intervalo em ms",
+                                "Entrada do intervalo de tempo",
+                                "Salvar leitura",
+                                "Nome do arquivo",
+                                "Diretório"
+                            ],
+                            "this.button.htmlComponent.textContent": [
+                                "Iniciar Leitura",
+                                "Finalizar Leitura"
+                            ],
+                            "text":[
+                                "Iniciar Leitura",
+                                "serial",
+                                "csv",
+                                "4800",
+                                "9600",
+                                "14400",
+                                "38400",
+                                "57600",
+                                "115200",
+                                "Fixo",
+                                "Entrada",
+                                "Configurações"
+                            ]
+                        }
+                    ],
+                    "newDashboard": [
+                        {
+                            "title": "Error",
+                            "buttons": "Ok",
+                            "label": [
+                                "Nome",
+                                "Diretório",
+                                "Número de entradas",
+                                "Descrição"
+                            ],
+                            "message": [
+                                "Mais de um arquivo foi importado. Tente importar apenas um arquivo!",
+                                "O arquivo importado não é um dashboard. Tente importar um dashboard válido!"
+                            ],
+                            "this.dropzone.textContent": "Clique ou solte um arquivo para importar um Dashboard",
+                            "super": "Novo Dashboard"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

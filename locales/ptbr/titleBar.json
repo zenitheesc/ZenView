@@ -1,0 +1,16 @@
+{
+    "language": "ptbr",
+    "titleBar": [
+        {
+            "this.windowName.textContent": "ZenView",
+            "titleBarMenu": [
+                {
+                    "label": [
+                        "Importar dashboard",
+                        "Salvar dashboard"
+                    ]
+                }
+            ]
+        }
+    ]
+}

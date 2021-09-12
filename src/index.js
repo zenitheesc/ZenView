@@ -17,10 +17,34 @@ let titleBarMenu;
 let dashboardIsSaved = true;
 
 // parametros iniciais da janela inicial
-const initialWindowparams = JSON.parse(fs.readFileSync('./assets/windowParams/initialWindowParams.json'));
+const initialWindowparams = {
+	frame: false,
+	titleBarStyle: 'hidden',
+	width: 539,
+	height: 170,
+	resizable: false,
+	show: false,
+	path: '../src/initialWindow/initialWindow.html',
+	openDevTools: false,
+};
 
 // parametros iniciais da janela principal
-const mainWindowparams = JSON.parse(fs.readFileSync('./assets/windowParams/mainWindowParams.json'));
+const mainWindowparams = {
+	title: 'ZenView',
+	path: '../src/index.html',
+	frame: false,
+	width: 1024,
+	height: 600,
+	show: debugMode,
+	webPreferences: {
+		nodeIntegration: true,
+		webviewTag: true,
+		nodeIntegrationInWorker: true,
+		enableRemoteModule: true,
+	},
+	openDevTools: debugMode,
+};
+
 /**
  * cria uma nova janela a partir dos parametros dados
  * @param {object} params objeto que descreve a nova janela

@@ -1,0 +1,36 @@
+{
+    "language": "ptbr",
+    "Title": [
+        {
+            "subTitle": [
+                {
+                    "TAG":[
+                        "Text1",
+                        "Text2",
+                        "Text3"
+                    ],
+
+                    "title":[
+                        "Text"
+                    ],
+
+                    "buttons":[
+                        "Text"
+                    ],
+
+                    "label":[
+                        "Text"
+                    ],
+
+                    "message":[
+                        "Text"
+                    ],
+
+                    "...textContent":[
+                        "Text"
+                    ]
+                }
+            ]
+        }
+    ]
+}
