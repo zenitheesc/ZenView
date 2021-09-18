@@ -3,7 +3,7 @@ const pty = require('node-pty');
 const {Terminal} = require('xterm');
 const Block = require('../block');
 
-module.exports = class TerminalBlock extends Block {
+module.exports = class SystemTerminalBlock extends Block {
 
 	constructor(preConfig, htmlComponent) {
 
@@ -31,14 +31,12 @@ module.exports = class TerminalBlock extends Block {
         const height = widget.offsetHeight;
         const cols = Math.floor(width/9);
         const rows = Math.floor(height/17);
-        console.log("comprmineto e altura",width,height);
-        console.log("colunas e linhas",cols,rows);
         this.terminal.resize(cols,rows);
         this.ptyProcess.resize(cols,rows);
 
         
     }
-    configSystemTerminal() {
+    configTerminal() {
 
         const terminalContainer = document.createElement('div');
         this.terminal.open(terminalContainer);
@@ -50,15 +48,13 @@ module.exports = class TerminalBlock extends Block {
     }
 
     init(){
-        this.htmlComponent.appendChild(this.configSystemTerminal());
+        this.htmlComponent.appendChild(this.configTerminal());
         this.setAutoResize();
-        console.log("iniciado");
     }
 
     load(){
-        this.htmlComponent.appendChild(this.configSystemTerminal());
+        this.htmlComponent.appendChild(this.configTerminal());
         this.setAutoResize();
-        console.log("carregado");
     }
     
     setAutoResize(){
@@ -67,7 +63,6 @@ module.exports = class TerminalBlock extends Block {
 		addResizeListener(widget, () => {
             this.updateTerminal();
 		});
-        console.log("redimensionado");
     }
 
 
