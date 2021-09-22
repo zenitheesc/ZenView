@@ -15,7 +15,7 @@ module.exports = class BlockContainer {
 		this.editing = false;
 		this.build();
 
-		
+
 		this.trash.style.display = 'none';
 
 		this.setEvents();
@@ -99,7 +99,7 @@ module.exports = class BlockContainer {
 
 	updateModule(newConfig) {
 		console.log(newConfig);
-		
+
 		if (newConfig.type !== this.block.type) {
 
 			this.preConfig = newConfig;
@@ -243,6 +243,12 @@ module.exports = class BlockContainer {
 		this.eventHandler.addEventListener('DataIsProcessed', (evt) => {
 
 			this.block.updateData(evt);
+
+		});
+
+		this.eventHandler.addEventListener('StartRead', (evt) => {
+
+			this.block.willRead();
 
 		});
 
