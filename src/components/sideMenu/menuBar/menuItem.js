@@ -89,6 +89,7 @@ module.exports = class MenuItem {
 		menuItem.style.borderLeft = '2px solid ' + Utillities.getColor(1);
 
 	}
+
 	setClickEffect() {
 
 		this.itemComponent.addEventListener('click', () => {
@@ -102,6 +103,8 @@ module.exports = class MenuItem {
 		});
 
 	}
+
+
 	setContextChangeEffect() {
 
 		if (this.globalContext.includes('any')) return;

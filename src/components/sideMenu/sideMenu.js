@@ -83,6 +83,17 @@ module.exports = class SideMenu {
 		});
 
 	}
+
+	setEscEffect() {
+		if(this.isOpen) {
+			this.addEventListener('keydown', (event)=>{
+				if(event.keyCode == 27){
+					this.EventHandler.dispatchEvent('CloseSideMenu', this.id);
+				}
+			});
+		}
+	}
+
 	build() {
 
 		this.EventHandler.addEventListener('ChangeSideMenu', (evt) => {
@@ -98,9 +109,14 @@ module.exports = class SideMenu {
 
 		});
 
+		this.EventHandler.addEventListener('CloseSideMenu', (evt) =>{
+			this.closeSideMenu();
+		});
+
 		this.MenuList.build();
 		this.loadMenus();
 		this.setStyle();
+		this.setEscEffect();
 		this.resizer.build();
 
 	}
