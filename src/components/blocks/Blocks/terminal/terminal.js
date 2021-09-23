@@ -31,8 +31,6 @@ module.exports = class TerminalBlock extends Block {
         const height = widget.offsetHeight;
         const cols = Math.floor(width/9);
         const rows = Math.floor(height/17);
-        console.log("comprmineto e altura",width,height);
-        console.log("colunas e linhas",cols,rows);
         this.terminal.resize(cols,rows);
         this.ptyProcess.resize(cols,rows);
 
@@ -52,13 +50,11 @@ module.exports = class TerminalBlock extends Block {
     init(){
         this.htmlComponent.appendChild(this.configSystemTerminal());
         this.setAutoResize();
-        console.log("iniciado");
     }
 
     load(){
         this.htmlComponent.appendChild(this.configSystemTerminal());
         this.setAutoResize();
-        console.log("carregado");
     }
     
     setAutoResize(){
@@ -67,7 +63,6 @@ module.exports = class TerminalBlock extends Block {
 		addResizeListener(widget, () => {
             this.updateTerminal();
 		});
-        console.log("redimensionado");
     }
 
 
