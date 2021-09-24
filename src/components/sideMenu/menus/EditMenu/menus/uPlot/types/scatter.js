@@ -2,7 +2,7 @@ const Container = require('../../../../../../formBuilder/formBuilder').Container
 const Field = require('../../../../../../formBuilder/formBuilder').Field;
 const EventHandler = require('../../../../../../eventHandler/eventHandler');
 const Card = require('../components/card');
-
+const { v4 : uuidv4 } = require ('uuid');
 module.exports = class uPlotScatter {
 
 	constructor() {
@@ -247,22 +247,10 @@ module.exports = class uPlotScatter {
 
 		let newSerieName = "série " + length;
 
-		window.CurrentBlock.block.plot.series.slice(1).some((serie, index) => {
-
-			if (serie.label !== "série " + index && !this.nameAlreadyExists("série " + index)) {
-
-				newSerieName = "série " + index;
-				return true;
-
-			}
-
-			return false;
-
-		});
 
 		const data = {
 			label: newSerieName,
-			width: 6,
+			width: 4,
 			paths: 1,
 			points: {
 				showPoints: true,
@@ -286,7 +274,7 @@ module.exports = class uPlotScatter {
 
 	}
 
-	attSeriesSelector() {
+	attSeriesList() {
 
 		let slice = 1;
 		if (window.CurrentBlock.block.plot?.series[1]?.inputName == null) slice = 2;
@@ -330,6 +318,7 @@ module.exports = class uPlotScatter {
 
 		this.seriesSection.formThree.cards.self.setData = (newSerie) => {
 
+			this.attSeriesList();
 			const array = window.CurrentBlock.block.plot.series;
 
 			this.inputList.forEach((card, index) => {
@@ -370,7 +359,7 @@ module.exports = class uPlotScatter {
 
 		this.eventHandler.addEventListener('UpdateSeries', () => {
 
-			this.attSeriesSelector();
+			this.attSeriesList();
 
 		});
 
@@ -385,7 +374,7 @@ module.exports = class uPlotScatter {
 			const newSerie = this.addNewSerie();
 			setTimeout(() => {
 				this.seriesSection.reset()
-				this.attSeriesSelector();
+				this.attSeriesList();
 				this.seriesSection.setData();
 				this.seriesSection.setConditions()
 			}, 25);

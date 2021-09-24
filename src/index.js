@@ -87,7 +87,7 @@ app.on('ready', () => {
 
 	mainWindow.on('close', (evt) => {
 		
-		if (!dashboardIsSaved) {
+        if (!dashboardIsSaved && !debugMode) {
 		
 			const response = dialog.showMessageBoxSync(mainWindow, {
 				type: 'question',

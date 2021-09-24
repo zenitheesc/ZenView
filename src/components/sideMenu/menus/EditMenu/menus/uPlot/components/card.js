@@ -8,7 +8,7 @@ module.exports = class Card {
 	constructor(serie) {
 
 		this.eventHandler = new EventHandler();
-		this.serie = serie;
+        this.serie = serie;
 		this.opened = true;
 
 		this.htmlComponent = document.createElement('div');
@@ -18,13 +18,6 @@ module.exports = class Card {
 			currSerie: Field.text({
 				att: 'label',
 				label: 'Nome',
-				append: [
-					{
-						type: 'button',
-						content: Components.icon('pencil-square'),
-						classList: ['formButtonWithIconPrepend'],
-					},
-				],
 			}),
 			yAxis: Field.select({
 				att: 'inputName',
@@ -99,7 +92,6 @@ module.exports = class Card {
 						],
 					}),
 				}, {
-					att: 'card',
 					conditions: [
 						{
 							id: 'uPlotScatterShowLines',
@@ -112,6 +104,7 @@ module.exports = class Card {
 		}
         );
 
+        this.seriesSection.setAttribute("form");
 		this.load();
 
 	}
@@ -149,30 +142,14 @@ module.exports = class Card {
 
 		const cardButtons = document.createElement('div');
 
-		this.saveBtn = Components.buttonWithIcon('save', 'inputCardOption');
 		this.editBtn = Components.buttonWithIcon('pencil-square', 'inputCardOption');
 		this.delBtn = Components.buttonWithIcon('trash-alt-regular', 'inputCardOption trashInputCardOption');
 
-		cardButtons.appendChild(this.saveBtn);
 		cardButtons.appendChild(this.editBtn);
 		cardButtons.appendChild(this.delBtn);
 
 		return cardButtons;
 
-	}
-
-	nameAlreadyExists(newName) {
-
-		let alreadyExist = false;
-
-		for (const serie of window.CurrentBlock.block.plot.series) {
-			if (serie.label === newName && this.serie.label !== newName) {
-				alreadyExist = true;
-				break;
-			}
-		}
-
-		return alreadyExist;
 	}
 
 	openMenu() {
@@ -232,12 +209,6 @@ module.exports = class Card {
 
 		});
 
-		this.saveBtn.addEventListener('click', () => {
-
-			this.closeMenu();
-
-		});
-
 		this.editBtn.addEventListener('click', () => {
 
 			this.openMenu();
@@ -258,35 +229,15 @@ module.exports = class Card {
 
 		});
 
-		this.seriesSection.formThree.currSerie.append[0].onclick = () => {
+		this.seriesSection.htmlComponent.addEventListener('input', (evt) => {
 
-			if (this.seriesSection.validate()) {
-
-				const response = this.nameAlreadyExists(this.seriesSection.formThree.currSerie.value);
-
-				if (!response) {
-
-					this.serie.label = this.seriesSection.formThree.currSerie.value;
-					const data = {...this.seriesSection.getData().blockConfig.uPlot.scatter.series}
-
-					window.CurrentBlock.sendBlockInstruction({
-						command: 'renameSerie',
-						data
-					});
-
-					this.eventHandler.dispatchEvent('UpdateSeries');
-
-				} else {
-
-					this.seriesSection.formThree.currSerie.showWarning('Esse nome já existe')
-
-				}
-
-			}
-
-		};
-
-		this.seriesSection.formThree.currSerie.htmlComponent.addEventListener('input', (evt) => {
+			this.serie = window.CurrentBlock.sendBlockInstruction({
+				command: 'editSerie',
+                data: {
+                    ...this.seriesSection.getData(),
+                    currSerieId: this.serie.uuid,
+                }
+            });
 
 			evt.stopPropagation();
 
