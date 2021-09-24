@@ -1,6 +1,7 @@
 /* eslint-disable new-cap */
 const Block = require('../block');
 const uPlot = require('uplot');
+const { v4: uuidv4 } = require('uuid');
 // eslint-disable-next-line no-unused-vars
 const ElementResize = require('javascript-detect-element-resize');
 
@@ -49,6 +50,7 @@ module.exports = class Scatter extends Block {
 
 		this.plot.addSeries({
 			...newSerie,
+			uuid: uuidv4(),
 			paths: this.pathSetter("1"),
 		}, this.data.length);
 
@@ -61,15 +63,6 @@ module.exports = class Scatter extends Block {
 		if (this.plot.series.length > this.data.length) this.data.push(newMockData);
 
 		this.plot.setData(this.data);
-
-	}
-
-	updateConfig(newConfig) {
-
-		newConfig = newConfig[newConfig.type];
-
-		this.attLayout(newConfig.axis);
-		this.editSerie(newConfig.series);
 
 	}
 
@@ -144,15 +137,13 @@ module.exports = class Scatter extends Block {
 
 	}
 
-	editSerie(newConfig, changeName) {
+	editSerie(newConfig) {
 
 		let index = -1;
 
-		console.log(newConfig);
-
 		for (const serie of this.plot.series) {
 
-			if (serie.label === newConfig.currSerie) {
+			if (serie.uuid === newConfig.currSerieId) {
 
 				index = this.plot.series.indexOf(serie);
 				break;
@@ -162,10 +153,11 @@ module.exports = class Scatter extends Block {
 		}
 
 		this.plot.addSeries({
-			label: (changeName) ? newConfig.label : this.plot.series[index].label,
+			label: newConfig.label,
 			width: newConfig.width,
 			pathType: newConfig.pathType,
 			showLines: newConfig.showLines,
+			uuid: newConfig.currSerieId,
 			points: {
 				show: newConfig.points.showPoints,
 				showPoints: newConfig.points.showPoints,
@@ -179,10 +171,7 @@ module.exports = class Scatter extends Block {
 		this.plot.delSeries(index + 1);
 		this.plot.redraw();
 
-	}
-
-	attLayout(newLayout) {
-
+		return this.plot.series[index];
 
 	}
 
