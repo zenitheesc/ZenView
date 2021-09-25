@@ -13,9 +13,11 @@ module.exports = class GPS extends Block {
 		this.latitude = this._formConfig.GPS.latitude;
 		this.radius = this._formConfig.GPS.radius;
 
+		const saoCarlosLatLng = [-22, -47.890833];
+
 		this.map = leaflet.map(this.htmlComponent, {
 			attributionControl: false
-		}).setView([-22, -47.890833], 12);
+		}).setView(saoCarlosLatLng, 12);
 
 		this.layer = leaflet.geoJSON([], {
 			pointToLayer: (feature, latlng) =>  {
