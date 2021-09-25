@@ -29,6 +29,12 @@ module.exports = class GPS extends Block {
 
 	get formConfig() {
 
+		this._formConfig.GPS.features = this.features;
+		this._formConfig.GPS.style = this.style;
+		this._formConfig.GPS.longitude = this.longitude;
+		this._formConfig.GPS.latitude = this.latitude;
+		this._formConfig.GPS.radius = this.radius;
+
 		return this._formConfig;
 
 	}
