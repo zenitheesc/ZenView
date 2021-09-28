@@ -1,7 +1,3 @@
-/**
- * ColorPicker
- */
-
 const FieldClass = require('./Field');
 const Field = require('./FieldsBuilder');
 
@@ -198,7 +194,15 @@ class FormPattern {
 
 		this.containers.forEach((container) => {
 
-			container.setData(DataObj);
+			try {
+
+				container.setData(DataObj);
+
+			} catch (e) {
+
+				console.error(e);
+
+			}
 
 		});
 

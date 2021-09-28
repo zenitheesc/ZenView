@@ -1,12 +1,12 @@
 const Field = require('../Field');
 const JSColor = require('../../../externalSources/jscolor');
+
 module.exports = class ColorPicker extends Field {
 
 	constructor(options) {
 
 		super(options);
 		this.setInputEvent();
-
 
 	}
 
@@ -65,7 +65,6 @@ module.exports = class ColorPicker extends Field {
 	}
 
 	setInputEvent() {
-
 
 		this.input.addEventListener('input', (evt) => {
 

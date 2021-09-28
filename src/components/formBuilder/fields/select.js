@@ -42,7 +42,7 @@ module.exports = class Select extends Field {
 
 		callBack = callBack || function (option) {
 
-			return [option.value || option.text, option.text || option.value];
+			return [option.value ?? option.text, option.text ?? option.value];
 
 		};
 
@@ -57,7 +57,7 @@ module.exports = class Select extends Field {
 		this.input.innerHTML = '';
 		callBack = callBack || function (option) {
 
-			return [option.value || option.text, option.text || option.value];
+			return [option.value ?? option.text, option.text ?? option.value];
 
 		};
 

@@ -3,6 +3,7 @@ const Form = require('../../../formBuilder/formBuilder').Form;
 const Container = require('../../../formBuilder/formBuilder').Container;
 const Field = require('../../../formBuilder/formBuilder').Field;
 const EditMenus = require('./menus/EditMenus');
+
 module.exports = class EditMenu extends Menu {
 
 	constructor() {
@@ -16,9 +17,11 @@ module.exports = class EditMenu extends Menu {
 
 		this.currentBlock;
 
-		for(const Menu in EditMenus){
+		for (const Menu in EditMenus) {
+
 			this.formsComponents[Menu] = new EditMenus[Menu](this.currentBlock)
 			this.forms[Menu] = this.formsComponents[Menu].form
+
 		}
 
 		this.generalContainer = Container.spliter({
@@ -37,7 +40,7 @@ module.exports = class EditMenu extends Menu {
 					text: 'Blank',
 				},
 				{
-					text: 'TODO Three.js',
+					text: 'GPS',
 				},
 				],
 			}),
@@ -117,7 +120,7 @@ module.exports = class EditMenu extends Menu {
 		};
 
 		this.generalContainer.htmlComponent.oninput = () => {
-			console.log(this.currentBlock);
+
 			this.currentBlock.uptadeBlockGeneralConfig(this.form.getData());
 
 		};
