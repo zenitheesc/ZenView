@@ -98,6 +98,12 @@ module.exports = class EventHandler {
 
 		};
 
+		this['OpenSideMenu'] = (detail) => {
+
+			this.dispatchEvent('CloseSideMenu', detail);
+
+		};
+
 		this['SetSelectionEffect'] = (detail) => {
 
 			this.dispatchEvent('SetSelectionEffect', detail);

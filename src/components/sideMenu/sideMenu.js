@@ -86,9 +86,10 @@ module.exports = class SideMenu {
 
 	setEscEffect() {
 		if(this.isOpen) {
-			this.addEventListener('keydown', (event)=>{
-				if(event.keyCode == 27){
-					this.EventHandler.dispatchEvent('CloseSideMenu', this.id);
+			this.addEventListener('keydown', (e)=>{
+				if(e.keyCode == 27){
+					this.sideMenuComponent.closeSideMenu();
+					console.log("elaia")
 				}
 			});
 		}
