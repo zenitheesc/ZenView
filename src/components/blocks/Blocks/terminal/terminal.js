@@ -26,6 +26,7 @@ module.exports = class TerminalBlock extends Block {
     }
 
     updateTerminal(){
+
 		const widget = this.htmlComponent.parentElement;
         const width = widget.offsetWidth;
         const height = widget.offsetHeight;
@@ -33,31 +34,35 @@ module.exports = class TerminalBlock extends Block {
         const rows = Math.floor(height/17);
         this.terminal.resize(cols,rows);
         this.ptyProcess.resize(cols,rows);
-
-        
     }
+
     configSystemTerminal() {
 
         const terminalContainer = document.createElement('div');
+
         this.terminal.open(terminalContainer);
         this.terminal._initialized = true;
+
         this.ptyProcess.onData(recv => this.terminal.write(recv));
         this.terminal.onData(send => this.ptyProcess.write(send));
-        return terminalContainer;
 
+        this.htmlComponent.appendChild(terminalContainer);
     }
 
     init(){
-        this.htmlComponent.appendChild(this.configSystemTerminal());
+
+        this.configSystemTerminal();
         this.setAutoResize();
     }
 
     load(){
+
         this.htmlComponent.appendChild(this.configSystemTerminal());
         this.setAutoResize();
     }
     
     setAutoResize(){
+
 		const widget = this.htmlComponent.parentElement;
 
 		addResizeListener(widget, () => {
