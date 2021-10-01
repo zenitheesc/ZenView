@@ -59,6 +59,7 @@
     "interactjs": "^1.10.11",
     "javascript-detect-element-resize": "^0.5.3",
     "jquery": "^3.6.0",
+    "leaflet": "^1.7.1",
     "mathjs": "^7.6.0",
     "n-readlines": "^1.0.1",
     "node-pty": "^0.10.0",

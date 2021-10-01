@@ -1,0 +1,17 @@
+[{
+    "type": "GPS",
+    "title": "GPS",
+    "GPS": {
+        "type": "GPS",
+        "style": "#7EB26D",
+        "radius": 6,
+        "longitude": "", 
+        "latitude": "",
+        "features": [
+            {
+                "type": "LineString",
+                "coordinates": []
+            }
+        ]
+    }
+}]

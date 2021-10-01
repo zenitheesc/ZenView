@@ -17,10 +17,13 @@ module.exports = class Scatter extends Block {
 		this.initR = false;
 		this.type = "uPlot";
 		this.cont = 0;
+
 	}
 
 	get formConfig() {
+
 		return this._formConfig
+
 	}
 
 	pathSetter(pathType) {
@@ -38,11 +41,11 @@ module.exports = class Scatter extends Block {
 			case "4":
 				return uPlot.paths.stepped({ align: 1 })
 				break;
-
 			default:
 				return () => null;
 				break;
 		}
+
 	}
 
 	addSerie(newSerie) {
@@ -53,7 +56,6 @@ module.exports = class Scatter extends Block {
 		}, this.data.length);
 
 		if (this.plot.series[1].inputName == null) {
-			console.log(this.plot.series)
 			this.plot.delSeries(1);
 			this.data.pop();
 		}
@@ -61,7 +63,6 @@ module.exports = class Scatter extends Block {
 		const newMockData = [...Array(11).keys()].map((value) => (Math.sin(value) + (this.plot.series.length - 2)));
 		if (this.plot.series.length > this.data.length) this.data.push(newMockData);
 
-		console.log(this.data);
 		this.plot.setData(this.data);
 
 	}
@@ -72,6 +73,7 @@ module.exports = class Scatter extends Block {
 
 		this.attLayout(newConfig.axis);
 		this.editSerie(newConfig.series);
+
 	}
 
 	editXAxis(newConfig) {
@@ -141,12 +143,12 @@ module.exports = class Scatter extends Block {
 
 		}
 
-		console.log(this.plot.series)
 		this.plot.setData(this.data)
 
 	}
 
 	editSerie(newConfig, chageName) {
+		
 		let index = -1;
 
 		for (const serie of this.plot.series) {
@@ -155,6 +157,7 @@ module.exports = class Scatter extends Block {
 
 				index = this.plot.series.indexOf(serie);
 				break;
+
 			}
 
 		}
@@ -172,7 +175,6 @@ module.exports = class Scatter extends Block {
 			stroke: newConfig._stroke,
 			paths: this.pathSetter((!newConfig.showLines) ? null : newConfig.pathType),
 		}, index);
-
 
 		this.plot.delSeries(index + 1);
 		this.plot.redraw();
@@ -202,10 +204,13 @@ module.exports = class Scatter extends Block {
 	renameSerie(newConfig) {
 
 		this.editSerie(newConfig, true)
+
 	}
 
 	destroy() {
+
 		this.plot.destroy();
+
 	}
 
 	init() {
@@ -226,7 +231,7 @@ module.exports = class Scatter extends Block {
 	}
 
 	load(preSavedConfig) {
-		
+
 		this.data = preSavedConfig.data;
 		this.opt = preSavedConfig.opt;
 		this.series = preSavedConfig.series;
@@ -252,6 +257,7 @@ module.exports = class Scatter extends Block {
 		this.plot = new uPlot(this.opt, this.data, this.htmlComponent);
 
 		this.setAutoResize();
+
 	}
 
 };
