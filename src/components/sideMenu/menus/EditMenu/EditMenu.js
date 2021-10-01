@@ -39,6 +39,9 @@ module.exports = class EditMenu extends Menu {
 				{
 					text: 'TODO Three.js',
 				},
+				{
+					text: 'terminal',
+				},
 				],
 			}),
 		}, {
