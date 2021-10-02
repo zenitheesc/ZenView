@@ -5,9 +5,9 @@ const Block = require('../block');
 
 module.exports = class TerminalBlock extends Block {
 
-	constructor(preConfig, htmlComponent) {
+    constructor(preConfig, htmlComponent) {
 
-		super(preConfig,htmlComponent)
+        super(preConfig,htmlComponent)
         this.terminal = new Terminal({
             cols: 10,
             rows: 10,
@@ -27,7 +27,7 @@ module.exports = class TerminalBlock extends Block {
 
     updateTerminal(){
 
-		const widget = this.htmlComponent.parentElement;
+        const widget = this.htmlComponent.parentElement;
         const width = widget.offsetWidth;
         const height = widget.offsetHeight;
         const cols = Math.floor(width/9);
@@ -63,11 +63,11 @@ module.exports = class TerminalBlock extends Block {
     
     setAutoResize(){
 
-		const widget = this.htmlComponent.parentElement;
+        const widget = this.htmlComponent.parentElement;
 
-		addResizeListener(widget, () => {
+        addResizeListener(widget, () => {
             this.updateTerminal();
-		});
+        });
     }
 
 };
