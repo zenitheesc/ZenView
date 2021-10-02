@@ -42,6 +42,9 @@ module.exports = class EditMenu extends Menu {
 				{
 					text: 'GPS',
 				},
+				{
+					text: 'terminal',
+				},
 				],
 			}),
 		}, {
