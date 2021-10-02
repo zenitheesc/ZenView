@@ -17,7 +17,7 @@ module.exports = class TerminalBlock extends Block {
                 fontSize: 8,
             }
         });
-        this.ptyProcess = pty.spawn(os.platform() === 'win32' ? 'powershell.exe' : 'bash', [], {
+        this.ptyProcess = pty.spawn(os.platform() === 'win32' ? 'powershell.exe' : os.userInfo()["shell"], [], {
             cols: 10,
             rows: 10,
             cwd: process.env.HOME,
@@ -69,6 +69,5 @@ module.exports = class TerminalBlock extends Block {
             this.updateTerminal();
 		});
     }
-
 
 };
