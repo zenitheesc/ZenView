@@ -194,7 +194,7 @@ class FormPattern {
 
 	}
 
-	setData(DataObj) {
+	_setData(DataObj) {
 
 		this.containers.forEach((container) => {
 
@@ -214,6 +214,12 @@ class FormPattern {
 			field.value = result ?? field.value;
 
 		});
+
+	}
+
+	setData(DataObj) {
+
+		this._setData(DataObj);
 
 	}
 
