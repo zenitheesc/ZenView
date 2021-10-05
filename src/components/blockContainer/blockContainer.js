@@ -41,9 +41,18 @@ module.exports = class BlockContainer {
 
 	buildHeader() {
 
+		this.headerTitle = document.createElement('div')
+
+		this.trash = Components.buttonWithIcon('trash-alt-regular', 'trashBlockButton blockButton');
+		this.edit = Components.buttonWithIcon('pencil-square', 'trashBlockButton1 blockButton');
+
+		this.header.appendChild(this.trash);
+		this.header.appendChild(this.edit);
+
 		this.header = document.createElement('div');
 		this.header.innerText = '';
 		this.header.classList.add('blockHeader');
+
 		return this.header;
 
 	}
@@ -59,8 +68,6 @@ module.exports = class BlockContainer {
 	}
 
 	build() {
-		this.trash = Components.buttonWithIcon('trash-alt-regular', 'trashBlockButton blockButton');
-		this.edit = Components.buttonWithIcon('pencil-square', 'trashBlockButton1 blockButton');
 
 		this.htmlComponent = document.createElement('div');
 		this.htmlComponent.classList.add('grid-stack-item');
@@ -74,8 +81,6 @@ module.exports = class BlockContainer {
 		this.body.appendChild(this.content);
 
 		this.htmlComponent.appendChild(this.body);
-		this.htmlComponent.appendChild(this.trash);
-		this.htmlComponent.appendChild(this.edit);
 
 	}
 
@@ -202,8 +207,8 @@ module.exports = class BlockContainer {
 
 		this.htmlComponent.onmouseleave = () => {
 
-			this.trash.style.display = 'none';
-			this.edit.style.display = 'none';
+			this.trash.style.display = 'block';
+			this.edit.style.display = 'block';
 
 		};
 
