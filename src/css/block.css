@@ -2,24 +2,24 @@
     position: absolute;
 	width: 14.14px;
 	height: 14.14px;
-	bottom :13px;
-    right: 31px;
+	/*bottom :13px;*/
+    right: 20px;
     padding: 0px;
     z-index: 90;
     border: none;
-    background-color: transparent;
+    background-color: red;
 }
 
 .trashBlockButton1 {
     position: absolute;
 	width: 14.14px;
 	height: 14.14px;
-	bottom :13px;
-    right: 52px;
+	/*bottom :13px;*/
+    right: 50px;
     padding: 0px;
     z-index: 90;
     border: none;
-    background-color: transparent;
+    background-color: red;
 }
 
 .blockHeader {
