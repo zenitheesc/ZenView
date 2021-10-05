@@ -41,7 +41,7 @@ module.exports = class BlockContainer {
 
 	buildHeader() {
 
-		this.headerTitle = document.createElement('div')
+		this.header = document.createElement('div');
 
 		this.trash = Components.buttonWithIcon('trash-alt-regular', 'trashBlockButton blockButton');
 		this.edit = Components.buttonWithIcon('pencil-square', 'trashBlockButton1 blockButton');
@@ -49,7 +49,7 @@ module.exports = class BlockContainer {
 		this.header.appendChild(this.trash);
 		this.header.appendChild(this.edit);
 
-		this.header = document.createElement('div');
+		this.headerTitle = document.createElement('div')
 		this.headerTitle.innerText = '';
 
 		this.header.appendChild(this.headerTitle);
