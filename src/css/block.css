@@ -3,11 +3,11 @@
 	width: 14.14px;
 	height: 14.14px;
 	/*bottom :13px;*/
-    right: 20px;
+    right: 10px;
     padding: 0px;
     z-index: 90;
     border: none;
-    background-color: red;
+    background-color: transparent;
 }
 
 .trashBlockButton1 {
@@ -15,11 +15,11 @@
 	width: 14.14px;
 	height: 14.14px;
 	/*bottom :13px;*/
-    right: 50px;
+    right: 35px;
     padding: 0px;
     z-index: 90;
     border: none;
-    background-color: red;
+    background-color: transparent;
 }
 
 .blockHeader {
@@ -45,5 +45,5 @@
 }
 
 .blockButton svg path{
-    fill: #505355;
+    fill: #54555c;
 }
