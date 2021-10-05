@@ -23,11 +23,11 @@ module.exports = class BlockContainer {
 	}
 
 	get title() {
-		return this.header.innerText;
+		return this.headerTitle.innerText;
 	}
 
 	set title(newTitle) {
-		this.header.innerText = newTitle;
+		this.headerTitle.innerText = newTitle;
 	}
 
 	get formConfig() {
@@ -50,7 +50,10 @@ module.exports = class BlockContainer {
 		this.header.appendChild(this.edit);
 
 		this.header = document.createElement('div');
-		this.header.innerText = '';
+		this.headerTitle.innerText = '';
+
+		this.header.appendChild(this.headerTitle);
+
 		this.header.classList.add('blockHeader');
 
 		return this.header;
