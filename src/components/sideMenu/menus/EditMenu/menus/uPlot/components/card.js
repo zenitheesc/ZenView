@@ -8,7 +8,7 @@ module.exports = class Card {
 	constructor(serie) {
 
 		this.eventHandler = new EventHandler();
-        this.serie = serie;
+		this.serie = serie;
 		this.opened = true;
 
 		this.htmlComponent = document.createElement('div');
@@ -102,9 +102,9 @@ module.exports = class Card {
 				}),
 			}),
 		}
-        );
+		);
 
-        this.seriesSection.setAttribute("form");
+		this.seriesSection.setAttribute("form");
 		this.load();
 
 	}
@@ -180,22 +180,32 @@ module.exports = class Card {
 
 	}
 
+	updateInputList() {
+		this.seriesSection._setData(objData);
+		const callBack = (input) => {
+
+			return [input.name ?? input.value, input.name];
+
+		};
+
+		let allInputs = [];
+
+		allInputs = allInputs.concat(window.CurrentInputGroup.rawInputs);
+		allInputs = allInputs.concat(window.CurrentInputGroup.inputs);
+
+		this.seriesSection.formThree.yAxis.setOptions(allInputs, callBack);
+	}
+
 	setEvents() {
+
+		this.seriesSection.setData = (objData) => {
+			this.seriesSection._setData(objData);
+			this.updateInputList();
+		}
 
 		this.eventHandler.addEventListener('AttInputList', () => {
 
-			const callBack = (input) => {
-
-				return [input.name ?? input.value, input.name];
-
-			};
-
-			let allInputs = [];
-
-			allInputs = allInputs.concat(window.CurrentInputGroup.rawInputs);
-			allInputs = allInputs.concat(window.CurrentInputGroup.inputs);
-
-			this.seriesSection.formThree.yAxis.setOptions(allInputs, callBack);
+			this.updateInputList();
 
 		});
 
@@ -233,11 +243,11 @@ module.exports = class Card {
 
 			this.serie = window.CurrentBlock.sendBlockInstruction({
 				command: 'editSerie',
-                data: {
-                    ...this.seriesSection.getData(),
-                    currSerieId: this.serie.uuid,
-                }
-            });
+				data: {
+					...this.seriesSection.getData(),
+					currSerieId: this.serie.uuid,
+				}
+			});
 
 			evt.stopPropagation();
 
