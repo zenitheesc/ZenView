@@ -87,7 +87,6 @@ module.exports = class BlockContainer {
 	}
 
 	load(blockConfig) {
-		console.log(this.preConfig);
 		this.block = new Blocks[this.preConfig.type](this.preConfig, this.content);
 		this.block.load(blockConfig);
 	}

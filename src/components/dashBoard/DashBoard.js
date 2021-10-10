@@ -42,13 +42,13 @@ module.exports = class DashBoard {
 			this.addNewBlock(evt);
 
 		});
-		
+
 		this.eventHandler.addEventListener('RemoveBlock', (evt) => {
-			
+
 			this.removeBlock(evt);
-			
+
 		});
-		
+
 		this.eventHandler.addEventListener('ClearDashboard', () => {
 
 			this.gridStack.removeAll();
@@ -87,7 +87,7 @@ module.exports = class DashBoard {
 			ipcRenderer.on('selected-dir', (evt, arg) => {
 
 				this.importDashboard(arg);
-					
+
 				ipc.removeAllListeners('selected-dir');
 
 			});
@@ -118,7 +118,7 @@ module.exports = class DashBoard {
 		window.CurrentDashBoard.blocksLog.forEach((blockLog) => {
 
 			const newBlock = new BlockContainer(blockLog.preConfig);
-			
+
 			this.gridStack.addWidget(newBlock.htmlComponent, {
 				x: Number(blockLog.x),
 				y: Number(blockLog.y),
@@ -141,43 +141,41 @@ module.exports = class DashBoard {
 	}
 
 	saveDashboard(onClose) {
-		
-		const blocksLog = [];
-		const currentDashBoard = window.CurrentDashBoard;
-		
+
+		let currentDashBoard = window.CurrentDashBoard;
+		let blocksLog = [];
+
 		this.blocks.forEach((block) => blocksLog.push(block.blockLog()));
 		currentDashBoard.blocksLog = blocksLog;
 		currentDashBoard.saved = true;
+
 		const tempBlocks = currentDashBoard.blocks
+
 		currentDashBoard.blocks = [];
-		const dashboardHash = hash(currentDashBoard);
-		currentDashBoard.hash = dashboardHash;
-		
+		currentDashBoard.hash = hash(currentDashBoard);
+
 		this.BSON.writeFile(currentDashBoard.path, currentDashBoard);
 
 		currentDashBoard.blocks = tempBlocks;
 
 		ipcRenderer.send('isSaved', true);
-		
+
 		if (onClose) ipcRenderer.send('closeOnSave');
 
 	}
 
 	importDashboard(path) {
-		
+
 		const dashboardJSON = this.BSON.readFile(path);
-		const dashboardHash = dashboardJSON.hash;
 		const dashboard = new DataDashBoard(dashboardJSON);
-		
-		if (dashboard.blocks.length === 0) {
+
+		if (dashboard.blocks.length === 0)
 			dashboard.inputGroup.inputGraph = {};
-			
-		}
-		
+
 		const dashboardIdealHash = hash(dashboard);
-		
-		if (dashboardHash === dashboardIdealHash) {
-			
+
+		if (dashboardJSON.hash === dashboardIdealHash) {
+
 			dashboard.path = path;
 			this.eventHandler.dispatchEvent('OpenImportedDashboard', dashboard);
 
