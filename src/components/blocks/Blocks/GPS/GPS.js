@@ -146,7 +146,7 @@ module.exports = class GPS extends Block {
 
 	load(preSavedConfig) {
 
-		init();
+		this.init();
 
 		this.features = preSavedConfig.features;
 		this.longitude = preSavedConfig.longitude;
