@@ -1,12 +1,7 @@
 const Input = require('./input');
+
 module.exports = class InputGroup {
 
-	/**
-	 * Creates an instance of InputGroup.
-	 * @param {number} numberOfInputs
-	 * @param {boolean} isFromJson
-
-	 */
 	constructor(numberOfInputs, isFromJson) {
 
 		this.numberOfInputs;
@@ -27,11 +22,6 @@ module.exports = class InputGroup {
 
 	}
 
-	/**
-	 *
-	 *
-	 * @param {*} numberOfInputs
-	 */
 	newConstructor(numberOfInputs) {
 
 		this.inputsDictionary = {};
@@ -40,11 +30,6 @@ module.exports = class InputGroup {
 
 	}
 
-	/**
-	 *
-	 *
-	 * @param {*} inputGroupJSON
-	 */
 	constructFromJson(inputGroupJSON) {
 
 		this.numberOfInputs = inputGroupJSON.numberOfInputs;
@@ -67,10 +52,6 @@ module.exports = class InputGroup {
 
 	}
 
-	/**
-	 *
-	 *
-	 */
 	generateInputs() {
 
 		for (let i = 0; i < this.numberOfInputs; i++) {
