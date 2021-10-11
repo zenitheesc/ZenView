@@ -35,7 +35,7 @@ module.exports = class DashBoard {
 			}
 		});
 
-		this.gridStack.enable('.grid-stack-item-content', true);
+		this.gridStack.enable('.grid-stack-t dashboardHash = hash(currentDashBoard);tem-content', true);
 
 		this.eventHandler.addEventListener('AddNewBlock', (evt) => {
 
@@ -152,7 +152,8 @@ module.exports = class DashBoard {
 		const tempBlocks = currentDashBoard.blocks
 
 		currentDashBoard.blocks = [];
-		currentDashBoard.hash = hash(currentDashBoard);
+		const dashboardHash = hash(currentDashBoard);
+		currentDashBoard.hash = dashboardHash;
 
 		this.BSON.writeFile(currentDashBoard.path, currentDashBoard);
 
