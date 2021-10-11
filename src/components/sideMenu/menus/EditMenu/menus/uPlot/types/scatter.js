@@ -175,15 +175,7 @@ module.exports = class uPlotScatter {
 
 	}
 
-	validateSelectedSerie(value) {
-
-		if (value == "" || value == null) {
-
-			return 'Selecione ou crie uma nova série';
-
-		} else {
-
-			return true;
+	editYAxis() {
 
 		}
 
@@ -225,19 +217,6 @@ module.exports = class uPlotScatter {
 
 	}
 
-	nameAlreadyExists(newName) {
-
-		let alreadyExist = false;
-
-		for (const serie of window.CurrentBlock.block.plot.series) {
-			if (serie.label === newName) {
-				alreadyExist = true;
-				break;
-			}
-		}
-
-		return alreadyExist;
-	}
 
 	addNewSerie() {
 
@@ -295,24 +274,6 @@ module.exports = class uPlotScatter {
 
 	}
 
-	getSerieByName(serieName) {
-
-		let currentSerie;
-
-		for (const serie of window.CurrentBlock.block.plot.series) {
-
-			if (serie.label === serieName) {
-
-				currentSerie = serie;
-				break;
-
-			}
-
-		}
-
-		return currentSerie;
-
-	}
 
 	overWriteSetData() {
 
