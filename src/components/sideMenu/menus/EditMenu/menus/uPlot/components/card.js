@@ -187,8 +187,8 @@ module.exports = class Card {
 		allInputs = allInputs.concat(window.CurrentInputGroup.rawInputs);
 		allInputs = allInputs.concat(window.CurrentInputGroup.inputs);
 
-		this.seriesSection.formThree.yAxis.setOptions(allInputs, callBack);
-		this.seriesSection.formThree.yAxis.value = this.serie.inputName;
+		this.seriesSection.formTree.yAxis.setOptions(allInputs, callBack);
+		this.seriesSection.formTree.yAxis.value = this.serie.inputName;
 	}
 
 	setEvents() {
@@ -249,9 +249,9 @@ module.exports = class Card {
 
 		});
 
-		this.seriesSection.formThree.yAxis.htmlComponent.addEventListener('change', (evt) => {
+		this.seriesSection.formTree.yAxis.htmlComponent.addEventListener('change', (evt) => {
 
-			this.cardHeaderTitle.innerText = this.seriesSection.formThree.yAxis.value;
+			this.cardHeaderTitle.innerText = this.seriesSection.formTree.yAxis.value;
 
 		});
 	}

@@ -12,7 +12,7 @@ module.exports = class uPlotScatter {
 
 		this.seriesSection = Container.spliter({
 			newSerie: Container.div({
-				newSerieSelector:Field.select({
+				newSerieSelector: Field.select({
 					label: 'Nova série',
 					att: 'currentInput',
 					append: [{
@@ -142,7 +142,7 @@ module.exports = class uPlotScatter {
 							options: [
 								{
 									text: 'Esquerda',
-									value:"3"
+									value: "3"
 								}, {
 									text: 'Direita',
 									value: "1"
@@ -171,7 +171,7 @@ module.exports = class uPlotScatter {
 		);
 
 		this.inputListComponent = document.createElement('div');
-		this.seriesSection.formThree.cards.self.htmlComponent.appendChild(this.inputListComponent);
+		this.seriesSection.formTree.cards.self.htmlComponent.appendChild(this.inputListComponent);
 
 		this.inputList = [];
 		this.openedMenu;
@@ -185,7 +185,7 @@ module.exports = class uPlotScatter {
 
 		window.CurrentBlock.sendBlockInstruction({
 			command: 'editXAxis',
-			data: this.form.formThree.uPlotXAxesStyle.self.getData().blockConfig.uPlot.scatter.axis.x
+			data: this.form.formTree.uPlotXAxesStyle.self.getData().blockConfig.uPlot.scatter.axis.x
 		});
 
 	}
@@ -194,7 +194,7 @@ module.exports = class uPlotScatter {
 
 		window.CurrentBlock.sendBlockInstruction({
 			command: 'editYAxis',
-			data: this.form.formThree.uPlotYAxesStyle.self.getData().blockConfig.uPlot.scatter.axis.y
+			data: this.form.formTree.uPlotYAxesStyle.self.getData().blockConfig.uPlot.scatter.axis.y
 		});
 
 	}
@@ -212,9 +212,9 @@ module.exports = class uPlotScatter {
 		allInputs = allInputs.concat(window.CurrentInputGroup.rawInputs);
 		allInputs = allInputs.concat(window.CurrentInputGroup.inputs);
 
-		this.form.formThree.uPlotXAxesStyle.xAxis.setOptions(allInputs, callBack);
+		this.form.formTree.uPlotXAxesStyle.xAxis.setOptions(allInputs, callBack);
 
-		this.seriesSection.formThree.newSerie.newSerieSelector.setOptions(allInputs, callBack);
+		this.seriesSection.formTree.newSerie.newSerieSelector.setOptions(allInputs, callBack);
 	}
 
 	selectColor(colorNumber) {
@@ -242,7 +242,7 @@ module.exports = class uPlotScatter {
 		const length = this.inputList.length;
 		const color = this.selectColor(length);
 
-		let newSerieName = this.seriesSection.formThree.newSerie.newSerieSelector.value;
+		let newSerieName = this.seriesSection.formTree.newSerie.newSerieSelector.value;
 
 		const data = {
 			label: newSerieName,
@@ -254,7 +254,7 @@ module.exports = class uPlotScatter {
 			},
 			pathType: "1",
 			show: true,
-			inputName: [newSerieName] ,
+			inputName: [newSerieName],
 			showLines: true,
 			stroke: color,
 			_stroke: color,
@@ -293,7 +293,7 @@ module.exports = class uPlotScatter {
 
 	overWriteSetData() {
 
-		this.seriesSection.formThree.cards.self.setData = (newSerie) => {
+		this.seriesSection.formTree.cards.self.setData = (newSerie) => {
 
 			this.attSeriesList();
 			const array = window.CurrentBlock.block.opt.series;
@@ -306,7 +306,7 @@ module.exports = class uPlotScatter {
 
 		};
 
-		this.seriesSection.formThree.cards.self.getData = (preResponse) => {
+		this.seriesSection.formTree.cards.self.getData = (preResponse) => {
 
 			const response = preResponse || {};
 
@@ -346,7 +346,7 @@ module.exports = class uPlotScatter {
 
 		});
 
-		this.seriesSection.formThree.newSerie.newSerieSelector.append[0].onclick = () => {
+		this.seriesSection.formTree.newSerie.newSerieSelector.append[0].onclick = () => {
 
 			this.addNewSerie();
 			this.seriesSection.reset()
@@ -356,14 +356,14 @@ module.exports = class uPlotScatter {
 
 		};
 
-		this.form.formThree.uPlotXAxesStyle.self.htmlComponent.addEventListener('input', (evt) => {
+		this.form.formTree.uPlotXAxesStyle.self.htmlComponent.addEventListener('input', (evt) => {
 
 			this.editXAxis();
 			evt.stopPropagation();
 
 		});
 
-		this.form.formThree.uPlotYAxesStyle.self.htmlComponent.addEventListener('input', (evt) => {
+		this.form.formTree.uPlotYAxesStyle.self.htmlComponent.addEventListener('input', (evt) => {
 
 			this.editYAxis();
 			evt.stopPropagation();
