@@ -14,7 +14,7 @@ module.exports = class Select extends Field {
 
 		for (let i = 0; i < this.input.options.length; i++) {
 
-			if (this.input.options[i].value == value || this.input.options[i].text == value) {
+			if (this.input.options[i].value == value ?? this.input.options[i].text == value) {
 
 				found = true;
 				this.input.options[i].selected = 'select';
@@ -42,7 +42,7 @@ module.exports = class Select extends Field {
 
 		callBack = callBack || function (option) {
 
-			return [option.value || option.text, option.text || option.value];
+			return [option.value ?? option.text, option.text ?? option.value];
 
 		};
 
@@ -57,7 +57,7 @@ module.exports = class Select extends Field {
 		this.input.innerHTML = '';
 		callBack = callBack || function (option) {
 
-			return [option.value || option.text, option.text || option.value];
+			return [option.value ?? option.text, option.text ?? option.value];
 
 		};
 

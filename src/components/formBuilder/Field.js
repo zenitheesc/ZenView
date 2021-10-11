@@ -3,21 +3,21 @@ module.exports = class Field {
 
 	constructor(options) {
 
-		this.htmlComponent = options.htmlComponent || {};
-		this.input = options.input || {};
-		this.id = options.id || {};
-		this.att = options.att || options.id || options.label;
+		this.htmlComponent = options.htmlComponent ?? {};
+		this.input = options.input ?? {};
+		this.id = options.id ?? {};
+		this.att = options.att ?? options.id ?? options.label;
 		this.parsedAtt = [];
-		this.type = options.type || {};
-		this.classList = options.classList || {};
-		this.value = options.value || '';
-		this.standardValue = options.standardValue || '';
+		this.type = options.type ?? {};
+		this.classList = options.classList ?? {};
+		this.value = options.value ?? '';
+		this.standardValue = options.standardValue ?? '';
 		this.validators = options.validators;
-		this.group = options.group || {};
-		this.conditions = options.conditions || [];
-		this.label = options.label || {};
-		this.prepend = options.prepend || {};
-		this.append = options.append || {};
+		this.group = options.group ?? {};
+		this.conditions = options.conditions ?? [];
+		this.label = options.label ?? {};
+		this.prepend = options.prepend ?? {};
+		this.append = options.append ?? {};
 		this.onclick;
 		this.warning = options.warning;
 

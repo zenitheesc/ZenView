@@ -26,7 +26,7 @@ class FormPattern {
 		this._BuildFormThree();
 		this._buildHtmlComponent(config);
 		formConfig = formConfig || {};
-		this.att = formConfig.att || false;
+		this.att = formConfig.att ?? false;
 		this.conditions = formConfig.conditions || [];
 
 	}

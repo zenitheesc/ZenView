@@ -167,8 +167,8 @@ module.exports = class FieldsBuilder {
 
 					if (arg !== '' && arg !== undefined) {
 
-						directoryField.input.value = arg || '';
-						directoryField.input.textContent = arg || '';
+						directoryField.input.value = arg ?? '';
+						directoryField.input.textContent = arg ?? '';
 						directoryField.input.dispatchEvent(new Event('input'));
 
 					}
@@ -188,8 +188,8 @@ module.exports = class FieldsBuilder {
 
 					if (arg !== '' && arg !== undefined) {
 
-						directoryField.input.value = arg || '';
-						directoryField.input.textContent = arg || '';
+						directoryField.input.value = arg ?? '';
+						directoryField.input.textContent = arg ?? '';
 						directoryField.input.dispatchEvent(new Event('input'));
 
 					}
