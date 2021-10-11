@@ -55,7 +55,7 @@ module.exports = class EditMenu extends Menu {
 
 		this.modulesForms = Container.div({
 			...this.forms,
-		},{
+		}, {
 			att: "blockConfig",
 		})
 
@@ -99,10 +99,6 @@ module.exports = class EditMenu extends Menu {
 
 	}
 
-	changeGeneralConfig(){
-
-	}
-
 	load() {
 
 		const menuContainer = document.createElement('div');
@@ -129,7 +125,7 @@ module.exports = class EditMenu extends Menu {
 
 		this.modulesForms.htmlComponent.addEventListener('input', (evt) => {
 
-			if(this.modulesForms.validate()){
+			if (this.modulesForms.validate()) {
 				this.currentBlock.updateBlockConfig(this.form.getData());
 			}
 			evt.stopPropagation();

@@ -209,7 +209,7 @@ module.exports = class Scatter extends Block {
 	}
 
 	willRead() {
-		this.data = [[],[]];
+		this.data = [[], []];
 		this.redraw();
 	}
 
