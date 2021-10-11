@@ -74,16 +74,21 @@ app.on('ready', () => {
 
 	app.allowRendererProcessReuse = false;
 
-	initialWindow = createWindow(initialWindowparams);
+	if(!debugMode) initialWindow = createWindow(initialWindowparams);
 	mainWindow = createWindow(mainWindowparams);
 	titleBarMenu = new TitleBarMenu();
 
 	// apenas mostrara a janela quando estiver pronta
-	initialWindow.once('ready-to-show', () => {
 
-		initialWindow.show();
+	if (debugMode) {
+		mainWindow.show();
+	} else {
+		initialWindow.once('ready-to-show', () => {
 
-	});
+			initialWindow.show();
+
+		});
+	}
 
 	mainWindow.on('close', (evt) => {
 		
@@ -141,7 +146,7 @@ app.on('activate', () => {
 // listerner que avisa que o load da janela principal terminou
 ipc.on('mainLoadCompleto', () => {
 
-	initialWindow.close();
+	if(!debugMode) initialWindow.close();
 	mainWindow.show();
 
 });
