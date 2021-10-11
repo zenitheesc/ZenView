@@ -48,7 +48,7 @@ module.exports = class Scatter extends Block {
 		}
 	}
 
-	addSerie(newSerie) {
+	addSerie(newSerie, notRedraw) {
 		if (this.opt.series[1].inputName == null) {
 			this.data.pop();
 			this.opt.series.pop();
@@ -63,7 +63,7 @@ module.exports = class Scatter extends Block {
 		const newMockData = [...Array(11).keys()].map((value) => (Math.sin(value) + (this.opt.series.length - 2)));
 		if (this.opt.series.length > this.data.length) this.data.push(newMockData);
 
-		this.redraw();
+		if (!notRedraw) this.redraw();
 
 	}
 
@@ -75,15 +75,12 @@ module.exports = class Scatter extends Block {
 		this.opt.scales.x.distr = Number(newConfig.type);
 		this.opt.scales.x.dir = newConfig.dir;
 		this.opt.axes[0].side = Number(newConfig.side);
-		console.log(newConfig);
 		this.redraw();
 	}
 
 	editYAxis(newConfig) {
 
-		console.log(newConfig);
-
-		this.plot.scales.y.distr = newConfig.type;
+		this.opt.scales.y.distr = newConfig.type;
 
 		this.opt.scales.y.dir = newConfig.dir;
 
@@ -118,7 +115,7 @@ module.exports = class Scatter extends Block {
 
 	removeSerie(rmvdSerie) {
 
-		let currSerie = this.opt.series.find(serie => serie.uuid === rmvdSerie.currSerieId);
+		let currSerie = this.opt.series.find(serie => serie.uuid === rmvdSerie.uuid);
 		let index = this.opt.series.indexOf(currSerie);
 
 		if (index >= 0) {
@@ -141,27 +138,27 @@ module.exports = class Scatter extends Block {
 		this.redraw();
 	}
 
-	editSerie(newConfig) {
-
-		let currSerie = this.opt.series.find(serie => serie.uuid === newConfig.currSerieId);
+	editSerie(newConfig, notRedraw) {
+		let currSerie = this.opt.series.find(serie => serie.uuid === newConfig.uuid);
 		let index = this.opt.series.indexOf(currSerie);
 
 		this.opt.series[index] = {
-			label: newConfig.label,
+			label: newConfig.inputName,
 			width: newConfig.width,
 			pathType: newConfig.pathType,
 			showLines: newConfig.showLines,
-			uuid: newConfig.currSerieId,
+			uuid: newConfig.uuid,
 			points: {
-				show: newConfig.points.showPoints,
-				showPoints: newConfig.points.showPoints,
+				show: newConfig?.points?.showPoints ?? false,
+				showPoints: newConfig?.points?.showPoints ?? false,
 			},
 			inputName: newConfig.inputName,
-			stroke: newConfig._stroke,
+			stroke: newConfig._stroke ?? newConfig.stroke,
+			_stroke: newConfig._stroke ?? newConfig.stroke,
 			paths: this.pathSetter((!newConfig.showLines) ? null : newConfig.pathType),
 		};
 
-		this.redraw();
+		if (!notRedraw) this.redraw();
 
 		return this.opt.series[index];
 
@@ -210,10 +207,8 @@ module.exports = class Scatter extends Block {
 	}
 
 	save() {
-
 		return {
-			data: this.plot.data,
-			series: JSON.parse(JSON.stringify(this.plot.series)),
+			data: this.data,
 			opt: this.opt,
 		}
 
@@ -223,29 +218,14 @@ module.exports = class Scatter extends Block {
 
 		this.data = preSavedConfig.data;
 		this.opt = preSavedConfig.opt;
-		this.series = preSavedConfig.series;
-		this.opt.series = [];
-
-		for (const savedSerie of this.series) {
-
-			this.opt.series.push({
-				label: savedSerie.label,
-				width: savedSerie.width,
-				pathType: savedSerie.pathType,
-				showLines: savedSerie.showLines,
-				points: {
-					show: savedSerie.points.showPoints,
-					showPoints: savedSerie.points.showPoints,
-				},
-				inputName: savedSerie.inputName,
-				stroke: savedSerie._stroke,
-				paths: this.pathSetter((!savedSerie.showLines) ? null : savedSerie.pathType),
-			});
-		}
 
 		this.plot = new uPlot(this.opt, this.data, this.htmlComponent);
 
+		for (let i = 0; i < this.opt.series.length; i++) {
+			this.editSerie(this.opt.series[i]);
+		}
 		this.setAutoResize();
+		this.redraw();
 
 	}
 
