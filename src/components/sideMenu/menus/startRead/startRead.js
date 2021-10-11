@@ -149,7 +149,7 @@ module.exports = class StartRead extends Menu {
 							label: 'Intervalo em ms',
 							att: 'fixIntervalSize',
 							id: 'fixIntervalSize',
-							validators: [Validator.isFilled, Validator.isNumber, Validator.isPositive],
+							validators: [Validator.isFilled, Validator.isNumber, Validator.isPositive, Validator.isBigger(20)],
 							conditions: [{
 								id: 'intervalType',
 								att: 'value',
