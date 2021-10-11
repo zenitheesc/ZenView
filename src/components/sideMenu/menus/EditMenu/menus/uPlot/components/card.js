@@ -194,7 +194,6 @@ module.exports = class Card {
 	setEvents() {
 
 		this.seriesSection.setData = (objData) => {
-			console.trace(objData, this.seriesSection);
 			this.seriesSection._setData(objData);
 			this.updateInputList();
 		}

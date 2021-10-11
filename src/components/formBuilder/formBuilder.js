@@ -1,7 +1,3 @@
-/**
- * ColorPicker
- */
-
 const FieldClass = require('./Field');
 const Field = require('./FieldsBuilder');
 
@@ -22,8 +18,8 @@ class FormPattern {
 		this.fields = [];
 		this.containers = [];
 		this.conditions = [];
-		this.formThree = {};
-		this._BuildFormThree();
+		this.formTree = {};
+		this._BuildFormTree();
 		this._buildHtmlComponent(config);
 		formConfig = formConfig || {};
 		this.att = formConfig.att ?? false;
@@ -41,26 +37,26 @@ class FormPattern {
 
 	}
 
-	_BuildFormThree() {
+	_BuildFormTree() {
 
-		this.formThree['self'] = this;
+		this.formTree['self'] = this;
 		Object.keys(this.config).forEach((property) => {
 
 			if (this.config[property] instanceof FieldClass) {
 
-				this.formThree[property] = this.config[property];
+				this.formTree[property] = this.config[property];
 				this.fields.push(this.config[property]);
 
 
 			} else {
 
-				this.formThree[property] = this.config[property].formThree;
+				this.formTree[property] = this.config[property].formTree;
 				this.containers.push(this.config[property]);
 
 			}
 
 		});
-		return this.formThree;
+		return this.formTree;
 
 	}
 
@@ -198,7 +194,15 @@ class FormPattern {
 
 		this.containers.forEach((container) => {
 
-			container.setData(DataObj);
+			try {
+
+				container.setData(DataObj);
+
+			} catch (e) {
+
+				console.error(e);
+
+			}
 
 		});
 

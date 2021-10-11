@@ -53,7 +53,7 @@ module.exports = class DashBoardsManager {
 			}
 
 			return false;
-			
+
 		} catch (err) {
 
 			console.log(err);
@@ -75,7 +75,6 @@ module.exports = class DashBoardsManager {
 
 	openDashBoard(path) {
 
-		console.log('ABRINDO NOVO DASHBOARD');
 		this.EventHandler.dispatchEvent('ClearDashboard');
 		if (!this.testIfDashBoardExist(path)) return;
 
@@ -90,7 +89,7 @@ module.exports = class DashBoardsManager {
 		this.EventHandler.AttInputList();
 		this.EventHandler.LoadBlocks();
 		this.EventHandler.DashboardWasOpened();
-		
+
 		return true;
 
 	}
@@ -107,7 +106,7 @@ module.exports = class DashBoardsManager {
 
 					context: 'editing',
 					dashBoardPath: detail.path,
-		
+
 				});
 
 				return;
@@ -147,7 +146,6 @@ module.exports = class DashBoardsManager {
 
 	newDashBoard(detail) {
 
-		console.log('CRIANDO NOVO DASHBOARD');
 		window['ZenViewConfig'].dashboards.unshift({
 			'name': detail.name,
 			'path': detail.path,
@@ -155,10 +153,9 @@ module.exports = class DashBoardsManager {
 		});
 
 		const dashBoard = new DashBoard(detail.name, number(detail.numberOfInputs), detail.path, detail.desc);
+
 		dashBoard.inputGroup.inputGraph = {};
-		
-		const dashBoardHash = hash(dashBoard);
-		dashBoard.hash = dashBoardHash;
+		dashBoard.hash = hash(dashBoard);
 
 		this.BSON.writeFile(detail.path, dashBoard);
 
@@ -179,9 +176,9 @@ module.exports = class DashBoardsManager {
 	deleteDashboard(deletePath) {
 
 		if (!this.testIfDashBoardExist(deletePath)) return;
-		const callback = ((resposta) => {
+		const callback = ((res) => {
 
-			if (resposta.response === 0) {
+			if (res.response === 0) {
 
 				fs.unlinkSync(deletePath);
 				for (let i = window['ZenViewConfig'].dashboards.length - 1; i >= 0; i--) {
@@ -194,7 +191,7 @@ module.exports = class DashBoardsManager {
 
 							this.resetInitialContext();
 							this.EventHandler.dispatchEvent('ResetInitialContext');
-			
+
 						}
 
 						this.EventHandler.AttDashBoardsList();
@@ -254,7 +251,9 @@ module.exports = class DashBoardsManager {
 
 		const currentDashBoard = window.CurrentDashBoard;
 		const tempGraph = currentDashBoard.inputGroup.inputGraph;
+
 		currentDashBoard.inputGroup.inputGraph = {};
+
 		this.BSON.writeFile(currentDashBoard.path, currentDashBoard);
 		window.CurrentDashBoard.inputGroup.inputGraph = tempGraph;
 
@@ -265,26 +264,26 @@ module.exports = class DashBoardsManager {
 		this.EventHandler.addEventListener('OpenDashBoard', (evt) => {
 
 			if (window.CurrentDashBoard !== undefined && !window.CurrentDashBoard.saved) {
-				
+
 				ConfirmationDialog.showConfirmationDialog(evt, (evt) => {
-					
+
 					if (evt.context === 'editing') this.editingDashBoard(evt);
 					else this.startDashboard(evt);
-				
+
 				});
-			
+
 			} else {
 
 				if (evt.context === 'editing') this.editingDashBoard(evt);
 				else this.startDashboard(evt);
-	
+
 			}
-			
-			
+
+
 		});
 
 		this.EventHandler.addEventListener('DeleteDashboard', (evt) => {
-			
+
 			this.deleteDashboard(evt.dashBoardPath);
 
 		});

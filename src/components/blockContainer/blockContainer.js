@@ -247,6 +247,12 @@ module.exports = class BlockContainer {
 
 		});
 
+		this.eventHandler.addEventListener('StartRead', (evt) => {
+
+			this.block.willRead();
+
+		});
+
 	}
 
 };

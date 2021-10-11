@@ -23,7 +23,9 @@ module.exports = class Scatter extends Block {
 	}
 
 	get formConfig() {
+
 		return this._formConfig
+
 	}
 
 	pathSetter(pathType) {
@@ -41,11 +43,11 @@ module.exports = class Scatter extends Block {
 			case "4":
 				return uPlot.paths.stepped({ align: 1 })
 				break;
-
 			default:
 				return () => null;
 				break;
 		}
+
 	}
 
 	addSerie(newSerie, notRedraw) {

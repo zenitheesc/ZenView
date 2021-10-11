@@ -22,7 +22,7 @@ module.exports = class StartRead extends Menu {
 
 				ports.forEach((port) => {
 
-					if (this.form.formThree.startReadSplitter.serialContainer.enableUSBOnly.value) {
+					if (this.form.formTree.startReadSplitter.serialContainer.enableUSBOnly.value) {
 
 						if (port.path.slice(5, 9) !== 'ttyS') options.push({text: port.path});
 					
@@ -34,12 +34,12 @@ module.exports = class StartRead extends Menu {
 				
 				});
 
-				const value = this.form.formThree.startReadSplitter.serialContainer.port.value;
-				this.form.formThree.startReadSplitter.serialContainer.port.setOptions(options);
+				const value = this.form.formTree.startReadSplitter.serialContainer.port.value;
+				this.form.formTree.startReadSplitter.serialContainer.port.setOptions(options);
 
 				if (value !== '') {
 
-					this.form.formThree.startReadSplitter.serialContainer.port.setSelectedOption(value);
+					this.form.formTree.startReadSplitter.serialContainer.port.setSelectedOption(value);
 				
 				}
 
@@ -274,7 +274,7 @@ module.exports = class StartRead extends Menu {
 
 	attInputList() {
 
-		this.form.formThree.startReadSplitter.
+		this.form.formTree.startReadSplitter.
 
 			csvContainer.simulationContainer.inputInterval.setOptions(window.CurrentInputGroup.rawInputs, (value) => {
 

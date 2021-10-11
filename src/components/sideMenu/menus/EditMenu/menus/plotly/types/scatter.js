@@ -352,8 +352,8 @@ module.exports = class PlotlyScatter {
 		allInputs = allInputs.concat(window.CurrentInputGroup.rawInputs);
 		allInputs = allInputs.concat(window.CurrentInputGroup.inputs);
 
-		this.form.formThree.PlotlySeries.xAxis.setOptions(allInputs, callBack);
-		this.form.formThree.PlotlySeries.yAxis.setOptions(allInputs, callBack);
+		this.form.formTree.PlotlySeries.xAxis.setOptions(allInputs, callBack);
+		this.form.formTree.PlotlySeries.yAxis.setOptions(allInputs, callBack);
 
 	}
 
@@ -379,14 +379,14 @@ module.exports = class PlotlyScatter {
 
 			command: 'addTrace',
 			data: {
-				name: this.form.formThree.PlotlySeries.newSerieName.value,
+				name: this.form.formTree.PlotlySeries.newSerieName.value,
 				mode: 'lines+markers',
-				xInput: this.form.formThree.PlotlySeries.xAxis.value,
-				yInput: this.form.formThree.PlotlySeries.yAxis.value,
+				xInput: this.form.formTree.PlotlySeries.xAxis.value,
+				yInput: this.form.formTree.PlotlySeries.yAxis.value,
 			},
 		});
 
-		this.form.formThree.PlotlySeries.newSerieName.value = '';
+		this.form.formTree.PlotlySeries.newSerieName.value = '';
 
 	}
 
@@ -403,7 +403,7 @@ module.exports = class PlotlyScatter {
 
 	attStyleSection() {
 
-		const currentSerieName = this.styleSection.formThree.selectedSerie.value;
+		const currentSerieName = this.styleSection.formTree.selectedSerie.value;
 		const currentSerie = this.setTraceType(this.getTraceByName(currentSerieName));
 
 		this.styleDataSetter(currentSerie);
@@ -421,7 +421,7 @@ module.exports = class PlotlyScatter {
 
 		};
 
-		this.form.formThree.PlotlySeriesStyle.selectedSerie.setOptions(window.CurrentBlock.block.data, callBack);
+		this.form.formTree.PlotlySeriesStyle.selectedSerie.setOptions(window.CurrentBlock.block.data, callBack);
 
 	}
 
@@ -433,13 +433,13 @@ module.exports = class PlotlyScatter {
 
 		});
 
-		this.form.formThree.PlotlySeries.self.htmlComponent.addEventListener('input', (evt) => {
+		this.form.formTree.PlotlySeries.self.htmlComponent.addEventListener('input', (evt) => {
 
 			evt.stopPropagation();
 
 		});
 
-		this.styleSection.formThree.selectedSerie.htmlComponent.addEventListener('input', (evt) => {
+		this.styleSection.formTree.selectedSerie.htmlComponent.addEventListener('input', (evt) => {
 
 			this.attStyleSection();
 			evt.stopPropagation();
@@ -543,9 +543,9 @@ module.exports = class PlotlyScatter {
 
 		this.setEvents();
 
-		this.form.formThree.PlotlySeries.newSerieName.append[0].onclick = () => {
+		this.form.formTree.PlotlySeries.newSerieName.append[0].onclick = () => {
 
-			if (this.form.formThree.PlotlySeries.self.validate()) {
+			if (this.form.formTree.PlotlySeries.self.validate()) {
 
 				this.addNewTrace();
 				this.attSeriesSelector();
@@ -560,7 +560,7 @@ module.exports = class PlotlyScatter {
 
 			this.attSeriesSelector();
 
-			const currentSerieName = this.styleSection.formThree.selectedSerie.value;
+			const currentSerieName = this.styleSection.formTree.selectedSerie.value;
 			const currentSerie = this.setTraceType(this.getTraceByName(currentSerieName));
 
 			this.styleDataSetter(currentSerie);

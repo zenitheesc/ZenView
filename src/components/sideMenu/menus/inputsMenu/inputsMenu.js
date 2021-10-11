@@ -76,14 +76,14 @@ module.exports = class InputsMenu extends Menu {
 		if (!this.entryInput.validate()) return;
 
 		const inputData = this.entryInput.getData();
-		inputData.expressionEntry = this.entryInput.formThree.newInputSpliter.expression.input;
+		inputData.expressionEntry = this.entryInput.formTree.newInputSpliter.expression.input;
 
 		inputData.callback = (answer) =>{
 
 			if (answer.error) {
 
-				if (answer.nameError) this.entryInput.formThree.newInputSpliter.name.showWarning(answer.nameError);
-				if (answer.expressionError) this.entryInput.formThree.newInputSpliter.expression.showWarning(answer.expressionError);
+				if (answer.nameError) this.entryInput.formTree.newInputSpliter.name.showWarning(answer.nameError);
+				if (answer.expressionError) this.entryInput.formTree.newInputSpliter.expression.showWarning(answer.expressionError);
 
 			} else {
 
@@ -103,14 +103,14 @@ module.exports = class InputsMenu extends Menu {
 		if (!this.entryInput.validate()) return;
 
 		const inputData = this.entryInput.getData();
-		inputData.expressionEntry = this.entryInput.formThree.newInputSpliter.expression.input;
+		inputData.expressionEntry = this.entryInput.formTree.newInputSpliter.expression.input;
 
 		inputData.callback = (answer) =>{
 
 			if (answer.error) {
 
-				if (answer.nameError) this.entryInput.formThree.newInputSpliter.name.showWarning(answer.nameError);
-				if (answer.expressionError) this.entryInput.formThree.newInputSpliter.expression.showWarning(answer.expressionError);
+				if (answer.nameError) this.entryInput.formTree.newInputSpliter.name.showWarning(answer.nameError);
+				if (answer.expressionError) this.entryInput.formTree.newInputSpliter.expression.showWarning(answer.expressionError);
 
 			} else {
 
@@ -195,15 +195,15 @@ module.exports = class InputsMenu extends Menu {
 			},
 			],
 		});
-		this.tribute.attach(this.entryInput.formThree.newInputSpliter.expression.input);
+		this.tribute.attach(this.entryInput.formTree.newInputSpliter.expression.input);
 
 	}
 
 	setEditMode(currentName, currentExp) {
 
 		this.button.htmlComponent.textContent = 'Editar entrada';
-		this.entryInput.formThree.newInputSpliter.name.value = currentName;
-		this.entryInput.formThree.newInputSpliter.expression.value = currentExp;
+		this.entryInput.formTree.newInputSpliter.name.value = currentName;
+		this.entryInput.formTree.newInputSpliter.expression.value = currentExp;
 		this.currentInputName = currentName;
 		this.editMode = true;
 
@@ -211,14 +211,14 @@ module.exports = class InputsMenu extends Menu {
 
 	cleanInputEntry() {
 
-		this.entryInput.formThree.newInputSpliter.name.value = '';
-		this.entryInput.formThree.newInputSpliter.expression.value = '';
+		this.entryInput.formTree.newInputSpliter.name.value = '';
+		this.entryInput.formTree.newInputSpliter.expression.value = '';
 
 	}
 
 	appendTag(tag) {
 
-		this.entryInput.formThree.newInputSpliter.expression.input.appendChild(tag);
+		this.entryInput.formTree.newInputSpliter.expression.input.appendChild(tag);
 
 	}
 

@@ -4,7 +4,7 @@ const hash = require('object-hash');
 const BlockContainer = require('../blockContainer/blockContainer');
 const EventHandler = require('../eventHandler/eventHandler');
 const BSONconverter = require('../../classes/bson');
-const DashBoard = require('../../classes/dashBoard');
+const DataDashBoard = require('../../classes/dashBoard');
 const Dialog = require('../dialog/dialog');
 
 module.exports = class DashBoard {
@@ -42,13 +42,13 @@ module.exports = class DashBoard {
 			this.addNewBlock(evt);
 
 		});
-		
+
 		this.eventHandler.addEventListener('RemoveBlock', (evt) => {
-			
+
 			this.removeBlock(evt);
-			
+
 		});
-		
+
 		this.eventHandler.addEventListener('ClearDashboard', () => {
 
 			this.gridStack.removeAll();
@@ -87,7 +87,7 @@ module.exports = class DashBoard {
 			ipcRenderer.on('selected-dir', (evt, arg) => {
 
 				this.importDashboard(arg);
-					
+
 				ipc.removeAllListeners('selected-dir');
 
 			});
@@ -142,44 +142,41 @@ module.exports = class DashBoard {
 	}
 
 	saveDashboard(onClose) {
-		
-		const blocksLog = [];
-		const currentDashBoard = window.CurrentDashBoard;
-		
+
+		let currentDashBoard = window.CurrentDashBoard;
+		let blocksLog = [];
+
 		this.blocks.forEach((block) => blocksLog.push(block.blockLog()));
 		currentDashBoard.blocksLog = blocksLog;
 		currentDashBoard.saved = true;
+
 		const tempBlocks = currentDashBoard.blocks
+
 		currentDashBoard.blocks = [];
-		const dashboardHash = hash(currentDashBoard);
-		currentDashBoard.hash = dashboardHash;
-		
+		currentDashBoard.hash = hash(currentDashBoard);
+
 		this.BSON.writeFile(currentDashBoard.path, currentDashBoard);
 
 		currentDashBoard.blocks = tempBlocks;
 
 		ipcRenderer.send('isSaved', true);
-		
+
 		if (onClose) ipcRenderer.send('closeOnSave');
 
 	}
 
 	importDashboard(path) {
-		
+
 		const dashboardJSON = this.BSON.readFile(path);
-		const dashboardHash = dashboardJSON.hash;
-		const dashboard = new DashBoard(dashboardJSON);
-		
-		if (dashboard.blocks.length === 0) {
-			
+		const dashboard = new DataDashBoard(dashboardJSON);
+
+		if (dashboard.blocks.length === 0)
 			dashboard.inputGroup.inputGraph = {};
-			
-		}
-		
+
 		const dashboardIdealHash = hash(dashboard);
-		
-		if (dashboardHash === dashboardIdealHash) {
-			
+
+		if (dashboardJSON.hash === dashboardIdealHash) {
+
 			dashboard.path = path;
 			this.eventHandler.dispatchEvent('OpenImportedDashboard', dashboard);
 

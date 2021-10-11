@@ -17,9 +17,11 @@ module.exports = class EditMenu extends Menu {
 
 		this.currentBlock;
 
-		for(const Menu in EditMenus){
+		for (const Menu in EditMenus) {
+
 			this.formsComponents[Menu] = new EditMenus[Menu](this.currentBlock)
 			this.forms[Menu] = this.formsComponents[Menu].form
+
 		}
 
 		this.generalContainer = Container.spliter({
@@ -38,7 +40,10 @@ module.exports = class EditMenu extends Menu {
 					text: 'Blank',
 				},
 				{
-					text: 'TODO Three.js',
+					text: 'GPS',
+				},
+				{
+					text: 'terminal',
 				},
 				],
 			}),
