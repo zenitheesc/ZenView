@@ -12,7 +12,7 @@ module.exports = class Resizer {
         interact(this.element).resizable({
             edges: {
                 top: false,
-                left: true,
+                left: false,
                 bottom: false,
                 right: true,
             },
