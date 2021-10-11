@@ -200,7 +200,7 @@ class FormPattern {
 
 			} catch (e) {
 
-				console.error(e);
+				console.error("TODO ERROR", e);
 
 			}
 
