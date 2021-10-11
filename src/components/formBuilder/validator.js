@@ -46,6 +46,13 @@ module.exports = class Validator {
 
 	}
 
+	static isBigger(min) {
+		return function (value) {
+			if (value >= min) return true;
+			return "Deve ser um número maior ou igual a " + min;
+		}
+	}
+
 	static extension(requiredExtension) {
 
 		return function(value) {
