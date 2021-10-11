@@ -182,9 +182,14 @@ module.exports = class Scatter extends Block {
 
 	redraw() {
 		this.plot.destroy();
+		const widget = this.htmlComponent.parentElement;
 
 		this.plot = new uPlot(this.opt, this.data, this.htmlComponent);
-		this.htmlComponent.parentElement.dispatchEvent(new Event('resize'));
+
+		this.plot.setSize({
+			width: widget.offsetWidth,
+			height: widget.offsetHeight * 0.8,
+		});
 	}
 
 	destroy() {
