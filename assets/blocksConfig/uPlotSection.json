@@ -15,10 +15,12 @@
                 }
             },
             "axes": [{
-                "space": 300
-            }],
+                "space": 30
+            },{
+				"space":30
+			}],
             "cursor": {
-                "show": false
+                "show": true
             },
             "series": [{}, {}]
         }
