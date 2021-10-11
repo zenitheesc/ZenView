@@ -256,9 +256,9 @@ module.exports = class uPlotScatter {
 	attSeriesList() {
 
 		let slice = 1;
-		if (window.CurrentBlock.block.plot?.series[1]?.inputName == null) slice = 2;
+		if (window.CurrentBlock.block.opt?.series[1]?.inputName == null) slice = 2;
 
-		const labels = window.CurrentBlock.block.plot.series.slice(slice);
+		const labels = window.CurrentBlock.block.opt.series.slice(slice);
 
 		this.inputListComponent.innerHTML = '';
 		this.inputList = [];
@@ -280,7 +280,7 @@ module.exports = class uPlotScatter {
 		this.seriesSection.formThree.cards.self.setData = (newSerie) => {
 
 			this.attSeriesList();
-			const array = window.CurrentBlock.block.plot.series;
+			const array = window.CurrentBlock.block.opt.series;
 
 			this.inputList.forEach((card, index) => {
 
@@ -332,13 +332,11 @@ module.exports = class uPlotScatter {
 
 		this.seriesSection.formThree.button.onclick = () => {
 
-			const newSerie = this.addNewSerie();
-			setTimeout(() => {
-				this.seriesSection.reset()
-				this.attSeriesList();
-				this.seriesSection.setData();
-				this.seriesSection.setConditions()
-			}, 25);
+			this.addNewSerie();
+			this.seriesSection.reset()
+			this.attSeriesList();
+			this.seriesSection.setData();
+			this.seriesSection.setConditions()
 
 		};
 

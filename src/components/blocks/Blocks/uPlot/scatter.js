@@ -47,17 +47,23 @@ module.exports = class Scatter extends Block {
 	}
 
 	addSerie(newSerie) {
+		if (this.opt.series[1].inputName == null) {
+			this.data.pop();
+			this.opt.series.pop();
+		}
 
-		this.plot.addSeries({
+		this.opt.series.push({
 			...newSerie,
 			uuid: uuidv4(),
 			paths: this.pathSetter("1"),
-		}, this.data.length);
+		});
 
-		if (this.plot.series[1].inputName == null) {
-			this.plot.delSeries(1);
-			this.data.pop();
-		}
+		const newMockData = [...Array(11).keys()].map((value) => (Math.sin(value) + (this.opt.series.length - 2)));
+		if (this.opt.series.length > this.data.length) this.data.push(newMockData);
+
+		this.redraw();
+
+	}
 
 		const newMockData = [...Array(11).keys()].map((value) => (Math.sin(value) + (this.plot.series.length - 2)));
 		if (this.plot.series.length > this.data.length) this.data.push(newMockData);
@@ -103,56 +109,35 @@ module.exports = class Scatter extends Block {
 
 	removeSerie(rmvdSerie) {
 
-		let index = -1;
-
-		for (const serie of this.plot.series) {
-
-			if (serie.label === rmvdSerie.label) {
-
-				index = this.plot.series.indexOf(serie);
-				break;
-
-			}
-
-		}
+		let currSerie = this.opt.series.find(serie => serie.uuid === rmvdSerie.currSerieId);
+		let index = this.opt.series.indexOf(currSerie);
 
 		if (index >= 0) {
 
-			if (this.plot.series.length === 2) {
+			if (this.opt.series.length === 2) {
 				this.data = [[...Array(11).keys()], []];
-				this.plot.addSeries({}, 1);
-				this.plot.delSeries(index + 1);
+				this.opt.series.push();
+				this.opt.series.splice(index + 1, 1);
 
-				const newMockData = [...Array(11).keys()].map((value) => (Math.sin(value) + (this.plot.series.length - 2)));
-				if (this.plot.series.length > this.data.length) this.data.push(newMockData);
+				const newMockData = [...Array(11).keys()].map((value) => (Math.sin(value) + (this.opt.series.length - 2)));
+				if (this.opt.series.length > this.data.length) this.data.push(newMockData);
 			} else {
-				this.plot.delSeries(index);
+				this.opt.series.splice(index, 1);
 				this.data.pop();
 			}
 
 
 		}
 
-		this.plot.setData(this.data)
-
+		this.redraw();
 	}
 
 	editSerie(newConfig) {
 
-		let index = -1;
+		let currSerie = this.opt.series.find(serie => serie.uuid === newConfig.currSerieId);
+		let index = this.opt.series.indexOf(currSerie);
 
-		for (const serie of this.plot.series) {
-
-			if (serie.uuid === newConfig.currSerieId) {
-
-				index = this.plot.series.indexOf(serie);
-				break;
-
-			}
-
-		}
-
-		this.plot.addSeries({
+		this.opt.series[index] = {
 			label: newConfig.label,
 			width: newConfig.width,
 			pathType: newConfig.pathType,
@@ -165,13 +150,11 @@ module.exports = class Scatter extends Block {
 			inputName: newConfig.inputName,
 			stroke: newConfig._stroke,
 			paths: this.pathSetter((!newConfig.showLines) ? null : newConfig.pathType),
-		}, index);
+		};
 
+		this.redraw();
 
-		this.plot.delSeries(index + 1);
-		this.plot.redraw();
-
-		return this.plot.series[index];
+		return this.opt.series[index];
 
 	}
 
@@ -190,10 +173,11 @@ module.exports = class Scatter extends Block {
 
 	}
 
-	renameSerie(newConfig) {
+	redraw() {
+		this.plot.destroy();
 
-		this.editSerie(newConfig, true)
-
+		this.plot = new uPlot(this.opt, this.data, this.htmlComponent);
+		this.htmlComponent.parentElement.dispatchEvent(new Event('resize'));
 	}
 
 	destroy() {
