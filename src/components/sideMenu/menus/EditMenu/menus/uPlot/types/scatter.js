@@ -43,26 +43,28 @@ module.exports = class uPlotScatter {
 					options: [
 						{
 							text: 'Linear',
-							value: 'linear',
+							value: 1,
 						},
 						{
 							text: 'Logaritimica',
-							value: 'log',
+							value: 3,
 						},
 					],
 				}),
 				scaleOpts: Container.formRow({
 					xAxesDirection: Field.select(
 						{
-							label: 'Tamanho',
-							att: 'size',
+							label: 'Direção',
+							att: 'dir',
 							classList: ['col-6'],
 							options: [
 								{
 									text: "Crescente",
+									value: 1
 								},
 								{
 									text: "Decrescente",
+									value: -1
 								},
 							],
 						},
@@ -70,15 +72,18 @@ module.exports = class uPlotScatter {
 					xAxesPos: Field.select(
 						{
 							label: 'Posição',
-							att: 'size',
+							att: 'side',
 							classList: ['col-6'],
 							options: [
 								{
-									text: 'Top',
+									text: 'bottom',
+									value: 2
 								},
 								{
-									text: 'Bottom',
-								},
+									text: 'top',
+									value: 0
+								}
+
 							],
 						},
 					),
@@ -108,14 +113,16 @@ module.exports = class uPlotScatter {
 					yAxesDirection: Field.select(
 						{
 							label: 'Tamanho',
-							att: 'size',
+							att: 'dir',
 							classList: ['col-6'],
 							options: [
 								{
 									text: "Crescente",
+									value: 1
 								},
 								{
 									text: "Decrescente",
+									value: -1
 								},
 							],
 						},
@@ -123,15 +130,16 @@ module.exports = class uPlotScatter {
 					yAxesPos: Field.select(
 						{
 							label: 'Posição',
-							att: 'size',
+							att: 'side',
 							classList: ['col-6'],
 							options: [
 								{
-									text: 'Direita',
-								},
-								{
-									text: 'Esquerda',
-								},
+									text: 'esquerda',
+									value: 3
+								}, {
+									text: 'direita',
+									value: 1
+								}
 							],
 						},
 					),
@@ -170,14 +178,17 @@ module.exports = class uPlotScatter {
 
 		window.CurrentBlock.sendBlockInstruction({
 			command: 'editXAxis',
-			data: this.form.formThree.uPlotXAxesStyle.xAxis.value,
+			data: this.form.formThree.uPlotXAxesStyle.self.getData().blockConfig.uPlot.scatter.axis.x
 		});
 
 	}
 
 	editYAxis() {
 
-		}
+		window.CurrentBlock.sendBlockInstruction({
+			command: 'editYAxis',
+			data: this.form.formThree.uPlotYAxesStyle.self.getData().blockConfig.uPlot.scatter.axis.y
+		});
 
 	}
 
@@ -347,6 +358,12 @@ module.exports = class uPlotScatter {
 
 		});
 
+		this.form.formThree.uPlotYAxesStyle.self.htmlComponent.addEventListener('input', (evt) => {
+
+			this.editYAxis();
+			evt.stopPropagation();
+
+		});
 
 	}
 

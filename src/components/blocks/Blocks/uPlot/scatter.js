@@ -65,22 +65,29 @@ module.exports = class Scatter extends Block {
 
 	}
 
-		const newMockData = [...Array(11).keys()].map((value) => (Math.sin(value) + (this.plot.series.length - 2)));
-		if (this.plot.series.length > this.data.length) this.data.push(newMockData);
-
-		this.plot.setData(this.data);
-
-	}
-
 	editXAxis(newConfig) {
 
-		this.plot.addSeries({
-			inputName: newConfig,
-			label: newConfig,
-		}, 0);
+		this.opt.series[0].inputName = newConfig.inputName;
+		this.opt.series[0].label = newConfig.inputName;
 
-		this.plot.delSeries(1);
-		this.plot.setData(this.data);
+		this.opt.scales.x.distr = newConfig.type;
+		this.opt.scales.x.dir = newConfig.dir;
+		this.opt.axes[0].side = Number(newConfig.side);
+		console.log(newConfig);
+		this.redraw();
+	}
+
+	editYAxis(newConfig) {
+
+		console.log(newConfig);
+
+		this.plot.scales.y.distr = newConfig.type;
+
+		this.opt.scales.y.dir = newConfig.dir;
+
+		this.opt.axes[1].side = Number(newConfig.side);
+
+		this.redraw();
 
 	}
 
