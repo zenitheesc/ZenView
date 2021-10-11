@@ -15,10 +15,6 @@ module.exports = class Card {
 		this.htmlComponent.className = 'mb-3';
 
 		this.seriesSection = Container.div({
-			currSerie: Field.text({
-				att: 'label',
-				label: 'Nome',
-			}),
 			yAxis: Field.select({
 				att: 'inputName',
 				label: 'Dados',
@@ -119,9 +115,9 @@ module.exports = class Card {
 		cardHeaderIcon.innerHTML = Components.icon('list-ol-solid');
 		cardHeaderIcon.className = 'inputCardIcon';
 
-		const cardHeaderTitle = document.createElement('div');
-		cardHeaderTitle.className = 'inputCardTitle';
-		cardHeaderTitle.innerText = this.serie.label;
+		this.cardHeaderTitle = document.createElement('div');
+		this.cardHeaderTitle.className = 'inputCardTitle';
+		this.cardHeaderTitle.innerText = this.serie.label;
 
 		const cardHeaderWrapper = document.createElement('div');
 		cardHeaderWrapper.className = 'row m-0 inputCardWrapper';
@@ -129,7 +125,7 @@ module.exports = class Card {
 		const cardInputButtons = this.inputButtons();
 
 		cardHeaderWrapper.appendChild(cardHeaderIcon);
-		cardHeaderWrapper.appendChild(cardHeaderTitle);
+		cardHeaderWrapper.appendChild(this.cardHeaderTitle);
 
 		cardHeader.appendChild(cardHeaderWrapper);
 		cardHeader.appendChild(cardInputButtons);
@@ -165,8 +161,6 @@ module.exports = class Card {
 		this.seriesSection.htmlComponent.style.display = 'none';
 		this.opened = false;
 
-		// TODO: salvar
-
 	}
 
 	load() {
@@ -194,11 +188,13 @@ module.exports = class Card {
 		allInputs = allInputs.concat(window.CurrentInputGroup.inputs);
 
 		this.seriesSection.formThree.yAxis.setOptions(allInputs, callBack);
+		this.seriesSection.formThree.yAxis.value = this.serie.inputName;
 	}
 
 	setEvents() {
 
 		this.seriesSection.setData = (objData) => {
+			console.trace(objData, this.seriesSection);
 			this.seriesSection._setData(objData);
 			this.updateInputList();
 		}
@@ -211,7 +207,7 @@ module.exports = class Card {
 
 		this.eventHandler.addEventListener('MenuOpened', (uuid) => {
 
-			if (uuid!== this.serie.uuid) {
+			if (uuid !== this.serie.uuid) {
 
 				this.closeMenu();
 
@@ -232,7 +228,7 @@ module.exports = class Card {
 				command: 'removeSerie',
 				data: {
 					label: this.serie.label,
-					currSerieId: this.serie.uuid,
+					uuid: this.serie.uuid,
 				}
 			});
 
@@ -246,7 +242,7 @@ module.exports = class Card {
 				command: 'editSerie',
 				data: {
 					...this.seriesSection.getData(),
-					currSerieId: this.serie.uuid,
+					uuid: this.serie.uuid,
 				}
 			});
 
@@ -254,6 +250,11 @@ module.exports = class Card {
 
 		});
 
+		this.seriesSection.formThree.yAxis.htmlComponent.addEventListener('change', (evt) => {
+
+			this.cardHeaderTitle.innerText = this.seriesSection.formThree.yAxis.value;
+
+		});
 	}
 
 };

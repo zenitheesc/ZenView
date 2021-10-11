@@ -14,7 +14,7 @@ module.exports = class Select extends Field {
 
 		for (let i = 0; i < this.input.options.length; i++) {
 
-			if (this.input.options[i].value == value ?? this.input.options[i].text == value) {
+			if (this.input.options[i].value == value || this.input.options[i].text == value) {
 
 				found = true;
 				this.input.options[i].selected = 'select';
