@@ -2,6 +2,7 @@ const Container = require('../../../../../../formBuilder/formBuilder').Container
 const Field = require('../../../../../../formBuilder/formBuilder').Field;
 const EventHandler = require('../../../../../../eventHandler/eventHandler');
 const Card = require('../components/card');
+const Components = require('../../../../../../../components/components');
 const { v4: uuidv4 } = require('uuid');
 module.exports = class uPlotScatter {
 
@@ -10,12 +11,18 @@ module.exports = class uPlotScatter {
 		this.eventHandler = new EventHandler();
 
 		this.seriesSection = Container.spliter({
-			cards: Container.div({}),
-			button: Field.button({
-				text: 'Adicionar nova série',
-				att: 'newSerieBtn',
-				classList: ['formCenteredBtn', 'green-btn'],
+			newSerie: Container.div({
+				newSerieSelector:Field.select({
+					label: 'Nova série',
+					att: 'currentInput',
+					append: [{
+						type: 'button',
+						content: Components.icon('plus-square'),
+						classList: ['formButtonWithIconPrepend'],
+					}],
+				})
 			}),
+			cards: Container.div({}),
 		}, {
 			startOpen: false,
 			att: 'series',
@@ -76,12 +83,12 @@ module.exports = class uPlotScatter {
 							classList: ['col-6'],
 							options: [
 								{
-									text: 'bottom',
-									value: 2
+									text: 'Em cima',
+									value: 0
 								},
 								{
-									text: 'top',
-									value: 0
+									text: 'Embaixo',
+									value: 2
 								}
 
 							],
@@ -134,11 +141,11 @@ module.exports = class uPlotScatter {
 							classList: ['col-6'],
 							options: [
 								{
-									text: 'esquerda',
-									value: 3
+									text: 'Esquerda',
+									value:"3"
 								}, {
-									text: 'direita',
-									value: 1
+									text: 'Direita',
+									value: "1"
 								}
 							],
 						},
@@ -207,6 +214,7 @@ module.exports = class uPlotScatter {
 
 		this.form.formThree.uPlotXAxesStyle.xAxis.setOptions(allInputs, callBack);
 
+		this.seriesSection.formThree.newSerie.newSerieSelector.setOptions(allInputs, callBack);
 	}
 
 	selectColor(colorNumber) {
@@ -233,10 +241,8 @@ module.exports = class uPlotScatter {
 
 		const length = this.inputList.length;
 		const color = this.selectColor(length);
-		const input = window.CurrentInputGroup.rawInputs[0];
 
-		let newSerieName = "série " + length;
-
+		let newSerieName = this.seriesSection.formThree.newSerie.newSerieSelector.value;
 
 		const data = {
 			label: newSerieName,
@@ -248,7 +254,7 @@ module.exports = class uPlotScatter {
 			},
 			pathType: "1",
 			show: true,
-			inputName: [input.name ?? input.value, input.name],
+			inputName: [newSerieName] ,
 			showLines: true,
 			stroke: color,
 			_stroke: color,
@@ -258,7 +264,6 @@ module.exports = class uPlotScatter {
 			command: 'addSerie',
 			data,
 		});
-
 
 		return data;
 
@@ -341,7 +346,7 @@ module.exports = class uPlotScatter {
 
 		});
 
-		this.seriesSection.formThree.button.onclick = () => {
+		this.seriesSection.formThree.newSerie.newSerieSelector.append[0].onclick = () => {
 
 			this.addNewSerie();
 			this.seriesSection.reset()
