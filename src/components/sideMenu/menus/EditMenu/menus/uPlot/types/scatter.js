@@ -47,7 +47,7 @@ module.exports = class uPlotScatter {
 						},
 						{
 							text: 'Logaritimica',
-							value: 3,
+							value: 2,
 						},
 					],
 				}),
@@ -101,11 +101,11 @@ module.exports = class uPlotScatter {
 					options: [
 						{
 							text: 'Linear',
-							value: 'linear',
+							value: 1,
 						},
 						{
 							text: 'Logaritimica',
-							value: 'log',
+							value: 2,
 						},
 					],
 				}),

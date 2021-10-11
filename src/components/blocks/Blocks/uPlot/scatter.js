@@ -11,13 +11,15 @@ module.exports = class Scatter extends Block {
 
 		super(preConfig, htmlComponent);
 		this._formConfig = preConfig;
+
 		this.data = preConfig.uPlot.data ?? [[...Array(11).keys()], []];
 		this.opt = preConfig.uPlot.opt;
 		this.type = preConfig.type;
+
 		this.series = preConfig.series;
 		this.initR = false;
+
 		this.type = "uPlot";
-		this.cont = 0;
 	}
 
 	get formConfig() {
@@ -70,7 +72,7 @@ module.exports = class Scatter extends Block {
 		this.opt.series[0].inputName = newConfig.inputName;
 		this.opt.series[0].label = newConfig.inputName;
 
-		this.opt.scales.x.distr = newConfig.type;
+		this.opt.scales.x.distr = Number(newConfig.type);
 		this.opt.scales.x.dir = newConfig.dir;
 		this.opt.axes[0].side = Number(newConfig.side);
 		console.log(newConfig);
