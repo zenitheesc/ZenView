@@ -156,7 +156,7 @@ module.exports = class Card {
 
 		this.seriesSection.htmlComponent.style.display = 'block';
 		this.opened = true;
-		this.eventHandler.dispatchEvent('MenuOpened', this.serie.label);
+		this.eventHandler.dispatchEvent('MenuOpened', this.serie.uuid);
 
 	}
 
@@ -181,7 +181,7 @@ module.exports = class Card {
 	}
 
 	updateInputList() {
-		this.seriesSection._setData(objData);
+
 		const callBack = (input) => {
 
 			return [input.name ?? input.value, input.name];
@@ -209,9 +209,9 @@ module.exports = class Card {
 
 		});
 
-		this.eventHandler.addEventListener('MenuOpened', (name) => {
+		this.eventHandler.addEventListener('MenuOpened', (uuid) => {
 
-			if (name !== this.serie.label) {
+			if (uuid!== this.serie.uuid) {
 
 				this.closeMenu();
 
@@ -232,6 +232,7 @@ module.exports = class Card {
 				command: 'removeSerie',
 				data: {
 					label: this.serie.label,
+					currSerieId: this.serie.uuid,
 				}
 			});
 

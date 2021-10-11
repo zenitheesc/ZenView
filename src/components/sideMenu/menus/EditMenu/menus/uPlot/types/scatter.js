@@ -2,7 +2,7 @@ const Container = require('../../../../../../formBuilder/formBuilder').Container
 const Field = require('../../../../../../formBuilder/formBuilder').Field;
 const EventHandler = require('../../../../../../eventHandler/eventHandler');
 const Card = require('../components/card');
-const { v4 : uuidv4 } = require ('uuid');
+const { v4: uuidv4 } = require('uuid');
 module.exports = class uPlotScatter {
 
 	constructor() {
