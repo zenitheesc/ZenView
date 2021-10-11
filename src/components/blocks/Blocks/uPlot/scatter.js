@@ -107,7 +107,7 @@ module.exports = class Scatter extends Block {
 
 			for (let i = 0; i < this.plot.series.length; i++) {
 				this.data[i].push(newData[this.plot.series[i].inputName])
-				this.data[i] = this.data[i].slice(-200)
+				this.data[i] = this.data[i].slice(-100)
 			}
 
 			this.plot.setData(this.data);
@@ -206,6 +206,11 @@ module.exports = class Scatter extends Block {
 		this.plot = new uPlot(this.opt, this.data, this.htmlComponent);
 		this.setAutoResize();
 
+	}
+
+	willRead() {
+		this.data = [[],[]];
+		this.redraw();
 	}
 
 	save() {
