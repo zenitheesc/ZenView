@@ -201,20 +201,6 @@ module.exports = class BlockContainer {
 
 		};
 
-		this.htmlComponent.onmouseover = () => {
-
-			this.trash.style.display = 'block';
-			this.edit.style.display = 'block';
-
-		};
-
-		this.htmlComponent.onmouseleave = () => {
-
-			this.trash.style.display = 'block';
-			this.edit.style.display = 'block';
-
-		};
-
 		this.htmlComponent.addEventListener('contextmenu', (evt) => {
 
 			const blockMenu = new BlockMenu(this);
