@@ -5,7 +5,7 @@ const Components = require('../components');
 
 module.exports = class BlockContainer {
 
-	constructor(preConfig) {
+	constructor(preConfig, title = '') {
 
 		this.eventHandler = new EventHandler();
 
@@ -15,6 +15,7 @@ module.exports = class BlockContainer {
 		this.editing = false;
 		this.build();
 
+		this.title = title;
 
 		this.trash.style.display = 'none';
 
