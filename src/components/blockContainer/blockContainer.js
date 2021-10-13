@@ -14,10 +14,6 @@ module.exports = class BlockContainer {
 		this.height = 2;
 		this.editing = false;
 		this.build();
-
-
-		this.trash.style.display = 'none';
-
 		this.setEvents();
 
 	}
@@ -43,11 +39,15 @@ module.exports = class BlockContainer {
 
 		this.header = document.createElement('div');
 
-		this.trash = Components.buttonWithIcon('trash-alt-regular', 'trashBlockButton blockButton');
-		this.edit = Components.buttonWithIcon('pencil-square', 'trashBlockButton1 blockButton');
+		this.buttonsContainer = document.createElement('div');
+		this.buttonsContainer.className = "buttonsContainer";
 
-		this.header.appendChild(this.trash);
-		this.header.appendChild(this.edit);
+		this.trash = Components.buttonWithIcon('trash-alt-regular', 'blockButton');
+		this.edit = Components.buttonWithIcon('pencil-square', 'blockButton');
+
+		this.buttonsContainer.appendChild(this.trash);
+		this.buttonsContainer.appendChild(this.edit);
+		this.header.appendChild(this.buttonsContainer);
 
 		this.headerTitle = document.createElement('div')
 		this.headerTitle.innerText = '';
