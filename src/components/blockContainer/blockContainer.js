@@ -14,20 +14,16 @@ module.exports = class BlockContainer {
 		this.height = 2;
 		this.editing = false;
 		this.build();
-
-
-		this.trash.style.display = 'none';
-
 		this.setEvents();
 
 	}
 
 	get title() {
-		return this.header.innerText;
+		return this.headerTitle.innerText;
 	}
 
 	set title(newTitle) {
-		this.header.innerText = newTitle;
+		this.headerTitle.innerText = newTitle;
 	}
 
 	get formConfig() {
@@ -42,8 +38,24 @@ module.exports = class BlockContainer {
 	buildHeader() {
 
 		this.header = document.createElement('div');
-		this.header.innerText = '';
+
+		this.buttonsContainer = document.createElement('div');
+		this.buttonsContainer.className = "buttonsContainer";
+
+		this.trash = Components.buttonWithIcon('trash-alt-regular', 'blockButton');
+		this.edit = Components.buttonWithIcon('pencil-square', 'blockButton');
+
+		this.buttonsContainer.appendChild(this.trash);
+		this.buttonsContainer.appendChild(this.edit);
+		this.header.appendChild(this.buttonsContainer);
+
+		this.headerTitle = document.createElement('div')
+		this.headerTitle.innerText = '';
+
+		this.header.appendChild(this.headerTitle);
+
 		this.header.classList.add('blockHeader');
+
 		return this.header;
 
 	}
@@ -59,8 +71,6 @@ module.exports = class BlockContainer {
 	}
 
 	build() {
-		this.trash = Components.buttonWithIcon('trash-alt-regular', 'trashBlockButton blockButton');
-		this.edit = Components.buttonWithIcon('pencil-square', 'trashBlockButton1 blockButton');
 
 		this.htmlComponent = document.createElement('div');
 		this.htmlComponent.classList.add('grid-stack-item');
@@ -74,8 +84,6 @@ module.exports = class BlockContainer {
 		this.body.appendChild(this.content);
 
 		this.htmlComponent.appendChild(this.body);
-		this.htmlComponent.appendChild(this.trash);
-		this.htmlComponent.appendChild(this.edit);
 
 	}
 
@@ -189,20 +197,6 @@ module.exports = class BlockContainer {
 		this.header.ondblclick = () => {
 
 			this.editBlock();
-
-		};
-
-		this.htmlComponent.onmouseover = () => {
-
-			this.trash.style.display = 'block';
-			this.edit.style.display = 'block';
-
-		};
-
-		this.htmlComponent.onmouseleave = () => {
-
-			this.trash.style.display = 'none';
-			this.edit.style.display = 'none';
 
 		};
 
