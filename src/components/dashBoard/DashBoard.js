@@ -117,8 +117,8 @@ module.exports = class DashBoard {
 
 		window.CurrentDashBoard.blocksLog.forEach((blockLog) => {
 
-			const newBlock = new BlockContainer(blockLog.preConfig);
-
+			const newBlock = new BlockContainer(blockLog.preConfig, blockLog.title);
+			
 			this.gridStack.addWidget(newBlock.htmlComponent, {
 				x: Number(blockLog.x),
 				y: Number(blockLog.y),

@@ -74,21 +74,26 @@ app.on('ready', () => {
 
 	app.allowRendererProcessReuse = false;
 
-	initialWindow = createWindow(initialWindowparams);
+	if (!debugMode) initialWindow = createWindow(initialWindowparams);
 	mainWindow = createWindow(mainWindowparams);
 	titleBarMenu = new TitleBarMenu();
 
 	// apenas mostrara a janela quando estiver pronta
-	initialWindow.once('ready-to-show', () => {
 
-		initialWindow.show();
+	if (debugMode) {
+		mainWindow.show();
+	} else {
+		initialWindow.once('ready-to-show', () => {
 
-	});
+			initialWindow.show();
+
+		});
+	}
 
 	mainWindow.on('close', (evt) => {
-		
-		if (!dashboardIsSaved) {
-		
+
+		if (!dashboardIsSaved && !debugMode) {
+
 			const response = dialog.showMessageBoxSync(mainWindow, {
 				type: 'question',
 				buttons: ['Salvar', 'Descartar', 'Cancelar'],
@@ -97,18 +102,18 @@ app.on('ready', () => {
 				defaultId: 2,
 				cancelId: 2,
 			});
-			
+
 			if (response === 0) {
-		
+
 				evt.preventDefault();
 				mainWindow.webContents.send('SaveDashboard', true);
 
 			} else if (response === 2) {
-		
+
 				evt.preventDefault();
-		
+
 			}
-	
+
 		}
 
 	});
@@ -141,7 +146,7 @@ app.on('activate', () => {
 // listerner que avisa que o load da janela principal terminou
 ipc.on('mainLoadCompleto', () => {
 
-	initialWindow.close();
+	if (!debugMode) initialWindow.close();
 	mainWindow.show();
 
 });
@@ -164,7 +169,7 @@ ipc.on('open-file-dialog-for-file', async (event, args) => {
 
 	const file = await dialog.showOpenDialog(mainWindow, {
 		properties: ['openFile'],
-		filters: [{name: 'Dashboard', extensions: [args]}],
+		filters: [{ name: 'Dashboard', extensions: [args] }],
 	});
 	if (file) {
 
@@ -184,7 +189,7 @@ ipc.on('openDialog', (event, config) => {
 
 });
 
-ipc.on('display-app-titleBar', function(err, args) {
+ipc.on('display-app-titleBar', function (err, args) {
 
 	const titleBarMenu = new TitleBarMenu();
 

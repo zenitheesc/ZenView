@@ -1,9 +1,9 @@
 const Container = require('../../../../../../formBuilder/formBuilder').Container;
 const Field = require('../../../../../../formBuilder/formBuilder').Field;
-const Validator = require('../../../../../../formBuilder/validator');
-const Components = require('../../../../../../components');
 const EventHandler = require('../../../../../../eventHandler/eventHandler');
-
+const Card = require('../components/card');
+const Components = require('../../../../../../../components/components');
+const { v4: uuidv4 } = require('uuid');
 module.exports = class uPlotScatter {
 
 	constructor() {
@@ -11,119 +11,18 @@ module.exports = class uPlotScatter {
 		this.eventHandler = new EventHandler();
 
 		this.seriesSection = Container.spliter({
-			selectedSerie: Field.select({
-				att: 'currSerie',
-				label: 'Séries',
-				validators: [this.validateSelectedSerie],
-				append: [
-					{
+			newSerie: Container.div({
+				newSerieSelector: Field.select({
+					label: 'Nova série',
+					att: 'currentInput',
+					append: [{
 						type: 'button',
 						content: Components.icon('plus-square'),
 						classList: ['formButtonWithIconPrepend'],
-					},
-					{
-						type: 'button',
-						content: Components.icon('trash-alt-regular'),
-						classList: ['formButtonWithIconPrepend'],
-					},
-				],
+					}],
+				})
 			}),
-			currSerie: Field.text({
-				att: 'label',
-				label: 'Nome',
-				append: [
-					{
-						type: 'button',
-						content: Components.icon('pencil-square'),
-						classList: ['formButtonWithIconPrepend'],
-					},
-				],
-			}),
-			yAxis: Field.select({
-				att: 'inputName',
-				label: 'Dados',
-				prepend: [
-					{
-						type: 'text',
-						text: 'Y',
-						classList: ['formTextPrepend'],
-					},
-				],
-			}),
-			serieStyle: Container.div({
-				showPoints: Field.checkBox({
-					label: 'Pontos',
-					att: 'points.showPoints',
-					id: 'uPlotScatterShowMarkers',
-				}),
-				showLines: Field.checkBox({
-					label: 'Linhas',
-					att: 'showLines',
-					id: 'uPlotScatterShowLines',
-				}),
-				lineOptions: Container.div({
-					linStyle: Container.formRow({
-						lineWidth: Field.select(
-							{
-								label: 'Tamanho',
-								att: 'width',
-								classList: ['col-6'],
-								options: [
-									{
-										text: 4,
-									},
-									{
-										text: 6,
-									},
-									{
-										text: 8,
-									},
-									{
-										text: 10,
-									},
-								],
-							},
-						),
-						lineColor: Field.colorPicker({
-							label: 'Cor',
-							att: '_stroke',
-							classList: ['col-6'],
-						}),
-					}),
-					lineShape: Field.select({
-						label: 'Interpolação',
-						att: 'pathType',
-						options: [
-							{
-								text: 'Linear',
-								value: 1,
-							},
-							{
-								text: 'Suave',
-								value: 2,
-							},
-							{
-								text: 'Degraus 1',
-								value: 3,
-							},
-							{
-								text: 'Degraus 2',
-								value: 4,
-							},
-						],
-					}),
-				}, {
-					att: '../series',
-					conditions: [
-						{
-							id: 'uPlotScatterShowLines',
-							att: 'checked',
-							requiredValue: true,
-						},
-					],
-				}),
-			}),
-
+			cards: Container.div({}),
 		}, {
 			startOpen: false,
 			att: 'series',
@@ -132,10 +31,11 @@ module.exports = class uPlotScatter {
 		});
 
 		this.form = Container.div({
-			xDataContainer: Container.spliter({
+			uPlotSeriesStyle: this.seriesSection,
+			uPlotXAxesStyle: Container.spliter({
 				xAxis: Field.select({
 					att: 'inputName',
-					label: "Eixo x",
+					label: "Eixo X",
 					prepend: [
 						{
 							type: 'text',
@@ -143,42 +43,35 @@ module.exports = class uPlotScatter {
 							classList: ['formTextPrepend'],
 						},
 					],
-				})
-			}, {
-				att: 'inputName',
-				startOpen: false,
-				text: 'Entrada eixo X',
-				id: 'uPlotXAxeData',
-			}),
-			uPlotSeriesStyle: this.seriesSection,
-
-			uPlotXAxesStyle: Container.spliter({
+				}),
 				xAxesScale: Field.select({
 					label: 'Escala',
 					att: 'type',
 					options: [
 						{
 							text: 'Linear',
-							value: 'linear',
+							value: 1,
 						},
 						{
 							text: 'Logaritimica',
-							value: 'log',
+							value: 2,
 						},
 					],
 				}),
 				scaleOpts: Container.formRow({
 					xAxesDirection: Field.select(
 						{
-							label: 'Tamanho',
-							att: 'size',
+							label: 'Direção',
+							att: 'dir',
 							classList: ['col-6'],
 							options: [
 								{
-									text: "crescente",
+									text: "Crescente",
+									value: 1
 								},
 								{
-									text: "decrescente",
+									text: "Decrescente",
+									value: -1
 								},
 							],
 						},
@@ -186,15 +79,18 @@ module.exports = class uPlotScatter {
 					xAxesPos: Field.select(
 						{
 							label: 'Posição',
-							att: 'size',
+							att: 'side',
 							classList: ['col-6'],
 							options: [
 								{
-									text: 'top',
+									text: 'Em cima',
+									value: 0
 								},
 								{
-									text: 'bottom',
-								},
+									text: 'Embaixo',
+									value: 2
+								}
+
 							],
 						},
 					),
@@ -212,11 +108,11 @@ module.exports = class uPlotScatter {
 					options: [
 						{
 							text: 'Linear',
-							value: 'linear',
+							value: 1,
 						},
 						{
 							text: 'Logaritimica',
-							value: 'log',
+							value: 2,
 						},
 					],
 				}),
@@ -224,14 +120,16 @@ module.exports = class uPlotScatter {
 					yAxesDirection: Field.select(
 						{
 							label: 'Tamanho',
-							att: 'size',
+							att: 'dir',
 							classList: ['col-6'],
 							options: [
 								{
-									text: "crescente",
+									text: "Crescente",
+									value: 1
 								},
 								{
-									text: "decrescente",
+									text: "Decrescente",
+									value: -1
 								},
 							],
 						},
@@ -239,15 +137,16 @@ module.exports = class uPlotScatter {
 					yAxesPos: Field.select(
 						{
 							label: 'Posição',
-							att: 'size',
+							att: 'side',
 							classList: ['col-6'],
 							options: [
 								{
-									text: 'direita',
-								},
-								{
-									text: 'esquerda',
-								},
+									text: 'Esquerda',
+									value: "3"
+								}, {
+									text: 'Direita',
+									value: "1"
+								}
 							],
 						},
 					),
@@ -271,45 +170,32 @@ module.exports = class uPlotScatter {
 		},
 		);
 
+		this.inputListComponent = document.createElement('div');
+		this.seriesSection.formTree.cards.self.htmlComponent.appendChild(this.inputListComponent);
+
+		this.inputList = [];
+		this.openedMenu;
+
+		this.overWriteSetData();
 		this.setEvents();
 
-	}
-
-	nameAlreadyExists(newName) {
-
-		let alreadyExist = false;
-
-		for (const serie of window.CurrentBlock.block.plot.series) {
-			if (serie.label === newName && this.seriesSection.formTree.selectedSerie.value !== newName) {
-				alreadyExist = true;
-				break;
-			}
-		}
-
-		return alreadyExist;
 	}
 
 	editXAxis() {
 
 		window.CurrentBlock.sendBlockInstruction({
-
 			command: 'editXAxis',
-			data: this.form.formTree.xDataContainer.xAxis.value,
+			data: this.form.formTree.uPlotXAxesStyle.self.getData().blockConfig.uPlot.scatter.axis.x
 		});
 
 	}
 
-	validateSelectedSerie(value) {
+	editYAxis() {
 
-		if (value == "" || value == null) {
-
-			return 'Selecione ou crie uma nova série';
-
-		} else {
-
-			return true;
-
-		}
+		window.CurrentBlock.sendBlockInstruction({
+			command: 'editYAxis',
+			data: this.form.formTree.uPlotYAxesStyle.self.getData().blockConfig.uPlot.scatter.axis.y
+		});
 
 	}
 
@@ -326,12 +212,13 @@ module.exports = class uPlotScatter {
 		allInputs = allInputs.concat(window.CurrentInputGroup.rawInputs);
 		allInputs = allInputs.concat(window.CurrentInputGroup.inputs);
 
-		this.seriesSection.formTree.yAxis.setOptions(allInputs, callBack);
-		this.form.formTree.xDataContainer.xAxis.setOptions(allInputs, callBack);
+		this.form.formTree.uPlotXAxesStyle.xAxis.setOptions(allInputs, callBack);
 
+		this.seriesSection.formTree.newSerie.newSerieSelector.setOptions(allInputs, callBack);
 	}
 
 	selectColor(colorNumber) {
+
 		const colors = [
 			'#7EB26D', // 0: pale green
 			'#EAB839', // 1: mustard
@@ -346,24 +233,20 @@ module.exports = class uPlotScatter {
 		]
 
 		return colors[colorNumber % colors.length];
+
 	}
+
 
 	addNewSerie() {
 
+		const length = this.inputList.length;
+		const color = this.selectColor(length);
 
-		const color = this.selectColor(this.seriesSection.formTree.selectedSerie.input.options.length)
-
-		let newSerieName = "série " + this.seriesSection.formTree.selectedSerie.input.options.length;
-		let cont = 0;
-
-		while (this.nameAlreadyExists(newSerieName)) {
-			newSerieName = "série " + cont;
-			cont++;
-		}
+		let newSerieName = this.seriesSection.formTree.newSerie.newSerieSelector.value;
 
 		const data = {
 			label: newSerieName,
-			width: 6,
+			width: 4,
 			paths: 1,
 			points: {
 				showPoints: true,
@@ -371,105 +254,76 @@ module.exports = class uPlotScatter {
 			},
 			pathType: "1",
 			show: true,
-			inputName: this.seriesSection.formTree.yAxis.value,
+			inputName: [newSerieName],
 			showLines: true,
 			stroke: color,
 			_stroke: color,
 		}
 
 		window.CurrentBlock.sendBlockInstruction({
-
 			command: 'addSerie',
 			data,
 		});
 
-		this.seriesSection.formTree.selectedSerie.value = newSerieName;
 		return data;
+
 	}
 
-	rmvSerie() {
-		window.CurrentBlock.sendBlockInstruction({
-
-			command: 'rmvSerie',
-			data: {
-				label: this.seriesSection.formTree.selectedSerie.value,
-			}
-		});
-	}
-
-	attSeriesSelector(value) {
-
-		const callBack = (serie) => {
-
-			return [serie.label, serie.label];
-
-		};
+	attSeriesList() {
 
 		let slice = 1;
-		if (window.CurrentBlock.block.plot?.series[1]?.inputName == null) slice = 2;
+		if (window.CurrentBlock.block.opt?.series[1]?.inputName == null) slice = 2;
 
-		const labels = window.CurrentBlock.block.plot.series.slice(slice);
+		const labels = window.CurrentBlock.block.opt.series.slice(slice);
 
-		this.seriesSection.formTree.selectedSerie.setOptions(labels, callBack);
-		if (value) this.seriesSection.formTree.selectedSerie.value = value;
-	}
+		this.inputListComponent.innerHTML = '';
+		this.inputList = [];
 
-	getSerieByName(serieName) {
+		labels.forEach((label) => {
 
-		let currentSerie;
+			let card = new Card(label);
 
-		for (const serie of window.CurrentBlock.block.plot.series) {
+			this.inputList.push(card);
+			this.inputListComponent.appendChild(card.htmlComponent)
 
-			if (serie.label === serieName) {
-
-				currentSerie = serie;
-				break;
-
-			}
-
-		}
-
-		return currentSerie;
+		});
 
 	}
+
 
 	overWriteSetData() {
 
-		this.seriesSection.setData = (newSerie, ignore) => {
+		this.seriesSection.formTree.cards.self.setData = (newSerie) => {
 
-			this.attSeriesSelector();
-			this.seriesSection.formTree.currSerie.hideWarning();
+			this.attSeriesList();
+			const array = window.CurrentBlock.block.opt.series;
 
-			const currentSerieName = this.seriesSection.formTree.selectedSerie.value;
-			const currentSerie = (ignore) ? newSerie : this.getSerieByName(currentSerieName);
+			this.inputList.forEach((card, index) => {
 
-			if (currentSerie != null) {
+				card.seriesSection.setData(array[index + 1]);
 
-				this.seriesSection.containers.forEach((container) => {
-
-					container.setData(currentSerie);
-
-				});
-
-				this.seriesSection.fields.forEach((field) => {
-
-					const paths = field.att.split('.');
-					let result;
-
-					for (const path of paths) {
-						result = result?.[path] ?? currentSerie?.[path];
-					}
-
-					field.value = result ?? field.value;
-
-
-				});
-
-				this.seriesSection.formTree.selectedSerie.value = currentSerie.label;
-
-			}
+			});
 
 		};
+
+		this.seriesSection.formTree.cards.self.getData = (preResponse) => {
+
+			const response = preResponse || {};
+
+			this.inputList.map((card) => {
+
+				if (card.serie.label === this.openedMenu) {
+
+					return card.seriesSection.getData(response);
+
+				}
+
+			});
+
+			return response.form || response;
+
+		};
+
 	}
 
 	setEvents() {
@@ -480,69 +334,41 @@ module.exports = class uPlotScatter {
 
 		});
 
-		this.seriesSection.formTree.selectedSerie.append[0].onclick = () => {
+		this.eventHandler.addEventListener('UpdateSeries', () => {
 
-			const newSerie = this.addNewSerie();
+			this.attSeriesList();
+
+		});
+
+		this.eventHandler.addEventListener('MenuOpened', (name) => {
+
+			this.openedMenu = name;
+
+		});
+
+		this.seriesSection.formTree.newSerie.newSerieSelector.append[0].onclick = () => {
+
+			this.addNewSerie();
 			this.seriesSection.reset()
-			this.seriesSection.setData(newSerie, true);
+			this.attSeriesList();
+			this.seriesSection.setData();
 			this.seriesSection.setConditions()
 
 		};
 
-		this.seriesSection.formTree.selectedSerie.htmlComponent.addEventListener('input', (evt) => {
+		this.form.formTree.uPlotXAxesStyle.self.htmlComponent.addEventListener('input', (evt) => {
 
-			const currName = this.seriesSection.formTree.selectedSerie.value;
-			this.seriesSection.setData(this.getSerieByName(currName), true);
-			this.seriesSection.setConditions()
-			evt.stopPropagation();
-
-		});
-
-		this.form.formTree.xDataContainer.self.htmlComponent.addEventListener('input', (evt) => {
 			this.editXAxis();
 			evt.stopPropagation();
 
 		});
 
-		this.seriesSection.formTree.currSerie.htmlComponent.addEventListener('input', (evt) => {
+		this.form.formTree.uPlotYAxesStyle.self.htmlComponent.addEventListener('input', (evt) => {
 
+			this.editYAxis();
 			evt.stopPropagation();
 
 		});
-
-		this.seriesSection.formTree.currSerie.append[0].onclick = () => {
-
-			if (this.seriesSection.validate()) {
-
-				const response = this.nameAlreadyExists(this.seriesSection.formTree.currSerie.value)
-
-				if (!response) {
-					const data = { ...this.seriesSection.getData().blockConfig.uPlot.scatter.series };
-					window.CurrentBlock.sendBlockInstruction({
-
-						command: 'renameSerie',
-						data
-					});
-
-					this.attSeriesSelector(data.label);
-				} else {
-					this.seriesSection.formTree.currSerie.showWarning('Esse nome já existe')
-				}
-
-			}
-
-		};
-
-		this.seriesSection.formTree.selectedSerie.append[1].onclick = () => {
-			if (this.seriesSection.validate()) {
-				this.rmvSerie()
-				this.seriesSection.setData();
-			}
-		}
-
-		console.log()
-
-		this.overWriteSetData();
 
 	}
 

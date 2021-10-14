@@ -5,7 +5,7 @@ const Components = require('../components');
 
 module.exports = class BlockContainer {
 
-	constructor(preConfig) {
+	constructor(preConfig, title = '') {
 
 		this.eventHandler = new EventHandler();
 
@@ -14,6 +14,10 @@ module.exports = class BlockContainer {
 		this.height = 2;
 		this.editing = false;
 		this.build();
+
+		this.title = title;
+		this.trash.style.display = 'none';
+
 		this.setEvents();
 
 	}
@@ -100,12 +104,13 @@ module.exports = class BlockContainer {
 	}
 
 	updateBlockConfig(newConfig) {
+
 		this.eventHandler.dispatchEvent('DashboardNotSaved');
 		this.block.updateConfig(newConfig.blockConfig[newConfig.type]);
+
 	}
 
 	updateModule(newConfig) {
-		console.log(newConfig);
 
 		if (newConfig.type !== this.block.type) {
 
@@ -133,12 +138,13 @@ module.exports = class BlockContainer {
 
 		this.title = newConfig.blockTitle;
 		this.updateModule(newConfig);
+
 	}
 
 	sendBlockInstruction(newInstruction) {
 
 		this.eventHandler.dispatchEvent('DashboardNotSaved');
-		this.block.instructionHandler(newInstruction);
+		return this.block.instructionHandler(newInstruction);
 
 	}
 

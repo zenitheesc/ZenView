@@ -22,7 +22,7 @@ class FormPattern {
 		this._BuildFormTree();
 		this._buildHtmlComponent(config);
 		formConfig = formConfig || {};
-		this.att = formConfig.att || false;
+		this.att = formConfig.att ?? false;
 		this.conditions = formConfig.conditions || [];
 
 	}
@@ -190,7 +190,7 @@ class FormPattern {
 
 	}
 
-	setData(DataObj) {
+	_setData(DataObj) {
 
 		this.containers.forEach((container) => {
 
@@ -200,7 +200,7 @@ class FormPattern {
 
 			} catch (e) {
 
-				console.error(e);
+				console.error("TODO ERROR", e);
 
 			}
 
@@ -218,6 +218,12 @@ class FormPattern {
 			field.value = result ?? field.value;
 
 		});
+
+	}
+
+	setData(DataObj) {
+
+		this._setData(DataObj);
 
 	}
 

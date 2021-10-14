@@ -1,6 +1,7 @@
 /* eslint-disable new-cap */
 const Block = require('../block');
 const uPlot = require('uplot');
+const { v4: uuidv4 } = require('uuid');
 // eslint-disable-next-line no-unused-vars
 const ElementResize = require('javascript-detect-element-resize');
 
@@ -10,14 +11,15 @@ module.exports = class Scatter extends Block {
 
 		super(preConfig, htmlComponent);
 		this._formConfig = preConfig;
+
 		this.data = preConfig.uPlot.data ?? [[...Array(11).keys()], []];
 		this.opt = preConfig.uPlot.opt;
 		this.type = preConfig.type;
+
 		this.series = preConfig.series;
 		this.initR = false;
-		this.type = "uPlot";
-		this.cont = 0;
 
+		this.type = "uPlot";
 	}
 
 	get formConfig() {
@@ -48,43 +50,45 @@ module.exports = class Scatter extends Block {
 
 	}
 
-	addSerie(newSerie) {
-
-		this.plot.addSeries({
-			...newSerie,
-			paths: this.pathSetter("1"),
-		}, this.data.length);
-
-		if (this.plot.series[1].inputName == null) {
-			this.plot.delSeries(1);
+	addSerie(newSerie, notRedraw) {
+		if (this.opt.series[1].inputName == null) {
 			this.data.pop();
+			this.opt.series.pop();
 		}
 
-		const newMockData = [...Array(11).keys()].map((value) => (Math.sin(value) + (this.plot.series.length - 2)));
-		if (this.plot.series.length > this.data.length) this.data.push(newMockData);
+		this.opt.series.push({
+			...newSerie,
+			uuid: uuidv4(),
+			paths: this.pathSetter("1"),
+		});
 
-		this.plot.setData(this.data);
+		const newMockData = [...Array(11).keys()].map((value) => (Math.sin(value) + (this.opt.series.length - 2)));
+		if (this.opt.series.length > this.data.length) this.data.push(newMockData);
 
-	}
-
-	updateConfig(newConfig) {
-
-		newConfig = newConfig[newConfig.type];
-
-		this.attLayout(newConfig.axis);
-		this.editSerie(newConfig.series);
+		if (!notRedraw) this.redraw();
 
 	}
 
 	editXAxis(newConfig) {
 
-		this.plot.addSeries({
-			inputName: newConfig,
-			label: newConfig,
-		}, 0)
+		this.opt.series[0].inputName = newConfig.inputName;
+		this.opt.series[0].label = newConfig.inputName;
 
-		this.plot.delSeries(1);
-		this.plot.setData(this.data);
+		this.opt.scales.x.distr = Number(newConfig.type);
+		this.opt.scales.x.dir = newConfig.dir;
+		this.opt.axes[0].side = Number(newConfig.side);
+		this.redraw();
+	}
+
+	editYAxis(newConfig) {
+
+		this.opt.scales.y.distr = newConfig.type;
+
+		this.opt.scales.y.dir = newConfig.dir;
+
+		this.opt.axes[1].side = Number(newConfig.side);
+
+		this.redraw();
 
 	}
 
@@ -103,7 +107,7 @@ module.exports = class Scatter extends Block {
 
 			for (let i = 0; i < this.plot.series.length; i++) {
 				this.data[i].push(newData[this.plot.series[i].inputName])
-				this.data[i] = this.data[i].slice(-200)
+				this.data[i] = this.data[i].slice(-100)
 			}
 
 			this.plot.setData(this.data);
@@ -111,78 +115,54 @@ module.exports = class Scatter extends Block {
 		});
 	}
 
-	rmvSerie(rmvdSerie) {
+	removeSerie(rmvdSerie) {
 
-		let index = -1;
-
-		for (const serie of this.plot.series) {
-
-			if (serie.label === rmvdSerie.label) {
-
-				index = this.plot.series.indexOf(serie);
-				break;
-
-			}
-
-		}
+		let currSerie = this.opt.series.find(serie => serie.uuid === rmvdSerie.uuid);
+		let index = this.opt.series.indexOf(currSerie);
 
 		if (index >= 0) {
 
-			if (this.plot.series.length === 2) {
+			if (this.opt.series.length === 2) {
 				this.data = [[...Array(11).keys()], []];
-				this.plot.addSeries({}, 1);
-				this.plot.delSeries(index + 1);
+				this.opt.series.push();
+				this.opt.series.splice(index + 1, 1);
 
-				const newMockData = [...Array(11).keys()].map((value) => (Math.sin(value) + (this.plot.series.length - 2)));
-				if (this.plot.series.length > this.data.length) this.data.push(newMockData);
+				const newMockData = [...Array(11).keys()].map((value) => (Math.sin(value) + (this.opt.series.length - 2)));
+				if (this.opt.series.length > this.data.length) this.data.push(newMockData);
 			} else {
-				this.plot.delSeries(index);
+				this.opt.series.splice(index, 1);
 				this.data.pop();
 			}
 
 
 		}
 
-		this.plot.setData(this.data)
-
+		this.redraw();
 	}
 
-	editSerie(newConfig, chageName) {
-		
-		let index = -1;
+	editSerie(newConfig, notRedraw) {
+		let currSerie = this.opt.series.find(serie => serie.uuid === newConfig.uuid);
+		let index = this.opt.series.indexOf(currSerie);
 
-		for (const serie of this.plot.series) {
-
-			if (serie.label === newConfig.currSerie) {
-
-				index = this.plot.series.indexOf(serie);
-				break;
-
-			}
-
-		}
-
-		this.plot.addSeries({
-			label: (chageName) ? newConfig.label : this.plot.series[index].label,
+		this.opt.series[index] = {
+			label: newConfig.inputName,
 			width: newConfig.width,
 			pathType: newConfig.pathType,
 			showLines: newConfig.showLines,
+			uuid: newConfig.uuid,
 			points: {
-				show: newConfig.points.showPoints,
-				showPoints: newConfig.points.showPoints,
+				show: newConfig?.points?.showPoints ?? false,
+				showPoints: newConfig?.points?.showPoints ?? false,
 			},
 			inputName: newConfig.inputName,
-			stroke: newConfig._stroke,
+			stroke: newConfig._stroke ?? newConfig.stroke,
+			_stroke: newConfig._stroke ?? newConfig.stroke,
 			paths: this.pathSetter((!newConfig.showLines) ? null : newConfig.pathType),
-		}, index);
+		};
 
-		this.plot.delSeries(index + 1);
-		this.plot.redraw();
+		if (!notRedraw) this.redraw();
 
-	}
-
-	attLayout(newLayout) {
-
+		return this.opt.series[index];
 
 	}
 
@@ -201,10 +181,16 @@ module.exports = class Scatter extends Block {
 
 	}
 
-	renameSerie(newConfig) {
+	redraw() {
+		this.plot.destroy();
+		const widget = this.htmlComponent.parentElement;
 
-		this.editSerie(newConfig, true)
+		this.plot = new uPlot(this.opt, this.data, this.htmlComponent);
 
+		this.plot.setSize({
+			width: widget.offsetWidth,
+			height: widget.offsetHeight * 0.8,
+		});
 	}
 
 	destroy() {
@@ -222,41 +208,31 @@ module.exports = class Scatter extends Block {
 
 	}
 
+	willRead() {
+		this.data = [[], []];
+		this.redraw();
+	}
+
 	save() {
 		return {
-			data: this.plot.data,
-			series: JSON.parse(JSON.stringify(this.plot.series)),
+			data: this.data,
 			opt: this.opt,
 		}
+
 	}
 
 	load(preSavedConfig) {
 
 		this.data = preSavedConfig.data;
 		this.opt = preSavedConfig.opt;
-		this.series = preSavedConfig.series;
-		this.opt.series = [];
-
-		for (const savedSerie of this.series) {
-
-			this.opt.series.push({
-				label: savedSerie.label,
-				width: savedSerie.width,
-				pathType: savedSerie.pathType,
-				showLines: savedSerie.showLines,
-				points: {
-					show: savedSerie.points.showPoints,
-					showPoints: savedSerie.points.showPoints,
-				},
-				inputName: savedSerie.inputName,
-				stroke: savedSerie._stroke,
-				paths: this.pathSetter((!savedSerie.showLines) ? null : savedSerie.pathType),
-			});
-		}
 
 		this.plot = new uPlot(this.opt, this.data, this.htmlComponent);
 
+		for (let i = 0; i < this.opt.series.length; i++) {
+			this.editSerie(this.opt.series[i]);
+		}
 		this.setAutoResize();
+		this.redraw();
 
 	}
 
