@@ -155,7 +155,8 @@ module.exports = class DashBoardsManager {
 		const dashBoard = new DashBoard(detail.name, number(detail.numberOfInputs), detail.path, detail.desc);
 
 		dashBoard.inputGroup.inputGraph = {};
-		dashBoard.hash = hash(dashBoard);
+		const dashboardHash = hash(dashBoard);
+		dashBoard.hash = dashboardHash;
 
 		this.BSON.writeFile(detail.path, dashBoard);
 
