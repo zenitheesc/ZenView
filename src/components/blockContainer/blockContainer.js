@@ -50,7 +50,7 @@ module.exports = class BlockContainer {
 		this.header.appendChild(this.buttonsContainer);
 
 		this.headerTitle = document.createElement('div')
-        this.headerTitle.className = "blockTitle";
+		this.headerTitle.className = "blockTitle";
 		this.headerTitle.innerText = '';
 
 		this.header.appendChild(this.headerTitle);
