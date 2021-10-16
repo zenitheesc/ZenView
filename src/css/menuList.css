@@ -22,6 +22,10 @@ button.menuItem.active {
 	justify-content: space-between;
 }
 
+#midContainer button.menuItem:hover svg {
+	fill: var(--global-colorHover);
+}
+
 button.menuItem span {
 	position: relative;
 }
