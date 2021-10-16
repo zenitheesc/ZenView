@@ -3,25 +3,30 @@
     height: 30px;
     background-color: black;
     color: white;
-    display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 0.5em;
     cursor: pointer;
 }
 
+.blockTitle {
+    height: 100%;
+    text-align: left;
+    overflow: hidden;
+    margin-left: .5em;
+    padding-top: .2em;
+}
+
 .buttonsContainer {
-    position: absolute;
-    right: 0px;
     background: black;
+    display: flex;
+    height: 100%;
+    float: right;
     padding: .5em;
+    align-items: center;
 }
 
 .blockButton {
-	width: 14.14px;
-	height: 14.14px;
+	height: 100%;
     padding: 0px;
-    z-index: 90;
     border: none;
     background-color: transparent;
     display: block;
