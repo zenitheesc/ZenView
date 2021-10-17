@@ -16,7 +16,6 @@ module.exports = class BlockContainer {
 		this.build();
 
 		this.title = title;
-		this.trash.style.display = 'none';
 
 		this.setEvents();
 
@@ -249,6 +248,15 @@ module.exports = class BlockContainer {
 		this.eventHandler.addEventListener('StartRead', (evt) => {
 
 			this.block.willRead();
+			this.trash.style.display = "none";
+			this.edit.style.display = "none";
+
+		});
+
+		this.eventHandler.addEventListener('StopRead', (evt) => {
+
+			this.trash.style.display = "block";
+			this.edit.style.display = "block";
 
 		});
 
