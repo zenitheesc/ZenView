@@ -68,6 +68,18 @@ module.exports = class DashBoard {
 
 		});
 
+		this.eventHandler.addEventListener('StartRead', (evt) => {
+
+			this.gridStack.disable();
+
+		});
+
+		this.eventHandler.addEventListener('StopRead', (evt) => {
+
+			this.gridStack.enable();
+
+		});
+
 		ipcRenderer.on('SaveDashboard', (evt, onClose) => {
 
 			this.saveDashboard(onClose);
@@ -118,7 +130,7 @@ module.exports = class DashBoard {
 		window.CurrentDashBoard.blocksLog.forEach((blockLog) => {
 
 			const newBlock = new BlockContainer(blockLog.preConfig, blockLog.title);
-			
+
 			this.gridStack.addWidget(newBlock.htmlComponent, {
 				x: Number(blockLog.x),
 				y: Number(blockLog.y),
