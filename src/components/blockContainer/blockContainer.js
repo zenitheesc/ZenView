@@ -202,7 +202,7 @@ module.exports = class BlockContainer {
 
 		this.header.ondblclick = () => {
 
-			if (window.GlobalContex == 'editing')
+			if (window.GlobalContext == 'editing')
 				this.editBlock();
 
 		};

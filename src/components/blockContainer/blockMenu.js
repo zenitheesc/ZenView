@@ -31,7 +31,7 @@ module.exports = class BlockMenu {
 
     menuPopUp() {
 
-        if (window.GlobalContex == 'editing')
+        if (window.GlobalContext == 'editing')
             this.menu.popup(remote.getCurrentWindow());
 
     }
