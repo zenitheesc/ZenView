@@ -26,6 +26,7 @@ html,
   --global-colorMenu: #1a1a1a;
   --global-colorInputBg: #3c3c3c;
   --global-colorFont: whitesmoke;
+  --global-colorHover: #54555c;
 }
 
 ::-webkit-scrollbar {

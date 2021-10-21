@@ -30,7 +30,7 @@ class MainWindow {
 
 	changeGlobalContext(context) {
 
-		window.GlobalContex = context;
+		window.GlobalContext = context;
 
 	}
 
@@ -72,7 +72,7 @@ class MainWindow {
 		this.readInitialConfig();
 
 	}
-	
+
 	build() {
 
 		let duracao = Date.now();

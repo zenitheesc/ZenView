@@ -36,7 +36,7 @@ module.exports = class TerminalMenu extends Menu {
     configSerialTerminal() {
 
         const terminalContainer = document.createElement('div');
-        
+
         const terminal = new Terminal({
             cols: 40,
             rows: 20,
@@ -46,15 +46,15 @@ module.exports = class TerminalMenu extends Menu {
                 fontSize: 8
             }
         });
-        
+
         terminal.open(terminalContainer);
         terminal._initialized = false;
-        
+
         this.eventHandler.addEventListener('RawData', (evt) => {
-            
+
             terminal.writeln(evt);
             terminal.write('\r\n> ');
-            
+
         });
 
         return terminalContainer;
@@ -77,7 +77,7 @@ module.exports = class TerminalMenu extends Menu {
 
         this.serialTerminal.formTree.serialTerminalSpliter.sendData.htmlComponent.addEventListener('keyup', (evt) => {
 
-            if (evt.keyCode === 13 && window.GlobalContex === 'running') {
+            if (evt.keyCode === 13 && window.GlobalContext === 'running') {
 
                 evt.preventDefault();
                 this.eventHandler.SendSerialData(this.serialTerminal.formTree.serialTerminalSpliter.sendData.value);
