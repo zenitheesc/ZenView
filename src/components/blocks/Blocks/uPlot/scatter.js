@@ -168,10 +168,10 @@ module.exports = class Scatter extends Block {
 
 	setAutoResize() {
 
-		const widget = this.htmlComponent.parentElement;
+		const widget = this.htmlComponent;
 
 		addResizeListener(widget, () => {
-
+			console.log(widget, widget.offsetHeight);
 			this.plot.setSize({
 				width: widget.offsetWidth,
 				height: widget.offsetHeight * 0.8,
@@ -205,7 +205,8 @@ module.exports = class Scatter extends Block {
 		this.opt.series[0].inputName = window.CurrentInputGroup.rawInputs[0].name;
 		this.plot = new uPlot(this.opt, this.data, this.htmlComponent);
 		this.setAutoResize();
-
+		this.opt.scales.x.range = undefined;
+		this.opt.scales.y.range = undefined;
 	}
 
 	willRead() {
@@ -231,6 +232,8 @@ module.exports = class Scatter extends Block {
 		for (let i = 0; i < this.opt.series.length; i++) {
 			this.editSerie(this.opt.series[i]);
 		}
+		this.opt.scales.x.range = undefined;
+		this.opt.scales.y.range = undefined;
 		this.setAutoResize();
 		this.redraw();
 

@@ -8,10 +8,12 @@
             "scales": {
                 "x": {
                     "time": false,
-                    "auto": true
+                    "auto": true,
+					"range": [0,10]
                 },
                 "y": {
-                    "auto": true
+                    "auto": true,
+					"range": [0,10]
                 }
             },
             "axes": [{
