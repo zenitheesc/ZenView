@@ -83,14 +83,12 @@ module.exports = class uPlotScatter {
 							classList: ['col-6'],
 							options: [
 								{
-									text: 'Em cima',
-									value: 0
-								},
-								{
 									text: 'Embaixo',
 									value: 2
+								},{
+									text: 'Em cima',
+									value: 0
 								}
-
 							],
 						},
 					),

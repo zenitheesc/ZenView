@@ -67,6 +67,9 @@ module.exports = class Scatter extends Block {
 
 		if (!notRedraw) this.redraw();
 
+		this.opt.scales.x.range = undefined;
+		this.opt.scales.y.range = undefined;
+
 	}
 
 	editXAxis(newConfig) {
@@ -123,20 +126,15 @@ module.exports = class Scatter extends Block {
 		if (index >= 0) {
 
 			if (this.opt.series.length === 2) {
-				this.data = [[...Array(11).keys()], []];
-				this.opt.series.push();
-				this.opt.series.splice(index + 1, 1);
-
-				const newMockData = [...Array(11).keys()].map((value) => (Math.sin(value) + (this.opt.series.length - 2)));
-				if (this.opt.series.length > this.data.length) this.data.push(newMockData);
+				this.opt.series.splice(1, 1);
+				this.opt.series.push({});
 			} else {
 				this.opt.series.splice(index, 1);
 				this.data.pop();
 			}
 
-
 		}
-
+		console.log(this.opt, );
 		this.redraw();
 	}
 
@@ -171,7 +169,6 @@ module.exports = class Scatter extends Block {
 		const widget = this.htmlComponent;
 
 		addResizeListener(widget, () => {
-			console.log(widget, widget.offsetHeight);
 			this.plot.setSize({
 				width: widget.offsetWidth,
 				height: widget.offsetHeight * 0.8,
@@ -205,8 +202,7 @@ module.exports = class Scatter extends Block {
 		this.opt.series[0].inputName = window.CurrentInputGroup.rawInputs[0].name;
 		this.plot = new uPlot(this.opt, this.data, this.htmlComponent);
 		this.setAutoResize();
-		this.opt.scales.x.range = undefined;
-		this.opt.scales.y.range = undefined;
+
 	}
 
 	willRead() {
@@ -232,8 +228,6 @@ module.exports = class Scatter extends Block {
 		for (let i = 0; i < this.opt.series.length; i++) {
 			this.editSerie(this.opt.series[i]);
 		}
-		this.opt.scales.x.range = undefined;
-		this.opt.scales.y.range = undefined;
 		this.setAutoResize();
 		this.redraw();
 
