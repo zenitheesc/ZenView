@@ -15,7 +15,7 @@ module.exports = class Card {
 		this.htmlComponent.className = 'mb-3';
 
 		this.seriesSection = Container.div({
-			yAxis: Field.select({
+			yAxes: Field.select({
 				att: 'inputName',
 				label: 'Dados',
 				prepend: [
@@ -187,8 +187,8 @@ module.exports = class Card {
 		allInputs = allInputs.concat(window.CurrentInputGroup.rawInputs);
 		allInputs = allInputs.concat(window.CurrentInputGroup.inputs);
 
-		this.seriesSection.formTree.yAxis.setOptions(allInputs, callBack);
-		this.seriesSection.formTree.yAxis.value = this.serie.inputName;
+		this.seriesSection.formTree.yAxes.setOptions(allInputs, callBack);
+		this.seriesSection.formTree.yAxes.value = this.serie.inputName;
 	}
 
 	setEvents() {
@@ -249,9 +249,9 @@ module.exports = class Card {
 
 		});
 
-		this.seriesSection.formTree.yAxis.htmlComponent.addEventListener('change', (evt) => {
+		this.seriesSection.formTree.yAxes.htmlComponent.addEventListener('change', (evt) => {
 
-			this.cardHeaderTitle.innerText = this.seriesSection.formTree.yAxis.value;
+			this.cardHeaderTitle.innerText = this.seriesSection.formTree.yAxes.value;
 
 		});
 	}

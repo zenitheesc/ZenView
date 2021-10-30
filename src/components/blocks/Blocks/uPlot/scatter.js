@@ -72,7 +72,7 @@ module.exports = class Scatter extends Block {
 
 	}
 
-	editXAxis(newConfig) {
+	editXAxes(newConfig) {
 
 		this.opt.series[0].inputName = newConfig.inputName;
 		this.opt.series[0].label = newConfig.inputName;
@@ -83,7 +83,7 @@ module.exports = class Scatter extends Block {
 		this.redraw();
 	}
 
-	editYAxis(newConfig) {
+	editYAxes(newConfig) {
 
 		this.opt.scales.y.distr = newConfig.type;
 
