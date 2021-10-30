@@ -44,20 +44,6 @@ module.exports = class uPlotScatter {
 						},
 					],
 				}),
-				xAxesScale: Field.select({
-					label: 'Escala',
-					att: 'type',
-					options: [
-						{
-							text: 'Linear',
-							value: 1,
-						},
-						{
-							text: 'Logaritimica',
-							value: 2,
-						},
-					],
-				}),
 				scaleOpts: Container.formRow({
 					xAxesDirection: Field.select(
 						{
@@ -110,7 +96,7 @@ module.exports = class uPlotScatter {
 						},
 						{
 							text: 'Logaritimica',
-							value: 2,
+							value: 3,
 						},
 					],
 				}),

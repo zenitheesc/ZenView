@@ -30,7 +30,6 @@ module.exports = class Scatter extends Block {
 					dir: this.opt.scales.x.dir,
 					inputName: this.opt.series[0].label,
 					side: this.opt.axes[0].side,
-					type: this.opt.scales.x.distr
 				},
 				y: {
 					dir: this.opt.scales.y.dir,
@@ -94,10 +93,10 @@ module.exports = class Scatter extends Block {
 		this.opt.series[0].inputName = newConfig.inputName;
 		this.opt.series[0].label = newConfig.inputName;
 
-		this.opt.scales.x.distr = Number(newConfig.type);
-		this.opt.scales.x.dir = newConfig.dir;
+		this.opt.scales.x.dir = Number(newConfig.dir);
 		this.opt.axes[0].side = Number(newConfig.side);
 		this.redraw();
+		console.log(this.opt);
 	}
 
 	editYAxes(newConfig) {
