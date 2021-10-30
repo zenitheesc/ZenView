@@ -24,6 +24,23 @@ module.exports = class Scatter extends Block {
 
 	get formConfig() {
 
+		const response = {
+			axes: {
+				x: {
+					dir: this.opt.scales.x.dir,
+					inputName: this.opt.series[0].label,
+					side: this.opt.axes[0].side,
+					type: this.opt.scales.x.distr
+				},
+				y: {
+					dir: this.opt.scales.y.dir,
+					side: this.opt.axes[1].side,
+					type: this.opt.scales.y.distr
+				}
+			}
+		}
+
+		this._formConfig.uPlot.scatter = { ...response };
 		return this._formConfig
 
 	}
@@ -134,7 +151,6 @@ module.exports = class Scatter extends Block {
 			}
 
 		}
-		console.log(this.opt, );
 		this.redraw();
 	}
 
