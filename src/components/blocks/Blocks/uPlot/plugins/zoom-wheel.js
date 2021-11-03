@@ -34,7 +34,6 @@ module.exports = function wheelZoomPlugin(opts) {
 				yRange = yMax - yMin;
 
 				let over = u.over;
-				console.log(u);
 				let rect = over.getBoundingClientRect();
 
 				// wheel drag pan

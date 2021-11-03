@@ -91,7 +91,7 @@ module.exports = class Scatter extends Block {
 		this.opt.scales.x.range = undefined;
 		this.opt.scales.y.range = undefined;
 
-	}j
+	}
 
 	editXAxes(newConfig) {
 
@@ -101,7 +101,6 @@ module.exports = class Scatter extends Block {
 		this.opt.scales.x.dir = Number(newConfig.dir);
 		this.opt.axes[0].side = Number(newConfig.side);
 		this.redraw();
-		console.log(this.opt);
 	}
 
 	editYAxes(newConfig) {
