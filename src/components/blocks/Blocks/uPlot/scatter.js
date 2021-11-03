@@ -2,6 +2,7 @@
 const Block = require('../block');
 const uPlot = require('uplot');
 const { v4: uuidv4 } = require('uuid');
+const ZoomWheelPlugin = require('./plugins/zoom-wheel');
 // eslint-disable-next-line no-unused-vars
 const ElementResize = require('javascript-detect-element-resize');
 
@@ -20,6 +21,10 @@ module.exports = class Scatter extends Block {
 		this.initR = false;
 
 		this.type = "uPlot";
+
+		this.opt.plugins = [
+			ZoomWheelPlugin({ factor: 0.75 })
+		]
 	}
 
 	get formConfig() {
@@ -86,7 +91,7 @@ module.exports = class Scatter extends Block {
 		this.opt.scales.x.range = undefined;
 		this.opt.scales.y.range = undefined;
 
-	}
+	}j
 
 	editXAxes(newConfig) {
 
@@ -189,6 +194,8 @@ module.exports = class Scatter extends Block {
 				height: widget.offsetHeight * 0.8,
 			});
 
+			this.redraw();
+
 		});
 
 	}
@@ -237,7 +244,9 @@ module.exports = class Scatter extends Block {
 
 		this.data = preSavedConfig.data;
 		this.opt = preSavedConfig.opt;
-
+		this.opt.plugins = [
+			ZoomWheelPlugin({ factor: 0.75 })
+		]
 		this.plot = new uPlot(this.opt, this.data, this.htmlComponent);
 
 		for (let i = 0; i < this.opt.series.length; i++) {

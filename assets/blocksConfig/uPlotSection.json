@@ -5,6 +5,13 @@
         "type": "scatter",
         "opt": {
             "pxAlign": false,
+			"cursor": {
+				"drag": {
+					"x":true,
+					"y":true,
+					"uni": 50
+				}
+			},
             "scales": {
                 "x": {
                     "time": false,
@@ -21,9 +28,6 @@
             },{
 				"space":30
 			}],
-            "cursor": {
-                "show": true
-            },
             "series": [{}, {}]
         }
     }
