@@ -28,15 +28,15 @@ module.exports = class InputHandler {
 	removeInput(inputData) {
 
 
-		const currentInput = window.CurrentInputGroup.inputsDictionary[inputData.name];
+		const currentInput = window.CurrentInputGroup.inputsDictionary[inputData.uuid];
 		const inputIndex = window.CurrentInputGroup.inputs.indexOf(currentInput);
 
 		if (inputIndex > -1) {
 
 			window.CurrentInputGroup.inputs.splice(inputIndex, 1);
-			delete window.CurrentInputGroup.inputsDictionary[currentInput.name];
+			delete window.CurrentInputGroup.inputsDictionary[currentInput.uuid];
 
-			this.inputGraph.removeNode(currentInput.name);
+			this.inputGraph.removeNode(currentInput.uuid);
 
 		}
 
@@ -48,35 +48,26 @@ module.exports = class InputHandler {
 
 		window.CurrentDashBoard.inputGroup.numberOfInputs -= 1;
 
-		delete window.CurrentInputGroup.inputsDictionary[currentInput.name];
+		delete window.CurrentInputGroup.inputsDictionary[currentInput.uuid];
 
-		this.inputGraph.removeNode(currentInput.name);
+		this.inputGraph.removeNode(currentInput.uuid);
 
 	}
 
 	editInput(inputData) {
 
-
-		let hasNameError = false;
+		
 		let hasExpressionError = false;
-		let currentNameError;
 		let currentExpressionError;
 		let parsedExpression;
-
-		if (window.CurrentInputGroup.inputsDictionary[inputData.name] && inputData.oldName !== inputData.name) {
-
-			currentNameError = 'Esse nome já existe';
-			hasNameError = true;
-
-		}
 
 		[hasExpressionError, currentExpressionError, parsedExpression] = this.validateExpression(inputData.expressionEntry.childNodes);
 
 
-		if (!(hasNameError || hasExpressionError)) {
+		if (!hasExpressionError) {
 
-			const oldInput = window.CurrentInputGroup.inputsDictionary[inputData.oldName];
-			this.inputGraph.removeNode(inputData.oldName);
+			const oldInput = window.CurrentInputGroup.inputsDictionary[inputData.uuid];
+			this.inputGraph.removeNode(inputData.uuid);
 
 			const finalExpression = {
 				raw: inputData.expressionEntry.innerHTML,
@@ -89,8 +80,8 @@ module.exports = class InputHandler {
 
 				const inputIndex = window.CurrentInputGroup.inputs.indexOf(oldInput);
 
-				delete window.CurrentInputGroup.inputsDictionary[inputData.oldName];
-				window.CurrentInputGroup.inputsDictionary[inputData.name] = newInput;
+				delete window.CurrentInputGroup.inputsDictionary[inputData.uuid];
+				window.CurrentInputGroup.inputsDictionary[inputData.uuid] = newInput;
 
 				window.CurrentInputGroup.inputs[inputIndex] = newInput;
 
@@ -106,13 +97,12 @@ module.exports = class InputHandler {
 
 		inputData.callback({
 
-			error: hasNameError || hasExpressionError,
-			nameError: currentNameError,
+			error: hasExpressionError,
 			expressionError: currentExpressionError,
 
 		});
 
-		return hasNameError || hasExpressionError;
+		return hasExpressionError;
 
 	}
 
@@ -120,25 +110,11 @@ module.exports = class InputHandler {
 
 		if (inputData.newName !== inputData.name) {
 
-			if (window.CurrentInputGroup.inputsDictionary[inputData.newName]) {
-
-				inputData.callback(true, 'Esse nome já existe');
-
-			} else {
-
-				window.CurrentInputGroup.inputsDictionary[inputData.newName] = window.CurrentInputGroup.inputsDictionary[inputData.name];
-				delete window.CurrentInputGroup.inputsDictionary[inputData.name];
-				window.CurrentInputGroup.inputsDictionary[inputData.newName].name = inputData.newName;
-
-				this.inputGraph.nodesDictionary[inputData.newName] = this.inputGraph.nodesDictionary[inputData.name];
-				delete this.inputGraph.nodesDictionary[inputData.name];
-				this.inputGraph.nodesDictionary[inputData.newName].name = inputData.newName;
-
-				this.inputGraph.CheckAndCorrectInconsistencies();
-				inputData.callback(false);
-				this.eventHandler.AttInputList();
-
-			}
+			window.CurrentInputGroup.inputsDictionary[inputData.uuid].name = inputData.newName;
+			
+			this.inputGraph.CheckAndCorrectInconsistencies();
+			inputData.callback(false);
+			this.eventHandler.AttInputList();
 
 		}
 
@@ -151,7 +127,7 @@ module.exports = class InputHandler {
 		const newInput = new Input(inputData.name, inputData.expression, this.scope);
 
 		window.CurrentInputGroup.rawInputs.push(newInput);
-		window.CurrentInputGroup.inputsDictionary[inputData.name] = newInput;
+		window.CurrentInputGroup.inputsDictionary[inputData.uuid] = newInput;
 
 		this.inputGraph.addNode(newInput);
 
@@ -161,27 +137,18 @@ module.exports = class InputHandler {
 
 	addNewInput(inputData) {
 
-		let hasNameError = false;
-		let hasExpressionError = false;
-		let currentNameError;
-		let currentExpressionError;
-		let parsedExpression;
-
-		if (window.CurrentInputGroup.inputsDictionary[inputData.name]) {
-
-			currentNameError = 'Esse nome já existe';
-			hasNameError = true;
-
-		}
-
-		[hasExpressionError, currentExpressionError, parsedExpression] = this.validateExpression(inputData.expressionEntry.childNodes);
+		let [hasExpressionError,
+            currentExpressionError,
+            parsedExpression,
+            readbleExpression] = this.validateExpression(inputData.expressionEntry.childNodes);
 
 
-		if (!(hasNameError || hasExpressionError)) {
+		if (!hasExpressionError) {
 
 			const finalExpression = {
 				raw: inputData.expressionEntry.innerHTML,
 				formatted: parsedExpression,
+				readble: readbleExpression,
 			};
 
 			const newInput = new Input(inputData.name, finalExpression, this.scope);
@@ -189,7 +156,7 @@ module.exports = class InputHandler {
 			if (this.inputGraph.addNode(newInput)) {
 
 				window.CurrentInputGroup.inputs.push(newInput);
-				window.CurrentInputGroup.inputsDictionary[inputData.name] = newInput;
+				window.CurrentInputGroup.inputsDictionary[newInput.uuid] = newInput;
 
 			} else {
 
@@ -202,42 +169,45 @@ module.exports = class InputHandler {
 
 		inputData.callback({
 
-			error: hasNameError || hasExpressionError,
-			nameError: currentNameError,
+			error: hasExpressionError,
 			expressionError: currentExpressionError,
 
 		});
 
-		return hasNameError || hasExpressionError;
+		return hasExpressionError;
 
 	}
 
 	validateExpression(expressionEntry) {
 
 		let expression = '';
+		let readbleExpression = '';
 		const validVariables = [];
 
 		expressionEntry.forEach((element) => {
 
 			if (element.tagName === 'A') {
 
-				validVariables.push(element.innerText);
-				expression += element.innerText.replace('${', '').replace('#{', '').replace('}', '');
+				validVariables.push(element.innerText.replace('${', '').replace('#{', '').replace('}', ''));
+				expression += element.id;
+				readbleExpression += element.innerText.replace('${', '').replace('#{', '').replace('}', '');
 
 			} else {
 
 				expression += element.data;
+				readbleExpression += element.data;
 
 			}
 
 		});
 
 		expression = expression.replace(/\u00a0/g, ' ');
+		readbleExpression = readbleExpression.replace(/\u00a0/g, ' ');
 		let parsedExpression;
 
 		try {
 
-			parsedExpression = Math.parse(expression);
+			parsedExpression = Math.parse(readbleExpression);
 
 
 		} catch (error) {
@@ -246,24 +216,33 @@ module.exports = class InputHandler {
 
 		}
 
-		const dependencies = parsedExpression.filter((node) => {
+		let dependencies = parsedExpression.filter((node) => {
 
 			return node.isSymbolNode;
 
 		});
 
-		for (let i = 0, j = dependencies.length; i < j; i++) {
+		dependencies = dependencies.map((value) => value.name);
 
-			if (!(validVariables.includes('${' + dependencies[i] + '}') || validVariables.includes('#{' + dependencies[i] + '}'))) {
+		validVariables.forEach( (validInput) => {
 
-				console.warn('ERRO, NÃO FOI POSSÍVEL ENCONTRAR: ' + '${' + dependencies[i] + '}');
-				return [true, 'Dependencias inválidas'];
+			const index = dependencies.indexOf(validInput);
+			if (index !== -1) {
 
-			}
+				dependencies.splice(index, 1);
+            
+            }
 
-		}
+		} );
 
-		return [false, undefined, expression];
+		if (dependencies.length > 0) {
+
+			console.warn('ERRO, NÃO FOI POSSÍVEL ENCONTRAR ESSAS DEPENDENCIAS: ', dependencies);
+			return [true, 'Dependencias inválidas'];
+		
+}
+
+		return [false, undefined, expression, readbleExpression];
 
 	}
 
@@ -333,17 +312,7 @@ module.exports = class InputHandler {
 
 		for (let i = 0; i < window.CurrentInputGroup.numberOfInputs; i++) {
 
-			if (isNaN(data[i])) {
-
-				this.eventHandler.dispatchEvent("SendNotification", {
-					title: "Dados não Processados",
-					message: "Último pacote de dados possuia dados inválidos, como palavras, e o conjunto de dados foi ignorado."
-				});
-				return;
-
-			}
-
-			this.scope[window.CurrentInputGroup.rawInputs[i].name] = Number(data[i]) ;
+			this.scope[window.CurrentInputGroup.rawInputs[i].uuid] = Number(data[i]);
 
 		}
 
@@ -352,7 +321,7 @@ module.exports = class InputHandler {
 			this.inputGraph.nodes[i].input.evaluate();
 
 		}
-
+		
 		this.eventHandler.DataIsProcessed(this.scope);
 
 	}

@@ -4,14 +4,8 @@ const Components = require('../../../components');
 module.exports = class InputCard {
 
 	constructor(input) {
-
-		this.inputInfo = {
-			'name': input.name,
-			'expression': input.expression.formatted,
-			'rawExpression': input.expression.raw,
-			'hasInconsistency': input.hasInconsistency,
-		};
-
+		
+		this.inputInfo = input;
 		this.eventHandler = new EventHandler();
 		this.htmlComponent = document.createElement('div');
 		this.htmlComponent.className = 'mb-3';
@@ -78,7 +72,7 @@ module.exports = class InputCard {
 
 		this.htmlComponent.addEventListener('mouseover', () => {
 
-			this.title.innerText = this.inputInfo.expression;
+			this.title.innerText = this.inputInfo.expression.readble;
 
 		});
 
@@ -93,6 +87,7 @@ module.exports = class InputCard {
 			const tag = document.createElement('a');
 			tag.contentEditable = 'false';
 			tag.className = 'inputTag';
+			tag.setAttribute('id', this.inputInfo.uuid);
 			tag.textContent = '${' + this.inputInfo.name + '}';
 
 			this.eventHandler.dispatchEvent('AppendTag', {tag: tag});
@@ -101,14 +96,14 @@ module.exports = class InputCard {
 
 		this.editBtn.addEventListener('click', () => {
 
-			this.eventHandler.dispatchEvent('SetEditInputMode', {name: this.inputInfo.name, exp: this.inputInfo.rawExpression});
+			this.eventHandler.dispatchEvent('SetEditInputMode', {uuid: this.inputInfo.uuid, exp: this.inputInfo.expression.raw});
 
 		});
 
 		this.delBtn.addEventListener('click', () => {
 
 			this.eventHandler.RemoveInput({
-				name: this.inputInfo.name,
+				uuid: this.inputInfo.uuid,
 			});
 
 			this.eventHandler.dispatchEvent('AttInputList');

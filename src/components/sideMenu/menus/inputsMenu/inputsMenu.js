@@ -109,7 +109,6 @@ module.exports = class InputsMenu extends Menu {
 
 			if (answer.error) {
 
-				if (answer.nameError) this.entryInput.formTree.newInputSpliter.name.showWarning(answer.nameError);
 				if (answer.expressionError) this.entryInput.formTree.newInputSpliter.expression.showWarning(answer.expressionError);
 
 			} else {
@@ -124,7 +123,7 @@ module.exports = class InputsMenu extends Menu {
 
 		};
 
-		inputData.oldName = this.currentInputName;
+		inputData.uuid = this.currentInputUuid;
 
 		this.EventHandler.EditInput(inputData);
 
@@ -168,7 +167,7 @@ module.exports = class InputsMenu extends Menu {
 				selectTemplate: function(item) {
 
 					return (
-						'<a contenteditable="false" class="inputTag">' +
+						`<a contenteditable="false" class="inputTag" id="${item.original.uuid}">` +
 						'${' + item.original.name + '}' +
 						'</a>'
 					);
@@ -186,7 +185,7 @@ module.exports = class InputsMenu extends Menu {
 				selectTemplate: function(item) {
 
 					return (
-						'<a contenteditable="false" class="inputTag">' +
+						`<a contenteditable="false" class="inputTag" id="${item.original.uuid}">` +
 						'#{' + item.original.name + '}' +
 						'</a>'
 					);
@@ -199,12 +198,12 @@ module.exports = class InputsMenu extends Menu {
 
 	}
 
-	setEditMode(currentName, currentExp) {
+	setEditMode(currentUuid, currentExp) {
 
 		this.button.htmlComponent.textContent = 'Editar entrada';
-		this.entryInput.formTree.newInputSpliter.name.value = currentName;
+		this.entryInput.formTree.newInputSpliter.name.value = window.CurrentInputGroup.inputsDictionary[currentUuid].name;
 		this.entryInput.formTree.newInputSpliter.expression.value = currentExp;
-		this.currentInputName = currentName;
+		this.currentInputUuid = currentUuid;
 		this.editMode = true;
 
 	}
@@ -248,7 +247,7 @@ module.exports = class InputsMenu extends Menu {
 
 		this.eventHandler.addEventListener('SetEditInputMode', (e) => {
 
-			this.setEditMode(e.name, e.exp);
+			this.setEditMode(e.uuid, e.exp);
 
 		});
 
