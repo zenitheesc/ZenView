@@ -106,6 +106,7 @@ module.exports = class InputCard {
 				uuid: this.inputInfo.uuid,
 			});
 
+			this.eventHandler.dispatchEvent('LeaveEditMode');
 			this.eventHandler.dispatchEvent('AttInputList');
 
 		});

@@ -114,9 +114,7 @@ module.exports = class InputsMenu extends Menu {
 			} else {
 
 				
-				this.button.htmlComponent.textContent = 'Salvar';
-				this.cleanInputEntry();
-				this.editMode = false;
+				this.leaveEditMode();
 				this.attInputList();
 
 			}
@@ -127,6 +125,14 @@ module.exports = class InputsMenu extends Menu {
 
 		this.EventHandler.EditInput(inputData);
 
+	}
+
+	leaveEditMode() {
+
+		this.button.htmlComponent.textContent = 'Salvar';
+		this.cleanInputEntry();
+		this.editMode = false;
+	
 	}
 
 	setFormConfigs() {
@@ -248,6 +254,12 @@ module.exports = class InputsMenu extends Menu {
 		this.eventHandler.addEventListener('SetEditInputMode', (e) => {
 
 			this.setEditMode(e.uuid, e.exp);
+
+		});
+
+		this.eventHandler.addEventListener('LeaveEditMode', () => {
+
+			this.leaveEditMode();
 
 		});
 
