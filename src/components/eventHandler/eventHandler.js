@@ -236,6 +236,12 @@ module.exports = class EventHandler {
 
 		};
 
+		this['SendNotification'] = (detail) => {
+
+			this.dispatchEvent('SendNotification', detail);
+
+		};
+
 	}
 
 	addEventListener(eventName, callBackFunction) {
