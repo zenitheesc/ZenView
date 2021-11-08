@@ -197,7 +197,7 @@ module.exports = class PlotlyScatter {
 						},
 					],
 				}),
-				xAxis: Field.select({
+				xAxes: Field.select({
 					att: 'x',
 					prepend: [
 						{
@@ -207,7 +207,7 @@ module.exports = class PlotlyScatter {
 						},
 					],
 				}),
-				yAxis: Field.select({
+				yAxes: Field.select({
 					att: 'y',
 					prepend: [
 						{
@@ -268,7 +268,7 @@ module.exports = class PlotlyScatter {
 					],
 				}),
 			}, {
-				att: '../layout.xaxis',
+				att: '../layout.xaxes',
 				startOpen: false,
 				text: 'Eixo X',
 				id: 'plotlyXAxeStyle',
@@ -317,7 +317,7 @@ module.exports = class PlotlyScatter {
 					],
 				}),
 			}, {
-				att: '../layout.yaxis',
+				att: '../layout.yaxes',
 				startOpen: false,
 				text: 'Eixo Y',
 				id: 'plotlyYAxeStyle',
@@ -352,8 +352,8 @@ module.exports = class PlotlyScatter {
 		allInputs = allInputs.concat(window.CurrentInputGroup.rawInputs);
 		allInputs = allInputs.concat(window.CurrentInputGroup.inputs);
 
-		this.form.formTree.PlotlySeries.xAxis.setOptions(allInputs, callBack);
-		this.form.formTree.PlotlySeries.yAxis.setOptions(allInputs, callBack);
+		this.form.formTree.PlotlySeries.xAxes.setOptions(allInputs, callBack);
+		this.form.formTree.PlotlySeries.yAxes.setOptions(allInputs, callBack);
 
 	}
 
@@ -381,8 +381,8 @@ module.exports = class PlotlyScatter {
 			data: {
 				name: this.form.formTree.PlotlySeries.newSerieName.value,
 				mode: 'lines+markers',
-				xInput: this.form.formTree.PlotlySeries.xAxis.value,
-				yInput: this.form.formTree.PlotlySeries.yAxis.value,
+				xInput: this.form.formTree.PlotlySeries.xAxes.value,
+				yInput: this.form.formTree.PlotlySeries.yAxes.value,
 			},
 		});
 

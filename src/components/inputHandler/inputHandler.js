@@ -343,8 +343,6 @@ module.exports = class InputHandler {
 
 		}
 		
-		console.log(this.scope);
-
 		this.eventHandler.DataIsProcessed(this.scope);
 
 	}

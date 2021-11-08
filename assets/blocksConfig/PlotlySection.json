@@ -13,7 +13,7 @@
                 "orientation": "h"
             },
             "showlegend": true,
-            "xaxis": {
+            "xaxes": {
                 "title": {
                     "text": "",
                     "font": {
@@ -22,7 +22,7 @@
                 },
                 "type": ""
             },
-            "yaxis": {
+            "yaxes": {
                 "title": {
                     "text": "",
                     "font": {
