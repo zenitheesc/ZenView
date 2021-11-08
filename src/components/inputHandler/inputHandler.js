@@ -131,7 +131,7 @@ module.exports = class InputHandler {
 		const newInput = new Input(inputData.name, inputData.expression, this.scope);
 
 		window.CurrentInputGroup.rawInputs.push(newInput);
-		window.CurrentInputGroup.inputsDictionary[inputData.uuid] = newInput;
+		window.CurrentInputGroup.inputsDictionary[newInput.uuid] = newInput;
 
 		this.inputGraph.addNode(newInput);
 
