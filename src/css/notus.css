@@ -1,0 +1,34 @@
+.notus.notus-material-light.notus-alert-warning {
+    background-color: #fff3cd;
+    border-color: #ffdb6e;
+}
+
+.notus.notus-material-light .notus-content .notus-content-title,
+.notus.notus-type-snackbar.notus-material-light .notus-content .notus-content-body {
+    color: #856406;
+}
+
+.notus.notus-material-light .notus-close .icon-close,
+.notus.notus-type-snackbar.notus-material-light .notus-action,
+.notus.notus-material-light .notus-content .notus-content-body {
+    color: #856406;
+}
+
+.notus:not(.notus-type-snackbar) {
+    width: 350px;
+}
+
+.notus:not(.notus-type-snackbar) .notus-content-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.notus .notus-content-body {
+    font-size: 0.9rem;
+}
+
+.notus .notus-close {
+    font-size: 1.3rem;
+    background-color: transparent !important;
+}
+
