@@ -60,9 +60,12 @@ module.exports = class InputHandler {
 		let hasExpressionError = false;
 		let currentExpressionError;
 		let parsedExpression;
+		let readbleExpression;
 
-		[hasExpressionError, currentExpressionError, parsedExpression] = this.validateExpression(inputData.expressionEntry.childNodes);
-
+		[hasExpressionError,
+		currentExpressionError,
+		parsedExpression,
+		readbleExpression] = this.validateExpression(inputData.expressionEntry.childNodes);
 
 		if (!hasExpressionError) {
 
@@ -72,6 +75,7 @@ module.exports = class InputHandler {
 			const finalExpression = {
 				raw: inputData.expressionEntry.innerHTML,
 				formatted: parsedExpression,
+				readble: readbleExpression,
 			};
 
 			const newInput = new Input(inputData.name, finalExpression, this.scope);
