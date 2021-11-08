@@ -78,7 +78,7 @@ module.exports = class InputHandler {
 				readble: readbleExpression,
 			};
 
-			const newInput = new Input(inputData.name, finalExpression, this.scope);
+			const newInput = new Input(inputData.name, finalExpression, this.scope, inputData.uuid);
 
 			if (this.inputGraph.addNode(newInput)) {
 
