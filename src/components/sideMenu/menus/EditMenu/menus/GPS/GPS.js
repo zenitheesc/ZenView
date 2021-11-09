@@ -70,7 +70,7 @@ module.exports = class MapEditMenu {
 
 		const callBack = (input) => {
 
-			return [input.name ?? input.value, input.name];
+			return [input.uuid, input.name];
 
 		};
 
