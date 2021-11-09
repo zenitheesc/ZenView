@@ -22,20 +22,26 @@ module.exports = class BlockContainer {
 	}
 
 	get title() {
+
 		return this.headerTitle.innerText;
+
 	}
 
 	set title(newTitle) {
+
 		this.headerTitle.innerText = newTitle;
+
 	}
 
 	get formConfig() {
+
 		return {
 			blockTitle: this.title,
 			type: this.block.type,
 			blockConfig: this.block.formConfig,
 
-		}
+		};
+
 	}
 
 	buildHeader() {
@@ -43,7 +49,7 @@ module.exports = class BlockContainer {
 		this.header = document.createElement('div');
 
 		this.buttonsContainer = document.createElement('div');
-		this.buttonsContainer.className = "buttonsContainer";
+		this.buttonsContainer.className = 'buttonsContainer';
 
 		this.trash = Components.buttonWithIcon('trash-alt-regular', 'blockButton');
 		this.edit = Components.buttonWithIcon('pencil-square', 'blockButton');
@@ -52,8 +58,8 @@ module.exports = class BlockContainer {
 		this.buttonsContainer.appendChild(this.edit);
 		this.header.appendChild(this.buttonsContainer);
 
-		this.headerTitle = document.createElement('div')
-		this.headerTitle.className = "blockTitle";
+		this.headerTitle = document.createElement('div');
+		this.headerTitle.className = 'blockTitle';
 		this.headerTitle.innerText = '';
 
 		this.header.appendChild(this.headerTitle);
@@ -99,8 +105,10 @@ module.exports = class BlockContainer {
 	}
 
 	load(blockConfig) {
+
 		this.block = new Blocks[this.preConfig.type](this.preConfig, this.content);
 		this.block.load(blockConfig);
+
 	}
 
 	updateBlockConfig(newConfig) {
@@ -115,7 +123,7 @@ module.exports = class BlockContainer {
 		if (newConfig.type !== this.block.type) {
 
 			this.preConfig = newConfig;
-			this.content.innerHTML = ''
+			this.content.innerHTML = '';
 
 			try {
 
@@ -202,8 +210,11 @@ module.exports = class BlockContainer {
 
 		this.header.ondblclick = () => {
 
-			if (window.GlobalContext == 'editing')
+			if (window.GlobalContext == 'editing') {
+
 				this.editBlock();
+
+			}
 
 		};
 
@@ -249,15 +260,15 @@ module.exports = class BlockContainer {
 		this.eventHandler.addEventListener('StartRead', (evt) => {
 
 			this.block.willRead();
-			this.trash.style.display = "none";
-			this.edit.style.display = "none";
+			this.trash.style.display = 'none';
+			this.edit.style.display = 'none';
 
 		});
 
 		this.eventHandler.addEventListener('StopRead', (evt) => {
 
-			this.trash.style.display = "block";
-			this.edit.style.display = "block";
+			this.trash.style.display = 'block';
+			this.edit.style.display = 'block';
 
 		});
 

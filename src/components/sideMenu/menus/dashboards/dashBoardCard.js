@@ -1,5 +1,5 @@
 const EventHandler = require('../../../eventHandler/eventHandler');
-const Components = require('../../../components');	
+const Components = require('../../../components');
 
 module.exports = class DashBoardCard {
 

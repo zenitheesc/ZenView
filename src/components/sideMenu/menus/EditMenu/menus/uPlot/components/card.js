@@ -97,10 +97,10 @@ module.exports = class Card {
 					],
 				}),
 			}),
-		}
+		},
 		);
 
-		this.seriesSection.setAttribute("form");
+		this.seriesSection.setAttribute('form');
 		this.load();
 
 	}
@@ -189,14 +189,17 @@ module.exports = class Card {
 
 		this.seriesSection.formTree.yAxis.setOptions(allInputs, callBack);
 		this.seriesSection.formTree.yAxis.value = this.serie.inputName;
-	}
+
+}
 
 	setEvents() {
 
 		this.seriesSection.setData = (objData) => {
+
 			this.seriesSection._setData(objData);
 			this.updateInputList();
-		}
+
+		};
 
 		this.eventHandler.addEventListener('AttInputList', () => {
 
@@ -228,7 +231,7 @@ module.exports = class Card {
 				data: {
 					label: this.serie.label,
 					uuid: this.serie.uuid,
-				}
+				},
 			});
 
 			this.eventHandler.dispatchEvent('UpdateSeries');
@@ -242,7 +245,7 @@ module.exports = class Card {
 				data: {
 					...this.seriesSection.getData(),
 					uuid: this.serie.uuid,
-				}
+				},
 			});
 
 			evt.stopPropagation();
@@ -254,7 +257,7 @@ module.exports = class Card {
 			this.cardHeaderTitle.innerText = this.seriesSection.formTree.yAxis.value;
 
 		});
+
 	}
 
 };
-

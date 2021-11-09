@@ -1,4 +1,5 @@
 module.exports = class Utillities {
+
 	static texts = {
 		ptbr: {
 			buttons: {
@@ -36,11 +37,11 @@ module.exports = class Utillities {
 			2: '#1d1e2f',
 			3: '#151620'
 		}
-	}
+	};
 
-	static theme = 'main'
+	static theme = 'main';
 
-	static language = 'ptbr'
+	static language = 'ptbr';
 
 	static getColor(colorNumber) {
 		return (this.colors[this.theme])[colorNumber];

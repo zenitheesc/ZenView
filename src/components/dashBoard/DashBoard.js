@@ -32,7 +32,7 @@ module.exports = class DashBoard {
 			animate: true,
 			draggable: {
 				handle: '.blockHeader',
-			}
+			},
 		});
 
 		this.gridStack.enable('.grid-stack-t dashboardHash = hash(currentDashBoard);tem-content', true);
@@ -140,7 +140,7 @@ module.exports = class DashBoard {
 
 			newBlock.load(blockLog.blockConfig);
 			this.blocks.push(newBlock);
-			window.CurrentDashBoard.blocks.push(newBlock)
+			window.CurrentDashBoard.blocks.push(newBlock);
 
 		});
 
@@ -154,14 +154,14 @@ module.exports = class DashBoard {
 
 	saveDashboard(onClose) {
 
-		let currentDashBoard = window.CurrentDashBoard;
-		let blocksLog = [];
+		const currentDashBoard = window.CurrentDashBoard;
+		const blocksLog = [];
 
 		this.blocks.forEach((block) => blocksLog.push(block.blockLog()));
 		currentDashBoard.blocksLog = blocksLog;
 		currentDashBoard.saved = true;
 
-		const tempBlocks = currentDashBoard.blocks
+		const tempBlocks = currentDashBoard.blocks;
 
 		currentDashBoard.blocks = [];
 		const dashboardHash = hash(currentDashBoard);
@@ -182,8 +182,11 @@ module.exports = class DashBoard {
 		const dashboardJSON = this.BSON.readFile(path);
 		const dashboard = new DataDashBoard(dashboardJSON);
 
-		if (dashboard.blocks.length === 0)
+		if (dashboard.blocks.length === 0) {
+
 			dashboard.inputGroup.inputGraph = {};
+
+		}
 
 		const dashboardIdealHash = hash(dashboard);
 

@@ -16,13 +16,15 @@ module.exports = class GPS extends Block {
 		const saoCarlosLatLng = [-22, -47.890833];
 
 		this.map = leaflet.map(this.htmlComponent, {
-			attributionControl: false
+			attributionControl: false,
 		}).setView(saoCarlosLatLng, 12);
 
 		this.layer = leaflet.geoJSON([], {
-			pointToLayer: (feature, latlng) =>  {
+			pointToLayer: (feature, latlng) => {
+
 				return leaflet.circleMarker(latlng, this.markerStyle).setRadius(this.radius);
-			}
+
+			},
 		}).addTo(this.map);
 
 	}
@@ -42,11 +44,11 @@ module.exports = class GPS extends Block {
 	get markerStyle() {
 
 		return {
-		    fillColor: this.style,
-		    color: "#000",
-		    weight: 1,
-		    opacity: 1,
-		    fillOpacity: 0.8
+			fillColor: this.style,
+			color: '#000',
+			weight: 1,
+			opacity: 1,
+			fillOpacity: 0.8,
 		};
 
 	}
@@ -74,11 +76,8 @@ module.exports = class GPS extends Block {
 		const longitude = newData[this.longitude];
 		const latitude = newData[this.latitude];
 
-		if (longitude === NaN || latitude === NaN)
-			return;
-
 		const point = {
-			type: "Point",
+			type: 'Point',
 			coordinates: [longitude, latitude],
 		};
 
@@ -114,12 +113,12 @@ module.exports = class GPS extends Block {
 
 	init() {
 
-		let mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+		const mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
 
-    	leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-       		attribution: '&copy; ' + mapLink + ' Contributors',
-        	maxZoom: 18,
-        }).addTo(this.map);
+		leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			attribution: '&copy; ' + mapLink + ' Contributors',
+			maxZoom: 18,
+		}).addTo(this.map);
 
 		this.map.invalidateSize();
 		this.setAutoResize();
@@ -164,6 +163,5 @@ module.exports = class GPS extends Block {
 		this.setAutoResize();
 
 	}
-
 
 };

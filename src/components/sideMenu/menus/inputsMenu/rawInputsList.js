@@ -1,4 +1,4 @@
-const { Form, Container, Field } = require('../../../formBuilder/formBuilder');
+const {Form, Container, Field} = require('../../../formBuilder/formBuilder');
 const Validator = require('../../../formBuilder/validator');
 const Components = require('../../../components');
 const EventHandler = require('../../../eventHandler/eventHandler');
@@ -82,7 +82,7 @@ module.exports = class RawInputsList {
 			tag.className = 'inputTag';
 			tag.textContent = '#{' + this.rawInputSelector.value + '}';
 
-			this.eventHandler.dispatchEvent('AppendTag', { tag: tag });
+			this.eventHandler.dispatchEvent('AppendTag', {tag: tag});
 
 		};
 

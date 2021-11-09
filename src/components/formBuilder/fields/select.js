@@ -40,7 +40,7 @@ module.exports = class Select extends Field {
 
 	addOption(option, callBack) {
 
-		callBack = callBack || function (option) {
+		callBack = callBack || function(option) {
 
 			return [option.value ?? option.text, option.text ?? option.value];
 
@@ -55,13 +55,15 @@ module.exports = class Select extends Field {
 	setOptions(options, callBack) {
 
 		this.input.innerHTML = '';
-		callBack = callBack || function (option) {
+
+		callBack = callBack || function(option) {
 
 			return [option.value ?? option.text, option.text ?? option.value];
 
 		};
 
 		let newOption;
+
 		options.forEach((option) => {
 
 			newOption = document.createElement('option');

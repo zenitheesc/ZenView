@@ -1,7 +1,7 @@
 /* eslint-disable new-cap */
 const Block = require('../block');
 const uPlot = require('uplot');
-const { v4: uuidv4 } = require('uuid');
+const {v4: uuidv4} = require('uuid');
 // eslint-disable-next-line no-unused-vars
 const ElementResize = require('javascript-detect-element-resize');
 
@@ -19,47 +19,53 @@ module.exports = class Scatter extends Block {
 		this.series = preConfig.series;
 		this.initR = false;
 
-		this.type = "uPlot";
+		this.type = 'uPlot';
+
 	}
 
 	get formConfig() {
 
-		return this._formConfig
+		return this._formConfig;
 
 	}
 
 	pathSetter(pathType) {
 
 		switch (pathType) {
-			case "1":
-				return uPlot.paths.linear()
+
+			case '1':
+				return uPlot.paths.linear();
 				break;
-			case "2":
-				return uPlot.paths.spline()
+			case '2':
+				return uPlot.paths.spline();
 				break;
-			case "3":
-				return uPlot.paths.stepped({ align: -1 })
+			case '3':
+				return uPlot.paths.stepped({align: -1});
 				break;
-			case "4":
-				return uPlot.paths.stepped({ align: 1 })
+			case '4':
+				return uPlot.paths.stepped({align: 1});
 				break;
 			default:
 				return () => null;
 				break;
+
 		}
 
 	}
 
 	addSerie(newSerie, notRedraw) {
+
 		if (this.opt.series[1].inputName == null) {
+
 			this.data.pop();
 			this.opt.series.pop();
+
 		}
 
 		this.opt.series.push({
 			...newSerie,
 			uuid: uuidv4(),
-			paths: this.pathSetter("1"),
+			paths: this.pathSetter('1'),
 		});
 
 		const newMockData = [...Array(11).keys()].map((value) => (Math.sin(value) + (this.opt.series.length - 2)));
@@ -78,6 +84,7 @@ module.exports = class Scatter extends Block {
 		this.opt.scales.x.dir = newConfig.dir;
 		this.opt.axes[0].side = Number(newConfig.side);
 		this.redraw();
+
 	}
 
 	editYAxis(newConfig) {
@@ -99,50 +106,62 @@ module.exports = class Scatter extends Block {
 			if (!this.initR) {
 
 				for (let i = 0; i < this.plot.series.length; i++) {
+
 					this.data[i] = [];
+
 				}
 
 				this.initR = true;
+
 			}
 
 			for (let i = 0; i < this.plot.series.length; i++) {
-				this.data[i].push(newData[this.plot.series[i].inputName])
-				this.data[i] = this.data[i].slice(-100)
+
+				this.data[i].push(newData[this.plot.series[i].inputName]);
+				this.data[i] = this.data[i].slice(-100);
+
 			}
 
 			this.plot.setData(this.data);
 
 		});
+
 	}
 
 	removeSerie(rmvdSerie) {
 
-		let currSerie = this.opt.series.find(serie => serie.uuid === rmvdSerie.uuid);
-		let index = this.opt.series.indexOf(currSerie);
+		const currSerie = this.opt.series.find((serie) => serie.uuid === rmvdSerie.uuid);
+		const index = this.opt.series.indexOf(currSerie);
 
 		if (index >= 0) {
 
 			if (this.opt.series.length === 2) {
+
 				this.data = [[...Array(11).keys()], []];
 				this.opt.series.push();
 				this.opt.series.splice(index + 1, 1);
 
 				const newMockData = [...Array(11).keys()].map((value) => (Math.sin(value) + (this.opt.series.length - 2)));
 				if (this.opt.series.length > this.data.length) this.data.push(newMockData);
+
 			} else {
+
 				this.opt.series.splice(index, 1);
 				this.data.pop();
+
 			}
 
 
 		}
 
 		this.redraw();
+
 	}
 
 	editSerie(newConfig, notRedraw) {
-		let currSerie = this.opt.series.find(serie => serie.uuid === newConfig.uuid);
-		let index = this.opt.series.indexOf(currSerie);
+
+		const currSerie = this.opt.series.find((serie) => serie.uuid === newConfig.uuid);
+		const index = this.opt.series.indexOf(currSerie);
 
 		this.opt.series[index] = {
 			label: newConfig.inputName,
@@ -182,6 +201,7 @@ module.exports = class Scatter extends Block {
 	}
 
 	redraw() {
+
 		this.plot.destroy();
 		const widget = this.htmlComponent.parentElement;
 
@@ -191,6 +211,7 @@ module.exports = class Scatter extends Block {
 			width: widget.offsetWidth,
 			height: widget.offsetHeight * 0.8,
 		});
+
 	}
 
 	destroy() {
@@ -209,15 +230,18 @@ module.exports = class Scatter extends Block {
 	}
 
 	willRead() {
+
 		this.data = [[], []];
 		this.redraw();
+
 	}
 
 	save() {
+
 		return {
 			data: this.data,
 			opt: this.opt,
-		}
+		};
 
 	}
 
@@ -229,7 +253,9 @@ module.exports = class Scatter extends Block {
 		this.plot = new uPlot(this.opt, this.data, this.htmlComponent);
 
 		for (let i = 0; i < this.opt.series.length; i++) {
+
 			this.editSerie(this.opt.series[i]);
+
 		}
 		this.setAutoResize();
 		this.redraw();

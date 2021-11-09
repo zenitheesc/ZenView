@@ -11,7 +11,9 @@ module.exports = class Block {
 	}
 
 	get formConfig() {
+
 		this._formConfig;
+
 	}
 
 	init() {
@@ -39,7 +41,9 @@ module.exports = class Block {
 	}
 
 	instructionHandler(instruction) {
+
 		return this[instruction.command](instruction?.data);
+
 	}
 
 	updateData() {

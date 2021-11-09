@@ -90,9 +90,9 @@ module.exports = class InputCard {
 
 		this.addBtn.addEventListener('click', () => {
 
-			const tag = document.createElement("a");
-			tag.contentEditable = "false";
-			tag.className = "inputTag";
+			const tag = document.createElement('a');
+			tag.contentEditable = 'false';
+			tag.className = 'inputTag';
 			tag.textContent = '${' + this.inputInfo.name + '}';
 
 			this.eventHandler.dispatchEvent('AppendTag', {tag: tag});

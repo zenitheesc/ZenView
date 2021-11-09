@@ -1,5 +1,6 @@
 const Menu = require('../menu');
 const Section = require('./section');
+
 module.exports = class BlocksMenu extends Menu {
 
 	constructor() {
@@ -9,7 +10,7 @@ module.exports = class BlocksMenu extends Menu {
 		this.container = document.createElement('div');
 
 	}
-	
+
 	appendSection(section) {
 
 		this.container.appendChild(section.htmlComponent);
