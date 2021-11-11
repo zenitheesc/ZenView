@@ -333,7 +333,17 @@ module.exports = class InputHandler {
 
 		for (let i = 0; i < window.CurrentInputGroup.numberOfInputs; i++) {
 
-			this.scope[window.CurrentInputGroup.rawInputs[i].name] = Number(data[i]);
+			if (isNaN(data[i])) {
+
+				this.eventHandler.dispatchEvent("SendNotification", {
+					title: "Dados não Processados",
+					message: "Último pacote de dados possuia dados inválidos, como palavras, e o conjunto de dados foi ignorado."
+				});
+				return;
+
+			}
+
+			this.scope[window.CurrentInputGroup.rawInputs[i].name] = Number(data[i]) ;
 
 		}
 
@@ -342,8 +352,6 @@ module.exports = class InputHandler {
 			this.inputGraph.nodes[i].input.evaluate();
 
 		}
-
-		console.log(this.scope);
 
 		this.eventHandler.DataIsProcessed(this.scope);
 

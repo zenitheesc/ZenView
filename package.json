@@ -64,6 +64,7 @@
     "mathjs": "^7.6.0",
     "n-readlines": "^1.0.1",
     "node-pty": "^0.10.1",
+    "notus": "^0.3.2",
     "object-hash": "^2.2.0",
     "popper.js": "^1.16.1",
     "serialport": "^9.2.4",
