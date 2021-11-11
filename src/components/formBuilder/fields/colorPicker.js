@@ -1,5 +1,5 @@
 const Field = require('../Field');
-const JSColor = require('../../../externalSources/jscolor');
+const JsColor = require('@eastdesire/jscolor/jscolor');
 
 module.exports = class ColorPicker extends Field {
 
@@ -31,7 +31,7 @@ module.exports = class ColorPicker extends Field {
 		input.id = options.id || 'colorPicker';
 
 		// eslint-disable-next-line no-unused-vars
-		const colorPicker = new JSColor(input, opts);
+		const colorPicker = new JsColor(input, opts);
 
 		const inputGroup = this._inputGroup(options);
 		this._attClassList(inputGroup, options.classList);

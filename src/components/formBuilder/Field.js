@@ -1,4 +1,3 @@
-
 module.exports = class Field {
 
 	constructor(options) {
@@ -82,6 +81,7 @@ module.exports = class Field {
 			}
 
 		});
+
 		if (count === this.conditions.length) {
 
 			this.htmlComponent.classList.remove('d-none');
@@ -97,6 +97,7 @@ module.exports = class Field {
 	setAttribute(attributesUntilHere) {
 
 		let cont = 0;
+
 		if (this.att) {
 
 			while (String(this.att).startsWith('../')) {
@@ -105,6 +106,7 @@ module.exports = class Field {
 				cont++;
 
 			}
+
 			const splited = attributesUntilHere.split('.');
 			const sliced = splited.slice(0, splited.length - cont);
 
@@ -149,6 +151,7 @@ module.exports = class Field {
 			}
 
 		}
+
 		return isValid;
 
 	}

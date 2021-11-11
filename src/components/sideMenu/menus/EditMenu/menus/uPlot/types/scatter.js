@@ -3,7 +3,7 @@ const Field = require('../../../../../../formBuilder/formBuilder').Field;
 const EventHandler = require('../../../../../../eventHandler/eventHandler');
 const Card = require('../components/card');
 const Components = require('../../../../../../../components/components');
-const { v4: uuidv4 } = require('uuid');
+
 module.exports = class uPlotScatter {
 
 	constructor() {
@@ -20,7 +20,7 @@ module.exports = class uPlotScatter {
 						content: Components.icon('plus-square'),
 						classList: ['formButtonWithIconPrepend'],
 					}],
-				})
+				}),
 			}),
 			cards: Container.div({}),
 		}, {
@@ -35,7 +35,7 @@ module.exports = class uPlotScatter {
 			uPlotXAxesStyle: Container.spliter({
 				xAxis: Field.select({
 					att: 'inputName',
-					label: "Eixo X",
+					label: 'Eixo X',
 					prepend: [
 						{
 							type: 'text',
@@ -66,12 +66,12 @@ module.exports = class uPlotScatter {
 							classList: ['col-6'],
 							options: [
 								{
-									text: "Crescente",
-									value: 1
+									text: 'Crescente',
+									value: 1,
 								},
 								{
-									text: "Decrescente",
-									value: -1
+									text: 'Decrescente',
+									value: -1,
 								},
 							],
 						},
@@ -84,12 +84,12 @@ module.exports = class uPlotScatter {
 							options: [
 								{
 									text: 'Em cima',
-									value: 0
+									value: 0,
 								},
 								{
 									text: 'Embaixo',
-									value: 2
-								}
+									value: 2,
+								},
 
 							],
 						},
@@ -124,12 +124,12 @@ module.exports = class uPlotScatter {
 							classList: ['col-6'],
 							options: [
 								{
-									text: "Crescente",
-									value: 1
+									text: 'Crescente',
+									value: 1,
 								},
 								{
-									text: "Decrescente",
-									value: -1
+									text: 'Decrescente',
+									value: -1,
 								},
 							],
 						},
@@ -142,11 +142,11 @@ module.exports = class uPlotScatter {
 							options: [
 								{
 									text: 'Esquerda',
-									value: "3"
+									value: '3',
 								}, {
 									text: 'Direita',
-									value: "1"
-								}
+									value: '1',
+								},
 							],
 						},
 					),
@@ -185,7 +185,7 @@ module.exports = class uPlotScatter {
 
 		window.CurrentBlock.sendBlockInstruction({
 			command: 'editXAxis',
-			data: this.form.formTree.uPlotXAxesStyle.self.getData().blockConfig.uPlot.scatter.axis.x
+			data: this.form.formTree.uPlotXAxesStyle.self.getData().blockConfig.uPlot.scatter.axis.x,
 		});
 
 	}
@@ -194,7 +194,7 @@ module.exports = class uPlotScatter {
 
 		window.CurrentBlock.sendBlockInstruction({
 			command: 'editYAxis',
-			data: this.form.formTree.uPlotYAxesStyle.self.getData().blockConfig.uPlot.scatter.axis.y
+			data: this.form.formTree.uPlotYAxesStyle.self.getData().blockConfig.uPlot.scatter.axis.y,
 		});
 
 	}
@@ -215,6 +215,7 @@ module.exports = class uPlotScatter {
 		this.form.formTree.uPlotXAxesStyle.xAxis.setOptions(allInputs, callBack);
 
 		this.seriesSection.formTree.newSerie.newSerieSelector.setOptions(allInputs, callBack);
+
 	}
 
 	selectColor(colorNumber) {
@@ -230,19 +231,18 @@ module.exports = class uPlotScatter {
 			'#705DA0', // 7: violet
 			'#508642', // 8: dark green
 			'#CCA300',
-		]
+		];
 
 		return colors[colorNumber % colors.length];
 
 	}
-
 
 	addNewSerie() {
 
 		const length = this.inputList.length;
 		const color = this.selectColor(length);
 
-		let newSerieName = this.seriesSection.formTree.newSerie.newSerieSelector.value;
+		const newSerieName = this.seriesSection.formTree.newSerie.newSerieSelector.value;
 
 		const data = {
 			label: newSerieName,
@@ -252,13 +252,13 @@ module.exports = class uPlotScatter {
 				showPoints: true,
 				size: 10,
 			},
-			pathType: "1",
+			pathType: '1',
 			show: true,
 			inputName: [newSerieName],
 			showLines: true,
 			stroke: color,
 			_stroke: color,
-		}
+		};
 
 		window.CurrentBlock.sendBlockInstruction({
 			command: 'addSerie',
@@ -281,15 +281,14 @@ module.exports = class uPlotScatter {
 
 		labels.forEach((label) => {
 
-			let card = new Card(label);
+			const card = new Card(label);
 
 			this.inputList.push(card);
-			this.inputListComponent.appendChild(card.htmlComponent)
+			this.inputListComponent.appendChild(card.htmlComponent);
 
 		});
 
 	}
-
 
 	overWriteSetData() {
 
@@ -349,10 +348,10 @@ module.exports = class uPlotScatter {
 		this.seriesSection.formTree.newSerie.newSerieSelector.append[0].onclick = () => {
 
 			this.addNewSerie();
-			this.seriesSection.reset()
+			this.seriesSection.reset();
 			this.attSeriesList();
 			this.seriesSection.setData();
-			this.seriesSection.setConditions()
+			this.seriesSection.setConditions();
 
 		};
 

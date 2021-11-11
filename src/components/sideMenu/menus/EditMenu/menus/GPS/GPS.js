@@ -12,16 +12,16 @@ module.exports = class MapEditMenu {
 			GPSconfig: Container.spliter({
 				longitude: Field.select({
 					att: 'longitude',
-					label: "Longitude",
+					label: 'Longitude',
 				}),
 				latitude: Field.select({
 					att: 'latitude',
-					label: "Latitude",
+					label: 'Latitude',
 				}),
 				style: Field.colorPicker({
 					att: 'style',
-					value: "#7EB26D",
-					label: "Cor"
+					value: '#7EB26D',
+					label: 'Cor',
 				}),
 				radius: Field.select({
 					att: 'radius',

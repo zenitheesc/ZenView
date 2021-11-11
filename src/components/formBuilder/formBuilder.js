@@ -151,7 +151,9 @@ class FormPattern {
 		for (let i = 0; i < this.containers.length; i++) {
 
 			if (!this.containers[i].validate()) {
+
 				response = false;
+
 			}
 
 		}
@@ -200,7 +202,7 @@ class FormPattern {
 
 			} catch (e) {
 
-				console.error("TODO ERROR", e);
+				console.error('TODO ERROR', e);
 
 			}
 
@@ -212,7 +214,9 @@ class FormPattern {
 			let result;
 
 			for (const path of paths) {
+
 				result = result?.[path] ?? DataObj?.[path];
+
 			}
 
 			field.value = result ?? field.value;

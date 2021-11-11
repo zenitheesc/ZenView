@@ -1,8 +1,5 @@
-const os = require('os');
-const pty = require('node-pty');
 const {Terminal} = require('xterm');
 const Menu = require('../menu');
-const Components = require('../../../components');
 const {Form, Container, Field} = require('../../../formBuilder/formBuilder');
 const EventHandler = require('../../../eventHandler/eventHandler');
 
@@ -43,8 +40,8 @@ module.exports = class TerminalMenu extends Menu {
             theme: {
                 background: '#3c3c3c',
                 foreground: '#f5f5f5',
-                fontSize: 8
-            }
+                fontSize: 8,
+            },
         });
 
         terminal.open(terminalContainer);

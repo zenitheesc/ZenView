@@ -1,5 +1,5 @@
 const remote = require('electron').remote;
-const { Menu, MenuItem } = remote;
+const {Menu, MenuItem} = remote;
 
 module.exports = class BlockMenu {
 
@@ -31,8 +31,11 @@ module.exports = class BlockMenu {
 
     menuPopUp() {
 
-        if (window.GlobalContext == 'editing')
+        if (window.GlobalContext == 'editing') {
+
             this.menu.popup(remote.getCurrentWindow());
+
+        }
 
     }
 

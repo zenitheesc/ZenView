@@ -1,5 +1,3 @@
-console.log('running....');
-
 const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
@@ -12,7 +10,6 @@ const TitleBarMenu = require('./components/titleBar/titleBarMenu');
 const debugMode = true;
 let initialWindow;
 let mainWindow;
-let titleBarMenu;
 let dashboardIsSaved = true;
 
 // parametros iniciais da janela inicial
@@ -55,21 +52,24 @@ function createWindow(params) {
 		protocol: 'file',
 		slashes: true,
 	}));
+
 	if (params.openDevTools) {
 
 		window.openDevTools();
 
 	}
+
 	window.on('closed', () => {
 
 		window = null;
 
 	});
+
 	if (!debugMode) window.removeMenu();
 	return window;
 
 }
-// event listener que espera o app ser criado para criar as janelas
+
 app.on('ready', () => {
 
 	app.allowRendererProcessReuse = false;
@@ -81,13 +81,17 @@ app.on('ready', () => {
 	// apenas mostrara a janela quando estiver pronta
 
 	if (debugMode) {
+
 		mainWindow.show();
+
 	} else {
+
 		initialWindow.once('ready-to-show', () => {
 
 			initialWindow.show();
 
 		});
+
 	}
 
 	mainWindow.on('close', (evt) => {
@@ -120,7 +124,6 @@ app.on('ready', () => {
 
 });
 
-// encerra o programa se todas as janelas forem fechadas
 app.on('window-all-closed', () => {
 
 	if (process.platform !== 'darwin') {
@@ -131,7 +134,6 @@ app.on('window-all-closed', () => {
 
 });
 
-// caso a janela nao tenha sido criada força sua criação
 app.on('activate', () => {
 
 	if (mainWindow === null) {
@@ -143,7 +145,6 @@ app.on('activate', () => {
 
 });
 
-// listerner que avisa que o load da janela principal terminou
 ipc.on('mainLoadCompleto', () => {
 
 	if (!debugMode) initialWindow.close();
@@ -157,6 +158,7 @@ ipc.on('open-file-dialog-for-dir', async (event) => {
 
 		properties: ['openDirectory', 'createDirectory'],
 	});
+
 	if (dir) {
 
 		event.sender.send('selected-dir', dir.filePaths[0]);
@@ -169,8 +171,9 @@ ipc.on('open-file-dialog-for-file', async (event, args) => {
 
 	const file = await dialog.showOpenDialog(mainWindow, {
 		properties: ['openFile'],
-		filters: [{ name: 'Dashboard', extensions: [args] }],
+		filters: [{name: 'Dashboard', extensions: [args]}],
 	});
+
 	if (file) {
 
 		event.sender.send('selected-dir', file.filePaths[0]);
@@ -189,7 +192,7 @@ ipc.on('openDialog', (event, config) => {
 
 });
 
-ipc.on('display-app-titleBar', function (err, args) {
+ipc.on('display-app-titleBar', function(err, args) {
 
 	const titleBarMenu = new TitleBarMenu();
 
