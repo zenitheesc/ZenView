@@ -69,14 +69,12 @@ module.exports = class uPlotScatter {
 							classList: ['col-6'],
 							options: [
 								{
-									text: 'Em cima',
-									value: 0
-								},
-								{
 									text: 'Embaixo',
 									value: 2
+								}, {
+									text: 'Em cima',
+									value: 0
 								}
-
 							],
 						},
 					),
@@ -98,7 +96,7 @@ module.exports = class uPlotScatter {
 						},
 						{
 							text: 'Logaritimica',
-							value: 2,
+							value: 3,
 						},
 					],
 				}),
