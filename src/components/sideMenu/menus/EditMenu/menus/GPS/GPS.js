@@ -70,7 +70,7 @@ module.exports = class MapEditMenu {
 
 		const callBack = (input) => {
 
-			return [input.name ?? input.value, input.name];
+			return [input.uuid, input.name];
 
 		};
 
@@ -78,10 +78,23 @@ module.exports = class MapEditMenu {
 
 		allInputs = allInputs.concat(window.CurrentInputGroup.rawInputs);
 		allInputs = allInputs.concat(window.CurrentInputGroup.inputs);
-
+		
 		this.form.formTree.GPSconfig.longitude.setOptions(allInputs, callBack);
 		this.form.formTree.GPSconfig.latitude.setOptions(allInputs, callBack);
+		
+		try {
 
+			const currGPS = window.CurrentBlock.block;
+			this.form.formTree.GPSconfig.longitude.setSelectedOption(currGPS.longitude);
+			this.form.formTree.GPSconfig.latitude.setSelectedOption(currGPS.latitude);
+		
+		} catch (error) {
+
+			console.error('TODO ERROR', error, 'This error can be fixed when the window.CurrentDashBoard.blocks is working');
+		
+		}
+		
+		
 	}
 
 	setEvents() {

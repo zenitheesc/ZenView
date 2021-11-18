@@ -1,14 +1,18 @@
 const Math = require('mathjs');
+const {v4: uuidv4} = require('uuid');
+
 module.exports = class Input {
 
-	constructor(name, expression, scope) {
+	constructor(name, expression, scope, uuid) {
 
 		this.name = name;
+		this.uuid = uuid ?? ('id'+uuidv4().replaceAll('-', ''));
 		this.dependencies = [];
 		this.hasInconsistency = false;
 		this.expression = {
 			raw: expression.raw || expression.formatted,
 			formatted: expression.formatted,
+			readble: expression.readble,
 		};
 
 		this.compiledExpression = Math.compile(this.expression.formatted);
@@ -48,7 +52,7 @@ module.exports = class Input {
 
 	evaluate() {
 
-		this.scope[this.name] = this.compiledExpression.evaluate(this.scope);
+		this.scope[this.uuid] = this.compiledExpression.evaluate(this.scope);
 
 	}
 

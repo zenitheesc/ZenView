@@ -14,7 +14,7 @@ module.exports = class InputGraph {
 
 			const newNode = new Node(input);
 			this.nodes.push(newNode);
-			this.nodesDictionary[input.name] = newNode;
+			this.nodesDictionary[input.uuid] = newNode;
 
 		});
 
@@ -22,7 +22,7 @@ module.exports = class InputGraph {
 
 			const newNode = new Node(input);
 			this.nodes.push(newNode);
-			this.nodesDictionary[input.name] = newNode;
+			this.nodesDictionary[input.uuid] = newNode;
 
 		});
 
@@ -44,16 +44,16 @@ module.exports = class InputGraph {
 
 			let nodeInconsistency = false;
 
-			node.dependencies.forEach((dependenceName) => {
+			node.dependencies.forEach((dependenceUuid) => {
 
-				if (!(this.nodesDictionary[dependenceName])) {
+				if (!(this.nodesDictionary[dependenceUuid])) {
 
 					graphInconsistency = true;
 					nodeInconsistency = true;
 
 				} else {
 
-					this.nodesDictionary[dependenceName].nextInputs.push(node);
+					this.nodesDictionary[dependenceUuid].nextInputs.push(node);
 
 				}
 
@@ -72,11 +72,11 @@ module.exports = class InputGraph {
 		const newNode = new Node(input);
 
 		this.nodes.push(newNode);
-		this.nodesDictionary[input.name] = newNode;
+		this.nodesDictionary[input.uuid] = newNode;
 
-		newNode.dependencies.forEach((dependenceName) => {
+		newNode.dependencies.forEach((dependenceUuid) => {
 
-			this.nodesDictionary[dependenceName].nextInputs.push(newNode);
+			this.nodesDictionary[dependenceUuid].nextInputs.push(newNode);
 
 		});
 
@@ -84,7 +84,7 @@ module.exports = class InputGraph {
 
 		if (!this.topologicalSort()) {
 
-			this.removeNode(input.name);
+			this.removeNode(input.uuid);
 			this.CheckAndCorrectInconsistencies();
 			this.topologicalSort();
 			return false;
@@ -118,14 +118,14 @@ module.exports = class InputGraph {
 
 	}
 
-	removeNode(inputName) {
+	removeNode(inputUuid) {
 
-		const index = this.nodes.indexOf(this.nodesDictionary[inputName]);
+		const index = this.nodes.indexOf(this.nodesDictionary[inputUuid]);
 
 		if (index > -1) {
 
 			this.nodes.splice(index, 1);
-			delete this.nodesDictionary[inputName];
+			delete this.nodesDictionary[inputUuid];
 			this.CheckAndCorrectInconsistencies();
 
 		}
@@ -225,7 +225,7 @@ class Node {
 
 	constructor(input) {
 
-		this.name = input.name;
+		this.uuid = input.uuid;
 		this.input = input;
 		this.nextInputs = [];
 		this.visited = -1;
