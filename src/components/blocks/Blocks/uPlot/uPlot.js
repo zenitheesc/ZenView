@@ -11,10 +11,10 @@ module.exports = class uPlot {
 
 		try {
 			return new blocks[preConfig.uPlot.type](preConfig, htmlComponent);
-		} catch {
+		} catch(error) {
 			console.warn(`TIPO DE BLOCO AINDA NÃO IMPLEMENTADO: ${preConfig.uPlot.type}`, error)
 		}
-
+i
 	}
 
 };
