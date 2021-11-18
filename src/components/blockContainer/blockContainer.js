@@ -80,7 +80,8 @@ module.exports = class BlockContainer {
 		this.htmlComponent.classList.add('grid-stack-item');
 		this.content = document.createElement('div');
 		this.content.style.flex = '1';
-
+		this.content.style.overflow = 'auto';
+		
 		this.body = this.buildBody();
 		this.header = this.buildHeader();
 
