@@ -21,7 +21,7 @@ module.exports = class newDashBoardMenu extends Menu {
 		});
 
 		this.form = new Form({
-			newDashBoardSpliter: Container.spliter({
+			newDashBoardSplitter: Container.splitter({
 				Name: Field.text({
 					label: 'Nome',
 					att: 'name',
@@ -45,7 +45,7 @@ module.exports = class newDashBoardMenu extends Menu {
 			}, {
 				startOpen: true,
 				text: 'Novo Dashboard',
-				id: 'newDashBoardSpliter',
+				id: 'newDashBoardSplitter',
 			}),
 		});
 
@@ -87,7 +87,7 @@ module.exports = class newDashBoardMenu extends Menu {
 	dropzoneConfig() {
 
 		this.dropzone = document.createElement('div');
-		const spliter = Components.spliter('importDashboardSpliter', 'Importar Dashboard', this.dropzone, true);
+		const splitter = Components.splitter('importDashboardSplitter', 'Importar Dashboard', this.dropzone, true);
 		
 		this.dropzone.style.padding = '3em 1.4em';
 		this.dropzone.style.color = 'whitesmoke';
@@ -168,7 +168,7 @@ module.exports = class newDashBoardMenu extends Menu {
         
 		};
 
-		return spliter;
+		return splitter;
 
 	}
 

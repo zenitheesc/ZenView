@@ -2,10 +2,10 @@ const fs = require('fs');
 
 module.exports = class Components {
 
-	static spliter(id, text, content, startOpen) {
+	static splitter(id, text, content, startOpen) {
 
 		const card = document.createElement('div');
-		card.className = 'card menuSpliter';
+		card.className = 'card menuSplitter';
 
 		const cardHeader = document.createElement('div');
 
@@ -27,11 +27,11 @@ module.exports = class Components {
 		if (startOpen) {
 
 			cardBodyCollapse.className = 'collapse show';
-			cardHeader.className = 'card-header menuSpliter-header';
+			cardHeader.className = 'card-header menuSplitter-header';
 
 		} else {
 
-			cardHeader.className = 'card-header menuSpliter-header collapsed';
+			cardHeader.className = 'card-header menuSplitter-header collapsed';
 			cardBodyCollapse.className = 'collapse';
 
 		}

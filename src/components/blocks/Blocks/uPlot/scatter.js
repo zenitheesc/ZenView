@@ -30,15 +30,15 @@ module.exports = class Scatter extends Block {
 	get formConfig() {
 
 		const response = {
-			axes: {
+			axis: {
 				x: {
 					dir: this.opt.scales.x.dir,
 					inputName: this.opt.series[0].label,
-					side: this.opt.axes[0].side,
+					side: this.opt.axis[0].side,
 				},
 				y: {
 					dir: this.opt.scales.y.dir,
-					side: this.opt.axes[1].side,
+					side: this.opt.axis[1].side,
 					type: this.opt.scales.y.distr
 				}
 			}
@@ -99,7 +99,7 @@ module.exports = class Scatter extends Block {
 		this.opt.series[0].label = newConfig.inputName;
 
 		this.opt.scales.x.dir = Number(newConfig.dir);
-		this.opt.axes[0].side = Number(newConfig.side);
+		this.opt.axis[0].side = Number(newConfig.side);
 		this.redraw();
 	}
 
@@ -109,7 +109,7 @@ module.exports = class Scatter extends Block {
 
 		this.opt.scales.y.dir = newConfig.dir;
 
-		this.opt.axes[1].side = Number(newConfig.side);
+		this.opt.axis[1].side = Number(newConfig.side);
 
 		this.redraw();
 
@@ -138,9 +138,9 @@ module.exports = class Scatter extends Block {
 		});
 	}
 
-	removeSerie(rmvdSerie) {
+	removeSerie(removedSerie) {
 
-		let currSerie = this.opt.series.find(serie => serie.uuid === rmvdSerie.uuid);
+		let currSerie = this.opt.series.find(serie => serie.uuid === removedSerie.uuid);
 		let index = this.opt.series.indexOf(currSerie);
 
 		if (index >= 0) {

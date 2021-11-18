@@ -55,7 +55,7 @@ module.exports = class StartRead extends Menu {
 		});
 
 		this.form = new Form({
-			startReadSplitter: Container.spliter({
+			startReadSplitter: Container.splitter({
 				dataChannel: Field.select({
 					label: 'Fonte dos dados',
 					att: 'readFrom',
@@ -288,9 +288,9 @@ module.exports = class StartRead extends Menu {
 
 	load() {
 
-		const spliterContainer = document.createElement('div');
-		spliterContainer.className = 'menuBody';
-		spliterContainer.appendChild(this.form.htmlComponent);
+		const splitterContainer = document.createElement('div');
+		splitterContainer.className = 'menuBody';
+		splitterContainer.appendChild(this.form.htmlComponent);
 		this.menuComponent.appendChild(this.form.htmlComponent);
 		this.serialPorts();
 

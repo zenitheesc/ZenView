@@ -24,7 +24,7 @@ module.exports = class EditMenu extends Menu {
 
 		}
 
-		this.generalContainer = Container.spliter({
+		this.generalContainer = Container.splitter({
 			title: Field.text({
 				label: 'Título',
 				att: 'blockTitle',
@@ -119,7 +119,7 @@ module.exports = class EditMenu extends Menu {
 		};
 
 		this.generalContainer.htmlComponent.oninput = () => {
-			this.currentBlock.uptadeBlockGeneralConfig(this.form.getData());
+			this.currentBlock.updateBlockGeneralConfig(this.form.getData());
 
 		};
 

@@ -15,7 +15,7 @@ module.exports = class TerminalMenu extends Menu {
         this.eventHandler = new EventHandler();
 
         this.serialTerminal = new Form({
-			serialTerminalSpliter: Container.spliter({
+			serialTerminalSplitter: Container.splitter({
                 sendData: Field.text({
                     label: 'Enviar informação via Serial',
                     att: 'sendData',
@@ -27,7 +27,7 @@ module.exports = class TerminalMenu extends Menu {
             }, {
 				startOpen: true,
 				text: 'Terminal Serial',
-				id: 'serialTerminalSpliter',
+				id: 'serialTerminalSplitter',
 			}),
 		});
 
@@ -66,7 +66,7 @@ module.exports = class TerminalMenu extends Menu {
 
         const serialTerminalContainer = this.configSerialTerminal();
 
-        this.serialTerminal.formTree.serialTerminalSpliter.sendData.htmlComponent.appendChild(serialTerminalContainer);
+        this.serialTerminal.formTree.serialTerminalSplitter.sendData.htmlComponent.appendChild(serialTerminalContainer);
         this.menuComponent.appendChild(this.serialTerminal.htmlComponent);
 
         for (let i = 0; i < document.getElementsByClassName('xterm-cursor-layer').length; i++) {
@@ -75,20 +75,20 @@ module.exports = class TerminalMenu extends Menu {
 
         }
 
-        this.serialTerminal.formTree.serialTerminalSpliter.sendData.htmlComponent.addEventListener('keyup', (evt) => {
+        this.serialTerminal.formTree.serialTerminalSplitter.sendData.htmlComponent.addEventListener('keyup', (evt) => {
 
             if (evt.keyCode === 13 && window.GlobalContext === 'running') {
 
                 evt.preventDefault();
-                this.eventHandler.SendSerialData(this.serialTerminal.formTree.serialTerminalSpliter.sendData.value);
+                this.eventHandler.SendSerialData(this.serialTerminal.formTree.serialTerminalSplitter.sendData.value);
 
-                if (this.serialTerminal.formTree.serialTerminalSpliter.echoCheckout.value) {
+                if (this.serialTerminal.formTree.serialTerminalSplitter.echoCheckout.value) {
 
-                    this.eventHandler.RawData(this.serialTerminal.formTree.serialTerminalSpliter.sendData.value);
+                    this.eventHandler.RawData(this.serialTerminal.formTree.serialTerminalSplitter.sendData.value);
 
                 }
 
-                this.serialTerminal.formTree.serialTerminalSpliter.sendData.value = '';
+                this.serialTerminal.formTree.serialTerminalSplitter.sendData.value = '';
 
             }
 

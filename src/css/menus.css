@@ -33,7 +33,7 @@
     padding-bottom: 0px;
 }
 
-.menuSpliter {
+.menuSplitter {
     border-radius: 0px !important;
     border: none;
     color: darkgray;
@@ -41,16 +41,16 @@
     overflow-y: auto;
 }
 
-.menuSpliter-header svg {
+.menuSplitter-header svg {
     margin-right: 0.2em;
     fill: darkgray;
 }
 
-.menuSpliter-header[aria-expanded="false"] svg {
+.menuSplitter-header[aria-expanded="false"] svg {
     transform: rotate(90deg);
 }
 
-.menuSpliter-header {
+.menuSplitter-header {
     border-radius: 0px !important;
     border-radius: 0px !important;
     display: flex;
@@ -65,7 +65,7 @@
     border: none;
 }
 
-.menuSpliter-header:hover {
+.menuSplitter-header:hover {
     cursor: pointer;
 }
 

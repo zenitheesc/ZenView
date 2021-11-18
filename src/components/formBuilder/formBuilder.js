@@ -73,8 +73,8 @@ class FormPattern {
 			}
 			if (attributesUntilHere !== undefined) {
 
-				const splited = attributesUntilHere.split('.');
-				const sliced = splited.slice(0, splited.length - cont);
+				const splitted = attributesUntilHere.split('.');
+				const sliced = splitted.slice(0, splitted.length - cont);
 				sliced.push(this.att);
 				this.att = sliced.join('.');
 
@@ -335,14 +335,14 @@ class Container extends FormPattern {
 		return container;
 
 	}
-	static spliter(config, containerConfig) {
+	static splitter(config, containerConfig) {
 
 		containerConfig = containerConfig || {};
 		const container = new Container(config, containerConfig);
 
 		const card = document.createElement('div');
 
-		card.className = 'card menuSpliter';
+		card.className = 'card menuSplitter';
 
 		const cardHeader = document.createElement('div');
 
@@ -367,11 +367,11 @@ class Container extends FormPattern {
 		if (containerConfig.startOpen) {
 
 			cardBodyCollapse.className = 'collapse show';
-			cardHeader.className = 'card-header menuSpliter-header';
+			cardHeader.className = 'card-header menuSplitter-header';
 
 		} else {
 
-			cardHeader.className = 'card-header menuSpliter-header collapsed';
+			cardHeader.className = 'card-header menuSplitter-header collapsed';
 			cardBodyCollapse.className = 'collapse';
 
 		}

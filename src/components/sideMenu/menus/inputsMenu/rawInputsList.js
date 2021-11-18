@@ -43,7 +43,7 @@ module.exports = class RawInputsList {
 		}),
 
 			this.rawInputList = new Form({
-				newDashboardSpliter: Container.spliter({
+				newDashboardSplitter: Container.splitter({
 					rawInput: this.rawInputSelector,
 					editField: this.editField,
 					rawInputsAddButton: this.addButton,
@@ -51,7 +51,7 @@ module.exports = class RawInputsList {
 				}, {
 					startOpen: true,
 					text: 'Dados Recebidos',
-					id: 'rawInputSpliter',
+					id: 'rawInputSplitter',
 				},
 				),
 			});

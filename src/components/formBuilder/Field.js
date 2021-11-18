@@ -105,8 +105,8 @@ module.exports = class Field {
 				cont++;
 
 			}
-			const splited = attributesUntilHere.split('.');
-			const sliced = splited.slice(0, splited.length - cont);
+			const splitted = attributesUntilHere.split('.');
+			const sliced = splitted.slice(0, splitted.length - cont);
 
 			this.att.split('.').forEach((att) => {
 

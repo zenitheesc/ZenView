@@ -9,7 +9,7 @@ module.exports = class uPlotEditMenu {
 		this.uPlotScatter = new uPlotScatter();
 
 		this.form = Container.div({
-			plotTypes: Container.spliter(
+			plotTypes: Container.splitter(
 				{
 					plotType: Field.select({
 						label: 'Selecione um tipo: ',

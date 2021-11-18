@@ -15,9 +15,9 @@ module.exports = class Section {
 
 	sectionSplitter() {
 
-		const spliter = Components.spliter(this.id, this.title, this.blocks, true);
+		const splitter = Components.splitter(this.id, this.title, this.blocks, true);
 
-		this.htmlComponent.appendChild(spliter);
+		this.htmlComponent.appendChild(splitter);
 
 	}
 	/**

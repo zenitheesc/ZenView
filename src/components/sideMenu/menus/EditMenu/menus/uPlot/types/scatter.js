@@ -10,7 +10,7 @@ module.exports = class uPlotScatter {
 
 		this.eventHandler = new EventHandler();
 
-		this.seriesSection = Container.spliter({
+		this.seriesSection = Container.splitter({
 			newSerie: Container.div({
 				newSerieSelector: Field.select({
 					label: 'Nova série',
@@ -32,7 +32,7 @@ module.exports = class uPlotScatter {
 
 		this.form = Container.div({
 			uPlotSeriesStyle: this.seriesSection,
-			uPlotXAxesStyle: Container.spliter({
+			uPlotXAxisStyle: Container.splitter({
 				xAxis: Field.select({
 					att: 'inputName',
 					label: "Eixo X",
@@ -45,7 +45,7 @@ module.exports = class uPlotScatter {
 					],
 				}),
 				scaleOpts: Container.formRow({
-					xAxesDirection: Field.select(
+					xAxisDirection: Field.select(
 						{
 							label: 'Direção',
 							att: 'dir',
@@ -62,7 +62,7 @@ module.exports = class uPlotScatter {
 							],
 						},
 					),
-					xAxesPos: Field.select(
+					xAxisPos: Field.select(
 						{
 							label: 'Posição',
 							att: 'side',
@@ -85,8 +85,8 @@ module.exports = class uPlotScatter {
 				text: 'Eixo X',
 				id: 'uPlotXAxeStyle',
 			}),
-			uPlotYAxesStyle: Container.spliter({
-				yAxesScale: Field.select({
+			uPlotYAxisStyle: Container.splitter({
+				yAxisScale: Field.select({
 					label: 'Escala',
 					att: 'type',
 					options: [
@@ -95,13 +95,13 @@ module.exports = class uPlotScatter {
 							value: 1,
 						},
 						{
-							text: 'Logaritimica',
+							text: 'Logarítmica',
 							value: 3,
 						},
 					],
 				}),
 				scaleOpts: Container.formRow({
-					yAxesDirection: Field.select(
+					yAxisDirection: Field.select(
 						{
 							label: 'Tamanho',
 							att: 'dir',
@@ -118,7 +118,7 @@ module.exports = class uPlotScatter {
 							],
 						},
 					),
-					yAxesPos: Field.select(
+					yAxisPos: Field.select(
 						{
 							label: 'Posição',
 							att: 'side',
@@ -169,7 +169,7 @@ module.exports = class uPlotScatter {
 
 		window.CurrentBlock.sendBlockInstruction({
 			command: 'editXAxis',
-			data: this.form.formTree.uPlotXAxesStyle.self.getData().blockConfig.uPlot.scatter.axis.x
+			data: this.form.formTree.uPlotXAxisStyle.self.getData().blockConfig.uPlot.scatter.axis.x
 		});
 
 	}
@@ -178,12 +178,12 @@ module.exports = class uPlotScatter {
 
 		window.CurrentBlock.sendBlockInstruction({
 			command: 'editYAxis',
-			data: this.form.formTree.uPlotYAxesStyle.self.getData().blockConfig.uPlot.scatter.axis.y
+			data: this.form.formTree.uPlotYAxisStyle.self.getData().blockConfig.uPlot.scatter.axis.y
 		});
 
 	}
 
-	attXandYInputList() {
+	attXAndYInputList() {
 
 		const callBack = (input) => {
 
@@ -196,7 +196,7 @@ module.exports = class uPlotScatter {
 		allInputs = allInputs.concat(window.CurrentInputGroup.rawInputs);
 		allInputs = allInputs.concat(window.CurrentInputGroup.inputs);
 
-		this.form.formTree.uPlotXAxesStyle.xAxis.setOptions(allInputs, callBack);
+		this.form.formTree.uPlotXAxisStyle.xAxis.setOptions(allInputs, callBack);
 
 		this.seriesSection.formTree.newSerie.newSerieSelector.setOptions(allInputs, callBack);
 	}
@@ -314,7 +314,7 @@ module.exports = class uPlotScatter {
 
 		this.eventHandler.addEventListener('AttInputList', () => {
 
-			this.attXandYInputList();
+			this.attXAndYInputList();
 
 		});
 
@@ -340,17 +340,17 @@ module.exports = class uPlotScatter {
 
 		};
 
-		this.form.formTree.uPlotXAxesStyle.self.htmlComponent.addEventListener('input', (evt) => {
+		this.form.formTree.uPlotXAxisStyle.self.htmlComponent.addEventListener('input', (evt) => {
 
 			this.editXAxis();
 			evt.stopPropagation();
 
 		});
 
-		this.form.formTree.uPlotYAxesStyle.self.htmlComponent.addEventListener('input', (evt) => {
+		this.form.formTree.uPlotYAxisStyle.self.htmlComponent.addEventListener('input', (evt) => {
 
 			this.editYAxis();
-			evt.stopPropagation();
+			//evt.stopPropagation();
 
 		});
 

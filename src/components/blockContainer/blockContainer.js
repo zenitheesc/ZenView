@@ -133,7 +133,7 @@ module.exports = class BlockContainer {
 
 	}
 
-	uptadeBlockGeneralConfig(newConfig) {
+	updateBlockGeneralConfig(newConfig) {
 
 		this.eventHandler.dispatchEvent('DashboardNotSaved');
 

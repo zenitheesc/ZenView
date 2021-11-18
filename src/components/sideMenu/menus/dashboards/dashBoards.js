@@ -22,16 +22,16 @@ module.exports = class DashBoardsMenu extends Menu {
 		});
 
 	}
-	dashboardListSpliter() {
+	dashboardListSplitter() {
 
-		const spliter = Components.spliter('dashBoardsList', 'Dashboards salvos', this.container, true);
-		spliter.style.height = '100%';
-		this.menuComponent.appendChild(spliter);
+		const splitter = Components.splitter('dashBoardsList', 'Dashboards salvos', this.container, true);
+		splitter.style.height = '100%';
+		this.menuComponent.appendChild(splitter);
 
 	}
 	load() {
 
-		this.dashboardListSpliter();
+		this.dashboardListSplitter();
 		this.attDashBoardsList();
 
 		this.EventHandler.addEventListener('AttDashBoardsList', ()=>{

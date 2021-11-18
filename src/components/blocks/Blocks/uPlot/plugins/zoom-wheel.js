@@ -47,7 +47,7 @@ module.exports = function wheelZoomPlugin(opts) {
 
 						let xUnitsPerPx = u.posToVal(1, 'x') - u.posToVal(0, 'x');
 
-						function onmove(e) {
+						function onMove(e) {
 							e.preventDefault();
 
 							let left1 = e.clientX;
@@ -60,13 +60,13 @@ module.exports = function wheelZoomPlugin(opts) {
 							});
 						}
 
-						function onup(e) {
-							document.removeEventListener("mousemove", onmove);
-							document.removeEventListener("mouseup", onup);
+						function onUp(e) {
+							document.removeEventListener("mousemove", onMove);
+							document.removeEventListener("mouseup", onUp);
 						}
 
-						document.addEventListener("mousemove", onmove);
-						document.addEventListener("mouseup", onup);
+						document.addEventListener("mousemove", onMove);
+						document.addEventListener("mouseup", onUp);
 					}
 				});
 

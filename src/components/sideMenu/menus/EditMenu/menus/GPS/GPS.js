@@ -9,7 +9,7 @@ module.exports = class MapEditMenu {
 		this.eventHandler = new EventHandler();
 
 		this.form = Container.div({
-			GPSconfig: Container.spliter({
+			GPSconfig: Container.splitter({
 				longitude: Field.select({
 					att: 'longitude',
 					label: "Longitude",
