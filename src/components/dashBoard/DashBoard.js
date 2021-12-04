@@ -115,6 +115,7 @@ module.exports = class DashBoard {
 		this.gridStack.addWidget(newBlock.htmlComponent, newBlock);
 
 		newBlock.init();
+		window.CurrentDashBoard.blocks = this.blocks;
 
 	}
 
@@ -122,6 +123,7 @@ module.exports = class DashBoard {
 
 		this.blocks = this.blocks.filter((block) => block !== removedBlock);
 		this.gridStack.removeWidget(removedBlock.htmlComponent);
+		window.CurrentDashBoard.blocks = this.blocks;
 
 	}
 
