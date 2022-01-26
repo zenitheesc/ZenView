@@ -145,7 +145,7 @@ module.exports = class EventHandler {
 			this.dispatchEvent('DashboardNotSaved', detail);
 
 		};
-		
+
 		this['AppendTag'] = (detail) => {
 
 			this.dispatchEvent('AppendTag', detail);
@@ -221,6 +221,24 @@ module.exports = class EventHandler {
 		this['SendSerialData'] = (detail) => {
 
 			this.dispatchEvent('SendSerialData', detail);
+
+		};
+
+		this['UpdateSeries'] = (detail) => {
+
+			this.dispatchEvent('UpdateSeries', detail);
+
+		};
+
+		this['MenuOpened'] = (detail) => {
+
+			this.dispatchEvent('MenuOpened', detail);
+
+		};
+
+		this['SendNotification'] = (detail) => {
+
+			this.dispatchEvent('SendNotification', detail);
 
 		};
 

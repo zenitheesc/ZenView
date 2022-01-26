@@ -1,17 +1,11 @@
 const EventHandler = require('../../../eventHandler/eventHandler');
-const Components = require('../../../components');	
+const Components = require('../../../components');
 
 module.exports = class InputCard {
 
 	constructor(input) {
-
-		this.inputInfo = {
-			'name': input.name,
-			'expression': input.expression.formatted,
-			'rawExpression': input.expression.raw,
-			'hasInconsistency': input.hasInconsistency,
-		};
-
+		
+		this.inputInfo = input;
 		this.eventHandler = new EventHandler();
 		this.htmlComponent = document.createElement('div');
 		this.htmlComponent.className = 'mb-3';
@@ -24,7 +18,7 @@ module.exports = class InputCard {
 
 		const cardHeader = document.createElement('div');
 		cardHeader.setAttribute('class', 'row  m-0 justify-content-between');
-	
+
 		if (this.inputInfo.hasInconsistency) {
 
 			cardHeader.classList.add('inputCardWithError');
@@ -34,7 +28,7 @@ module.exports = class InputCard {
 			cardHeader.classList.add('inputCard');
 
 		}
-		
+
 		const cardHeaderIcon = document.createElement('i');
 		cardHeaderIcon.innerHTML = Components.icon('list-ol-solid');
 		cardHeaderIcon.className = 'inputCardIcon';
@@ -42,7 +36,7 @@ module.exports = class InputCard {
 		const cardHeaderTitle = document.createElement('div');
 		cardHeaderTitle.className = 'inputCardTitle';
 		cardHeaderTitle.innerText = this.inputInfo.name;
-		
+
 		const cardHeaderWrapper = document.createElement('div');
 		cardHeaderWrapper.className = 'row m-0 inputCardWrapper';
 
@@ -77,22 +71,23 @@ module.exports = class InputCard {
 	setEvents() {
 
 		this.htmlComponent.addEventListener('mouseover', () => {
-			
-			this.title.innerText = this.inputInfo.expression;
-			
+
+			this.title.innerText = this.inputInfo.expression.readble;
+
 		});
-		
+
 		this.htmlComponent.addEventListener('mouseout', () => {
-			
+
 			this.title.innerText = this.inputInfo.name;
-			
+
 		});
 
 		this.addBtn.addEventListener('click', () => {
 
-			const tag = document.createElement("a");
-			tag.contentEditable = "false";
-			tag.className = "inputTag";
+			const tag = document.createElement('a');
+			tag.contentEditable = 'false';
+			tag.className = 'inputTag';
+			tag.setAttribute('id', this.inputInfo.uuid);
 			tag.textContent = '${' + this.inputInfo.name + '}';
 
 			this.eventHandler.dispatchEvent('AppendTag', {tag: tag});
@@ -101,16 +96,17 @@ module.exports = class InputCard {
 
 		this.editBtn.addEventListener('click', () => {
 
-			this.eventHandler.dispatchEvent('SetEditInputMode', {name: this.inputInfo.name, exp: this.inputInfo.rawExpression});
+			this.eventHandler.dispatchEvent('SetEditInputMode', {uuid: this.inputInfo.uuid, exp: this.inputInfo.expression.raw});
 
 		});
 
 		this.delBtn.addEventListener('click', () => {
 
 			this.eventHandler.RemoveInput({
-				name: this.inputInfo.name,
+				uuid: this.inputInfo.uuid,
 			});
 
+			this.eventHandler.dispatchEvent('LeaveEditMode');
 			this.eventHandler.dispatchEvent('AttInputList');
 
 		});

@@ -32,23 +32,23 @@ module.exports = class DashBoard {
 			animate: true,
 			draggable: {
 				handle: '.blockHeader',
-			}
+			},
 		});
 
-		this.gridStack.enable('.grid-stack-item-content', true);
+		this.gridStack.enable('.grid-stack-t dashboardHash = hash(currentDashBoard);tem-content', true);
 
 		this.eventHandler.addEventListener('AddNewBlock', (evt) => {
 
 			this.addNewBlock(evt);
 
 		});
-		
+
 		this.eventHandler.addEventListener('RemoveBlock', (evt) => {
-			
+
 			this.removeBlock(evt);
-			
+
 		});
-		
+
 		this.eventHandler.addEventListener('ClearDashboard', () => {
 
 			this.gridStack.removeAll();
@@ -65,6 +65,18 @@ module.exports = class DashBoard {
 		this.eventHandler.addEventListener('SaveDashboard', (evt) => {
 
 			this.saveDashboard();
+
+		});
+
+		this.eventHandler.addEventListener('StartRead', (evt) => {
+
+			this.gridStack.disable();
+
+		});
+
+		this.eventHandler.addEventListener('StopRead', (evt) => {
+
+			this.gridStack.enable();
 
 		});
 
@@ -87,7 +99,7 @@ module.exports = class DashBoard {
 			ipcRenderer.on('selected-dir', (evt, arg) => {
 
 				this.importDashboard(arg);
-					
+
 				ipc.removeAllListeners('selected-dir');
 
 			});
@@ -103,6 +115,7 @@ module.exports = class DashBoard {
 		this.gridStack.addWidget(newBlock.htmlComponent, newBlock);
 
 		newBlock.init();
+		window.CurrentDashBoard.blocks = this.blocks;
 
 	}
 
@@ -110,6 +123,7 @@ module.exports = class DashBoard {
 
 		this.blocks = this.blocks.filter((block) => block !== removedBlock);
 		this.gridStack.removeWidget(removedBlock.htmlComponent);
+		window.CurrentDashBoard.blocks = this.blocks;
 
 	}
 
@@ -117,8 +131,8 @@ module.exports = class DashBoard {
 
 		window.CurrentDashBoard.blocksLog.forEach((blockLog) => {
 
-			const newBlock = new BlockContainer(blockLog.preConfig);
-			
+			const newBlock = new BlockContainer(blockLog.preConfig, blockLog.title);
+
 			this.gridStack.addWidget(newBlock.htmlComponent, {
 				x: Number(blockLog.x),
 				y: Number(blockLog.y),
@@ -128,7 +142,7 @@ module.exports = class DashBoard {
 
 			newBlock.load(blockLog.blockConfig);
 			this.blocks.push(newBlock);
-			window.CurrentDashBoard.blocks.push(newBlock)
+			window.CurrentDashBoard.blocks.push(newBlock);
 
 		});
 
@@ -141,43 +155,45 @@ module.exports = class DashBoard {
 	}
 
 	saveDashboard(onClose) {
-		
-		const blocksLog = [];
+
 		const currentDashBoard = window.CurrentDashBoard;
-		
+		const blocksLog = [];
+
 		this.blocks.forEach((block) => blocksLog.push(block.blockLog()));
 		currentDashBoard.blocksLog = blocksLog;
 		currentDashBoard.saved = true;
-		const tempBlocks = currentDashBoard.blocks
+
+		const tempBlocks = currentDashBoard.blocks;
+
 		currentDashBoard.blocks = [];
 		const dashboardHash = hash(currentDashBoard);
 		currentDashBoard.hash = dashboardHash;
-		
+
 		this.BSON.writeFile(currentDashBoard.path, currentDashBoard);
 
 		currentDashBoard.blocks = tempBlocks;
 
 		ipcRenderer.send('isSaved', true);
-		
+
 		if (onClose) ipcRenderer.send('closeOnSave');
 
 	}
 
 	importDashboard(path) {
-		
+
 		const dashboardJSON = this.BSON.readFile(path);
-		const dashboardHash = dashboardJSON.hash;
 		const dashboard = new DataDashBoard(dashboardJSON);
-		
+
 		if (dashboard.blocks.length === 0) {
+
 			dashboard.inputGroup.inputGraph = {};
-			
+
 		}
-		
+
 		const dashboardIdealHash = hash(dashboard);
-		
-		if (dashboardHash === dashboardIdealHash) {
-			
+
+		if (dashboardJSON.hash === dashboardIdealHash) {
+
 			dashboard.path = path;
 			this.eventHandler.dispatchEvent('OpenImportedDashboard', dashboard);
 

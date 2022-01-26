@@ -1,5 +1,3 @@
-console.log('running....');
-
 const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
@@ -12,7 +10,6 @@ const TitleBarMenu = require('./components/titleBar/titleBarMenu');
 const debugMode = true;
 let initialWindow;
 let mainWindow;
-let titleBarMenu;
 let dashboardIsSaved = true;
 
 // parametros iniciais da janela inicial
@@ -55,40 +52,52 @@ function createWindow(params) {
 		protocol: 'file',
 		slashes: true,
 	}));
+
 	if (params.openDevTools) {
 
 		window.openDevTools();
 
 	}
+
 	window.on('closed', () => {
 
 		window = null;
 
 	});
+
 	if (!debugMode) window.removeMenu();
 	return window;
 
 }
-// event listener que espera o app ser criado para criar as janelas
+
 app.on('ready', () => {
 
 	app.allowRendererProcessReuse = false;
 
-	initialWindow = createWindow(initialWindowparams);
+	if (!debugMode) initialWindow = createWindow(initialWindowparams);
 	mainWindow = createWindow(mainWindowparams);
 	titleBarMenu = new TitleBarMenu();
 
 	// apenas mostrara a janela quando estiver pronta
-	initialWindow.once('ready-to-show', () => {
 
-		initialWindow.show();
+	if (debugMode) {
 
-	});
+		mainWindow.show();
+
+	} else {
+
+		initialWindow.once('ready-to-show', () => {
+
+			initialWindow.show();
+
+		});
+
+	}
 
 	mainWindow.on('close', (evt) => {
-		
-		if (!dashboardIsSaved) {
-		
+
+		if (!dashboardIsSaved && !debugMode) {
+
 			const response = dialog.showMessageBoxSync(mainWindow, {
 				type: 'question',
 				buttons: ['Salvar', 'Descartar', 'Cancelar'],
@@ -97,25 +106,24 @@ app.on('ready', () => {
 				defaultId: 2,
 				cancelId: 2,
 			});
-			
+
 			if (response === 0) {
-		
+
 				evt.preventDefault();
 				mainWindow.webContents.send('SaveDashboard', true);
 
 			} else if (response === 2) {
-		
+
 				evt.preventDefault();
-		
+
 			}
-	
+
 		}
 
 	});
 
 });
 
-// encerra o programa se todas as janelas forem fechadas
 app.on('window-all-closed', () => {
 
 	if (process.platform !== 'darwin') {
@@ -126,7 +134,6 @@ app.on('window-all-closed', () => {
 
 });
 
-// caso a janela nao tenha sido criada força sua criação
 app.on('activate', () => {
 
 	if (mainWindow === null) {
@@ -138,10 +145,9 @@ app.on('activate', () => {
 
 });
 
-// listerner que avisa que o load da janela principal terminou
 ipc.on('mainLoadCompleto', () => {
 
-	initialWindow.close();
+	if (!debugMode) initialWindow.close();
 	mainWindow.show();
 
 });
@@ -152,6 +158,7 @@ ipc.on('open-file-dialog-for-dir', async (event) => {
 
 		properties: ['openDirectory', 'createDirectory'],
 	});
+
 	if (dir) {
 
 		event.sender.send('selected-dir', dir.filePaths[0]);
@@ -166,6 +173,7 @@ ipc.on('open-file-dialog-for-file', async (event, args) => {
 		properties: ['openFile'],
 		filters: [{name: 'Dashboard', extensions: [args]}],
 	});
+
 	if (file) {
 
 		event.sender.send('selected-dir', file.filePaths[0]);

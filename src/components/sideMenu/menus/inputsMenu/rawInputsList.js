@@ -1,4 +1,4 @@
-const { Form, Container, Field } = require('../../../formBuilder/formBuilder');
+const {Form, Container, Field} = require('../../../formBuilder/formBuilder');
 const Validator = require('../../../formBuilder/validator');
 const Components = require('../../../components');
 const EventHandler = require('../../../eventHandler/eventHandler');
@@ -67,7 +67,7 @@ module.exports = class RawInputsList {
 
 		this.rawInputSelector.setOptions(currentInputGroup, (value) => {
 
-			return [value.name, value.name];
+			return [value.uuid, value.name];
 
 		});
 
@@ -80,17 +80,18 @@ module.exports = class RawInputsList {
 			const tag = document.createElement('a');
 			tag.contentEditable = 'false';
 			tag.className = 'inputTag';
-			tag.textContent = '#{' + this.rawInputSelector.value + '}';
+			tag.setAttribute('id', this.rawInputSelector.value);
+			tag.textContent = '#{' + window.CurrentInputGroup.inputsDictionary[this.rawInputSelector.value].name + '}';
 
-			this.eventHandler.dispatchEvent('AppendTag', { tag: tag });
+			this.eventHandler.dispatchEvent('AppendTag', {tag: tag});
 
 		};
 
 		this.rawInputSelector.append[1].onclick = () => {
 
 			this.editField.htmlComponent.classList.remove('d-none');
-			this.editField.value = this.rawInputSelector.value;
-			this.currentInputName = this.rawInputSelector.value;
+			this.editField.value = window.CurrentInputGroup.inputsDictionary[this.rawInputSelector.value].name;
+			this.currentInputName = window.CurrentInputGroup.inputsDictionary[this.rawInputSelector.value].name;
 
 		};
 
@@ -99,7 +100,7 @@ module.exports = class RawInputsList {
 			if (!this.rawInputList.validate()) return;
 
 			this.eventHandler.EditInput({
-				name: this.currentInputName,
+				uuid: this.rawInputSelector.value,
 				newName: this.editField.value,
 				type: 'raw',
 				callback: (error, msg) => {
@@ -129,7 +130,7 @@ module.exports = class RawInputsList {
 				name: 'collum_' + i,
 				type: 'raw',
 				expression: {
-					formatted: `${'collum_' + i}`,
+					formatted: `${i}`,
 				},
 			});
 

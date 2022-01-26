@@ -2,13 +2,12 @@ const Container = require('../../../../../formBuilder/formBuilder').Container;
 const Field = require('../../../../../formBuilder/formBuilder').Field;
 const uPlotScatter = require('./types/scatter');
 
-
 module.exports = class uPlotEditMenu {
 
 	constructor() {
 
 		this.uPlotScatter = new uPlotScatter();
-		
+
 		this.form = Container.div({
 			plotTypes: Container.spliter(
 				{

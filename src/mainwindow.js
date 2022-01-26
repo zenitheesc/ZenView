@@ -7,6 +7,7 @@ const DashBoard = require('./components/dashBoard/DashBoard');
 const TitleBar = require('./components/titleBar/titleBar');
 const EventHandler = require('./components/eventHandler/eventHandler');
 const InputHandler = require('./components/inputHandler/inputHandler');
+const Notifier = require('./components/notifier');
 
 class MainWindow {
 
@@ -19,6 +20,7 @@ class MainWindow {
 		this.TitleBar = new TitleBar();
 		this.EventHandler = new EventHandler();
 		this.InputHandler = new InputHandler();
+		this.Notifier = new Notifier();
 
 	}
 
@@ -30,7 +32,7 @@ class MainWindow {
 
 	changeGlobalContext(context) {
 
-		window.GlobalContex = context;
+		window.GlobalContext = context;
 
 	}
 
@@ -72,7 +74,7 @@ class MainWindow {
 		this.readInitialConfig();
 
 	}
-	
+
 	build() {
 
 		let duracao = Date.now();

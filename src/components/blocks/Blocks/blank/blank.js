@@ -13,4 +13,4 @@ module.exports = class Blank extends Block {
 
 	}
 
-}
+};

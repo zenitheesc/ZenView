@@ -10,8 +10,10 @@ module.exports = class Block {
 
 	}
 
-	get formConfig(){
+	get formConfig() {
+
 		this._formConfig;
+
 	}
 
 	init() {
@@ -39,7 +41,9 @@ module.exports = class Block {
 	}
 
 	instructionHandler(instruction) {
-		this[instruction.command](instruction?.data);
+
+		return this[instruction.command](instruction?.data);
+
 	}
 
 	updateData() {
@@ -51,7 +55,7 @@ module.exports = class Block {
 	}
 
 	willStopRead() {
-		
+
 	}
 
 	destroy() {

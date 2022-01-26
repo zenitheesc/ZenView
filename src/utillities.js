@@ -1,4 +1,5 @@
 module.exports = class Utillities {
+
 	static texts = {
 		ptbr: {
 			buttons: {
@@ -7,7 +8,7 @@ module.exports = class Utillities {
 				3: "Começar Leitura",
 				4: "Entradas",
 				5: "Novo bloco",
-				6: "Deletar",
+				6: "Editar",
 				7: "Salvar",
 				8: "Sobre nós",
 				9: "Configurações",
@@ -21,7 +22,7 @@ module.exports = class Utillities {
 				3: "Start Reading",
 				4: "Inputs",
 				5: "Add new Block",
-				6: "Delete",
+				6: "Editar",
 				7: "Save",
 				8: "About us",
 				9: "Config",
@@ -36,11 +37,11 @@ module.exports = class Utillities {
 			2: '#1d1e2f',
 			3: '#151620'
 		}
-	}
+	};
 
-	static theme = 'main'
+	static theme = 'main';
 
-	static language = 'ptbr'
+	static language = 'ptbr';
 
 	static getColor(colorNumber) {
 		return (this.colors[this.theme])[colorNumber];

@@ -1,7 +1,3 @@
-/**
- * ColorPicker
- */
-
 const FieldClass = require('./Field');
 const Field = require('./FieldsBuilder');
 
@@ -26,7 +22,7 @@ class FormPattern {
 		this._BuildFormTree();
 		this._buildHtmlComponent(config);
 		formConfig = formConfig || {};
-		this.att = formConfig.att || false;
+		this.att = formConfig.att ?? false;
 		this.conditions = formConfig.conditions || [];
 
 	}
@@ -155,7 +151,9 @@ class FormPattern {
 		for (let i = 0; i < this.containers.length; i++) {
 
 			if (!this.containers[i].validate()) {
+
 				response = false;
+
 			}
 
 		}
@@ -194,11 +192,19 @@ class FormPattern {
 
 	}
 
-	setData(DataObj) {
+	_setData(DataObj) {
 
 		this.containers.forEach((container) => {
 
-			container.setData(DataObj);
+			try {
+
+				container.setData(DataObj);
+
+			} catch (e) {
+
+				console.error('TODO ERROR', e);
+
+			}
 
 		});
 
@@ -208,12 +214,20 @@ class FormPattern {
 			let result;
 
 			for (const path of paths) {
+
 				result = result?.[path] ?? DataObj?.[path];
+
 			}
 
 			field.value = result ?? field.value;
 
 		});
+
+	}
+
+	setData(DataObj) {
+
+		this._setData(DataObj);
 
 	}
 

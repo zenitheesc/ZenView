@@ -6,7 +6,7 @@ module.exports = class DashBoard {
 
 		this.name;
 		this.inputGroup;
-		this.blocks;
+		this.blocks = [];
 		this.blocksLog = [];
 		this.path;
 		this.description;
@@ -23,6 +23,7 @@ module.exports = class DashBoard {
 		}
 
 	}
+
 	newConstructor(name, nbmrInputs, path, description) {
 
 		this.name = name;
@@ -34,6 +35,7 @@ module.exports = class DashBoard {
 		this.saved = true;
 
 	}
+
 	constructFromJson(dashBoardJson) {
 
 		this.name = dashBoardJson.name;

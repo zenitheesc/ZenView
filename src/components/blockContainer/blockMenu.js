@@ -2,7 +2,7 @@ const remote = require('electron').remote;
 const {Menu, MenuItem} = remote;
 
 module.exports = class BlockMenu {
-    
+
     constructor(blockContainer) {
 
         this.menu = new Menu();
@@ -12,7 +12,7 @@ module.exports = class BlockMenu {
             click() {
 
                 blockContainer.editBlock();
-            
+
             },
          }));
 
@@ -23,15 +23,19 @@ module.exports = class BlockMenu {
                 window.dispatchEvent(new CustomEvent('RemoveBlock', {
                     detail: blockContainer,
                 }));
-            
+
             },
         }));
-    
+
     }
 
     menuPopUp() {
 
-        this.menu.popup(remote.getCurrentWindow());
+        if (window.GlobalContext == 'editing') {
+
+            this.menu.popup(remote.getCurrentWindow());
+
+        }
 
     }
 

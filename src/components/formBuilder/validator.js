@@ -13,9 +13,11 @@ module.exports = class Validator {
 		}
 
 	}
+
 	static noSpecialChars(value) {
 
 		const format = /^[a-zA-Z0-9 _]*[a-zA-Z0-9][a-zA-Z0-9 _]*$/;
+
 		if (!format.test(value)) {
 
 			return 'Não são permitidos caracteres especiais';
@@ -41,6 +43,17 @@ module.exports = class Validator {
 				return 'Deve ser um número entre ' + min + ' ' + max;
 
 			}
+
+		};
+
+	}
+
+	static isBigger(min) {
+
+		return function(value) {
+
+			if (value >= min) return true;
+			return 'Deve ser um número maior ou igual a ' + min;
 
 		};
 
@@ -81,6 +94,7 @@ module.exports = class Validator {
 	static isNumber(value) {
 
 		const format = /^[0-9]*$/;
+
 		if (!format.test(value)) {
 
 			return 'Não são permitidos caracteres especiais ou letras';
@@ -96,6 +110,7 @@ module.exports = class Validator {
 	static isNotNumber(value) {
 
 		const format = /^[0-9]*$/;
+
 		if (format.test(value)) {
 
 			return 'Não são permitidos números nesse campo.';
