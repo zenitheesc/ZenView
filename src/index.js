@@ -36,6 +36,7 @@ const mainWindowparams = {
 		webviewTag: true,
 		nodeIntegrationInWorker: true,
 		enableRemoteModule: true,
+		contextIsolation: false,
 	},
 	openDevTools: debugMode,
 };
