@@ -1,5 +1,5 @@
 const SerialPort = require('serialport');
-const Readline = SerialPort.parsers.Readline;
+const {Readline} = require('@serialport/parser-readline');
 const EventHandler = require('../../eventHandler/eventHandler');
 const Dialog = require('../../dialog/dialog');
 
@@ -39,15 +39,15 @@ module.exports = class SerialReader {
 
                 this.stop();
                 this.eventHandler.dispatchEvent('DataReadingFinished');
-            
+
             };
-                        
+
         });
 
         this.port.on('error', (err) => this.reconnectDialog());
 
         this.port.on('close', (err) => this.reconnectDialog());
-        
+
         this.eventHandler.addEventListener('SendSerialData', (evt) => {
 
             this.write(evt);
@@ -75,49 +75,49 @@ module.exports = class SerialReader {
     reconnectDialog() {
 
         if (this.isReading) {
-            
+
             Dialog.showDialog({
                 title: 'Conexão',
                 type: 'question',
                 message: 'O dispositivo foi desconectado. Deseja finalizar a leitura ou reconectar o dispositivo?',
                 buttons: ['Finalizar', 'Reconectar'],
             }, (result) => {
-                
+
                 if (result.response === 0) {
-                    
+
                     this.stop();
                     this.eventHandler.dispatchEvent('DataReadingFinished');
-                    
+
                 } else if (result.response === 1) {
-                    
+
                     this.port.open((err) => {
-                        
+
                         if (err) {
-                            
+
                             Dialog.showDialog({
                                 title: 'Erro',
                                 type: 'error',
                                     message: 'O dispositivo não foi reconectado corretamente. A leitura será encerrada.',
                                     buttons: ['Ok'],
                             });
-                            
+
                             this.stop();
                             this.eventHandler.dispatchEvent('DataReadingFinished');
-                            
+
                         }
-                        
+
                     });
-                    
+
                 }
-                
+
             });
-        
+
         }
-            
+
     }
-        
+
     read() {
-            
+
         const parser = this.port.pipe(new Readline());
 
         parser.on('data', (line) => {

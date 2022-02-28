@@ -5,7 +5,7 @@ const Container = require('../../../formBuilder/formBuilder').Container;
 const Field = require('../../../formBuilder/formBuilder').Field;
 const EventHandler = require('../../../eventHandler/eventHandler');
 const Dialog = require('../../../dialog/dialog');
-const SerialPort = require('serialport');
+const {SerialPort} = require('serialport');
 
 module.exports = class StartRead extends Menu {
 
@@ -25,13 +25,13 @@ module.exports = class StartRead extends Menu {
 					if (this.form.formTree.startReadSplitter.serialContainer.enableUSBOnly.value) {
 
 						if (port.path.slice(5, 9) !== 'ttyS') options.push({text: port.path});
-					
+
 					} else {
 
 						options.push({text: port.path});
 
 					}
-				
+
 				});
 
 				const value = this.form.formTree.startReadSplitter.serialContainer.port.value;
@@ -40,11 +40,11 @@ module.exports = class StartRead extends Menu {
 				if (value !== '') {
 
 					this.form.formTree.startReadSplitter.serialContainer.port.setSelectedOption(value);
-				
+
 				}
 
 				return options;
-			
+
 			},
 			(err) => console.error(err),
 		);
@@ -311,7 +311,7 @@ module.exports = class StartRead extends Menu {
 					});
 
 				}
-				
+
 
 			} else {
 
